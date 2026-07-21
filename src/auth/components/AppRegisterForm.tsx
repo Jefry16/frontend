@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { useRegisterForm } from "../hooks/use-register-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
-import { AuthField } from "./AuthField";
+import { AppField } from "./AppField";
 
 export const AppRegisterForm = () => {
 	const { form, isPending, errorMessage } = useRegisterForm();
@@ -18,12 +18,12 @@ export const AppRegisterForm = () => {
 		>
 			<form.Field name="name">
 				{(field) => (
-					<AuthField field={field} label={m.name()} autoComplete="name" />
+					<AppField field={field} label={m.name()} autoComplete="name" />
 				)}
 			</form.Field>
 			<form.Field name="email">
 				{(field) => (
-					<AuthField
+					<AppField
 						field={field}
 						label={m.email()}
 						type="email"
@@ -33,7 +33,7 @@ export const AppRegisterForm = () => {
 			</form.Field>
 			<form.Field name="password">
 				{(field) => (
-					<AuthField
+					<AppField
 						field={field}
 						label={m.password()}
 						type="password"
@@ -44,7 +44,7 @@ export const AppRegisterForm = () => {
 			</form.Field>
 			<form.Field name="confirmPassword">
 				{(field) => (
-					<AuthField
+					<AppField
 						field={field}
 						label={m.confirm_password()}
 						type="password"

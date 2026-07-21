@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { useLoginForm } from "../hooks/use-login-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
-import { AuthField } from "./AuthField";
+import { AppField } from "./AppField";
 
 export const AppLoginForm = () => {
 	const { form, isPending, errorMessage } = useLoginForm();
@@ -18,7 +18,7 @@ export const AppLoginForm = () => {
 		>
 			<form.Field name="email">
 				{(field) => (
-					<AuthField
+					<AppField
 						field={field}
 						label={m.email()}
 						type="email"
@@ -28,7 +28,7 @@ export const AppLoginForm = () => {
 			</form.Field>
 			<form.Field name="password">
 				{(field) => (
-					<AuthField
+					<AppField
 						field={field}
 						label={m.password()}
 						type="password"
