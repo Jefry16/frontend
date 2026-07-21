@@ -13,3 +13,6 @@ __unconfig*
 todos.json
 coverage
 .gstack/
+
+*storybook.log
+storybook-static

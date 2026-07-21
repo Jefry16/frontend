@@ -24,7 +24,9 @@
     "lint": "biome lint",
     "check": "biome check",
     "depcheck": "depcruise --config .dependency-cruiser.cjs src",
-    "machine-translate": "inlang machine translate --project project.inlang"
+    "machine-translate": "inlang machine translate --project project.inlang",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
@@ -55,6 +57,9 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.5",
     "@inlang/cli": "^3.0.0",
+    "@storybook/addon-a11y": "^10.5.3",
+    "@storybook/addon-docs": "^10.5.3",
+    "@storybook/tanstack-react": "^10.5.3",
     "@tanstack/devtools-vite": "latest",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -68,6 +73,7 @@
     "dependency-cruiser": "^17.3.10",
     "jsdom": "^28.1.0",
     "msw": "^2.13.6",
+    "storybook": "^10.5.3",
     "typescript": "^5.7.2",
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^5.1.4",
