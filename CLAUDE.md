@@ -8,6 +8,16 @@ shipped feature needs — strict subtraction, no speculative scaffolding.
 Right now the repo is the **foundation only**: tooling, app shell, design tokens, base
 UI primitives, the API client, i18n wiring, and the test harness. No feature modules yet.
 
+> **Authoritative package docs live in [`docs/STACK.md`](./docs/STACK.md)** — every
+> dependency with its pinned version, purpose, and the canonical documentation URL.
+> Consult it before reaching for an API; verify against those docs rather than assume
+> (e.g. Zod v4, Tailwind v4, TanStack Start SPA mode, Paraglide v2).
+>
+> **Component rules + inventory live in [`docs/COMPONENTS.md`](./docs/COMPONENTS.md)** —
+> the layered architecture, R1 (ui/ is vendored shadcn, never hand-edit) / R2
+> (componentize on the 2nd real use), `App*` naming, the forms pattern, and the rule that
+> **every `App*` component ships a `.stories.tsx`** (Storybook is the living inventory).
+
 ## Stack
 
 - **React 19** + **TanStack Start** (SPA mode — static prerendered shell + client bundle,
