@@ -7,6 +7,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { AuthProvider } from "#/auth";
 import { Toaster } from "#/components/ui/sonner";
 import { TooltipProvider } from "#/components/ui/tooltip";
 import { queryClient } from "#/router";
@@ -55,10 +56,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<body>
 				<ThemeProvider>
 					<QueryClientProvider client={queryClient}>
-						<TooltipProvider>
-							{children}
-							<ThemedToaster />
-						</TooltipProvider>
+						<AuthProvider>
+							<TooltipProvider>
+								{children}
+								<ThemedToaster />
+							</TooltipProvider>
+						</AuthProvider>
 					</QueryClientProvider>
 				</ThemeProvider>
 				<TanStackDevtools
