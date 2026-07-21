@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "error": "Something went wrong. Please try again.",
+  "resource_created": "{resource} created",
+  "resource_updated": "{resource} updated",
+  "resource_deleted": "{resource} deleted"
+}
