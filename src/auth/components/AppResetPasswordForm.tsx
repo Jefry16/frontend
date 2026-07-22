@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
+import { AppLink } from "#/shared/components/AppLink";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useResetPasswordForm } from "../hooks/use-reset-password-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
@@ -17,7 +17,9 @@ export const AppResetPasswordForm = ({ token }: { token?: string }) => {
 				title={m.reset_link_invalid_title()}
 				description={m.reset_link_missing_token()}
 			>
-				<Link to="/auth/forgot-password">{m.request_new_reset_link()}</Link>
+				<AppLink to="/auth/forgot-password">
+					{m.request_new_reset_link()}
+				</AppLink>
 			</AppAuthMessageCard>
 		);
 	}
@@ -36,7 +38,7 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
 			title={m.reset_password_title()}
 			subtitle={m.reset_password_subtitle()}
 			submitLabel={m.reset_password_submit()}
-			footer={<Link to="/auth/login">{m.back_to_sign_in()}</Link>}
+			footer={<AppLink to="/auth/login">{m.back_to_sign_in()}</AppLink>}
 		>
 			<form.Field name="password">
 				{(field) => (

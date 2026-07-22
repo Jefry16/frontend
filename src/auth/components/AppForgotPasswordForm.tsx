@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
+import { AppLink } from "#/shared/components/AppLink";
 import { useForgotPasswordForm } from "../hooks/use-forgot-password-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
@@ -19,7 +19,7 @@ export const AppForgotPasswordForm = () => {
 				title={m.check_your_email_title()}
 				description={m.password_reset_sent({ email: submittedEmail })}
 			>
-				<Link to="/auth/login">{m.go_to_sign_in()}</Link>
+				<AppLink to="/auth/login">{m.go_to_sign_in()}</AppLink>
 			</AppAuthMessageCard>
 		);
 	}
@@ -32,7 +32,7 @@ export const AppForgotPasswordForm = () => {
 			title={m.forgot_password_title()}
 			subtitle={m.forgot_password_subtitle()}
 			submitLabel={m.send_reset_link()}
-			footer={<Link to="/auth/login">{m.back_to_sign_in()}</Link>}
+			footer={<AppLink to="/auth/login">{m.back_to_sign_in()}</AppLink>}
 		>
 			<form.Field name="email">
 				{(field) => (

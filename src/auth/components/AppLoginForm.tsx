@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
+import { AppLink } from "#/shared/components/AppLink";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useLoginForm } from "../hooks/use-login-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
@@ -17,8 +17,10 @@ export const AppLoginForm = () => {
 			submitLabel={m.sign_in()}
 			footer={
 				<>
-					<Link to="/auth/forgot-password">{m.forgot_password_link()}</Link>
-					<Link to="/auth/register">{m.dont_have_account()}</Link>
+					<AppLink to="/auth/forgot-password">
+						{m.forgot_password_link()}
+					</AppLink>
+					<AppLink to="/auth/register">{m.dont_have_account()}</AppLink>
 				</>
 			}
 		>

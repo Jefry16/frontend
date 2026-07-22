@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
+import { AppLink } from "#/shared/components/AppLink";
 import type { VerifyState } from "../verify-token";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
 
@@ -23,7 +23,7 @@ export const AppVerifyAccount = ({ state }: { state: VerifyState }) => {
 				title={m.email_verified_title()}
 				description={m.email_verified_description()}
 			>
-				<Link to="/auth/login">{m.go_to_sign_in()}</Link>
+				<AppLink to="/auth/login">{m.go_to_sign_in()}</AppLink>
 			</AppAuthMessageCard>
 		);
 	}
@@ -38,7 +38,7 @@ export const AppVerifyAccount = ({ state }: { state: VerifyState }) => {
 					: m.verification_failed_description()
 			}
 		>
-			<Link to="/auth/login">{m.go_to_sign_in()}</Link>
+			<AppLink to="/auth/login">{m.go_to_sign_in()}</AppLink>
 		</AppAuthMessageCard>
 	);
 };

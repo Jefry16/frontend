@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
+import { AppLink } from "#/shared/components/AppLink";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useRegisterForm } from "../hooks/use-register-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
@@ -15,7 +15,7 @@ export const AppRegisterForm = () => {
 			title={m.create_your_account()}
 			subtitle={m.sign_up_to_get_started()}
 			submitLabel={m.register()}
-			footer={<Link to="/auth/login">{m.already_have_account()}</Link>}
+			footer={<AppLink to="/auth/login">{m.already_have_account()}</AppLink>}
 		>
 			<form.Field name="name">
 				{(field) => (

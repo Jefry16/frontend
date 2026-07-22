@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useAuth } from "#/auth";
 import { Button } from "#/components/ui/button";
 import {
@@ -8,6 +8,7 @@ import {
 } from "#/components/ui/sidebar";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
+import { AppLink } from "#/shared/components/AppLink";
 import {
 	AppTourOperatorSidebar,
 	useCurrentTourOperator,
@@ -46,7 +47,7 @@ function TourOperatorLayout() {
 					</p>
 				</div>
 				<Button asChild variant="outline">
-					<Link to="/">{m.back_home()}</Link>
+					<AppLink to="/">{m.back_home()}</AppLink>
 				</Button>
 			</div>
 		);

@@ -1,4 +1,4 @@
-import { Link, useMatchRoute, useNavigate } from "@tanstack/react-router";
+import { useMatchRoute, useNavigate } from "@tanstack/react-router";
 import { ChevronsUpDown, LogOut, Moon, Sun } from "lucide-react";
 import { useAuth } from "#/auth";
 import { Avatar, AvatarFallback } from "#/components/ui/avatar";
@@ -21,6 +21,7 @@ import {
 	SidebarRail,
 } from "#/components/ui/sidebar";
 import * as m from "#/paraglide/messages";
+import { AppLink } from "#/shared/components/AppLink";
 import { useTheme } from "#/shared/theme";
 import { useCurrentTourOperator } from "../hooks/use-current-tour-operator";
 import { tourOperatorNavItems } from "../nav-items";
@@ -59,10 +60,10 @@ export const AppTourOperatorSidebar = () => {
 										isActive={isActive}
 										tooltip={item.label}
 									>
-										<Link {...item.link}>
+										<AppLink {...item.link}>
 											<item.icon />
 											<span>{item.label}</span>
-										</Link>
+										</AppLink>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							);
