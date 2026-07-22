@@ -18,6 +18,9 @@ a primitive, **wrap it** in an `App*` component and put the variation there (pro
 `cn(...)` classes, or `cva` variants at the wrapper). If a primitive lacks a capability,
 add it at the `App*` layer — never by mutating `ui/`. (Biome does not lint `components/ui/`
 for this reason — see `biome.json` `includes`; the files stay byte-identical to shadcn.)
+- **`components.json` is the source of truth** for shadcn aliases/style — don't edit it.
+- **Don't move the primitives** out of `components/ui/`. The CLI also owns `lib/utils.ts`
+  (the `cn` helper) and, when present, `hooks/use-mobile.ts` — treat those as CLI-managed too.
 
 **R2 — Componentize: a name and a home for (almost) everything.**
 Prefer a named component over inline or repeated markup. If a JSX block appears more than
@@ -51,6 +54,15 @@ routes/            file-based pages (thin — wiring only, no design decisions)
   pieces. No non-trivial fetching or styling decisions.
 
 **Alias:** import via `#/*` → `src/*` everywhere. (`@/*` is a legacy shadcn-only alias.)
+
+**Import rules:**
+- **Cross-module** and any importer outside a module (`routes/`, `lib/`, `hooks/`) reach a
+  module **only through its barrel** — `#/<module>`, never `#/<module>/components/Foo`.
+- **Intra-module** imports are **relative** (`./`, `../`). The barrel imports the internals,
+  so an internal importing the barrel would be circular — don't.
+- **`shared/` is importable from anywhere** but must not import any module.
+- **No barrels for `shared/components/`** (or its subfolders). `index.ts` barrels are a
+  **module-level** convention only; `shared/` is not a module.
 
 ### Canonical module shape (use only the parts you need)
 
@@ -87,6 +99,17 @@ never hardcode a color.** Use `bg-background`, `text-foreground`, `text-muted-fo
 `bg-primary`, `border`, `bg-destructive`, `--success`/`--warning`/`--info`. No hex, no
 `bg-emerald-500`, no `bg-[#…]` in app code. Compose classes only through `cn(...)`
 (`#/lib/utils`). Swapping the palette later is then a one-file edit.
+
+**More styling rules:**
+- **Monochrome-placeholder palette — "premium through structure, not color."** The palette
+  is deliberately chroma-0 greys + a few semantic accents (`--destructive`, `--success`,
+  `--warning`, `--info`). Don't introduce brand/decorative color; lean on layout, spacing,
+  weight, and hierarchy. Real brand colors drop in later by editing only the token values in
+  `:root`/`.dark` — which stays a one-file change *because* nothing hardcodes a color.
+- **Radius from the derived scale.** `--radius-sm … --radius-4xl` are `calc(--radius × n)`.
+  Use the scale (`rounded-md`, `rounded-lg`, …); don't invent radii.
+- **Spacing from Tailwind's scale — no magic pixel values.** Use `gap-*`/`p-*`/`m-*`
+  (and layout via flex/grid `gap`), not arbitrary `p-[13px]`.
 
 ---
 
@@ -171,3 +194,12 @@ A ratchet enforcing story-per-`App*` is a planned follow-up (the archive shipped
 · `AppSaveBar` · `AppStatusBadge` · `AppEmptyState` · `AppConfirmDialog` · `AppModal` ·
 `AppAlert` · the shared form framework. (These existed in the archive; re-earn each on
 first real use, don't port speculatively.)
+
+> **Deferred conventions — consult the archive when you build the slice.** The detailed
+> shapes for forms (full-width `AppFormWrapper` + typed-input factory + 2-col grid, *never
+> hand-roll `<input>`+`<label>`*), data/cache (hierarchical query-keys, `notFoundAwareRetry`
+> on by-id queries, the create/update/delete/publish invalidation convention,
+> `onError = toast.error(apiErrorMessage(err))`, branch on `code` never `message`),
+> instants/money (operator-timezone formatters, minor-units), and the list/detail page
+> vocabularies live in the archive's `ARCHITECTURE.md` (`/home/jefrycayo/archive-vointika/frontend`).
+> Re-earn them into `shared/` per R2 when the feature that needs them lands.

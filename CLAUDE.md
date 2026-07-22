@@ -15,8 +15,26 @@ UI primitives, the API client, i18n wiring, and the test harness. No feature mod
 >
 > **Component rules + inventory live in [`docs/COMPONENTS.md`](./docs/COMPONENTS.md)** —
 > the layered architecture, R1 (ui/ is vendored shadcn, never hand-edit) / R2
-> (componentize on the 2nd real use), `App*` naming, the forms pattern, and the rule that
-> **every `App*` component ships a `.stories.tsx`** (Storybook is the living inventory).
+> (componentize on the 2nd real use), `App*` naming, styling rules, the forms pattern, and
+> the rule that **every `App*` component ships a `.stories.tsx`** (Storybook is the living inventory).
+
+## Working agreement (read first)
+
+How to work in this repo — these override default behavior.
+
+1. **Never assume — ask when genuinely undetermined.** If a request is ambiguous and the
+   choice changes the outcome, ask before writing code. Proceed on a default only when it's
+   a clear convention here or verifiable in the repo (read it) — and when you do, say which
+   default you used.
+2. **Verify before claiming.** Don't say something works/is done unless you ran it
+   (typecheck, tests, the app) and observed it. If you didn't verify, say so.
+3. **Don't deviate from established patterns.** Follow this file + `docs/COMPONENTS.md` and
+   mirror surrounding code. Don't introduce a new library/abstraction/layout when an
+   existing one fits; if it genuinely doesn't, surface it and ask.
+4. **Stay in scope.** Do what was asked; don't refactor unrelated code or expand scope
+   without checking.
+5. **Report honestly.** If something failed, was skipped, or is uncertain, say so with the
+   evidence.
 
 ## Stack
 
