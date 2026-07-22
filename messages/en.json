@@ -27,9 +27,21 @@
   "passwords_dont_match": "Passwords don't match",
 
   "signed_in_as": "Signed in as",
-  "your_operators": "Your tour operators",
-  "no_operators": "You don't belong to any tour operator yet.",
   "toggle_theme": "Toggle theme",
+
+  "address": "Address",
+  "currency": "Currency",
+  "timezone": "Timezone",
+  "create": "Create",
+  "cancel": "Cancel",
+  "back_home": "Back to home",
+  "select_option": "Select an option",
+  "create_tour_operator": "Create your tour operator",
+  "create_tour_operator_subtitle": "Set up the business you'll manage.",
+  "tour_operator_created": "Tour operator created",
+  "operator_home_placeholder": "Your operator workspace. Dashboard and navigation are coming soon.",
+  "operator_no_access_title": "No access",
+  "operator_no_access_body": "You don't have access to this tour operator, or it doesn't exist.",
 
   "validation_email": "Please enter a valid email address",
   "validation_required": "This field is required",

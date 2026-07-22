@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
+import { AppField } from "#/shared/components/AppField";
 import { useRegisterForm } from "../hooks/use-register-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
-import { AppField } from "./AppField";
 
 export const AppRegisterForm = () => {
 	const { form, isPending, errorMessage } = useRegisterForm();

@@ -14,6 +14,9 @@ import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as appIndexRouteImport } from './routes/(app)/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as appTourOperatorsTourOperatorIdRouteRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/route'
+import { Route as appTourOperatorsNewRouteImport } from './routes/(app)/tour-operators/new'
+import { Route as appTourOperatorsTourOperatorIdIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/index'
 
 const appRouteRoute = appRouteRouteImport.update({
   id: '/(app)',
@@ -39,18 +42,40 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const appTourOperatorsTourOperatorIdRouteRoute =
+  appTourOperatorsTourOperatorIdRouteRouteImport.update({
+    id: '/tour-operators/$tourOperatorId',
+    path: '/tour-operators/$tourOperatorId',
+    getParentRoute: () => appRouteRoute,
+  } as any)
+const appTourOperatorsNewRoute = appTourOperatorsNewRouteImport.update({
+  id: '/tour-operators/new',
+  path: '/tour-operators/new',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appTourOperatorsTourOperatorIdIndexRoute =
+  appTourOperatorsTourOperatorIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof appIndexRoute
+  '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
+  '/tour-operators/new': typeof appTourOperatorsNewRoute
+  '/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof appIndexRoute
+  '/tour-operators/new': typeof appTourOperatorsNewRoute
+  '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,12 +84,28 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/(app)/': typeof appIndexRoute
+  '/(app)/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
+  '/(app)/tour-operators/new': typeof appTourOperatorsNewRoute
+  '/(app)/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/auth' | '/auth/login' | '/auth/register' | '/'
+  fullPaths:
+    | '/auth'
+    | '/auth/login'
+    | '/auth/register'
+    | '/'
+    | '/tour-operators/$tourOperatorId'
+    | '/tour-operators/new'
+    | '/tour-operators/$tourOperatorId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/auth/login' | '/auth/register' | '/'
+  to:
+    | '/auth'
+    | '/auth/login'
+    | '/auth/register'
+    | '/'
+    | '/tour-operators/new'
+    | '/tour-operators/$tourOperatorId'
   id:
     | '__root__'
     | '/(app)'
@@ -72,6 +113,9 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/(app)/'
+    | '/(app)/tour-operators/$tourOperatorId'
+    | '/(app)/tour-operators/new'
+    | '/(app)/tour-operators/$tourOperatorId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -116,15 +160,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/(app)/tour-operators/$tourOperatorId': {
+      id: '/(app)/tour-operators/$tourOperatorId'
+      path: '/tour-operators/$tourOperatorId'
+      fullPath: '/tour-operators/$tourOperatorId'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdRouteRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/tour-operators/new': {
+      id: '/(app)/tour-operators/new'
+      path: '/tour-operators/new'
+      fullPath: '/tour-operators/new'
+      preLoaderRoute: typeof appTourOperatorsNewRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/tour-operators/$tourOperatorId/': {
+      id: '/(app)/tour-operators/$tourOperatorId/'
+      path: '/'
+      fullPath: '/tour-operators/$tourOperatorId/'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdIndexRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
   }
 }
 
+interface appTourOperatorsTourOperatorIdRouteRouteChildren {
+  appTourOperatorsTourOperatorIdIndexRoute: typeof appTourOperatorsTourOperatorIdIndexRoute
+}
+
+const appTourOperatorsTourOperatorIdRouteRouteChildren: appTourOperatorsTourOperatorIdRouteRouteChildren =
+  {
+    appTourOperatorsTourOperatorIdIndexRoute:
+      appTourOperatorsTourOperatorIdIndexRoute,
+  }
+
+const appTourOperatorsTourOperatorIdRouteRouteWithChildren =
+  appTourOperatorsTourOperatorIdRouteRoute._addFileChildren(
+    appTourOperatorsTourOperatorIdRouteRouteChildren,
+  )
+
 interface appRouteRouteChildren {
   appIndexRoute: typeof appIndexRoute
+  appTourOperatorsTourOperatorIdRouteRoute: typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
+  appTourOperatorsNewRoute: typeof appTourOperatorsNewRoute
 }
 
 const appRouteRouteChildren: appRouteRouteChildren = {
   appIndexRoute: appIndexRoute,
+  appTourOperatorsTourOperatorIdRouteRoute:
+    appTourOperatorsTourOperatorIdRouteRouteWithChildren,
+  appTourOperatorsNewRoute: appTourOperatorsNewRoute,
 }
 
 const appRouteRouteWithChildren = appRouteRoute._addFileChildren(

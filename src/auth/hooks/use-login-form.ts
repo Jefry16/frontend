@@ -6,6 +6,7 @@ import { useState } from "react";
 import * as m from "#/paraglide/messages";
 import { useAuth } from "../AuthProvider";
 import type { AuthUser } from "../types";
+import { getPostLoginPath } from "../utils";
 import { type LoginFormData, loginSchema } from "../validators/login";
 
 export const useLoginForm = () => {
@@ -19,11 +20,9 @@ export const useLoginForm = () => {
 		LoginFormData
 	>({
 		mutationFn: ({ email, password }) => login(email, password),
-		onSuccess: () => {
+		onSuccess: (user) => {
 			setErrorMessage(null);
-			// The post-login landing lives at "/" (the app shell resolves it);
-			// operator-aware routing follows when the tour-operator feature lands.
-			navigate({ to: "/" });
+			navigate({ to: getPostLoginPath(user) });
 		},
 		onError: (error) => {
 			if (error.response?.status === 401) {

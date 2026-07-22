@@ -16,9 +16,8 @@ interface AppFieldProps {
 }
 
 // The form-field renderer: a shadcn Field wrapping an Input bound to a TanStack
-// Form field, with the field's validation errors below. Lives in the auth
-// module for now (its only consumers) — promote to shared/ when a second
-// feature builds a form (R2: extract on the second real use).
+// Form field, with the field's validation errors below. Shared across features
+// (auth + tour-operator forms). The paired select renderer is AppSelectField.
 export const AppField = ({
 	field,
 	label,

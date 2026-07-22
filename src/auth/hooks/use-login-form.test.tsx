@@ -60,7 +60,9 @@ describe("useLoginForm", () => {
 
 		await submit("user@example.com", "Password1!", result.current.form);
 
-		await waitFor(() => expect(navigateMock).toHaveBeenCalledWith({ to: "/" }));
+		await waitFor(() =>
+			expect(navigateMock).toHaveBeenCalledWith({ to: "/tour-operators/new" }),
+		);
 		expect(result.current.errorMessage).toBeNull();
 	});
 

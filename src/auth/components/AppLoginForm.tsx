@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
+import { AppField } from "#/shared/components/AppField";
 import { useLoginForm } from "../hooks/use-login-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
-import { AppField } from "./AppField";
 
 export const AppLoginForm = () => {
 	const { form, isPending, errorMessage } = useLoginForm();

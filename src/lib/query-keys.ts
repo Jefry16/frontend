@@ -3,4 +3,6 @@
 // and collisions are visible in one place.
 export const queryKeys = {
 	authProfile: ["auth", "profile"] as const,
+	timezones: ["timezones"] as const,
+	currencies: ["currencies"] as const,
 };

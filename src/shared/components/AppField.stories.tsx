@@ -20,7 +20,7 @@ function FieldDemo(props: {
 }
 
 const meta = {
-	title: "Auth/AppField",
+	title: "Shared/AppField",
 	component: FieldDemo,
 } satisfies Meta<typeof FieldDemo>;
 
