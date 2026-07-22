@@ -52,11 +52,6 @@
   "operator_no_access_body": "You don't have access to this tour operator, or it doesn't exist.",
 
   "dashboard": "Dashboard",
-  "dashboard_subtitle": "Welcome back to {name}.",
-  "coming_soon": "Coming soon",
-  "bookings": "Bookings",
-  "experiences": "Experiences",
-  "orders": "Orders",
   "switch_tour_operator": "Switch tour operator",
   "tour_operators": "Tour operators",
   "new_tour_operator": "New tour operator",

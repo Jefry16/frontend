@@ -1,7 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useAuth } from "#/auth";
 import { Button } from "#/components/ui/button";
-import { Separator } from "#/components/ui/separator";
 import {
 	SidebarInset,
 	SidebarProvider,
@@ -18,7 +17,9 @@ export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({
 	component: TourOperatorLayout,
 });
 
-// The operator workspace shell: sidebar + a top bar + the routed content.
+// The operator workspace shell: sidebar + the routed content. No desktop top
+// bar (the sidebar is always visible; toggle via its rail or Ctrl/Cmd+B) — only
+// a mobile strip holding the SidebarTrigger to open the sidebar sheet.
 // Guards membership — the operator must be one the signed-in user belongs to
 // (its summary rides the profile); non-members get a "no access" fallback.
 function TourOperatorLayout() {
@@ -55,14 +56,10 @@ function TourOperatorLayout() {
 		<SidebarProvider>
 			<AppTourOperatorSidebar />
 			<SidebarInset>
-				<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+				<header className="flex h-14 shrink-0 items-center border-b px-4 md:hidden">
 					<SidebarTrigger className="-ml-1" />
-					<Separator orientation="vertical" className="mr-1 h-4" />
-					<span className="font-medium">{operator.name}</span>
 				</header>
-				<div className="flex-1">
-					<Outlet />
-				</div>
+				<Outlet />
 			</SidebarInset>
 		</SidebarProvider>
 	);

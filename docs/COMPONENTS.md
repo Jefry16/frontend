@@ -218,6 +218,8 @@ slice adds an operator page, it also:
 Deferred shell subsystems, each re-earned from the archive's `tour-operator/` with its
 feature: grouped/collapsible nav · `usePermissions` role-gating (hide-don't-disable) · the
 ⌘K command palette · the second "settings space" sidebar + `settings-sections` catalog + hub
-· footer `AppLanguagePicker` (needs the ui-languages feature) · per-page `AppPageHeader` +
-`AppBreadcrumb`. We deliberately **keep** an always-on top bar (operator name) and a footer
-**sign-out** — both better UX than the archive shell, which has neither.
+· footer `AppLanguagePicker` (needs the ui-languages feature) · per-page `AppBreadcrumb`
+(joins `AppPageHeader` on the first nested page). Like the archive, there is **no desktop top
+bar** — the sidebar is always visible (toggle via its rail or Ctrl/Cmd+B); a mobile-only strip
+holds the `SidebarTrigger`. We do keep a footer **sign-out** (the archive shell never surfaces
+it). Pages open with `AppPageHeader` and use the `mx-auto w-full max-w-*` centered container.
