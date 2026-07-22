@@ -6,6 +6,7 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import * as m from "#/paraglide/messages";
+import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { useCurrentTourOperator } from "#/tour-operator";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId/")({
@@ -19,14 +20,10 @@ function TourOperatorDashboard() {
 
 	return (
 		<div className="mx-auto flex max-w-5xl flex-col gap-6 p-6">
-			<div className="space-y-1">
-				<h1 className="text-2xl font-semibold tracking-tight">
-					{m.dashboard()}
-				</h1>
-				<p className="text-sm text-muted-foreground">
-					{m.dashboard_subtitle({ name: operator?.name ?? "" })}
-				</p>
-			</div>
+			<AppPageHeader
+				title={m.dashboard()}
+				description={m.dashboard_subtitle({ name: operator?.name ?? "" })}
+			/>
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				{[m.bookings(), m.experiences(), m.orders()].map((label) => (
 					<Card key={label}>
