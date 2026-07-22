@@ -14,6 +14,7 @@ import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as appIndexRouteImport } from './routes/(app)/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as AuthVerifyRouteImport } from './routes/auth/verify'
 import { Route as appTourOperatorsTourOperatorIdRouteRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/route'
 import { Route as appTourOperatorsNewRouteImport } from './routes/(app)/tour-operators/new'
 import { Route as appTourOperatorsTourOperatorIdIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/index'
@@ -42,6 +43,11 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthVerifyRoute = AuthVerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const appTourOperatorsTourOperatorIdRouteRoute =
   appTourOperatorsTourOperatorIdRouteRouteImport.update({
     id: '/tour-operators/$tourOperatorId',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/verify': typeof AuthVerifyRoute
   '/': typeof appIndexRoute
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
   '/tour-operators/new': typeof appTourOperatorsNewRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/verify': typeof AuthVerifyRoute
   '/': typeof appIndexRoute
   '/tour-operators/new': typeof appTourOperatorsNewRoute
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdIndexRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/verify': typeof AuthVerifyRoute
   '/(app)/': typeof appIndexRoute
   '/(app)/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
   '/(app)/tour-operators/new': typeof appTourOperatorsNewRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/verify'
     | '/'
     | '/tour-operators/$tourOperatorId'
     | '/tour-operators/new'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/verify'
     | '/'
     | '/tour-operators/new'
     | '/tour-operators/$tourOperatorId'
@@ -112,6 +123,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/verify'
     | '/(app)/'
     | '/(app)/tour-operators/$tourOperatorId'
     | '/(app)/tour-operators/new'
@@ -158,6 +170,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/auth/register'
       preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/verify': {
+      id: '/auth/verify'
+      path: '/verify'
+      fullPath: '/auth/verify'
+      preLoaderRoute: typeof AuthVerifyRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/(app)/tour-operators/$tourOperatorId': {
@@ -219,11 +238,13 @@ const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
 interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthVerifyRoute: typeof AuthVerifyRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  AuthVerifyRoute: AuthVerifyRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
