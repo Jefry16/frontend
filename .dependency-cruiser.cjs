@@ -15,7 +15,7 @@
  * is built (auth first). While the list is empty, the module-scoped rules match nothing.
  */
 
-const MODULES = ["auth", "reference", "tour-operator"];
+const MODULES = ["auth", "reference", "tour-operator", "team"];
 // A never-matching group while MODULES is empty, so the module-scoped rules below
 // are inert until the first feature module is added.
 const MODULE_GROUP = MODULES.length ? `(${MODULES.join("|")})` : "(?!x)x";

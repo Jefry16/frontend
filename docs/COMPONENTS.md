@@ -111,6 +111,14 @@ never hardcode a color.** Use `bg-background`, `text-foreground`, `text-muted-fo
 - **Spacing from Tailwind's scale — no magic pixel values.** Use `gap-*`/`p-*`/`m-*`
   (and layout via flex/grid `gap`), not arbitrary `p-[13px]`.
 
+**Page width — two conventions.** A page container is one of:
+  - **Table / list page** (an `AppDataTable`): **full width** — `flex flex-col gap-6 p-6`,
+    no `mx-auto`/`max-w-*`. A table wants the room.
+  - **Single-resource page** (detail, form, settings sub-page): **centered and narrow** —
+    `mx-auto flex w-full max-w-3xl flex-col gap-8 p-6` (a wide form may use `max-w-4xl`).
+  Pick by what the page holds, not where it lives (a table in the settings space is still
+  a table page).
+
 ---
 
 ## 5. Forms (the current pattern)
