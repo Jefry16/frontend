@@ -203,3 +203,21 @@ first real use, don't port speculatively.)
 > instants/money (operator-timezone formatters, minor-units), and the list/detail page
 > vocabularies live in the archive's `ARCHITECTURE.md` (`/home/jefrycayo/archive-vointika/frontend`).
 > Re-earn them into `shared/` per R2 when the feature that needs them lands.
+
+### The operator app shell grows with features
+
+The operator shell (`tour-operator/components/AppTourOperatorSidebar.tsx` + the
+`$tourOperatorId` layout route) is intentionally minimal and **converges to the archive as
+features land** — don't build shell chrome ahead of the pages it points at. When a feature
+slice adds an operator page, it also:
+
+1. adds its **nav leaf** to `tour-operator/nav-items.ts` (icon + `to`/`params`);
+2. later adds its **settings section** (when the settings space exists) and its **⌘K
+   command-palette destination** (when the palette exists).
+
+Deferred shell subsystems, each re-earned from the archive's `tour-operator/` with its
+feature: grouped/collapsible nav · `usePermissions` role-gating (hide-don't-disable) · the
+⌘K command palette · the second "settings space" sidebar + `settings-sections` catalog + hub
+· footer `AppLanguagePicker` (needs the ui-languages feature) · per-page `AppPageHeader` +
+`AppBreadcrumb`. We deliberately **keep** an always-on top bar (operator name) and a footer
+**sign-out** — both better UX than the archive shell, which has neither.

@@ -21,12 +21,21 @@
   "name": "Name",
   "confirm_password": "Confirm password",
   "password_requirements": "At least 8 characters, including an uppercase letter, a lowercase letter, and a number.",
+  "show_password": "Show password",
+  "hide_password": "Hide password",
 
   "invalid_credentials": "Invalid email or password",
   "email_not_verified": "Your email is not verified. Please check your inbox.",
   "passwords_dont_match": "Passwords don't match",
 
-  "signed_in_as": "Signed in as",
+  "verifying_email": "Verifying your email…",
+  "email_verified_title": "Email verified",
+  "email_verified_description": "Your email is confirmed. You can now sign in.",
+  "go_to_sign_in": "Go to sign in",
+  "verification_failed_title": "Verification failed",
+  "verification_failed_description": "This verification link is invalid or has expired.",
+  "verification_missing_token": "This verification link is missing its token.",
+
   "toggle_theme": "Toggle theme",
 
   "address": "Address",
@@ -39,9 +48,18 @@
   "create_tour_operator": "Create your tour operator",
   "create_tour_operator_subtitle": "Set up the business you'll manage.",
   "tour_operator_created": "Tour operator created",
-  "operator_home_placeholder": "Your operator workspace. Dashboard and navigation are coming soon.",
   "operator_no_access_title": "No access",
   "operator_no_access_body": "You don't have access to this tour operator, or it doesn't exist.",
+
+  "dashboard": "Dashboard",
+  "dashboard_subtitle": "Welcome back to {name}.",
+  "coming_soon": "Coming soon",
+  "bookings": "Bookings",
+  "experiences": "Experiences",
+  "orders": "Orders",
+  "switch_tour_operator": "Switch tour operator",
+  "tour_operators": "Tour operators",
+  "new_tour_operator": "New tour operator",
 
   "validation_email": "Please enter a valid email address",
   "validation_required": "This field is required",

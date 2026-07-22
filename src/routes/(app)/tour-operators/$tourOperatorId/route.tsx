@@ -1,18 +1,26 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useAuth } from "#/auth";
 import { Button } from "#/components/ui/button";
+import { Separator } from "#/components/ui/separator";
+import {
+	SidebarInset,
+	SidebarProvider,
+	SidebarTrigger,
+} from "#/components/ui/sidebar";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
-import { useCurrentTourOperator } from "#/tour-operator";
+import {
+	AppTourOperatorSidebar,
+	useCurrentTourOperator,
+} from "#/tour-operator";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({
 	component: TourOperatorLayout,
 });
 
-// The operator shell: everything nested under an operator renders here. Guards
-// membership — the operator must be one the signed-in user belongs to (its
-// summary rides the profile). Non-members get a "no access" fallback rather
-// than a broken page. (Nav/sidebar chrome lands in a later slice.)
+// The operator workspace shell: sidebar + a top bar + the routed content.
+// Guards membership — the operator must be one the signed-in user belongs to
+// (its summary rides the profile); non-members get a "no access" fallback.
 function TourOperatorLayout() {
 	const { isLoading } = useAuth();
 	const operator = useCurrentTourOperator();
@@ -43,5 +51,19 @@ function TourOperatorLayout() {
 		);
 	}
 
-	return <Outlet />;
+	return (
+		<SidebarProvider>
+			<AppTourOperatorSidebar />
+			<SidebarInset>
+				<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+					<SidebarTrigger className="-ml-1" />
+					<Separator orientation="vertical" className="mr-1 h-4" />
+					<span className="font-medium">{operator.name}</span>
+				</header>
+				<div className="flex-1">
+					<Outlet />
+				</div>
+			</SidebarInset>
+		</SidebarProvider>
+	);
 }

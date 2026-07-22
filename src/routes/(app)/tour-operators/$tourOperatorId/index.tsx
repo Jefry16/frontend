@@ -1,70 +1,42 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { MoonIcon, SunIcon } from "lucide-react";
-import { useAuth } from "#/auth";
-import { Badge } from "#/components/ui/badge";
-import { Button } from "#/components/ui/button";
+import { createFileRoute } from "@tanstack/react-router";
 import {
 	Card,
-	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-import { Separator } from "#/components/ui/separator";
 import * as m from "#/paraglide/messages";
-import { useTheme } from "#/shared/theme";
 import { useCurrentTourOperator } from "#/tour-operator";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId/")({
-	component: TourOperatorHome,
+	component: TourOperatorDashboard,
 });
 
-// The operator home — the post-login landing. Placeholder until the dashboard +
-// nav slices land; confirms the operator context resolves and hosts theme + sign
-// out for now.
-function TourOperatorHome() {
+// The operator dashboard — the post-login landing, rendered inside the shell.
+// Placeholder cards until the real metrics/loops land with their feature slices.
+function TourOperatorDashboard() {
 	const operator = useCurrentTourOperator();
-	const { user, logout } = useAuth();
-	const { theme, toggle } = useTheme();
-	const navigate = useNavigate();
-
-	const signOut = async () => {
-		await logout();
-		navigate({ to: "/auth/login" });
-	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center p-6">
-			<Card className="w-full max-w-md">
-				<CardHeader>
-					<CardTitle className="flex items-center justify-between gap-2">
-						<span>{operator?.name}</span>
-						{operator && <Badge variant="secondary">{operator.role}</Badge>}
-					</CardTitle>
-					<CardDescription>
-						{m.signed_in_as()} <strong>{user?.name}</strong>
-					</CardDescription>
-				</CardHeader>
-				<CardContent className="space-y-4">
-					<p className="text-sm text-muted-foreground">
-						{m.operator_home_placeholder()}
-					</p>
-					<Separator />
-					<div className="flex items-center justify-between">
-						<Button variant="outline" onClick={toggle}>
-							{theme === "dark" ? (
-								<SunIcon className="size-4" />
-							) : (
-								<MoonIcon className="size-4" />
-							)}
-							{m.toggle_theme()}
-						</Button>
-						<Button variant="ghost" onClick={signOut}>
-							{m.sign_out()}
-						</Button>
-					</div>
-				</CardContent>
-			</Card>
+		<div className="mx-auto flex max-w-5xl flex-col gap-6 p-6">
+			<div className="space-y-1">
+				<h1 className="text-2xl font-semibold tracking-tight">
+					{m.dashboard()}
+				</h1>
+				<p className="text-sm text-muted-foreground">
+					{m.dashboard_subtitle({ name: operator?.name ?? "" })}
+				</p>
+			</div>
+			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				{[m.bookings(), m.experiences(), m.orders()].map((label) => (
+					<Card key={label}>
+						<CardHeader>
+							<CardTitle className="text-base">{label}</CardTitle>
+							<CardDescription>{m.coming_soon()}</CardDescription>
+						</CardHeader>
+					</Card>
+				))}
+			</div>
 		</div>
 	);
 }
