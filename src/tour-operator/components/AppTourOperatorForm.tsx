@@ -28,6 +28,7 @@ export const AppTourOperatorForm = () => {
 	return (
 		<div className="w-full max-w-lg">
 			<div className="mb-6 flex flex-col items-center gap-1 text-center">
+				<img src="/vointika-logo.svg" alt="Vointika" className="mb-2 h-28" />
 				<h1 className="text-xl font-semibold tracking-tight">
 					{m.create_tour_operator()}
 				</h1>
@@ -82,7 +83,14 @@ export const AppTourOperatorForm = () => {
 									>
 										{timezones.map((t) => (
 											<SelectItem key={t.id} value={t.id}>
-												{t.cityName}, {t.country.name}
+												<img
+													src={t.country.flagUrl}
+													alt=""
+													className="h-3.5 w-5 shrink-0 rounded-xs object-cover"
+												/>
+												<span>
+													{t.cityName}, {t.country.name}
+												</span>
 											</SelectItem>
 										))}
 									</AppSelectField>

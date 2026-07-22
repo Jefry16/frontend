@@ -9,6 +9,7 @@ import {
 import {
 	Select,
 	SelectContent,
+	SelectGroup,
 	SelectTrigger,
 	SelectValue,
 } from "#/components/ui/select";
@@ -48,7 +49,11 @@ export const AppSelectField = ({
 				>
 					<SelectValue placeholder={placeholder} />
 				</SelectTrigger>
-				<SelectContent>{children}</SelectContent>
+				<SelectContent>
+					{/* SelectGroup carries the item padding (p-1) — without it the
+					    items sit flush against the popover edges (shadcn docs pattern). */}
+					<SelectGroup>{children}</SelectGroup>
+				</SelectContent>
 			</Select>
 			{description && <FieldDescription>{description}</FieldDescription>}
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}

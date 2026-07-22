@@ -144,4 +144,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Tailwind v4's preflight drops the browser's default pointer cursor on
+     buttons. Restore it for every enabled button (form actions incl. submit,
+     icon buttons, menu triggers) — disabled ones keep the default. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
+import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useRegisterForm } from "../hooks/use-register-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
 
@@ -33,10 +34,9 @@ export const AppRegisterForm = () => {
 			</form.Field>
 			<form.Field name="password">
 				{(field) => (
-					<AppField
+					<AppPasswordField
 						field={field}
 						label={m.password()}
-						type="password"
 						description={m.password_requirements()}
 						autoComplete="new-password"
 					/>
@@ -44,10 +44,9 @@ export const AppRegisterForm = () => {
 			</form.Field>
 			<form.Field name="confirmPassword">
 				{(field) => (
-					<AppField
+					<AppPasswordField
 						field={field}
 						label={m.confirm_password()}
-						type="password"
 						autoComplete="new-password"
 					/>
 				)}
