@@ -1,11 +1,10 @@
-import { CircleAlert } from "lucide-react";
 import type { ReactNode } from "react";
-import { Alert, AlertDescription, AlertTitle } from "#/components/ui/alert";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
+import { AppAlert } from "#/shared/components/AppAlert";
 
 interface AppAuthFormWrapperProps {
 	children: ReactNode;
@@ -51,11 +50,7 @@ export const AppAuthFormWrapper = ({
 						className="space-y-4"
 					>
 						{errorMessage && (
-							<Alert className="text-destructive *:data-[slot=alert-description]:text-destructive/90">
-								<CircleAlert />
-								<AlertTitle>{m.error()}</AlertTitle>
-								<AlertDescription>{errorMessage}</AlertDescription>
-							</Alert>
+							<AppAlert title={m.error()} description={errorMessage} />
 						)}
 						<FieldGroup>{children}</FieldGroup>
 						<Button type="submit" disabled={isSubmitting} className="w-full">

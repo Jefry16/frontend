@@ -1,7 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { CircleAlert } from "lucide-react";
 import { getPostLoginPath, useAuth } from "#/auth";
-import { Alert, AlertDescription, AlertTitle } from "#/components/ui/alert";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
@@ -9,6 +7,7 @@ import { SelectItem } from "#/components/ui/select";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { useCurrencies, useTimezones } from "#/reference";
+import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useTourOperatorForm } from "../hooks/use-tour-operator-form";
@@ -20,10 +19,19 @@ export const AppTourOperatorForm = () => {
 	const { form, isPending, errorMessage } = useTourOperatorForm();
 	const { data: currencies = [] } = useCurrencies();
 	const { data: timezones = [] } = useTimezones();
-	const { user } = useAuth();
+	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
+	const signOut = async () => {
+		await logout();
+		navigate({ to: "/auth/login" });
+	};
+
 	const existingUser = user && user.tourOperators.length > 0 ? user : undefined;
+	// Onboarding = a user with no operators yet. Only they see the "wait for an
+	// invitation" hint: staff who registered expecting to join someone else's
+	// operator shouldn't create their own — they'll be invited by email.
+	const isOnboarding = !!user && user.tourOperators.length === 0;
 
 	return (
 		<div className="w-full max-w-lg">
@@ -46,11 +54,7 @@ export const AppTourOperatorForm = () => {
 						className="space-y-4"
 					>
 						{errorMessage && (
-							<Alert className="text-destructive *:data-[slot=alert-description]:text-destructive/90">
-								<CircleAlert />
-								<AlertTitle>{m.error()}</AlertTitle>
-								<AlertDescription>{errorMessage}</AlertDescription>
-							</Alert>
+							<AppAlert title={m.error()} description={errorMessage} />
 						)}
 						<FieldGroup>
 							<form.Field name="name">
@@ -115,6 +119,23 @@ export const AppTourOperatorForm = () => {
 					)}
 				</CardContent>
 			</Card>
+			{isOnboarding && (
+				<>
+					<AppAlert
+						variant="info"
+						className="mt-4"
+						title={m.join_existing_team_title()}
+						description={m.join_existing_team_body()}
+					/>
+					{/* The onboarding user has no shell (and no operator to go back
+					    to), so this is their only exit off the create page. */}
+					<div className="mt-4 flex justify-center">
+						<Button type="button" variant="ghost" onClick={signOut}>
+							{m.sign_out()}
+						</Button>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };

@@ -190,10 +190,10 @@ A ratchet enforcing story-per-`App*` is a planned follow-up (the archive shipped
 
 ### Not yet built — build to the shape above when a feature needs them
 
-`AppPageHeader` · `AppBreadcrumb` · `AppDataTable` (+ `useDataTable`) · `AppResourceDetail`
-· `AppSaveBar` · `AppStatusBadge` · `AppEmptyState` · `AppConfirmDialog` · `AppModal` ·
-`AppAlert` · the shared form framework. (These existed in the archive; re-earn each on
-first real use, don't port speculatively.)
+`AppBreadcrumb` · `AppDataTable` (+ `useDataTable`) · `AppResourceDetail` · `AppSaveBar` ·
+`AppStatusBadge` · `AppEmptyState` · `AppConfirmDialog` · `AppModal` · the shared form
+framework. (These existed in the archive; re-earn each on first real use, don't port
+speculatively.)
 
 > **Deferred conventions — consult the archive when you build the slice.** The detailed
 > shapes for forms (full-width `AppFormWrapper` + typed-input factory + 2-col grid, *never
