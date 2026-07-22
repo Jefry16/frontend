@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { useAuth } from "#/auth";
 import { Button } from "#/components/ui/button";
 import {
@@ -10,6 +10,7 @@ import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppLink } from "#/shared/components/AppLink";
 import {
+	AppSettingsSidebar,
 	AppTourOperatorSidebar,
 	useCurrentTourOperator,
 } from "#/tour-operator";
@@ -26,6 +27,16 @@ export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({
 function TourOperatorLayout() {
 	const { isLoading } = useAuth();
 	const operator = useCurrentTourOperator();
+	const matchRoute = useMatchRoute();
+	// Settings is its own space (Shopify's model): everything under /settings
+	// swaps the operator sidebar for the settings rail.
+	const inSettings = !!matchRoute({
+		to: "/tour-operators/$tourOperatorId/settings",
+		fuzzy: true,
+	});
+	const OperatorSidebar = inSettings
+		? AppSettingsSidebar
+		: AppTourOperatorSidebar;
 
 	if (isLoading) {
 		return (
@@ -55,7 +66,7 @@ function TourOperatorLayout() {
 
 	return (
 		<SidebarProvider>
-			<AppTourOperatorSidebar />
+			<OperatorSidebar />
 			<SidebarInset>
 				<header className="flex h-14 shrink-0 items-center border-b px-4 md:hidden">
 					<SidebarTrigger className="-ml-1" />

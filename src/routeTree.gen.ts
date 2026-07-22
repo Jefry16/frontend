@@ -20,6 +20,8 @@ import { Route as AuthVerifyRouteImport } from './routes/auth/verify'
 import { Route as appTourOperatorsTourOperatorIdRouteRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/route'
 import { Route as appTourOperatorsNewRouteImport } from './routes/(app)/tour-operators/new'
 import { Route as appTourOperatorsTourOperatorIdIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/index'
+import { Route as appTourOperatorsTourOperatorIdSettingsIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/index'
+import { Route as appTourOperatorsTourOperatorIdSettingsMembersRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/members'
 
 const appRouteRoute = appRouteRouteImport.update({
   id: '/(app)',
@@ -77,6 +79,18 @@ const appTourOperatorsTourOperatorIdIndexRoute =
     path: '/',
     getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
   } as any)
+const appTourOperatorsTourOperatorIdSettingsIndexRoute =
+  appTourOperatorsTourOperatorIdSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
+const appTourOperatorsTourOperatorIdSettingsMembersRoute =
+  appTourOperatorsTourOperatorIdSettingsMembersRouteImport.update({
+    id: '/settings/members',
+    path: '/settings/members',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
@@ -89,6 +103,8 @@ export interface FileRoutesByFullPath {
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
   '/tour-operators/new': typeof appTourOperatorsNewRoute
   '/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
+  '/tour-operators/$tourOperatorId/settings/members': typeof appTourOperatorsTourOperatorIdSettingsMembersRoute
+  '/tour-operators/$tourOperatorId/settings/': typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
@@ -100,6 +116,8 @@ export interface FileRoutesByTo {
   '/': typeof appIndexRoute
   '/tour-operators/new': typeof appTourOperatorsNewRoute
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdIndexRoute
+  '/tour-operators/$tourOperatorId/settings/members': typeof appTourOperatorsTourOperatorIdSettingsMembersRoute
+  '/tour-operators/$tourOperatorId/settings': typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -114,6 +132,8 @@ export interface FileRoutesById {
   '/(app)/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
   '/(app)/tour-operators/new': typeof appTourOperatorsNewRoute
   '/(app)/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
+  '/(app)/tour-operators/$tourOperatorId/settings/members': typeof appTourOperatorsTourOperatorIdSettingsMembersRoute
+  '/(app)/tour-operators/$tourOperatorId/settings/': typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -128,6 +148,8 @@ export interface FileRouteTypes {
     | '/tour-operators/$tourOperatorId'
     | '/tour-operators/new'
     | '/tour-operators/$tourOperatorId/'
+    | '/tour-operators/$tourOperatorId/settings/members'
+    | '/tour-operators/$tourOperatorId/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -139,6 +161,8 @@ export interface FileRouteTypes {
     | '/'
     | '/tour-operators/new'
     | '/tour-operators/$tourOperatorId'
+    | '/tour-operators/$tourOperatorId/settings/members'
+    | '/tour-operators/$tourOperatorId/settings'
   id:
     | '__root__'
     | '/(app)'
@@ -152,6 +176,8 @@ export interface FileRouteTypes {
     | '/(app)/tour-operators/$tourOperatorId'
     | '/(app)/tour-operators/new'
     | '/(app)/tour-operators/$tourOperatorId/'
+    | '/(app)/tour-operators/$tourOperatorId/settings/members'
+    | '/(app)/tour-operators/$tourOperatorId/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -238,17 +264,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appTourOperatorsTourOperatorIdIndexRouteImport
       parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
     }
+    '/(app)/tour-operators/$tourOperatorId/settings/': {
+      id: '/(app)/tour-operators/$tourOperatorId/settings/'
+      path: '/settings'
+      fullPath: '/tour-operators/$tourOperatorId/settings/'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdSettingsIndexRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
+    '/(app)/tour-operators/$tourOperatorId/settings/members': {
+      id: '/(app)/tour-operators/$tourOperatorId/settings/members'
+      path: '/settings/members'
+      fullPath: '/tour-operators/$tourOperatorId/settings/members'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdSettingsMembersRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
   }
 }
 
 interface appTourOperatorsTourOperatorIdRouteRouteChildren {
   appTourOperatorsTourOperatorIdIndexRoute: typeof appTourOperatorsTourOperatorIdIndexRoute
+  appTourOperatorsTourOperatorIdSettingsMembersRoute: typeof appTourOperatorsTourOperatorIdSettingsMembersRoute
+  appTourOperatorsTourOperatorIdSettingsIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
 }
 
 const appTourOperatorsTourOperatorIdRouteRouteChildren: appTourOperatorsTourOperatorIdRouteRouteChildren =
   {
     appTourOperatorsTourOperatorIdIndexRoute:
       appTourOperatorsTourOperatorIdIndexRoute,
+    appTourOperatorsTourOperatorIdSettingsMembersRoute:
+      appTourOperatorsTourOperatorIdSettingsMembersRoute,
+    appTourOperatorsTourOperatorIdSettingsIndexRoute:
+      appTourOperatorsTourOperatorIdSettingsIndexRoute,
   }
 
 const appTourOperatorsTourOperatorIdRouteRouteWithChildren =

@@ -221,5 +221,6 @@ feature: grouped/collapsible nav · `usePermissions` role-gating (hide-don't-dis
 · footer `AppLanguagePicker` (needs the ui-languages feature) · per-page `AppBreadcrumb`
 (joins `AppPageHeader` on the first nested page). Like the archive, there is **no desktop top
 bar** — the sidebar is always visible (toggle via its rail or Ctrl/Cmd+B); a mobile-only strip
-holds the `SidebarTrigger`. We do keep a footer **sign-out** (the archive shell never surfaces
-it). Pages open with `AppPageHeader` and use the `mx-auto w-full max-w-*` centered container.
+holds the `SidebarTrigger`. The footer user-menu (sign-out + theme toggle) has been **removed**;
+those actions are unhoused pending their real home (an account menu / settings). Pages open with
+`AppPageHeader` and use the `mx-auto w-full max-w-*` centered container.

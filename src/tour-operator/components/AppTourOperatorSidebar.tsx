@@ -1,14 +1,3 @@
-import { useMatchRoute, useNavigate } from "@tanstack/react-router";
-import { ChevronsUpDown, LogOut, Moon, Sun } from "lucide-react";
-import { useAuth } from "#/auth";
-import { Avatar, AvatarFallback } from "#/components/ui/avatar";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "#/components/ui/dropdown-menu";
 import {
 	Sidebar,
 	SidebarContent,
@@ -16,23 +5,19 @@ import {
 	SidebarGroup,
 	SidebarHeader,
 	SidebarMenu,
-	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarRail,
 } from "#/components/ui/sidebar";
-import * as m from "#/paraglide/messages";
-import { AppLink } from "#/shared/components/AppLink";
-import { useTheme } from "#/shared/theme";
 import { useCurrentTourOperator } from "../hooks/use-current-tour-operator";
-import { tourOperatorNavItems } from "../nav-items";
+import { settingsNavItem, tourOperatorNavItems } from "../nav-items";
 import { AppTourOperatorSwitcher } from "./AppTourOperatorSwitcher";
+import { SidebarNavLeaf } from "./SidebarNavLeaf";
 
 // The operator workspace sidebar: switcher (header), the feature nav (content),
-// and the signed-in user's menu (footer). The frame every operator page renders
-// beside — see the `$tourOperatorId` layout route.
+// and the Settings leaf pinned in the footer. The frame every operator page
+// renders beside — see the `$tourOperatorId` layout route.
 export const AppTourOperatorSidebar = () => {
 	const operator = useCurrentTourOperator();
-	const matchRoute = useMatchRoute();
 	const items = operator ? tourOperatorNavItems(operator.id) : [];
 
 	return (
@@ -48,87 +33,20 @@ export const AppTourOperatorSidebar = () => {
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarMenu>
-						{items.map((item) => {
-							const isActive = !!matchRoute({
-								...item.link,
-								fuzzy: !item.exact,
-							});
-							return (
-								<SidebarMenuItem key={item.label}>
-									<SidebarMenuButton
-										asChild
-										isActive={isActive}
-										tooltip={item.label}
-									>
-										<AppLink {...item.link}>
-											<item.icon />
-											<span>{item.label}</span>
-										</AppLink>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							);
-						})}
+						{items.map((item) => (
+							<SidebarNavLeaf key={item.label} item={item} />
+						))}
 					</SidebarMenu>
 				</SidebarGroup>
 			</SidebarContent>
 
+			{/* Settings pinned below the scrolling nav (Shopify's placement). */}
 			<SidebarFooter>
 				<SidebarMenu>
-					<SidebarMenuItem>
-						<AppUserMenu />
-					</SidebarMenuItem>
+					{operator && <SidebarNavLeaf item={settingsNavItem(operator.id)} />}
 				</SidebarMenu>
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
 	);
 };
-
-// The signed-in user's menu in the sidebar footer: name + a dropdown with the
-// theme toggle and sign out. Kept local — it's used once (R2).
-function AppUserMenu() {
-	const { user, logout } = useAuth();
-	const { theme, toggle } = useTheme();
-	const navigate = useNavigate();
-
-	const signOut = async () => {
-		await logout();
-		navigate({ to: "/auth/login" });
-	};
-
-	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<SidebarMenuButton size="lg" tooltip={user?.name}>
-					<Avatar size="sm">
-						<AvatarFallback>
-							{user?.name.charAt(0).toUpperCase()}
-						</AvatarFallback>
-					</Avatar>
-					<span className="truncate font-medium">{user?.name}</span>
-					<ChevronsUpDown className="ml-auto size-4 opacity-60" />
-				</SidebarMenuButton>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent
-				align="end"
-				side="top"
-				sideOffset={4}
-				className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
-			>
-				<DropdownMenuItem onSelect={() => toggle()}>
-					{theme === "dark" ? (
-						<Sun className="size-4" />
-					) : (
-						<Moon className="size-4" />
-					)}
-					<span>{m.toggle_theme()}</span>
-				</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem onSelect={signOut}>
-					<LogOut className="size-4" />
-					<span>{m.sign_out()}</span>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
-	);
-}

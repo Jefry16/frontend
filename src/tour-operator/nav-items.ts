@@ -1,5 +1,10 @@
 import type { LinkProps } from "@tanstack/react-router";
-import { LayoutDashboard, type LucideIcon } from "lucide-react";
+import {
+	LayoutDashboard,
+	type LucideIcon,
+	Settings,
+	Users,
+} from "lucide-react";
 import * as m from "#/paraglide/messages";
 
 export interface NavLeaf {
@@ -19,5 +24,31 @@ export const tourOperatorNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: LayoutDashboard,
 		link: { to: "/tour-operators/$tourOperatorId", params: { tourOperatorId } },
 		exact: true,
+	},
+];
+
+// The Settings leaf. Pinned in the sidebar footer (below the scrolling nav —
+// Shopify's placement) rather than listed among the feature nav items. Its
+// destination will grow into the settings hub/space; today it's a stub page.
+export const settingsNavItem = (tourOperatorId: string): NavLeaf => ({
+	label: m.settings(),
+	icon: Settings,
+	link: {
+		to: "/tour-operators/$tourOperatorId/settings",
+		params: { tourOperatorId },
+	},
+});
+
+// The sections listed in the settings rail (the settings "space"). Grows one
+// leaf per settings section; only Members exists today. Shares NavLeaf with the
+// feature nav so both render through SidebarNavLeaf.
+export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
+	{
+		label: m.members(),
+		icon: Users,
+		link: {
+			to: "/tour-operators/$tourOperatorId/settings/members",
+			params: { tourOperatorId },
+		},
 	},
 ];

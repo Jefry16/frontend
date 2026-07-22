@@ -54,8 +54,6 @@
   "reset_link_missing_token": "This password reset link is missing its token.",
   "request_new_reset_link": "Request a new reset link",
 
-  "toggle_theme": "Toggle theme",
-
   "address": "Address",
   "currency": "Currency",
   "timezone": "Timezone",
@@ -72,6 +70,8 @@
   "join_existing_team_body": "If someone else is setting up the tour operator you'll work with, you don't need to create one here. They'll invite you by email — just wait for the invitation to arrive.",
 
   "dashboard": "Dashboard",
+  "settings": "Settings",
+  "members": "Members",
   "switch_tour_operator": "Switch tour operator",
   "tour_operators": "Tour operators",
   "new_tour_operator": "New tour operator",

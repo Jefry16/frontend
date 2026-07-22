@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, type AuthUser } from "#/auth";
 import { SidebarProvider } from "#/components/ui/sidebar";
 import { queryKeys } from "#/lib/query-keys";
-import { AppTourOperatorSidebar } from "./AppTourOperatorSidebar";
+import { AppSettingsSidebar } from "./AppSettingsSidebar";
 
 const USER: AuthUser = {
 	id: "u-1",
@@ -26,12 +26,12 @@ const USER: AuthUser = {
 const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 qc.setQueryData(queryKeys.authProfile, USER);
 
-// The nav is driven by the current-operator route param, which the framework's
-// memory router resolves at "/" — so here the sidebar shows just the switcher;
-// the full nav renders in the running app under an operator route.
+// The current operator is resolved from the route param, which the framework's
+// memory router leaves empty at "/", so here the rail shows its back header; the
+// section list renders in the running app under a settings route.
 const meta = {
-	title: "TourOperator/AppTourOperatorSidebar",
-	component: AppTourOperatorSidebar,
+	title: "TourOperator/AppSettingsSidebar",
+	component: AppSettingsSidebar,
 	decorators: [
 		(Story) => (
 			<QueryClientProvider client={qc}>
@@ -43,7 +43,7 @@ const meta = {
 			</QueryClientProvider>
 		),
 	],
-} satisfies Meta<typeof AppTourOperatorSidebar>;
+} satisfies Meta<typeof AppSettingsSidebar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
