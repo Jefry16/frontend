@@ -1,6 +1,8 @@
 export { AuthProvider, useAuth } from "./AuthProvider";
+export { AppForgotPasswordForm } from "./components/AppForgotPasswordForm";
 export { AppLoginForm } from "./components/AppLoginForm";
 export { AppRegisterForm } from "./components/AppRegisterForm";
+export { AppResetPasswordForm } from "./components/AppResetPasswordForm";
 export { AppVerifyAccount } from "./components/AppVerifyAccount";
 export type { AuthUser, TourOperatorSummary } from "./types";
 export { getPostLoginPath } from "./utils";

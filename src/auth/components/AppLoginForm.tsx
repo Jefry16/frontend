@@ -15,7 +15,12 @@ export const AppLoginForm = () => {
 			title={m.welcome_back()}
 			subtitle={m.sign_in_to_your_account()}
 			submitLabel={m.sign_in()}
-			footer={<Link to="/auth/register">{m.dont_have_account()}</Link>}
+			footer={
+				<>
+					<Link to="/auth/forgot-password">{m.forgot_password_link()}</Link>
+					<Link to="/auth/register">{m.dont_have_account()}</Link>
+				</>
+			}
 		>
 			<form.Field name="email">
 				{(field) => (

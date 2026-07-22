@@ -1,0 +1,41 @@
+import { useForm } from "@tanstack/react-form";
+import { useMutation } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+import { useState } from "react";
+import { authApi } from "#/lib/api";
+import * as m from "#/paraglide/messages";
+import {
+	type ForgotPasswordFormData,
+	forgotPasswordSchema,
+} from "../validators/forgot-password";
+
+export const useForgotPasswordForm = () => {
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	// The email we successfully submitted — its presence flips the UI to the
+	// "check your inbox" confirmation (and lets us echo the address back).
+	const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
+
+	const { mutate, isPending } = useMutation<
+		unknown,
+		AxiosError,
+		ForgotPasswordFormData
+	>({
+		mutationFn: (data) => authApi.post("/auth/request-password-reset", data),
+		onSuccess: (_data, variables) => {
+			setErrorMessage(null);
+			setSubmittedEmail(variables.email);
+		},
+		// Anti-enumeration: the endpoint returns 204 whether or not the address is
+		// registered, so a 2xx just means "queued if real". Any error here is an
+		// unexpected failure (network, 429, 5xx).
+		onError: () => setErrorMessage(m.error()),
+	});
+
+	const form = useForm({
+		defaultValues: { email: "" } as ForgotPasswordFormData,
+		validators: { onSubmit: forgotPasswordSchema },
+		onSubmit: ({ value }) => mutate(forgotPasswordSchema.parse(value)),
+	});
+
+	return { form, isPending, errorMessage, submittedEmail };
+};
