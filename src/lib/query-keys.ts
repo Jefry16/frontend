@@ -3,5 +3,4 @@
 // and collisions are visible in one place.
 export const queryKeys = {
 	authProfile: ["auth", "profile"] as const,
-	uiLanguages: ["ui-languages"] as const,
 };

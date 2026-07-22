@@ -30,7 +30,6 @@ interface AuthContextType {
 	isLoading: boolean;
 	login: (email: string, password: string) => Promise<AuthUser>;
 	logout: () => Promise<void>;
-	refreshUser: () => Promise<AuthUser | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -123,11 +122,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		queryClient.removeQueries({ queryKey: queryKeys.authProfile });
 	}, [queryClient]);
 
-	const refreshUser = useCallback(async () => {
-		await queryClient.refetchQueries({ queryKey: queryKeys.authProfile });
-		return queryClient.getQueryData<AuthUser>(queryKeys.authProfile) ?? null;
-	}, [queryClient]);
-
 	const user = profileQuery.data ?? null;
 	const isAuthenticated = user !== null;
 	const hasToken = !!getAccessToken();
@@ -136,7 +130,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<AuthContext.Provider
-			value={{ user, isAuthenticated, isLoading, login, logout, refreshUser }}
+			value={{ user, isAuthenticated, isLoading, login, logout }}
 		>
 			{children}
 		</AuthContext.Provider>

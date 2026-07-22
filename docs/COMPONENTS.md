@@ -74,7 +74,7 @@ boundaries go unenforced.
   `AppField`, `AppAuthFormWrapper`, and future `AppDataTable`, `AppPageHeader`, …).
   Greppable, and visually distinct from primitives.
 - **Primitives keep their lowercase shadcn names** in `components/ui/` (`button`, `field`).
-- **Hooks:** `use-*` (`use-login-form`, `use-mobile`). **Providers:** `*Provider`
+- **Hooks:** `use-*` (`use-login-form`, `use-app-toast`). **Providers:** `*Provider`
   (`AuthProvider`, `ThemeProvider`).
 
 ---

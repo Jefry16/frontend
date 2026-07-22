@@ -52,7 +52,7 @@ src/
   components/ui/     shadcn primitives — must not import feature modules.
   shared/            cross-feature building blocks (theme.tsx today). No feature-module imports.
   lib/               framework-agnostic helpers: api client, tokens, query helpers, cn().
-  hooks/             app-wide hooks (use-mobile, use-app-toast).
+  hooks/             app-wide hooks (use-app-toast).
   test/              MSW server + handlers + renderWithProviders.
   paraglide/         GENERATED i18n output (gitignored) — recompile after pulling.
   <feature>/         a feature module (auth, tour-operator, experiences, …) — added one at a time.

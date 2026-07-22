@@ -1,10 +1,8 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
-import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { server } from "#/test/server";
-import { AuthProvider } from "../AuthProvider";
+import { wrapperWithProviders } from "#/test/test-utils";
 import { useLoginForm } from "./use-login-form";
 
 const { navigateMock } = vi.hoisted(() => ({ navigateMock: vi.fn() }));
@@ -25,20 +23,6 @@ const PROFILE = {
 	avatarUrl: null,
 	language: "en",
 	tourOperators: [],
-};
-
-const makeWrapper = () => {
-	const qc = new QueryClient({
-		defaultOptions: {
-			queries: { retry: false, gcTime: 0 },
-			mutations: { retry: false },
-		},
-	});
-	return ({ children }: { children: ReactNode }) => (
-		<QueryClientProvider client={qc}>
-			<AuthProvider>{children}</AuthProvider>
-		</QueryClientProvider>
-	);
 };
 
 const submit = async (
@@ -71,7 +55,7 @@ describe("useLoginForm", () => {
 			http.get(`${API}/auth/profile`, () => HttpResponse.json(PROFILE)),
 		);
 		const { result } = renderHook(() => useLoginForm(), {
-			wrapper: makeWrapper(),
+			wrapper: wrapperWithProviders({ withAuth: true }).Wrapper,
 		});
 
 		await submit("user@example.com", "Password1!", result.current.form);
@@ -87,7 +71,7 @@ describe("useLoginForm", () => {
 			),
 		);
 		const { result } = renderHook(() => useLoginForm(), {
-			wrapper: makeWrapper(),
+			wrapper: wrapperWithProviders({ withAuth: true }).Wrapper,
 		});
 
 		await submit("user@example.com", "Password1!", result.current.form);
