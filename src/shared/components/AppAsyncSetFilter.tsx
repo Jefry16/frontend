@@ -7,6 +7,18 @@ import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 type AsyncRow = Record<string, unknown>;
 
+// Read a (possibly nested) field off a row by dot-path, e.g. "invitedBy.name".
+const readPath = (row: AsyncRow, path: string): unknown =>
+	path
+		.split(".")
+		.reduce<unknown>(
+			(acc, key) =>
+				acc && typeof acc === "object"
+					? (acc as Record<string, unknown>)[key]
+					: undefined,
+			row,
+		);
+
 interface Props<TData> {
 	headerContext: HeaderContext<TData, unknown>;
 	// Cursor-paginated endpoint returning { data, nextCursor } — the options are
@@ -14,7 +26,7 @@ interface Props<TData> {
 	endpoint: string;
 	queryKey: readonly unknown[];
 	// Which field on each row is the option's value (sent as filter[field][in])
-	// and its display label.
+	// and its display label. Dot-paths reach nested fields ("invitedBy.name").
 	valueKey?: string;
 	labelKey?: string;
 }
@@ -64,10 +76,10 @@ export function AppAsyncSetFilter<TData>({
 	const seen = new Set<string>();
 	const items: SetFilterItem[] = [];
 	for (const row of data?.pages.flatMap((p) => p.data) ?? []) {
-		const value = String(row[valueKey] ?? "");
+		const value = String(readPath(row, valueKey) ?? "");
 		if (!value || seen.has(value)) continue;
 		seen.add(value);
-		items.push({ value, label: String(row[labelKey] ?? value) });
+		items.push({ value, label: String(readPath(row, labelKey) ?? value) });
 	}
 	items.sort((a, b) => a.label.localeCompare(b.label));
 

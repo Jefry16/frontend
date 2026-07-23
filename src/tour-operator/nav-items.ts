@@ -2,6 +2,7 @@ import type { LinkProps } from "@tanstack/react-router";
 import {
 	LayoutDashboard,
 	type LucideIcon,
+	Mail,
 	Settings,
 	Users,
 } from "lucide-react";
@@ -40,14 +41,22 @@ export const settingsNavItem = (tourOperatorId: string): NavLeaf => ({
 });
 
 // The sections listed in the settings rail (the settings "space"). Grows one
-// leaf per settings section; only Members exists today. Shares NavLeaf with the
-// feature nav so both render through SidebarNavLeaf.
+// leaf per settings section. Shares NavLeaf with the feature nav so both render
+// through SidebarNavLeaf.
 export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 	{
 		label: m.members(),
 		icon: Users,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/members",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.invitations(),
+		icon: Mail,
+		link: {
+			to: "/tour-operators/$tourOperatorId/settings/invitations",
 			params: { tourOperatorId },
 		},
 	},

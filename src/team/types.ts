@@ -12,3 +12,28 @@ export interface Member {
 	name: string | null;
 	email: string | null;
 }
+
+export type InvitationStatus = "PENDING" | "ACCEPTED" | "REVOKED" | "EXPIRED";
+
+// One invitation row (GET /tour-operators/{id}/invitations). `id` is the
+// invitation's id, `context` is "invitations". Invitee name/email are typed by
+// the inviter (never null); `invitedBy.name` is a snapshot of the inviting admin
+// frozen at issue time. `expired` is server-computed for the page (a PENDING row
+// past its window); `role` is only ever ADMIN or STAFF (never OWNER).
+export interface Invitation {
+	id: string;
+	context: "invitations";
+	email: string;
+	name: string;
+	role: MemberRole;
+	status: InvitationStatus;
+	expired: boolean;
+	createdAt: string;
+	expiresAt: string;
+	acceptedAt: string | null;
+	invitedBy: {
+		id: string;
+		context: "users";
+		name: string;
+	};
+}
