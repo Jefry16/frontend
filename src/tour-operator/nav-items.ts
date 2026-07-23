@@ -1,5 +1,6 @@
 import type { LinkProps } from "@tanstack/react-router";
 import {
+	Building2,
 	LayoutDashboard,
 	type LucideIcon,
 	Mail,
@@ -44,6 +45,14 @@ export const settingsNavItem = (tourOperatorId: string): NavLeaf => ({
 // leaf per settings section. Shares NavLeaf with the feature nav so both render
 // through SidebarNavLeaf.
 export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
+	{
+		label: m.general(),
+		icon: Building2,
+		link: {
+			to: "/tour-operators/$tourOperatorId/settings/general",
+			params: { tourOperatorId },
+		},
+	},
 	{
 		label: m.members(),
 		icon: Users,

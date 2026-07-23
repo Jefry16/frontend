@@ -22,6 +22,7 @@ import { Route as appTourOperatorsTourOperatorIdRouteRouteImport } from './route
 import { Route as appTourOperatorsNewRouteImport } from './routes/(app)/tour-operators/new'
 import { Route as appTourOperatorsTourOperatorIdIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/index'
 import { Route as appTourOperatorsTourOperatorIdSettingsIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/index'
+import { Route as appTourOperatorsTourOperatorIdSettingsGeneralIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/general/index'
 import { Route as appTourOperatorsTourOperatorIdSettingsInvitationsIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/invitations/index'
 import { Route as appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/invitations/$invitationId'
 import { Route as appTourOperatorsTourOperatorIdSettingsMembersIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/members/index'
@@ -95,6 +96,12 @@ const appTourOperatorsTourOperatorIdSettingsIndexRoute =
     path: '/settings/',
     getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
   } as any)
+const appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute =
+  appTourOperatorsTourOperatorIdSettingsGeneralIndexRouteImport.update({
+    id: '/settings/general/',
+    path: '/settings/general/',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
 const appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute =
   appTourOperatorsTourOperatorIdSettingsInvitationsIndexRouteImport.update({
     id: '/settings/invitations/',
@@ -144,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/tour-operators/$tourOperatorId/settings/invitations/$invitationId': typeof appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRoute
   '/tour-operators/$tourOperatorId/settings/members/$userId': typeof appTourOperatorsTourOperatorIdSettingsMembersUserIdRoute
   '/tour-operators/$tourOperatorId/settings/members/new': typeof appTourOperatorsTourOperatorIdSettingsMembersNewRoute
+  '/tour-operators/$tourOperatorId/settings/general/': typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   '/tour-operators/$tourOperatorId/settings/invitations/': typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
   '/tour-operators/$tourOperatorId/settings/members/': typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
@@ -162,6 +170,7 @@ export interface FileRoutesByTo {
   '/tour-operators/$tourOperatorId/settings/invitations/$invitationId': typeof appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRoute
   '/tour-operators/$tourOperatorId/settings/members/$userId': typeof appTourOperatorsTourOperatorIdSettingsMembersUserIdRoute
   '/tour-operators/$tourOperatorId/settings/members/new': typeof appTourOperatorsTourOperatorIdSettingsMembersNewRoute
+  '/tour-operators/$tourOperatorId/settings/general': typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   '/tour-operators/$tourOperatorId/settings/invitations': typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
   '/tour-operators/$tourOperatorId/settings/members': typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
@@ -183,6 +192,7 @@ export interface FileRoutesById {
   '/(app)/tour-operators/$tourOperatorId/settings/invitations/$invitationId': typeof appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRoute
   '/(app)/tour-operators/$tourOperatorId/settings/members/$userId': typeof appTourOperatorsTourOperatorIdSettingsMembersUserIdRoute
   '/(app)/tour-operators/$tourOperatorId/settings/members/new': typeof appTourOperatorsTourOperatorIdSettingsMembersNewRoute
+  '/(app)/tour-operators/$tourOperatorId/settings/general/': typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   '/(app)/tour-operators/$tourOperatorId/settings/invitations/': typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
   '/(app)/tour-operators/$tourOperatorId/settings/members/': typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/tour-operators/$tourOperatorId/settings/invitations/$invitationId'
     | '/tour-operators/$tourOperatorId/settings/members/$userId'
     | '/tour-operators/$tourOperatorId/settings/members/new'
+    | '/tour-operators/$tourOperatorId/settings/general/'
     | '/tour-operators/$tourOperatorId/settings/invitations/'
     | '/tour-operators/$tourOperatorId/settings/members/'
   fileRoutesByTo: FileRoutesByTo
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/tour-operators/$tourOperatorId/settings/invitations/$invitationId'
     | '/tour-operators/$tourOperatorId/settings/members/$userId'
     | '/tour-operators/$tourOperatorId/settings/members/new'
+    | '/tour-operators/$tourOperatorId/settings/general'
     | '/tour-operators/$tourOperatorId/settings/invitations'
     | '/tour-operators/$tourOperatorId/settings/members'
   id:
@@ -242,6 +254,7 @@ export interface FileRouteTypes {
     | '/(app)/tour-operators/$tourOperatorId/settings/invitations/$invitationId'
     | '/(app)/tour-operators/$tourOperatorId/settings/members/$userId'
     | '/(app)/tour-operators/$tourOperatorId/settings/members/new'
+    | '/(app)/tour-operators/$tourOperatorId/settings/general/'
     | '/(app)/tour-operators/$tourOperatorId/settings/invitations/'
     | '/(app)/tour-operators/$tourOperatorId/settings/members/'
   fileRoutesById: FileRoutesById
@@ -345,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appTourOperatorsTourOperatorIdSettingsIndexRouteImport
       parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
     }
+    '/(app)/tour-operators/$tourOperatorId/settings/general/': {
+      id: '/(app)/tour-operators/$tourOperatorId/settings/general/'
+      path: '/settings/general'
+      fullPath: '/tour-operators/$tourOperatorId/settings/general/'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
     '/(app)/tour-operators/$tourOperatorId/settings/invitations/': {
       id: '/(app)/tour-operators/$tourOperatorId/settings/invitations/'
       path: '/settings/invitations'
@@ -389,6 +409,7 @@ interface appTourOperatorsTourOperatorIdRouteRouteChildren {
   appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRoute: typeof appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRoute
   appTourOperatorsTourOperatorIdSettingsMembersUserIdRoute: typeof appTourOperatorsTourOperatorIdSettingsMembersUserIdRoute
   appTourOperatorsTourOperatorIdSettingsMembersNewRoute: typeof appTourOperatorsTourOperatorIdSettingsMembersNewRoute
+  appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
   appTourOperatorsTourOperatorIdSettingsMembersIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
@@ -405,6 +426,8 @@ const appTourOperatorsTourOperatorIdRouteRouteChildren: appTourOperatorsTourOper
       appTourOperatorsTourOperatorIdSettingsMembersUserIdRoute,
     appTourOperatorsTourOperatorIdSettingsMembersNewRoute:
       appTourOperatorsTourOperatorIdSettingsMembersNewRoute,
+    appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute:
+      appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute,
     appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute:
       appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute,
     appTourOperatorsTourOperatorIdSettingsMembersIndexRoute:
