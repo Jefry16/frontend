@@ -1,9 +1,9 @@
 import { ArrowLeft, MailX, Send, Trash2 } from "lucide-react";
 import type { ReactNode } from "react";
-import { Badge } from "#/components/ui/badge";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
+import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppEmptyState } from "#/shared/components/AppEmptyState";
 import { AppLink } from "#/shared/components/AppLink";
@@ -156,14 +156,14 @@ const InvitationFacts = ({
 				<CardContent>
 					<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 						<AppDetailField label={m.role()}>
-							<Badge variant={roleBadgeVariant(invitation.role)}>
+							<AppBadge variant={roleBadgeVariant(invitation.role)}>
 								{roleLabel(invitation.role)}
-							</Badge>
+							</AppBadge>
 						</AppDetailField>
 						<AppDetailField label={m.status()}>
-							<Badge variant={statusBadgeVariant(status)}>
+							<AppBadge variant={statusBadgeVariant(status)}>
 								{statusLabel(status)}
-							</Badge>
+							</AppBadge>
 						</AppDetailField>
 						<AppDetailField label={m.invited_by()}>
 							{invitation.invitedBy.name}

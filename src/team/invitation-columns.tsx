@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "#/components/ui/badge";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import {
@@ -99,9 +99,9 @@ export const invitationColumns = (
 				/>
 			),
 			cell: ({ row }) => (
-				<Badge variant={roleBadgeVariant(row.original.role)}>
+				<AppBadge variant={roleBadgeVariant(row.original.role)}>
 					{roleLabel(row.original.role)}
-				</Badge>
+				</AppBadge>
 			),
 		},
 		{
@@ -118,9 +118,9 @@ export const invitationColumns = (
 			cell: ({ row }) => {
 				const status = effectiveStatus(row.original);
 				return (
-					<Badge variant={statusBadgeVariant(status)}>
+					<AppBadge variant={statusBadgeVariant(status)}>
 						{statusLabel(status)}
-					</Badge>
+					</AppBadge>
 				);
 			},
 		},

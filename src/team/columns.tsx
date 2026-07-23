@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "#/components/ui/badge";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { roleBadgeVariant, roleLabel } from "./format";
@@ -89,9 +89,9 @@ export const memberColumns = (
 				/>
 			),
 			cell: ({ row }) => (
-				<Badge variant={roleBadgeVariant(row.original.role)}>
+				<AppBadge variant={roleBadgeVariant(row.original.role)}>
 					{roleLabel(row.original.role)}
-				</Badge>
+				</AppBadge>
 			),
 		},
 		{
