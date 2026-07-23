@@ -4,7 +4,7 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppMembersList } from "#/team";
 
 export const Route = createFileRoute(
-	"/(app)/tour-operators/$tourOperatorId/settings/members",
+	"/(app)/tour-operators/$tourOperatorId/settings/members/",
 )({
 	component: MembersSettingsPage,
 });

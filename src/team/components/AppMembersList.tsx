@@ -12,7 +12,10 @@ export const AppMembersList = ({
 	tourOperatorId: string;
 }) => {
 	const timeZone = useCurrentTourOperator()?.timezone;
-	const columns = useMemo(() => memberColumns(timeZone), [timeZone]);
+	const columns = useMemo(
+		() => memberColumns(tourOperatorId, timeZone),
+		[tourOperatorId, timeZone],
+	);
 
 	return (
 		<AppDataTable

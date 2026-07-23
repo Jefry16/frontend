@@ -7,6 +7,7 @@ import {
 	PopoverTrigger,
 } from "#/components/ui/popover";
 import * as m from "#/paraglide/messages";
+import { AppAsyncSetFilter } from "./AppAsyncSetFilter";
 import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 interface BaseProps<TData> {
@@ -20,12 +21,20 @@ type Props<TData> =
 	| (BaseProps<TData> & {
 			allowFiltering: "set";
 			items: readonly SetFilterItem[];
+	  })
+	| (BaseProps<TData> & {
+			allowFiltering: "setAsync";
+			endpoint: string;
+			queryKey: readonly unknown[];
+			valueKey?: string;
+			labelKey?: string;
 	  });
 
 // A column header with opt-in server-side sorting (toggles asc/desc/none) and an
-// opt-in "set" filter — a searchable, multi-select checkbox popover (AppSetFilter)
-// → `filter[field][in]`. The lean cut of the archive's header; text/number/date/
-// async filters land when a list needs them.
+// opt-in "set" filter → `filter[field][in]`, in two flavours: `set` (a static
+// option list) and `setAsync` (options fetched from an endpoint). Both render a
+// searchable, multi-select checkbox popover. The lean cut of the archive's
+// header; text/number/date filters land when a list needs them.
 export function AppDataTableHeader<TData>(props: Props<TData>) {
 	const { label, headerContext, allowSorting, allowFiltering } = props;
 	const { column } = headerContext;
@@ -49,7 +58,7 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 				<span className="font-semibold">{label}</span>
 			)}
 
-			{allowFiltering === "set" && (
+			{allowFiltering && (
 				<Popover>
 					<PopoverTrigger asChild>
 						<Button
@@ -65,7 +74,17 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent align="end" className="w-52">
-						<AppSetFilter headerContext={headerContext} items={props.items} />
+						{props.allowFiltering === "set" ? (
+							<AppSetFilter headerContext={headerContext} items={props.items} />
+						) : (
+							<AppAsyncSetFilter
+								headerContext={headerContext}
+								endpoint={props.endpoint}
+								queryKey={props.queryKey}
+								valueKey={props.valueKey}
+								labelKey={props.labelKey}
+							/>
+						)}
 					</PopoverContent>
 				</Popover>
 			)}
