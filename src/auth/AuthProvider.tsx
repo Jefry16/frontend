@@ -29,6 +29,10 @@ interface AuthContextType {
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	login: (email: string, password: string) => Promise<AuthUser>;
+	/** Adopt a session from an already-issued access token (e.g. the accept-invitation
+	 * auto-login, whose refresh cookie the server has set) — like login, minus the
+	 * credentials post. */
+	establishSession: (accessToken: string) => Promise<AuthUser>;
 	logout: () => Promise<void>;
 	/** Refetch the profile — e.g. after creating an operator so it appears. */
 	refreshUser: () => Promise<AuthUser | null>;
@@ -114,6 +118,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		[queryClient],
 	);
 
+	const establishSession = useCallback(
+		async (accessToken: string) => {
+			setAccessToken(accessToken);
+			return queryClient.fetchQuery({
+				queryKey: queryKeys.authProfile,
+				queryFn: fetchProfile,
+				staleTime: Number.POSITIVE_INFINITY,
+			});
+		},
+		[queryClient],
+	);
+
 	const logout = useCallback(async () => {
 		try {
 			await authApi.post("/auth/logout");
@@ -137,7 +153,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<AuthContext.Provider
-			value={{ user, isAuthenticated, isLoading, login, logout, refreshUser }}
+			value={{
+				user,
+				isAuthenticated,
+				isLoading,
+				login,
+				establishSession,
+				logout,
+				refreshUser,
+			}}
 		>
 			{children}
 		</AuthContext.Provider>

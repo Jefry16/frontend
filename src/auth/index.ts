@@ -1,4 +1,5 @@
 export { AuthProvider, useAuth } from "./AuthProvider";
+export { AppAcceptInvitation } from "./components/AppAcceptInvitation";
 export { AppForgotPasswordForm } from "./components/AppForgotPasswordForm";
 export { AppLoginForm } from "./components/AppLoginForm";
 export { AppRegisterForm } from "./components/AppRegisterForm";

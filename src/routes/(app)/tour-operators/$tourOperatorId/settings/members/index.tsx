@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { UserPlus } from "lucide-react";
+import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
+import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppMembersList } from "#/team";
 
@@ -17,7 +20,20 @@ function MembersSettingsPage() {
 	// centered at max-w-3xl; a list wants the room.
 	return (
 		<div className="flex flex-col gap-6 p-6">
-			<AppPageHeader title={m.members()} />
+			<AppPageHeader
+				title={m.members()}
+				actions={
+					<Button asChild>
+						<AppLink
+							to="/tour-operators/$tourOperatorId/settings/members/new"
+							params={{ tourOperatorId }}
+						>
+							<UserPlus />
+							{m.invite_member()}
+						</AppLink>
+					</Button>
+				}
+			/>
 			<AppMembersList tourOperatorId={tourOperatorId} />
 		</div>
 	);
