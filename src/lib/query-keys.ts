@@ -6,6 +6,8 @@ export const queryKeys = {
 	timezones: ["timezones"] as const,
 	currencies: ["currencies"] as const,
 	members: (tourOperatorId: string) => ["members", tourOperatorId] as const,
+	member: (tourOperatorId: string, userId: string) =>
+		["members", tourOperatorId, userId] as const,
 	invitations: (tourOperatorId: string) =>
 		["invitations", tourOperatorId] as const,
 	invitation: (tourOperatorId: string, invitationId: string) =>
