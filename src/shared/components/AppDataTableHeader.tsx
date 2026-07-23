@@ -2,24 +2,12 @@ import type { HeaderContext } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, Filter } from "lucide-react";
 import { Button } from "#/components/ui/button";
 import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuTrigger,
-} from "#/components/ui/dropdown-menu";
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "#/components/ui/popover";
 import * as m from "#/paraglide/messages";
-
-export interface SetFilterItem {
-	value: string;
-	label: string;
-}
-
-// The value shape the set filter writes; useDataTable serializes it to
-// `filter[field][in]=a,b`.
-interface SetFilterValue {
-	operator: "in";
-	values: string[];
-}
+import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 interface BaseProps<TData> {
 	label: string;
@@ -35,28 +23,16 @@ type Props<TData> =
 	  });
 
 // A column header with opt-in server-side sorting (toggles asc/desc/none) and an
-// opt-in "set" filter (a multi-select dropdown → `filter[field][in]`). The lean
-// cut of the archive's header — text/number/date/async filters land when a list
-// needs them.
+// opt-in "set" filter — a searchable, multi-select checkbox popover (AppSetFilter)
+// → `filter[field][in]`. The lean cut of the archive's header; text/number/date/
+// async filters land when a list needs them.
 export function AppDataTableHeader<TData>(props: Props<TData>) {
 	const { label, headerContext, allowSorting, allowFiltering } = props;
 	const { column } = headerContext;
 	const sorted = column.getIsSorted();
 	const SortIcon =
 		sorted === "asc" ? ArrowUp : sorted === "desc" ? ArrowDown : ArrowUpDown;
-
-	const current = column.getFilterValue() as SetFilterValue | undefined;
-	const selected = new Set(current?.values ?? []);
-	const toggle = (value: string) => {
-		const next = new Set(selected);
-		if (next.has(value)) next.delete(value);
-		else next.add(value);
-		column.setFilterValue(
-			next.size
-				? { operator: "in", values: Array.from(next).sort() }
-				: undefined,
-		);
-	};
+	const hasActiveFilter = column.getFilterValue() !== undefined;
 
 	return (
 		<div className="flex flex-row items-center gap-1">
@@ -74,8 +50,8 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 			)}
 
 			{allowFiltering === "set" && (
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
+				<Popover>
+					<PopoverTrigger asChild>
 						<Button
 							variant="ghost"
 							size="icon"
@@ -83,25 +59,15 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 							aria-label={m.filter_label()}
 						>
 							<Filter className="size-3.5" />
-							{selected.size > 0 && (
+							{hasActiveFilter && (
 								<span className="absolute top-1 right-1 size-1.5 rounded-full bg-primary" />
 							)}
 						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end" className="w-48">
-						{props.items.map((item) => (
-							<DropdownMenuCheckboxItem
-								key={item.value}
-								checked={selected.has(item.value)}
-								// Keep the menu open so several values can be toggled at once.
-								onSelect={(e) => e.preventDefault()}
-								onCheckedChange={() => toggle(item.value)}
-							>
-								{item.label}
-							</DropdownMenuCheckboxItem>
-						))}
-					</DropdownMenuContent>
-				</DropdownMenu>
+					</PopoverTrigger>
+					<PopoverContent align="end" className="w-52">
+						<AppSetFilter headerContext={headerContext} items={props.items} />
+					</PopoverContent>
+				</Popover>
 			)}
 		</div>
 	);

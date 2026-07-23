@@ -8,8 +8,9 @@ import type { Member } from "./types";
 const dash = () => <span className="text-muted-foreground">—</span>;
 
 // The roster columns. A factory (not a static array) so the joinedAt cell can
-// format in the operator's timezone. Filterable by role (backend `set`),
-// sortable by joined date (backend `sortable`); the API default is owner-first.
+// format in the operator's timezone. All columns are sortable (backend
+// `sortable`); role is also filterable (backend `set`). API default is
+// owner-first (joinedAt asc).
 export const memberColumns = (
 	timeZone?: string,
 ): ColumnDef<Member, unknown>[] => {
@@ -26,7 +27,13 @@ export const memberColumns = (
 	return [
 		{
 			id: "name",
-			header: () => m.name(),
+			header: (headerContext) => (
+				<AppDataTableHeader
+					label={m.name()}
+					headerContext={headerContext}
+					allowSorting
+				/>
+			),
 			cell: ({ row }) =>
 				row.original.name ? (
 					<span className="font-medium">{row.original.name}</span>
@@ -36,7 +43,13 @@ export const memberColumns = (
 		},
 		{
 			id: "email",
-			header: () => m.email(),
+			header: (headerContext) => (
+				<AppDataTableHeader
+					label={m.email()}
+					headerContext={headerContext}
+					allowSorting
+				/>
+			),
 			cell: ({ row }) => row.original.email ?? dash(),
 		},
 		{
@@ -46,6 +59,7 @@ export const memberColumns = (
 				<AppDataTableHeader
 					label={m.role()}
 					headerContext={headerContext}
+					allowSorting
 					allowFiltering="set"
 					items={roleItems}
 				/>
