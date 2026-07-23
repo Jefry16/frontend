@@ -84,7 +84,14 @@ export function AppPageActions({ actions }: { actions: AppAction[] }) {
 			{overflow.length > 0 && (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<Button variant="outline" size="icon" aria-label={m.more_actions()}>
+						<Button
+							variant="outline"
+							size="icon"
+							aria-label={m.more_actions()}
+							// outline's bg-background is a hair off-white and reads grey on a
+							// white card — pin the trigger to the pure-white card surface.
+							className="bg-card dark:bg-card"
+						>
 							<MoreHorizontal />
 						</Button>
 					</DropdownMenuTrigger>
@@ -95,6 +102,7 @@ export function AppPageActions({ actions }: { actions: AppAction[] }) {
 								disabled={action.disabled || action.pending}
 								onSelect={() => trigger(action)}
 								className={cn(
+									"cursor-pointer",
 									action.variant === "destructive" &&
 										"text-destructive focus:text-destructive",
 								)}
