@@ -9,6 +9,15 @@ export interface Currency {
 	symbol: string;
 }
 
+// The platform's supported content languages — the master list operators enable
+// a subset of. The Languages settings picker builds its options from this.
+export interface Language {
+	id: string;
+	context: "languages";
+	code: string;
+	name: string;
+}
+
 export interface Country {
 	id: string;
 	context: "countries";

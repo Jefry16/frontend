@@ -144,6 +144,12 @@
   "role_admin": "Admin",
   "role_staff": "Staff",
   "invitations": "Invitations",
+  "languages": "Languages",
+  "languages_description": "The languages your storefront content is available in.",
+  "primary_language": "Primary language",
+  "primary_language_help": "The default language shown to visitors.",
+  "supported_languages": "Supported languages",
+  "supported_languages_help": "The languages customers can view your content in.",
   "media": "Media",
   "preview": "Preview",
   "file_type": "Type",
@@ -216,5 +222,7 @@
   "validation_password_lowercase": "Must contain at least one lowercase letter",
   "validation_password_number": "Must contain at least one number",
   "validation_password_special": "Must contain at least one special character",
-  "validation_password_too_long": "Password is too long"
+  "validation_password_too_long": "Password is too long",
+  "validation_select_one_language": "Select at least one language",
+  "validation_primary_language_supported": "The primary language must be one of the supported languages"
 }

@@ -5,6 +5,9 @@ export const queryKeys = {
 	authProfile: ["auth", "profile"] as const,
 	timezones: ["timezones"] as const,
 	currencies: ["currencies"] as const,
+	languages: ["languages"] as const,
+	operatorLocales: (tourOperatorId: string) =>
+		["operator-locales", tourOperatorId] as const,
 	members: (tourOperatorId: string) => ["members", tourOperatorId] as const,
 	member: (tourOperatorId: string, userId: string) =>
 		["members", tourOperatorId, userId] as const,

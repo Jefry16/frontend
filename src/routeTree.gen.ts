@@ -31,6 +31,7 @@ import { Route as appTourOperatorsTourOperatorIdExperiencesExperienceIdEditRoute
 import { Route as appTourOperatorsTourOperatorIdSettingsGeneralIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/general/index'
 import { Route as appTourOperatorsTourOperatorIdSettingsInvitationsIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/invitations/index'
 import { Route as appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/invitations/$invitationId'
+import { Route as appTourOperatorsTourOperatorIdSettingsLanguagesIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/languages/index'
 import { Route as appTourOperatorsTourOperatorIdSettingsMembersIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/members/index'
 import { Route as appTourOperatorsTourOperatorIdSettingsMembersUserIdRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/members/$userId'
 import { Route as appTourOperatorsTourOperatorIdSettingsMembersNewRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/members/new'
@@ -158,6 +159,12 @@ const appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRoute =
       getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
     } as any,
   )
+const appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute =
+  appTourOperatorsTourOperatorIdSettingsLanguagesIndexRouteImport.update({
+    id: '/settings/languages/',
+    path: '/settings/languages/',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
 const appTourOperatorsTourOperatorIdSettingsMembersIndexRoute =
   appTourOperatorsTourOperatorIdSettingsMembersIndexRouteImport.update({
     id: '/settings/members/',
@@ -201,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/tour-operators/$tourOperatorId/experiences/$experienceId/': typeof appTourOperatorsTourOperatorIdExperiencesExperienceIdIndexRoute
   '/tour-operators/$tourOperatorId/settings/general/': typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   '/tour-operators/$tourOperatorId/settings/invitations/': typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
+  '/tour-operators/$tourOperatorId/settings/languages/': typeof appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute
   '/tour-operators/$tourOperatorId/settings/members/': typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -226,6 +234,7 @@ export interface FileRoutesByTo {
   '/tour-operators/$tourOperatorId/experiences/$experienceId': typeof appTourOperatorsTourOperatorIdExperiencesExperienceIdIndexRoute
   '/tour-operators/$tourOperatorId/settings/general': typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   '/tour-operators/$tourOperatorId/settings/invitations': typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
+  '/tour-operators/$tourOperatorId/settings/languages': typeof appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute
   '/tour-operators/$tourOperatorId/settings/members': typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
 export interface FileRoutesById {
@@ -254,6 +263,7 @@ export interface FileRoutesById {
   '/(app)/tour-operators/$tourOperatorId/experiences/$experienceId/': typeof appTourOperatorsTourOperatorIdExperiencesExperienceIdIndexRoute
   '/(app)/tour-operators/$tourOperatorId/settings/general/': typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   '/(app)/tour-operators/$tourOperatorId/settings/invitations/': typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
+  '/(app)/tour-operators/$tourOperatorId/settings/languages/': typeof appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute
   '/(app)/tour-operators/$tourOperatorId/settings/members/': typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
 export interface FileRouteTypes {
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/tour-operators/$tourOperatorId/experiences/$experienceId/'
     | '/tour-operators/$tourOperatorId/settings/general/'
     | '/tour-operators/$tourOperatorId/settings/invitations/'
+    | '/tour-operators/$tourOperatorId/settings/languages/'
     | '/tour-operators/$tourOperatorId/settings/members/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/tour-operators/$tourOperatorId/experiences/$experienceId'
     | '/tour-operators/$tourOperatorId/settings/general'
     | '/tour-operators/$tourOperatorId/settings/invitations'
+    | '/tour-operators/$tourOperatorId/settings/languages'
     | '/tour-operators/$tourOperatorId/settings/members'
   id:
     | '__root__'
@@ -334,6 +346,7 @@ export interface FileRouteTypes {
     | '/(app)/tour-operators/$tourOperatorId/experiences/$experienceId/'
     | '/(app)/tour-operators/$tourOperatorId/settings/general/'
     | '/(app)/tour-operators/$tourOperatorId/settings/invitations/'
+    | '/(app)/tour-operators/$tourOperatorId/settings/languages/'
     | '/(app)/tour-operators/$tourOperatorId/settings/members/'
   fileRoutesById: FileRoutesById
 }
@@ -499,6 +512,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appTourOperatorsTourOperatorIdSettingsInvitationsInvitationIdRouteImport
       parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
     }
+    '/(app)/tour-operators/$tourOperatorId/settings/languages/': {
+      id: '/(app)/tour-operators/$tourOperatorId/settings/languages/'
+      path: '/settings/languages'
+      fullPath: '/tour-operators/$tourOperatorId/settings/languages/'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdSettingsLanguagesIndexRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
     '/(app)/tour-operators/$tourOperatorId/settings/members/': {
       id: '/(app)/tour-operators/$tourOperatorId/settings/members/'
       path: '/settings/members'
@@ -537,6 +557,7 @@ interface appTourOperatorsTourOperatorIdRouteRouteChildren {
   appTourOperatorsTourOperatorIdExperiencesExperienceIdIndexRoute: typeof appTourOperatorsTourOperatorIdExperiencesExperienceIdIndexRoute
   appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute
   appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute
+  appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute
   appTourOperatorsTourOperatorIdSettingsMembersIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsMembersIndexRoute
 }
 
@@ -568,6 +589,8 @@ const appTourOperatorsTourOperatorIdRouteRouteChildren: appTourOperatorsTourOper
       appTourOperatorsTourOperatorIdSettingsGeneralIndexRoute,
     appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute:
       appTourOperatorsTourOperatorIdSettingsInvitationsIndexRoute,
+    appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute:
+      appTourOperatorsTourOperatorIdSettingsLanguagesIndexRoute,
     appTourOperatorsTourOperatorIdSettingsMembersIndexRoute:
       appTourOperatorsTourOperatorIdSettingsMembersIndexRoute,
   }

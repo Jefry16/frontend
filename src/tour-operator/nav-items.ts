@@ -3,6 +3,7 @@ import {
 	Building2,
 	Compass,
 	Images,
+	Languages,
 	LayoutDashboard,
 	type LucideIcon,
 	Mail,
@@ -82,6 +83,14 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Mail,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/invitations",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.languages(),
+		icon: Languages,
+		link: {
+			to: "/tour-operators/$tourOperatorId/settings/languages",
 			params: { tourOperatorId },
 		},
 	},
