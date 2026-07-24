@@ -3,13 +3,19 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarGroup,
+	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuItem,
 	SidebarRail,
 } from "#/components/ui/sidebar";
+import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator } from "../hooks/use-current-tour-operator";
-import { settingsNavItem, tourOperatorNavItems } from "../nav-items";
+import {
+	contentNavItems,
+	settingsNavItem,
+	tourOperatorNavItems,
+} from "../nav-items";
 import { AppTourOperatorSwitcher } from "./AppTourOperatorSwitcher";
 import { SidebarNavLeaf } from "./SidebarNavLeaf";
 
@@ -19,6 +25,7 @@ import { SidebarNavLeaf } from "./SidebarNavLeaf";
 export const AppTourOperatorSidebar = () => {
 	const operator = useCurrentTourOperator();
 	const items = operator ? tourOperatorNavItems(operator.id) : [];
+	const content = operator ? contentNavItems(operator.id) : [];
 
 	return (
 		<Sidebar variant="inset">
@@ -38,6 +45,17 @@ export const AppTourOperatorSidebar = () => {
 						))}
 					</SidebarMenu>
 				</SidebarGroup>
+
+				{content.length > 0 && (
+					<SidebarGroup>
+						<SidebarGroupLabel>{m.content()}</SidebarGroupLabel>
+						<SidebarMenu>
+							{content.map((item) => (
+								<SidebarNavLeaf key={item.label} item={item} />
+							))}
+						</SidebarMenu>
+					</SidebarGroup>
+				)}
 			</SidebarContent>
 
 			{/* Settings pinned below the scrolling nav (Shopify's placement). */}

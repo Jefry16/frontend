@@ -1,6 +1,7 @@
 import type { LinkProps } from "@tanstack/react-router";
 import {
 	Building2,
+	Images,
 	LayoutDashboard,
 	type LucideIcon,
 	Mail,
@@ -66,6 +67,20 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Mail,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/invitations",
+			params: { tourOperatorId },
+		},
+	},
+];
+
+// The main-nav "Content" section — storefront/catalog content the operator
+// manages (distinct from Settings). Grows per feature; Media is the first.
+// Rendered as a labeled group in the operator sidebar, above the Settings leaf.
+export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
+	{
+		label: m.media(),
+		icon: Images,
+		link: {
+			to: "/tour-operators/$tourOperatorId/content/media",
 			params: { tourOperatorId },
 		},
 	},
