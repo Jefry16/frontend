@@ -8,16 +8,22 @@ import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
 import { AppField } from "#/shared/components/AppField";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { useExperienceForm } from "../hooks/use-experience-form";
+import type { Experience } from "../types";
 
-// Create an experience — the core content (name, description, duration, cutoff,
-// featured). Tags/highlights/inclusions and media are later slices; the payload
-// still sends them empty so it's a complete ExperienceRequest.
+// The experience content form — create (no `experience`) or edit (with one):
+// name, description, duration, cutoff, featured. Tags/highlights/inclusions and
+// media aren't edited here yet; the hook carries them through unchanged.
 export const AppExperienceForm = ({
 	tourOperatorId,
+	experience,
 }: {
 	tourOperatorId: string;
+	experience?: Experience;
 }) => {
-	const { form, isPending, errorMessage } = useExperienceForm(tourOperatorId);
+	const { form, isPending, errorMessage, isEdit } = useExperienceForm(
+		tourOperatorId,
+		experience,
+	);
 
 	return (
 		<Card>
@@ -89,7 +95,7 @@ export const AppExperienceForm = ({
 					<div className="flex justify-end">
 						<Button type="submit" disabled={isPending}>
 							{isPending && <Spinner className="size-4" />}
-							{m.create()}
+							{isEdit ? m.save_changes() : m.create()}
 						</Button>
 					</div>
 				</form>

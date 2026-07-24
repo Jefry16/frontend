@@ -1,4 +1,5 @@
-import { ArrowLeft, Compass, Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, Compass, Eye, EyeOff, Pencil } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
@@ -44,6 +45,7 @@ export const AppExperienceDetail = ({
 	experienceId: string;
 }) => {
 	const timeZone = useCurrentTourOperator()?.timezone;
+	const navigate = useNavigate();
 	const query = useExperience(tourOperatorId, experienceId);
 	const { publish, unpublish } = useExperienceActions(
 		tourOperatorId,
@@ -90,6 +92,16 @@ export const AppExperienceDetail = ({
 		>
 			{(experience) => {
 				const actions: AppAction[] = [
+					{
+						id: "edit",
+						label: m.edit(),
+						icon: Pencil,
+						onSelect: () =>
+							navigate({
+								to: "/tour-operators/$tourOperatorId/experiences/$experienceId/edit",
+								params: { tourOperatorId, experienceId },
+							}),
+					},
 					experience.published
 						? {
 								id: "unpublish",
