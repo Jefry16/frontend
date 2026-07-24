@@ -8,14 +8,13 @@ import type { MediaAsset } from "./types";
 
 const dash = () => <span className="text-muted-foreground">—</span>;
 
-// The type filter offers the content types the library holds — friendly labels,
-// but the value is the raw MIME the backend stores and filters on.
+// The type filter — the raw MIME is the filter value the backend stores. Only
+// the four types the backend accepts (ContentType.ALLOWED), so every option can
+// actually match a stored asset.
 const typeItems = [
 	{ value: "image/png", label: "PNG" },
 	{ value: "image/jpeg", label: "JPEG" },
 	{ value: "image/webp", label: "WebP" },
-	{ value: "image/gif", label: "GIF" },
-	{ value: "image/svg+xml", label: "SVG" },
 	{ value: "application/pdf", label: "PDF" },
 ];
 
