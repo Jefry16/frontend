@@ -12,6 +12,7 @@ interface AppTextareaFieldProps {
 	field: AnyFieldApi;
 	label: string;
 	description?: string;
+	placeholder?: string;
 	rows?: number;
 	required?: boolean;
 }
@@ -22,6 +23,7 @@ export const AppTextareaField = ({
 	field,
 	label,
 	description,
+	placeholder,
 	rows = 3,
 	required,
 }: AppTextareaFieldProps) => {
@@ -42,6 +44,7 @@ export const AppTextareaField = ({
 				onBlur={field.handleBlur}
 				aria-invalid={isInvalid}
 				aria-required={required || undefined}
+				placeholder={placeholder}
 			/>
 			{description && <FieldDescription>{description}</FieldDescription>}
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}

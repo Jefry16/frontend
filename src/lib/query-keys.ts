@@ -22,4 +22,18 @@ export const queryKeys = {
 		["experiences", tourOperatorId] as const,
 	experience: (tourOperatorId: string, experienceId: string) =>
 		["experiences", tourOperatorId, experienceId] as const,
+	experienceTranslations: (tourOperatorId: string, experienceId: string) =>
+		["experiences", tourOperatorId, experienceId, "translations"] as const,
+	experienceTranslation: (
+		tourOperatorId: string,
+		experienceId: string,
+		locale: string,
+	) =>
+		[
+			"experiences",
+			tourOperatorId,
+			experienceId,
+			"translations",
+			locale,
+		] as const,
 };

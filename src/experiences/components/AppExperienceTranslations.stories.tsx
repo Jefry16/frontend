@@ -1,0 +1,78 @@
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { queryKeys } from "#/lib/query-keys";
+import type { Experience, ExperienceTranslation } from "../types";
+import { AppExperienceTranslations } from "./AppExperienceTranslations";
+
+const OP = "op-1";
+const EXP = "e-1";
+
+const EXPERIENCE: Experience = {
+	id: EXP,
+	context: "experiences",
+	name: "Sunset Kayak Tour",
+	slug: "sunset-kayak-tour",
+	description: "Paddle the bay as the sun goes down, with a local guide.",
+	longDescription:
+		"A relaxed two-and-a-half hour paddle timed for golden hour.",
+	featured: true,
+	tags: ["water"],
+	included: ["Kayak & paddle"],
+	notIncluded: ["Hotel pickup"],
+	highlights: ["Golden-hour light"],
+	thumbnailMediaId: null,
+	thumbnailUrl: null,
+	mediaIds: [],
+	galleryUrls: [],
+	durationMinutes: 150,
+	bookingCutoffHours: 24,
+	published: true,
+	createdBy: "u-1",
+	createdAt: "2026-03-01T10:00:00Z",
+};
+
+const ES: ExperienceTranslation = {
+	locale: "es",
+	name: "Tour en kayak al atardecer",
+	description: null,
+	longDescription: null,
+	highlights: null,
+	included: null,
+	notIncluded: null,
+	slug: null,
+};
+
+// One operator with three languages (en primary), Spanish already translated.
+function client() {
+	const qc = new QueryClient({
+		defaultOptions: { queries: { staleTime: Number.POSITIVE_INFINITY } },
+	});
+	qc.setQueryData(queryKeys.experience(OP, EXP), EXPERIENCE);
+	qc.setQueryData(queryKeys.operatorLocales(OP), {
+		primaryLocale: "en",
+		supportedLocales: ["en", "es", "fr"],
+	});
+	qc.setQueryData(queryKeys.experienceTranslations(OP, EXP), [ES]);
+	qc.setQueryData(queryKeys.experienceTranslation(OP, EXP, "es"), ES);
+	return qc;
+}
+
+const meta = {
+	title: "Experiences/AppExperienceTranslations",
+	component: AppExperienceTranslations,
+	args: { tourOperatorId: OP, experienceId: EXP },
+	decorators: [
+		(Story) => (
+			<QueryClientProvider client={client()}>
+				<div className="mx-auto w-full max-w-3xl">
+					<Story />
+				</div>
+			</QueryClientProvider>
+		),
+	],
+} satisfies Meta<typeof AppExperienceTranslations>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};

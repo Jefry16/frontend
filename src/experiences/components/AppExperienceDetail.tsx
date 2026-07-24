@@ -1,5 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Compass, Eye, EyeOff, Pencil } from "lucide-react";
+import {
+	ArrowLeft,
+	Compass,
+	Eye,
+	EyeOff,
+	Languages,
+	Pencil,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
@@ -99,6 +106,16 @@ export const AppExperienceDetail = ({
 						onSelect: () =>
 							navigate({
 								to: "/tour-operators/$tourOperatorId/experiences/$experienceId/edit",
+								params: { tourOperatorId, experienceId },
+							}),
+					},
+					{
+						id: "translations",
+						label: m.translations(),
+						icon: Languages,
+						onSelect: () =>
+							navigate({
+								to: "/tour-operators/$tourOperatorId/experiences/$experienceId/translations",
 								params: { tourOperatorId, experienceId },
 							}),
 					},

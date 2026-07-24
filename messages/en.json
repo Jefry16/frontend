@@ -102,6 +102,20 @@
   "duration_minutes": "Duration (minutes)",
   "booking_cutoff_hours": "Booking cutoff (hours)",
   "experience_description_hint": "A short summary shown on cards and in search.",
+  "translation": "Translation",
+  "translations": "Translations",
+  "translations_description": "Localize this experience for each supported language. Empty fields fall back to the default language.",
+  "translation_fallback_help": "Leave a field empty to use the default-language text.",
+  "translation_canonical": "Default: {value}",
+  "translation_slug_help": "The URL for this language. Leave empty to reuse the default.",
+  "translation_saved": "Translation saved",
+  "save_translation": "Save translation",
+  "clear_translation": "Clear translation",
+  "translated": "Translated",
+  "not_translated": "Not translated",
+  "translations_no_languages": "This operator has only one language. Add a supported language in Settings to translate this experience.",
+  "manage_languages": "Manage languages",
+  "slug_taken": "That URL is already in use for this language.",
   "featured_hint": "Featured experiences are highlighted on your storefront.",
   "featured": "Featured",
   "booking_cutoff": "Booking cutoff",
@@ -224,5 +238,6 @@
   "validation_password_special": "Must contain at least one special character",
   "validation_password_too_long": "Password is too long",
   "validation_select_one_language": "Select at least one language",
-  "validation_primary_language_supported": "The primary language must be one of the supported languages"
+  "validation_primary_language_supported": "The primary language must be one of the supported languages",
+  "validation_slug": "Use lowercase letters, numbers and hyphens"
 }

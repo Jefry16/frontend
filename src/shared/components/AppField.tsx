@@ -13,6 +13,7 @@ interface AppFieldProps {
 	label: string;
 	type?: "text" | "email" | "password";
 	description?: string;
+	placeholder?: string;
 	autoComplete?: string;
 	required?: boolean;
 }
@@ -25,6 +26,7 @@ export const AppField = ({
 	label,
 	type = "text",
 	description,
+	placeholder,
 	autoComplete,
 	required,
 }: AppFieldProps) => {
@@ -45,6 +47,7 @@ export const AppField = ({
 				onBlur={field.handleBlur}
 				aria-invalid={isInvalid}
 				aria-required={required || undefined}
+				placeholder={placeholder}
 				autoComplete={autoComplete}
 			/>
 			{description && <FieldDescription>{description}</FieldDescription>}

@@ -26,3 +26,18 @@ export interface Experience {
 	createdBy: string;
 	createdAt: string;
 }
+
+// One locale's translation overlay (GET/PUT/DELETE .../translations/{locale}).
+// `locale` is its identity; every content field is nullable — null means
+// untranslated, so the storefront falls back to the canonical experience field.
+// Tags aren't translated (no `tags` here); `slug` is per-locale.
+export interface ExperienceTranslation {
+	locale: string;
+	name: string | null;
+	description: string | null;
+	longDescription: string | null;
+	highlights: string[] | null;
+	included: string[] | null;
+	notIncluded: string[] | null;
+	slug: string | null;
+}
