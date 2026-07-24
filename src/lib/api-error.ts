@@ -38,3 +38,10 @@ export function apiErrorCode(err: unknown): string | undefined {
 	const code = errorBody(err)?.code;
 	return typeof code === "string" && code.length > 0 ? code : undefined;
 }
+
+// Whether an error is a 404 — a missing (or cross-tenant, tenant-isolated)
+// resource, as opposed to a transient failure. Detail pages branch on this to
+// show a "not found" state (no retry) vs an error state (with retry).
+export function isNotFound(err: unknown): boolean {
+	return isAxiosError(err) && err.response?.status === 404;
+}

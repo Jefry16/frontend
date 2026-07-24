@@ -4,12 +4,14 @@ import { ArrowLeft, FileText, FileX, Trash2 } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
+import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppEmptyState } from "#/shared/components/AppEmptyState";
+import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
+import { AppNotFound } from "#/shared/components/AppNotFound";
 import {
 	type AppAction,
 	AppPageActions,
@@ -35,7 +37,12 @@ export const AppMediaDetail = ({
 	const navigate = useNavigate();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
-	const { data: media, isPending, isError } = useMedia(tourOperatorId, mediaId);
+	const {
+		data: media,
+		isPending,
+		error,
+		refetch,
+	} = useMedia(tourOperatorId, mediaId);
 	const { remove } = useMediaActions(tourOperatorId, mediaId);
 
 	const backLink = (
@@ -74,15 +81,18 @@ export const AppMediaDetail = ({
 		);
 	}
 
-	if (isError || !media) {
+	if (error || !media) {
 		return (
 			<>
 				<AppPageHeader title={m.media()} breadcrumb={sectionBreadcrumb} />
-				<AppEmptyState
-					icon={FileX}
-					title={m.media_not_found()}
-					action={backLink}
-				/>
+				{isNotFound(error) ? (
+					<AppNotFound resource={m.media()} icon={FileX} action={backLink} />
+				) : (
+					<AppError
+						description={apiErrorMessage(error)}
+						onRetry={() => refetch()}
+					/>
+				)}
 			</>
 		);
 	}

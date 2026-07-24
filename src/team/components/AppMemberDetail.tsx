@@ -5,13 +5,15 @@ import { useAuth } from "#/auth";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
+import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppEmptyState } from "#/shared/components/AppEmptyState";
+import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
+import { AppNotFound } from "#/shared/components/AppNotFound";
 import {
 	type AppAction,
 	AppPageActions,
@@ -45,7 +47,8 @@ export const AppMemberDetail = ({
 	const {
 		data: member,
 		isPending,
-		isError,
+		error,
+		refetch,
 	} = useMember(tourOperatorId, userId);
 	const { changeRole, transferOwnership, remove } = useMemberActions(
 		tourOperatorId,
@@ -94,15 +97,18 @@ export const AppMemberDetail = ({
 		);
 	}
 
-	if (isError || !member) {
+	if (error || !member) {
 		return (
 			<>
 				<AppPageHeader title={m.member()} breadcrumb={sectionBreadcrumb} />
-				<AppEmptyState
-					icon={UserX}
-					title={m.member_not_found()}
-					action={backLink}
-				/>
+				{isNotFound(error) ? (
+					<AppNotFound resource={m.member()} icon={UserX} action={backLink} />
+				) : (
+					<AppError
+						description={apiErrorMessage(error)}
+						onRetry={() => refetch()}
+					/>
+				)}
 			</>
 		);
 	}

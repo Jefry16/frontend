@@ -15,4 +15,8 @@ export const queryKeys = {
 	media: (tourOperatorId: string) => ["media", tourOperatorId] as const,
 	mediaAsset: (tourOperatorId: string, mediaId: string) =>
 		["media", tourOperatorId, mediaId] as const,
+	experiences: (tourOperatorId: string) =>
+		["experiences", tourOperatorId] as const,
+	experience: (tourOperatorId: string, experienceId: string) =>
+		["experiences", tourOperatorId, experienceId] as const,
 };

@@ -1,6 +1,7 @@
 import type { LinkProps } from "@tanstack/react-router";
 import {
 	Building2,
+	Compass,
 	Images,
 	LayoutDashboard,
 	type LucideIcon,
@@ -27,6 +28,20 @@ export const tourOperatorNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: LayoutDashboard,
 		link: { to: "/tour-operators/$tourOperatorId", params: { tourOperatorId } },
 		exact: true,
+	},
+];
+
+// The main-nav "Catalog" section — the operator's sellable products. Grows per
+// feature (availability, audiences, pickup locations, …); Experiences is the
+// first. Rendered as a labeled group in the operator sidebar.
+export const catalogNavItems = (tourOperatorId: string): NavLeaf[] => [
+	{
+		label: m.experiences(),
+		icon: Compass,
+		link: {
+			to: "/tour-operators/$tourOperatorId/experiences",
+			params: { tourOperatorId },
+		},
 	},
 ];
 

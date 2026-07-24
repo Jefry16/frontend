@@ -1,12 +1,14 @@
 import { ArrowLeft, MailX, Send, Trash2 } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
+import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppEmptyState } from "#/shared/components/AppEmptyState";
+import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
+import { AppNotFound } from "#/shared/components/AppNotFound";
 import {
 	type AppAction,
 	AppPageActions,
@@ -38,7 +40,8 @@ export const AppInvitationDetail = ({
 	const {
 		data: invitation,
 		isPending,
-		isError,
+		error,
+		refetch,
 	} = useInvitation(tourOperatorId, invitationId);
 	const { resend, revoke } = useInvitationActions(tourOperatorId, invitationId);
 
@@ -84,15 +87,22 @@ export const AppInvitationDetail = ({
 		);
 	}
 
-	if (isError || !invitation) {
+	if (error || !invitation) {
 		return (
 			<>
 				<AppPageHeader title={m.invitation()} breadcrumb={sectionBreadcrumb} />
-				<AppEmptyState
-					icon={MailX}
-					title={m.invitation_not_found()}
-					action={backLink}
-				/>
+				{isNotFound(error) ? (
+					<AppNotFound
+						resource={m.invitation()}
+						icon={MailX}
+						action={backLink}
+					/>
+				) : (
+					<AppError
+						description={apiErrorMessage(error)}
+						onRetry={() => refetch()}
+					/>
+				)}
 			</>
 		);
 	}

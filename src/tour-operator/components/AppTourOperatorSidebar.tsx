@@ -12,6 +12,7 @@ import {
 import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator } from "../hooks/use-current-tour-operator";
 import {
+	catalogNavItems,
 	contentNavItems,
 	settingsNavItem,
 	tourOperatorNavItems,
@@ -25,6 +26,7 @@ import { SidebarNavLeaf } from "./SidebarNavLeaf";
 export const AppTourOperatorSidebar = () => {
 	const operator = useCurrentTourOperator();
 	const items = operator ? tourOperatorNavItems(operator.id) : [];
+	const catalog = operator ? catalogNavItems(operator.id) : [];
 	const content = operator ? contentNavItems(operator.id) : [];
 
 	return (
@@ -45,6 +47,17 @@ export const AppTourOperatorSidebar = () => {
 						))}
 					</SidebarMenu>
 				</SidebarGroup>
+
+				{catalog.length > 0 && (
+					<SidebarGroup>
+						<SidebarGroupLabel>{m.catalog()}</SidebarGroupLabel>
+						<SidebarMenu>
+							{catalog.map((item) => (
+								<SidebarNavLeaf key={item.label} item={item} />
+							))}
+						</SidebarMenu>
+					</SidebarGroup>
+				)}
 
 				{content.length > 0 && (
 					<SidebarGroup>
