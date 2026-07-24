@@ -1,0 +1,45 @@
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { queryKeys } from "#/lib/query-keys";
+import { AppLanguageCard } from "./AppLanguageCard";
+
+// Seed the allowlist so the picker renders its options without a live backend.
+function client(languages: string[]) {
+	const qc = new QueryClient({
+		defaultOptions: { queries: { staleTime: Number.POSITIVE_INFINITY } },
+	});
+	qc.setQueryData(queryKeys.uiLanguages, languages);
+	return qc;
+}
+
+const meta = {
+	title: "Auth/AppLanguageCard",
+	component: AppLanguageCard,
+} satisfies Meta<typeof AppLanguageCard>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Multiple: Story = {
+	decorators: [
+		(Story) => (
+			<QueryClientProvider client={client(["en", "es", "fr", "it"])}>
+				<div className="mx-auto w-full max-w-3xl">
+					<Story />
+				</div>
+			</QueryClientProvider>
+		),
+	],
+};
+
+export const SingleLanguage: Story = {
+	decorators: [
+		(Story) => (
+			<QueryClientProvider client={client(["en"])}>
+				<div className="mx-auto w-full max-w-3xl">
+					<Story />
+				</div>
+			</QueryClientProvider>
+		),
+	],
+};

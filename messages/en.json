@@ -149,6 +149,8 @@
   "remove_avatar": "Remove avatar",
   "remove_avatar_title": "Remove avatar?",
   "remove_avatar_body": "Your avatar will be removed and replaced with your initials.",
+  "interface_language": "Interface language",
+  "interface_language_description": "The language of the admin interface. Only affects you.",
   "change_password": "Change password",
   "change_password_description": "Update the password you use to sign in.",
   "current_password": "Current password",

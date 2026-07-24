@@ -3,6 +3,7 @@ import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { useAuth } from "../AuthProvider";
 import { AppChangePasswordForm } from "./AppChangePasswordForm";
+import { AppLanguageCard } from "./AppLanguageCard";
 import { AppUserAvatarCard } from "./AppUserAvatarCard";
 
 // The signed-in user's own account settings (avatar + password) — a Settings
@@ -36,6 +37,7 @@ export const AppAccountSettings = ({
 			/>
 			<div className="flex flex-col gap-6">
 				<AppUserAvatarCard avatarUrl={user.avatarUrl} />
+				<AppLanguageCard />
 				<AppChangePasswordForm />
 			</div>
 		</>
