@@ -1,8 +1,10 @@
-import { Compass } from "lucide-react";
+import { Compass, Plus } from "lucide-react";
 import { useMemo } from "react";
+import { Button } from "#/components/ui/button";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
+import { AppLink } from "#/shared/components/AppLink";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { experienceColumns } from "../columns";
 
@@ -29,6 +31,17 @@ export const AppExperiencesList = ({
 				icon: Compass,
 				title: m.no_experiences(),
 				description: m.no_experiences_body(),
+				action: (
+					<Button asChild>
+						<AppLink
+							to="/tour-operators/$tourOperatorId/experiences/new"
+							params={{ tourOperatorId }}
+						>
+							<Plus />
+							{m.new_experience()}
+						</AppLink>
+					</Button>
+				),
 			}}
 		/>
 	);

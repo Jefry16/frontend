@@ -15,7 +15,10 @@ export interface Experience {
 	included: string[];
 	notIncluded: string[];
 	highlights: string[];
+	// Raw media references (for editing) alongside the resolved URLs (for display).
+	thumbnailMediaId: string | null;
 	thumbnailUrl: string | null;
+	mediaIds: string[];
 	galleryUrls: string[];
 	durationMinutes: number;
 	bookingCutoffHours: number;

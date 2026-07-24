@@ -17,6 +17,8 @@ const base = {
 	included: [],
 	notIncluded: [],
 	highlights: [],
+	thumbnailMediaId: null,
+	mediaIds: [],
 	galleryUrls: [],
 	bookingCutoffHours: 24,
 	createdBy: "u-1",

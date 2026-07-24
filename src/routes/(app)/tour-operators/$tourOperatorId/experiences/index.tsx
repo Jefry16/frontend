@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
+import { Button } from "#/components/ui/button";
 import { AppExperiencesList } from "#/experiences";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 
 export const Route = createFileRoute(
@@ -21,6 +24,17 @@ function ExperiencesPage() {
 					<AppBreadcrumb
 						items={[{ label: m.catalog() }, { label: m.experiences() }]}
 					/>
+				}
+				actions={
+					<Button asChild>
+						<AppLink
+							to="/tour-operators/$tourOperatorId/experiences/new"
+							params={{ tourOperatorId }}
+						>
+							<Plus />
+							{m.new_experience()}
+						</AppLink>
+					</Button>
 				}
 			/>
 			<AppExperiencesList tourOperatorId={tourOperatorId} />
