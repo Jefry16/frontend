@@ -8,6 +8,7 @@ import {
 	type LucideIcon,
 	Mail,
 	Settings,
+	UserRound,
 	Users,
 } from "lucide-react";
 import * as m from "#/paraglide/messages";
@@ -91,6 +92,14 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Languages,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/languages",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.account(),
+		icon: UserRound,
+		link: {
+			to: "/tour-operators/$tourOperatorId/settings/account",
 			params: { tourOperatorId },
 		},
 	},

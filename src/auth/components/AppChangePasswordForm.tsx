@@ -1,0 +1,77 @@
+import { Button } from "#/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "#/components/ui/card";
+import { FieldGroup } from "#/components/ui/field";
+import { Spinner } from "#/components/ui/spinner";
+import * as m from "#/paraglide/messages";
+import { AppAlert } from "#/shared/components/AppAlert";
+import { AppPasswordField } from "#/shared/components/AppPasswordField";
+import { useChangePasswordForm } from "../hooks/use-change-password-form";
+
+// The change-password card: current + new + confirm, validated against the
+// shared password policy. On success the fields clear (form.reset in the hook).
+export const AppChangePasswordForm = () => {
+	const { form, isPending, errorMessage } = useChangePasswordForm();
+
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>{m.password()}</CardTitle>
+				<CardDescription>{m.change_password_description()}</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						form.handleSubmit();
+					}}
+					className="space-y-4"
+				>
+					{errorMessage && (
+						<AppAlert title={m.error()} description={errorMessage} />
+					)}
+					<FieldGroup>
+						<form.Field name="currentPassword">
+							{(field) => (
+								<AppPasswordField
+									field={field}
+									label={m.current_password()}
+									autoComplete="current-password"
+								/>
+							)}
+						</form.Field>
+						<form.Field name="newPassword">
+							{(field) => (
+								<AppPasswordField
+									field={field}
+									label={m.new_password()}
+									autoComplete="new-password"
+								/>
+							)}
+						</form.Field>
+						<form.Field name="confirmPassword">
+							{(field) => (
+								<AppPasswordField
+									field={field}
+									label={m.confirm_new_password()}
+									autoComplete="new-password"
+								/>
+							)}
+						</form.Field>
+					</FieldGroup>
+					<div className="flex justify-end">
+						<Button type="submit" disabled={isPending}>
+							{isPending && <Spinner className="size-4" />}
+							{m.change_password()}
+						</Button>
+					</div>
+				</form>
+			</CardContent>
+		</Card>
+	);
+};
