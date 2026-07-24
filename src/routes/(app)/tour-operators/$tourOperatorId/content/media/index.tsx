@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppMediaList } from "#/media";
+import { AppMediaList, AppMediaUploadButton } from "#/media";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
@@ -22,6 +22,7 @@ function MediaPage() {
 						items={[{ label: m.content() }, { label: m.media() }]}
 					/>
 				}
+				actions={<AppMediaUploadButton tourOperatorId={tourOperatorId} />}
 			/>
 			<AppMediaList tourOperatorId={tourOperatorId} />
 		</div>

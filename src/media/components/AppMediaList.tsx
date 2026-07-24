@@ -7,8 +7,8 @@ import { useCurrentTourOperator } from "#/tour-operator";
 import { mediaColumns } from "../columns";
 
 // The operator's media library as the standard cursor-paginated table: preview
-// first, filter by type, sort by Added, infinite scroll. Read-only for now
-// (upload/delete land as later slices).
+// first, filter by type, sort by Added, infinite scroll. Upload lives in the
+// page header (AppMediaUploadButton); delete is on the detail page.
 export const AppMediaList = ({
 	tourOperatorId,
 }: {
