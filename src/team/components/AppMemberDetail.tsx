@@ -5,20 +5,18 @@ import { useAuth } from "#/auth";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
-import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppNotFound } from "#/shared/components/AppNotFound";
 import {
 	type AppAction,
 	AppPageActions,
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { roleBadgeVariant, roleLabel } from "../format";
 import { useMember } from "../hooks/use-member";
@@ -44,12 +42,7 @@ export const AppMemberDetail = ({
 	const navigate = useNavigate();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
-	const {
-		data: member,
-		isPending,
-		error,
-		refetch,
-	} = useMember(tourOperatorId, userId);
+	const query = useMember(tourOperatorId, userId);
 	const { changeRole, transferOwnership, remove } = useMemberActions(
 		tourOperatorId,
 		userId,
@@ -65,24 +58,26 @@ export const AppMemberDetail = ({
 			{m.back_to_members()}
 		</AppLink>
 	);
-	// Settings / Members, until the specific member resolves (then the name is added).
-	const sectionBreadcrumb = (
-		<AppBreadcrumb
-			items={[
-				{
-					label: m.settings(),
-					to: "/tour-operators/$tourOperatorId/settings",
-					params: { tourOperatorId },
-				},
-				{ label: m.members() },
-			]}
-		/>
-	);
 
-	if (isPending) {
-		return (
-			<>
-				<AppPageHeader title={m.member()} breadcrumb={sectionBreadcrumb} />
+	return (
+		<AppResourceView
+			query={query}
+			resource={m.member()}
+			icon={UserX}
+			breadcrumb={
+				<AppBreadcrumb
+					items={[
+						{
+							label: m.settings(),
+							to: "/tour-operators/$tourOperatorId/settings",
+							params: { tourOperatorId },
+						},
+						{ label: m.members() },
+					]}
+				/>
+			}
+			notFoundAction={backLink}
+			loading={
 				<Card>
 					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 						{["a", "b", "c"].map((k) => (
@@ -93,116 +88,103 @@ export const AppMemberDetail = ({
 						))}
 					</CardContent>
 				</Card>
-			</>
-		);
-	}
+			}
+		>
+			{(member) => {
+				const isSelf = user?.id === member.id;
+				const isAdmin = callerRole === "OWNER" || callerRole === "ADMIN";
+				const isOwnerCaller = callerRole === "OWNER";
+				const label = member.name ?? member.email ?? m.member();
 
-	if (error || !member) {
-		return (
-			<>
-				<AppPageHeader title={m.member()} breadcrumb={sectionBreadcrumb} />
-				{isNotFound(error) ? (
-					<AppNotFound resource={m.member()} icon={UserX} action={backLink} />
-				) : (
-					<AppError
-						description={apiErrorMessage(error)}
-						onRetry={() => refetch()}
-					/>
-				)}
-			</>
-		);
-	}
-
-	const isSelf = user?.id === member.id;
-	const isAdmin = callerRole === "OWNER" || callerRole === "ADMIN";
-	const isOwnerCaller = callerRole === "OWNER";
-	const label = member.name ?? member.email ?? m.member();
-
-	// Actions mirror the backend guards (which are the real gate — the UI just
-	// hides what a viewer can't do):
-	// - Viewing yourself → Leave (but the owner can't leave without transferring).
-	// - An ADMIN+ managing another non-owner member → role toggle + Remove, and if
-	//   the caller is the OWNER, also "Make owner" (transfers ownership, demoting
-	//   the caller to admin).
-	const actions: AppAction[] = [];
-	if (isSelf) {
-		if (member.role !== "OWNER") {
-			actions.push({
-				id: "leave",
-				label: m.leave_team(),
-				icon: LogOut,
-				variant: "destructive",
-				pending: remove.isPending,
-				confirm: {
-					title: m.leave_team_title(),
-					description: m.leave_team_body(),
-				},
-				onSelect: () =>
-					remove.mutate(undefined, {
-						onSuccess: () => {
-							toast.success(m.left_team());
-							// Their memberships changed — refresh the profile, then leave.
-							queryClient.invalidateQueries({
-								queryKey: queryKeys.authProfile,
-							});
-							navigate({ to: "/" });
-						},
-					}),
-			});
-		}
-	} else if (isAdmin && member.role !== "OWNER") {
-		const target: MemberRole = member.role === "STAFF" ? "ADMIN" : "STAFF";
-		actions.push({
-			id: "role",
-			label: target === "ADMIN" ? m.make_admin() : m.make_staff(),
-			icon: UserCog,
-			onSelect: () => changeRole.mutate(target),
-			pending: changeRole.isPending,
-		});
-		if (isOwnerCaller) {
-			actions.push({
-				id: "transfer",
-				label: m.make_owner(),
-				icon: Crown,
-				pending: transferOwnership.isPending,
-				confirm: {
-					title: m.transfer_ownership_title({ name: label }),
-					description: m.transfer_ownership_body(),
-				},
-				onSelect: () => transferOwnership.mutate(),
-			});
-		}
-		actions.push({
-			id: "remove",
-			label: m.remove_member(),
-			icon: Trash2,
-			variant: "destructive",
-			pending: remove.isPending,
-			confirm: {
-				title: m.remove_member_title({ name: label }),
-				description: m.remove_member_body(),
-			},
-			onSelect: () =>
-				remove.mutate(undefined, {
-					onSuccess: () => {
-						toast.success(m.member_removed());
-						navigate({
-							to: "/tour-operators/$tourOperatorId/settings/members",
-							params: { tourOperatorId },
+				// Actions mirror the backend guards (which are the real gate — the UI just
+				// hides what a viewer can't do):
+				// - Viewing yourself → Leave (but the owner can't leave without transferring).
+				// - An ADMIN+ managing another non-owner member → role toggle + Remove, and if
+				//   the caller is the OWNER, also "Make owner" (transfers ownership, demoting
+				//   the caller to admin).
+				const actions: AppAction[] = [];
+				if (isSelf) {
+					if (member.role !== "OWNER") {
+						actions.push({
+							id: "leave",
+							label: m.leave_team(),
+							icon: LogOut,
+							variant: "destructive",
+							pending: remove.isPending,
+							confirm: {
+								title: m.leave_team_title(),
+								description: m.leave_team_body(),
+							},
+							onSelect: () =>
+								remove.mutate(undefined, {
+									onSuccess: () => {
+										toast.success(m.left_team());
+										// Their memberships changed — refresh the profile, then leave.
+										queryClient.invalidateQueries({
+											queryKey: queryKeys.authProfile,
+										});
+										navigate({ to: "/" });
+									},
+								}),
 						});
-					},
-				}),
-		});
-	}
+					}
+				} else if (isAdmin && member.role !== "OWNER") {
+					const target: MemberRole =
+						member.role === "STAFF" ? "ADMIN" : "STAFF";
+					actions.push({
+						id: "role",
+						label: target === "ADMIN" ? m.make_admin() : m.make_staff(),
+						icon: UserCog,
+						onSelect: () => changeRole.mutate(target),
+						pending: changeRole.isPending,
+					});
+					if (isOwnerCaller) {
+						actions.push({
+							id: "transfer",
+							label: m.make_owner(),
+							icon: Crown,
+							pending: transferOwnership.isPending,
+							confirm: {
+								title: m.transfer_ownership_title({ name: label }),
+								description: m.transfer_ownership_body(),
+							},
+							onSelect: () => transferOwnership.mutate(),
+						});
+					}
+					actions.push({
+						id: "remove",
+						label: m.remove_member(),
+						icon: Trash2,
+						variant: "destructive",
+						pending: remove.isPending,
+						confirm: {
+							title: m.remove_member_title({ name: label }),
+							description: m.remove_member_body(),
+						},
+						onSelect: () =>
+							remove.mutate(undefined, {
+								onSuccess: () => {
+									toast.success(m.member_removed());
+									navigate({
+										to: "/tour-operators/$tourOperatorId/settings/members",
+										params: { tourOperatorId },
+									});
+								},
+							}),
+					});
+				}
 
-	return (
-		<MemberFacts
-			member={member}
-			label={label}
-			tourOperatorId={tourOperatorId}
-			timeZone={timeZone}
-			actions={actions}
-		/>
+				return (
+					<MemberFacts
+						member={member}
+						label={label}
+						tourOperatorId={tourOperatorId}
+						timeZone={timeZone}
+						actions={actions}
+					/>
+				);
+			}}
+		</AppResourceView>
 	);
 };
 

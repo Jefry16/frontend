@@ -4,19 +4,17 @@ import { ArrowLeft, FileText, FileX, Trash2 } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
-import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppNotFound } from "#/shared/components/AppNotFound";
 import {
 	type AppAction,
 	AppPageActions,
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { formatBytes, isImage, mimeLabel } from "../format";
 import { useMedia } from "../hooks/use-media";
@@ -37,12 +35,7 @@ export const AppMediaDetail = ({
 	const navigate = useNavigate();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
-	const {
-		data: media,
-		isPending,
-		error,
-		refetch,
-	} = useMedia(tourOperatorId, mediaId);
+	const query = useMedia(tourOperatorId, mediaId);
 	const { remove } = useMediaActions(tourOperatorId, mediaId);
 
 	const backLink = (
@@ -55,48 +48,8 @@ export const AppMediaDetail = ({
 			{m.back_to_media()}
 		</AppLink>
 	);
-	// Content / Media, until the specific file resolves (then the filename is added).
-	const sectionBreadcrumb = (
-		<AppBreadcrumb items={[{ label: m.content() }, { label: m.media() }]} />
-	);
 
-	if (isPending) {
-		return (
-			<>
-				<AppPageHeader title={m.media()} breadcrumb={sectionBreadcrumb} />
-				<Card>
-					<CardContent className="flex flex-col gap-6">
-						<Skeleton className="h-48 w-full" />
-						<div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-							{["a", "b", "c", "d"].map((k) => (
-								<div key={k} className="flex flex-col gap-2">
-									<Skeleton className="h-3 w-16" />
-									<Skeleton className="h-5 w-32" />
-								</div>
-							))}
-						</div>
-					</CardContent>
-				</Card>
-			</>
-		);
-	}
-
-	if (error || !media) {
-		return (
-			<>
-				<AppPageHeader title={m.media()} breadcrumb={sectionBreadcrumb} />
-				{isNotFound(error) ? (
-					<AppNotFound resource={m.media()} icon={FileX} action={backLink} />
-				) : (
-					<AppError
-						description={apiErrorMessage(error)}
-						onRetry={() => refetch()}
-					/>
-				)}
-			</>
-		);
-	}
-
+	// Delete is independent of the loaded record, so it's built once here.
 	const actions: AppAction[] = [
 		{
 			id: "delete",
@@ -125,12 +78,39 @@ export const AppMediaDetail = ({
 	];
 
 	return (
-		<MediaFacts
-			media={media}
-			tourOperatorId={tourOperatorId}
-			timeZone={timeZone}
-			actions={actions}
-		/>
+		<AppResourceView
+			query={query}
+			resource={m.media()}
+			icon={FileX}
+			breadcrumb={
+				<AppBreadcrumb items={[{ label: m.content() }, { label: m.media() }]} />
+			}
+			notFoundAction={backLink}
+			loading={
+				<Card>
+					<CardContent className="flex flex-col gap-6">
+						<Skeleton className="h-48 w-full" />
+						<div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+							{["a", "b", "c", "d"].map((k) => (
+								<div key={k} className="flex flex-col gap-2">
+									<Skeleton className="h-3 w-16" />
+									<Skeleton className="h-5 w-32" />
+								</div>
+							))}
+						</div>
+					</CardContent>
+				</Card>
+			}
+		>
+			{(media) => (
+				<MediaFacts
+					media={media}
+					tourOperatorId={tourOperatorId}
+					timeZone={timeZone}
+					actions={actions}
+				/>
+			)}
+		</AppResourceView>
 	);
 };
 

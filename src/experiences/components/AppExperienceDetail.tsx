@@ -1,19 +1,17 @@
 import { ArrowLeft, Compass, Eye, EyeOff } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
-import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppNotFound } from "#/shared/components/AppNotFound";
 import {
 	type AppAction,
 	AppPageActions,
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { formatDuration, statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
@@ -46,12 +44,7 @@ export const AppExperienceDetail = ({
 	experienceId: string;
 }) => {
 	const timeZone = useCurrentTourOperator()?.timezone;
-	const {
-		data: experience,
-		isPending,
-		error,
-		refetch,
-	} = useExperience(tourOperatorId, experienceId);
+	const query = useExperience(tourOperatorId, experienceId);
 	const { publish, unpublish } = useExperienceActions(
 		tourOperatorId,
 		experienceId,
@@ -67,17 +60,19 @@ export const AppExperienceDetail = ({
 			{m.back_to_experiences()}
 		</AppLink>
 	);
-	// Catalog / Experiences, until the specific experience resolves.
-	const sectionBreadcrumb = (
-		<AppBreadcrumb
-			items={[{ label: m.catalog() }, { label: m.experiences() }]}
-		/>
-	);
 
-	if (isPending) {
-		return (
-			<>
-				<AppPageHeader title={m.experience()} breadcrumb={sectionBreadcrumb} />
+	return (
+		<AppResourceView
+			query={query}
+			resource={m.experience()}
+			icon={Compass}
+			breadcrumb={
+				<AppBreadcrumb
+					items={[{ label: m.catalog() }, { label: m.experiences() }]}
+				/>
+			}
+			notFoundAction={backLink}
+			loading={
 				<Card>
 					<CardContent className="flex flex-col gap-5 sm:flex-row">
 						<Skeleton className="aspect-video w-full sm:w-64" />
@@ -91,55 +86,36 @@ export const AppExperienceDetail = ({
 						</div>
 					</CardContent>
 				</Card>
-			</>
-		);
-	}
-
-	if (error || !experience) {
-		return (
-			<>
-				<AppPageHeader title={m.experience()} breadcrumb={sectionBreadcrumb} />
-				{isNotFound(error) ? (
-					<AppNotFound
-						resource={m.experience()}
-						icon={Compass}
-						action={backLink}
+			}
+		>
+			{(experience) => {
+				const actions: AppAction[] = [
+					experience.published
+						? {
+								id: "unpublish",
+								label: m.unpublish(),
+								icon: EyeOff,
+								pending: unpublish.isPending,
+								onSelect: () => unpublish.mutate(),
+							}
+						: {
+								id: "publish",
+								label: m.publish(),
+								icon: Eye,
+								pending: publish.isPending,
+								onSelect: () => publish.mutate(),
+							},
+				];
+				return (
+					<ExperienceView
+						experience={experience}
+						tourOperatorId={tourOperatorId}
+						timeZone={timeZone}
+						actions={actions}
 					/>
-				) : (
-					<AppError
-						description={apiErrorMessage(error)}
-						onRetry={() => refetch()}
-					/>
-				)}
-			</>
-		);
-	}
-
-	const actions: AppAction[] = [
-		experience.published
-			? {
-					id: "unpublish",
-					label: m.unpublish(),
-					icon: EyeOff,
-					pending: unpublish.isPending,
-					onSelect: () => unpublish.mutate(),
-				}
-			: {
-					id: "publish",
-					label: m.publish(),
-					icon: Eye,
-					pending: publish.isPending,
-					onSelect: () => publish.mutate(),
-				},
-	];
-
-	return (
-		<ExperienceView
-			experience={experience}
-			tourOperatorId={tourOperatorId}
-			timeZone={timeZone}
-			actions={actions}
-		/>
+				);
+			}}
+		</AppResourceView>
 	);
 };
 

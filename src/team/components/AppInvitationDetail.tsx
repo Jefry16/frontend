@@ -1,19 +1,17 @@
 import { ArrowLeft, MailX, Send, Trash2 } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
-import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppNotFound } from "#/shared/components/AppNotFound";
 import {
 	type AppAction,
 	AppPageActions,
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCurrentTourOperator } from "#/tour-operator";
 import {
 	effectiveStatus,
@@ -37,12 +35,7 @@ export const AppInvitationDetail = ({
 	invitationId: string;
 }) => {
 	const timeZone = useCurrentTourOperator()?.timezone;
-	const {
-		data: invitation,
-		isPending,
-		error,
-		refetch,
-	} = useInvitation(tourOperatorId, invitationId);
+	const query = useInvitation(tourOperatorId, invitationId);
 	const { resend, revoke } = useInvitationActions(tourOperatorId, invitationId);
 
 	const backLink = (
@@ -55,24 +48,26 @@ export const AppInvitationDetail = ({
 			{m.back_to_invitations()}
 		</AppLink>
 	);
-	// Settings / Invitations, until the specific invitation resolves.
-	const sectionBreadcrumb = (
-		<AppBreadcrumb
-			items={[
-				{
-					label: m.settings(),
-					to: "/tour-operators/$tourOperatorId/settings",
-					params: { tourOperatorId },
-				},
-				{ label: m.invitations() },
-			]}
-		/>
-	);
 
-	if (isPending) {
-		return (
-			<>
-				<AppPageHeader title={m.invitation()} breadcrumb={sectionBreadcrumb} />
+	return (
+		<AppResourceView
+			query={query}
+			resource={m.invitation()}
+			icon={MailX}
+			breadcrumb={
+				<AppBreadcrumb
+					items={[
+						{
+							label: m.settings(),
+							to: "/tour-operators/$tourOperatorId/settings",
+							params: { tourOperatorId },
+						},
+						{ label: m.invitations() },
+					]}
+				/>
+			}
+			notFoundAction={backLink}
+			loading={
 				<Card>
 					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 						{["a", "b", "c", "d"].map((k) => (
@@ -83,65 +78,47 @@ export const AppInvitationDetail = ({
 						))}
 					</CardContent>
 				</Card>
-			</>
-		);
-	}
+			}
+		>
+			{(invitation) => {
+				// Actions apply only while the invitation is live (stored PENDING — an
+				// "Expired" row is still PENDING and can be resent or revoked). Terminal
+				// states (ACCEPTED / REVOKED) offer none.
+				const actions: AppAction[] =
+					invitation.status === "PENDING"
+						? [
+								{
+									id: "resend",
+									label: m.resend(),
+									icon: Send,
+									onSelect: () => resend.mutate(),
+									pending: resend.isPending,
+								},
+								{
+									id: "revoke",
+									label: m.revoke(),
+									icon: Trash2,
+									variant: "destructive",
+									pending: revoke.isPending,
+									confirm: {
+										title: m.revoke_invitation_title(),
+										description: m.revoke_invitation_body(),
+									},
+									onSelect: () => revoke.mutate(),
+								},
+							]
+						: [];
 
-	if (error || !invitation) {
-		return (
-			<>
-				<AppPageHeader title={m.invitation()} breadcrumb={sectionBreadcrumb} />
-				{isNotFound(error) ? (
-					<AppNotFound
-						resource={m.invitation()}
-						icon={MailX}
-						action={backLink}
+				return (
+					<InvitationFacts
+						invitation={invitation}
+						tourOperatorId={tourOperatorId}
+						timeZone={timeZone}
+						actions={actions}
 					/>
-				) : (
-					<AppError
-						description={apiErrorMessage(error)}
-						onRetry={() => refetch()}
-					/>
-				)}
-			</>
-		);
-	}
-
-	// Actions apply only while the invitation is live (stored PENDING — an
-	// "Expired" row is still PENDING and can be resent or revoked). Terminal
-	// states (ACCEPTED / REVOKED) offer none.
-	const actions: AppAction[] =
-		invitation.status === "PENDING"
-			? [
-					{
-						id: "resend",
-						label: m.resend(),
-						icon: Send,
-						onSelect: () => resend.mutate(),
-						pending: resend.isPending,
-					},
-					{
-						id: "revoke",
-						label: m.revoke(),
-						icon: Trash2,
-						variant: "destructive",
-						pending: revoke.isPending,
-						confirm: {
-							title: m.revoke_invitation_title(),
-							description: m.revoke_invitation_body(),
-						},
-						onSelect: () => revoke.mutate(),
-					},
-				]
-			: [];
-
-	return (
-		<InvitationFacts
-			invitation={invitation}
-			tourOperatorId={tourOperatorId}
-			timeZone={timeZone}
-			actions={actions}
-		/>
+				);
+			}}
+		</AppResourceView>
 	);
 };
 
