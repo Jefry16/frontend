@@ -4,6 +4,7 @@ import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppArrayInput } from "#/shared/components/AppArrayInput";
 import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
 import { AppField } from "#/shared/components/AppField";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
@@ -11,8 +12,8 @@ import { useExperienceForm } from "../hooks/use-experience-form";
 import type { Experience } from "../types";
 
 // The experience content form — create (no `experience`) or edit (with one):
-// name, description, duration, cutoff, featured. Tags/highlights/inclusions and
-// media aren't edited here yet; the hook carries them through unchanged.
+// name, copy, duration, cutoff, highlights/inclusions/tags (AppArrayInput), and
+// featured. Media isn't edited here yet; the hook carries the refs through.
 export const AppExperienceForm = ({
 	tourOperatorId,
 	experience,
@@ -82,6 +83,26 @@ export const AppExperienceForm = ({
 								)}
 							</form.Field>
 						</div>
+						<form.Field name="highlights">
+							{(field) => (
+								<AppArrayInput field={field} label={m.highlights()} />
+							)}
+						</form.Field>
+						<div className="grid gap-4 sm:grid-cols-2">
+							<form.Field name="included">
+								{(field) => (
+									<AppArrayInput field={field} label={m.whats_included()} />
+								)}
+							</form.Field>
+							<form.Field name="notIncluded">
+								{(field) => (
+									<AppArrayInput field={field} label={m.not_included()} />
+								)}
+							</form.Field>
+						</div>
+						<form.Field name="tags">
+							{(field) => <AppArrayInput field={field} label={m.tags()} />}
+						</form.Field>
 						<form.Field name="featured">
 							{(field) => (
 								<AppCheckboxField

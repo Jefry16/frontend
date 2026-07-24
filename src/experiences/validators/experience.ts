@@ -3,9 +3,11 @@ import * as m from "#/paraglide/messages";
 
 // The editable fields of the create/edit form. Bounds mirror the backend value
 // objects: name ≤200, description ≤500, longDescription ≤10000, duration
-// 1–14400 min, cutoff 0–8760 h. The content arrays (tags / highlights / …) and
-// media aren't edited here yet — the form hook carries them through unchanged
-// (empty on create, the record's values on edit) so a PATCH never wipes them.
+// 1–14400 min, cutoff 0–8760 h. The content lists (tags / highlights /
+// inclusions) are edited here via AppArrayInput; media refs still aren't, so the
+// form hook carries thumbnailMediaId / mediaIds through unchanged.
+const stringList = z.array(z.string().trim().min(1)).default([]);
+
 export const experienceSchema = z.object({
 	name: z
 		.string()
@@ -45,6 +47,10 @@ export const experienceSchema = z.object({
 				.max(8760, m.validation_max_value({ count: 8760 })),
 		),
 	featured: z.boolean(),
+	highlights: stringList,
+	included: stringList,
+	notIncluded: stringList,
+	tags: stringList,
 });
 
 export type ExperienceFormData = z.input<typeof experienceSchema>;

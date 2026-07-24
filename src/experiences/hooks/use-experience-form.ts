@@ -15,11 +15,11 @@ import {
 	experienceSchema,
 } from "../validators/experience";
 
-// Create (no `experience`) or edit (with one). The form only edits the scalar
-// content; the arrays (tags / highlights / included / notIncluded) and media
-// refs are carried through unchanged — empty on create, the record's values on
-// edit — so a PATCH (which treats null lists/media as empty) never wipes them.
-// Editing media/arrays themselves needs a picker + repeatable fields (later).
+// Create (no `experience`) or edit (with one). Edits every field except media:
+// scalars plus the content lists (tags / highlights / inclusions, via
+// AppArrayInput). Media refs are carried through unchanged (empty/null on
+// create, the record's values on edit) so a PATCH never wipes them — editing
+// them needs a media picker (later).
 export const useExperienceForm = (
 	tourOperatorId: string,
 	experience?: Experience,
@@ -35,12 +35,11 @@ export const useExperienceForm = (
 		ExperienceFields
 	>({
 		mutationFn: async (fields) => {
+			// Content lists (tags / highlights / inclusions) come from the form;
+			// media refs aren't edited here yet, so carry them through unchanged
+			// (null/empty on create, the record's values on edit).
 			const payload = {
 				...fields,
-				tags: experience?.tags ?? [],
-				included: experience?.included ?? [],
-				notIncluded: experience?.notIncluded ?? [],
-				highlights: experience?.highlights ?? [],
 				mediaIds: experience?.mediaIds ?? [],
 				thumbnailMediaId: experience?.thumbnailMediaId ?? null,
 			};
@@ -86,6 +85,10 @@ export const useExperienceForm = (
 				? String(experience.bookingCutoffHours)
 				: "24",
 			featured: experience?.featured ?? false,
+			highlights: experience?.highlights ?? [],
+			included: experience?.included ?? [],
+			notIncluded: experience?.notIncluded ?? [],
+			tags: experience?.tags ?? [],
 		} as ExperienceFormData,
 		validators: { onSubmit: experienceSchema },
 		onSubmit: ({ value }) => mutate(experienceSchema.parse(value)),

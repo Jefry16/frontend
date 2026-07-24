@@ -111,6 +111,8 @@
   "whats_included": "What's included",
   "not_included": "Not included",
   "tags": "Tags",
+  "type_and_press_enter": "Type and press Enter",
+  "remove_item": "Remove {item}",
   "publish": "Publish",
   "unpublish": "Unpublish",
   "experience_published": "Experience published",
