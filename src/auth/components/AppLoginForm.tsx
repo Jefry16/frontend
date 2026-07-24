@@ -6,7 +6,7 @@ import { useLoginForm } from "../hooks/use-login-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
 
 export const AppLoginForm = () => {
-	const { form, isPending, errorMessage } = useLoginForm();
+	const { form, isPending, errorMessage, notVerified } = useLoginForm();
 	return (
 		<AppAuthFormWrapper
 			form={form}
@@ -17,6 +17,15 @@ export const AppLoginForm = () => {
 			submitLabel={m.sign_in()}
 			footer={
 				<>
+					{notVerified && (
+						<form.Subscribe selector={(s) => s.values.email}>
+							{(email) => (
+								<AppLink to="/auth/verify-email" search={{ email }}>
+									{m.resend_verification()}
+								</AppLink>
+							)}
+						</form.Subscribe>
+					)}
 					<AppLink to="/auth/forgot-password">
 						{m.forgot_password_link()}
 					</AppLink>

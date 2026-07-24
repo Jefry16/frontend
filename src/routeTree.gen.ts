@@ -17,6 +17,7 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthVerifyRouteImport } from './routes/auth/verify'
+import { Route as AuthVerifyEmailRouteImport } from './routes/auth/verify-email'
 import { Route as InvitationsAcceptRouteImport } from './routes/invitations/accept'
 import { Route as appTourOperatorsTourOperatorIdRouteRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/route'
 import { Route as appTourOperatorsNewRouteImport } from './routes/(app)/tour-operators/new'
@@ -75,6 +76,11 @@ const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
 const AuthVerifyRoute = AuthVerifyRouteImport.update({
   id: '/verify',
   path: '/verify',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const InvitationsAcceptRoute = InvitationsAcceptRouteImport.update({
@@ -207,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/invitations/accept': typeof InvitationsAcceptRoute
   '/': typeof appIndexRoute
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
@@ -236,6 +243,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/invitations/accept': typeof InvitationsAcceptRoute
   '/': typeof appIndexRoute
   '/tour-operators/new': typeof appTourOperatorsNewRoute
@@ -266,6 +274,7 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/invitations/accept': typeof InvitationsAcceptRoute
   '/(app)/': typeof appIndexRoute
   '/(app)/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
@@ -297,6 +306,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/reset-password'
     | '/auth/verify'
+    | '/auth/verify-email'
     | '/invitations/accept'
     | '/'
     | '/tour-operators/$tourOperatorId'
@@ -326,6 +336,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/reset-password'
     | '/auth/verify'
+    | '/auth/verify-email'
     | '/invitations/accept'
     | '/'
     | '/tour-operators/new'
@@ -355,6 +366,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/reset-password'
     | '/auth/verify'
+    | '/auth/verify-email'
     | '/invitations/accept'
     | '/(app)/'
     | '/(app)/tour-operators/$tourOperatorId'
@@ -440,6 +452,13 @@ declare module '@tanstack/react-router' {
       path: '/verify'
       fullPath: '/auth/verify'
       preLoaderRoute: typeof AuthVerifyRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/verify-email': {
+      id: '/auth/verify-email'
+      path: '/verify-email'
+      fullPath: '/auth/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/invitations/accept': {
@@ -671,6 +690,7 @@ interface AuthRouteRouteChildren {
   AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthVerifyRoute: typeof AuthVerifyRoute
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
@@ -679,6 +699,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthVerifyRoute: AuthVerifyRoute,
+  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(

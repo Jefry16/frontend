@@ -14,7 +14,6 @@
   "create_your_account": "Create your account",
   "sign_up_to_get_started": "Sign up to get started",
   "register": "Register",
-  "register_success": "Account created. Please check your email to verify.",
 
   "email": "Email",
   "password": "Password",
@@ -35,6 +34,12 @@
   "verification_failed_title": "Verification failed",
   "verification_failed_description": "This verification link is invalid or has expired.",
   "verification_missing_token": "This verification link is missing its token.",
+  "check_email_title": "Check your email",
+  "check_email_description": "We sent a verification link to {email}. Open it to activate your account.",
+  "check_email_description_generic": "We sent you a verification link. Open it to activate your account.",
+  "resend_verification": "Resend verification email",
+  "resend_verification_in": "Resend in {seconds}s",
+  "verification_email_sent": "Verification email sent. Check your inbox.",
 
   "forgot_password_link": "Forgot your password?",
   "forgot_password_title": "Reset your password",

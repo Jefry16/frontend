@@ -13,6 +13,9 @@ export const useLoginForm = () => {
 	const { login } = useAuth();
 	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	// A 403 means the account exists but isn't verified — the form offers a
+	// resend path in that case (distinct from a wrong-credentials 401).
+	const [notVerified, setNotVerified] = useState(false);
 
 	const { mutate, isPending } = useMutation<
 		AuthUser,
@@ -22,16 +25,19 @@ export const useLoginForm = () => {
 		mutationFn: ({ email, password }) => login(email, password),
 		onSuccess: (user) => {
 			setErrorMessage(null);
+			setNotVerified(false);
 			navigate({ to: getPostLoginPath(user) });
 		},
 		onError: (error) => {
-			if (error.response?.status === 401) {
+			const status = error.response?.status;
+			if (status === 401) {
 				setErrorMessage(m.invalid_credentials());
-			} else if (error.response?.status === 403) {
+			} else if (status === 403) {
 				setErrorMessage(m.email_not_verified());
 			} else {
 				setErrorMessage(m.error());
 			}
+			setNotVerified(status === 403);
 			form.setFieldValue("password", "");
 		},
 	});
@@ -44,5 +50,5 @@ export const useLoginForm = () => {
 		},
 	});
 
-	return { form, isPending, errorMessage };
+	return { form, isPending, errorMessage, notVerified };
 };

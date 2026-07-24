@@ -3,14 +3,12 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import type { AxiosError } from "axios";
 import { useState } from "react";
-import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import * as m from "#/paraglide/messages";
 import { type RegisterFormData, registerSchema } from "../validators/register";
 
 export const useRegisterForm = () => {
 	const navigate = useNavigate();
-	const toast = useAppToast();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const { mutate, isPending } = useMutation<
@@ -20,10 +18,15 @@ export const useRegisterForm = () => {
 	>({
 		mutationFn: ({ confirmPassword: _confirm, ...data }) =>
 			authApi.post("/auth/register", data),
-		onSuccess: () => {
+		// Registration sends a verification email; land on the "check your email"
+		// screen (which can resend) rather than login, where an unverified account
+		// would just 403.
+		onSuccess: (_data, variables) => {
 			setErrorMessage(null);
-			toast.success(m.register_success());
-			navigate({ to: "/auth/login" });
+			navigate({
+				to: "/auth/verify-email",
+				search: { email: variables.email },
+			});
 		},
 		onError: () => {
 			// The backend never reveals whether an email is already registered:
