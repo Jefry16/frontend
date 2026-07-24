@@ -1,7 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Crown, LogOut, Trash2, UserCog, UserX } from "lucide-react";
-import type { ReactNode } from "react";
 import { useAuth } from "#/auth";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
@@ -9,6 +8,7 @@ import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
+import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppEmptyState } from "#/shared/components/AppEmptyState";
 import { AppLink } from "#/shared/components/AppLink";
@@ -62,11 +62,24 @@ export const AppMemberDetail = ({
 			{m.back_to_members()}
 		</AppLink>
 	);
+	// Settings / Members, until the specific member resolves (then the name is added).
+	const sectionBreadcrumb = (
+		<AppBreadcrumb
+			items={[
+				{
+					label: m.settings(),
+					to: "/tour-operators/$tourOperatorId/settings",
+					params: { tourOperatorId },
+				},
+				{ label: m.members() },
+			]}
+		/>
+	);
 
 	if (isPending) {
 		return (
 			<>
-				<AppPageHeader title={m.member()} breadcrumb={backLink} />
+				<AppPageHeader title={m.member()} breadcrumb={sectionBreadcrumb} />
 				<Card>
 					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 						{["a", "b", "c"].map((k) => (
@@ -84,7 +97,7 @@ export const AppMemberDetail = ({
 	if (isError || !member) {
 		return (
 			<>
-				<AppPageHeader title={m.member()} breadcrumb={backLink} />
+				<AppPageHeader title={m.member()} breadcrumb={sectionBreadcrumb} />
 				<AppEmptyState
 					icon={UserX}
 					title={m.member_not_found()}
@@ -180,8 +193,8 @@ export const AppMemberDetail = ({
 		<MemberFacts
 			member={member}
 			label={label}
+			tourOperatorId={tourOperatorId}
 			timeZone={timeZone}
-			breadcrumb={backLink}
 			actions={actions}
 		/>
 	);
@@ -190,14 +203,14 @@ export const AppMemberDetail = ({
 const MemberFacts = ({
 	member,
 	label,
+	tourOperatorId,
 	timeZone,
-	breadcrumb,
 	actions,
 }: {
 	member: Member;
 	label: string;
+	tourOperatorId: string;
 	timeZone?: string;
-	breadcrumb: ReactNode;
 	actions: AppAction[];
 }) => {
 	const dateFormat = new Intl.DateTimeFormat(undefined, {
@@ -210,7 +223,23 @@ const MemberFacts = ({
 			<AppPageHeader
 				title={label}
 				description={member.name ? (member.email ?? undefined) : undefined}
-				breadcrumb={breadcrumb}
+				breadcrumb={
+					<AppBreadcrumb
+						items={[
+							{
+								label: m.settings(),
+								to: "/tour-operators/$tourOperatorId/settings",
+								params: { tourOperatorId },
+							},
+							{
+								label: m.members(),
+								to: "/tour-operators/$tourOperatorId/settings/members",
+								params: { tourOperatorId },
+							},
+							{ label },
+						]}
+					/>
+				}
 				actions={
 					actions.length > 0 ? <AppPageActions actions={actions} /> : undefined
 				}

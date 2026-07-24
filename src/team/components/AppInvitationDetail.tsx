@@ -1,9 +1,9 @@
 import { ArrowLeft, MailX, Send, Trash2 } from "lucide-react";
-import type { ReactNode } from "react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
+import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppEmptyState } from "#/shared/components/AppEmptyState";
 import { AppLink } from "#/shared/components/AppLink";
@@ -52,11 +52,24 @@ export const AppInvitationDetail = ({
 			{m.back_to_invitations()}
 		</AppLink>
 	);
+	// Settings / Invitations, until the specific invitation resolves.
+	const sectionBreadcrumb = (
+		<AppBreadcrumb
+			items={[
+				{
+					label: m.settings(),
+					to: "/tour-operators/$tourOperatorId/settings",
+					params: { tourOperatorId },
+				},
+				{ label: m.invitations() },
+			]}
+		/>
+	);
 
 	if (isPending) {
 		return (
 			<>
-				<AppPageHeader title={m.invitation()} breadcrumb={backLink} />
+				<AppPageHeader title={m.invitation()} breadcrumb={sectionBreadcrumb} />
 				<Card>
 					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 						{["a", "b", "c", "d"].map((k) => (
@@ -74,7 +87,7 @@ export const AppInvitationDetail = ({
 	if (isError || !invitation) {
 		return (
 			<>
-				<AppPageHeader title={m.invitation()} breadcrumb={backLink} />
+				<AppPageHeader title={m.invitation()} breadcrumb={sectionBreadcrumb} />
 				<AppEmptyState
 					icon={MailX}
 					title={m.invitation_not_found()}
@@ -115,8 +128,8 @@ export const AppInvitationDetail = ({
 	return (
 		<InvitationFacts
 			invitation={invitation}
+			tourOperatorId={tourOperatorId}
 			timeZone={timeZone}
-			breadcrumb={backLink}
 			actions={actions}
 		/>
 	);
@@ -125,13 +138,13 @@ export const AppInvitationDetail = ({
 // The facts, split out so it renders once `invitation` is known (non-null).
 const InvitationFacts = ({
 	invitation,
+	tourOperatorId,
 	timeZone,
-	breadcrumb,
 	actions,
 }: {
 	invitation: Invitation;
+	tourOperatorId: string;
 	timeZone?: string;
-	breadcrumb: ReactNode;
 	actions: AppAction[];
 }) => {
 	const dateFormat = new Intl.DateTimeFormat(undefined, {
@@ -147,7 +160,23 @@ const InvitationFacts = ({
 			<AppPageHeader
 				title={invitation.name}
 				description={invitation.email}
-				breadcrumb={breadcrumb}
+				breadcrumb={
+					<AppBreadcrumb
+						items={[
+							{
+								label: m.settings(),
+								to: "/tour-operators/$tourOperatorId/settings",
+								params: { tourOperatorId },
+							},
+							{
+								label: m.invitations(),
+								to: "/tour-operators/$tourOperatorId/settings/invitations",
+								params: { tourOperatorId },
+							},
+							{ label: invitation.name },
+						]}
+					/>
+				}
 				actions={
 					actions.length > 0 ? <AppPageActions actions={actions} /> : undefined
 				}
