@@ -22,6 +22,8 @@ import { Route as InvitationsAcceptRouteImport } from './routes/invitations/acce
 import { Route as appTourOperatorsTourOperatorIdRouteRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/route'
 import { Route as appTourOperatorsNewRouteImport } from './routes/(app)/tour-operators/new'
 import { Route as appTourOperatorsTourOperatorIdIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/index'
+import { Route as appTourOperatorsTourOperatorIdAudiencesIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/audiences/index'
+import { Route as appTourOperatorsTourOperatorIdAudiencesAudienceIdRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/audiences/$audienceId'
 import { Route as appTourOperatorsTourOperatorIdExperiencesIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/experiences/index'
 import { Route as appTourOperatorsTourOperatorIdExperiencesNewRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/experiences/new'
 import { Route as appTourOperatorsTourOperatorIdSettingsIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/settings/index'
@@ -103,6 +105,18 @@ const appTourOperatorsTourOperatorIdIndexRoute =
   appTourOperatorsTourOperatorIdIndexRouteImport.update({
     id: '/',
     path: '/',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
+const appTourOperatorsTourOperatorIdAudiencesIndexRoute =
+  appTourOperatorsTourOperatorIdAudiencesIndexRouteImport.update({
+    id: '/audiences/',
+    path: '/audiences/',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
+const appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute =
+  appTourOperatorsTourOperatorIdAudiencesAudienceIdRouteImport.update({
+    id: '/audiences/$audienceId',
+    path: '/audiences/$audienceId',
     getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
   } as any)
 const appTourOperatorsTourOperatorIdExperiencesIndexRoute =
@@ -219,7 +233,9 @@ export interface FileRoutesByFullPath {
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
   '/tour-operators/new': typeof appTourOperatorsNewRoute
   '/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
+  '/tour-operators/$tourOperatorId/audiences/$audienceId': typeof appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute
   '/tour-operators/$tourOperatorId/experiences/new': typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
+  '/tour-operators/$tourOperatorId/audiences/': typeof appTourOperatorsTourOperatorIdAudiencesIndexRoute
   '/tour-operators/$tourOperatorId/experiences/': typeof appTourOperatorsTourOperatorIdExperiencesIndexRoute
   '/tour-operators/$tourOperatorId/settings/': typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
   '/tour-operators/$tourOperatorId/content/media/$mediaId': typeof appTourOperatorsTourOperatorIdContentMediaMediaIdRoute
@@ -248,7 +264,9 @@ export interface FileRoutesByTo {
   '/': typeof appIndexRoute
   '/tour-operators/new': typeof appTourOperatorsNewRoute
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdIndexRoute
+  '/tour-operators/$tourOperatorId/audiences/$audienceId': typeof appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute
   '/tour-operators/$tourOperatorId/experiences/new': typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
+  '/tour-operators/$tourOperatorId/audiences': typeof appTourOperatorsTourOperatorIdAudiencesIndexRoute
   '/tour-operators/$tourOperatorId/experiences': typeof appTourOperatorsTourOperatorIdExperiencesIndexRoute
   '/tour-operators/$tourOperatorId/settings': typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
   '/tour-operators/$tourOperatorId/content/media/$mediaId': typeof appTourOperatorsTourOperatorIdContentMediaMediaIdRoute
@@ -280,7 +298,9 @@ export interface FileRoutesById {
   '/(app)/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdRouteRouteWithChildren
   '/(app)/tour-operators/new': typeof appTourOperatorsNewRoute
   '/(app)/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
+  '/(app)/tour-operators/$tourOperatorId/audiences/$audienceId': typeof appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute
   '/(app)/tour-operators/$tourOperatorId/experiences/new': typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
+  '/(app)/tour-operators/$tourOperatorId/audiences/': typeof appTourOperatorsTourOperatorIdAudiencesIndexRoute
   '/(app)/tour-operators/$tourOperatorId/experiences/': typeof appTourOperatorsTourOperatorIdExperiencesIndexRoute
   '/(app)/tour-operators/$tourOperatorId/settings/': typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
   '/(app)/tour-operators/$tourOperatorId/content/media/$mediaId': typeof appTourOperatorsTourOperatorIdContentMediaMediaIdRoute
@@ -312,7 +332,9 @@ export interface FileRouteTypes {
     | '/tour-operators/$tourOperatorId'
     | '/tour-operators/new'
     | '/tour-operators/$tourOperatorId/'
+    | '/tour-operators/$tourOperatorId/audiences/$audienceId'
     | '/tour-operators/$tourOperatorId/experiences/new'
+    | '/tour-operators/$tourOperatorId/audiences/'
     | '/tour-operators/$tourOperatorId/experiences/'
     | '/tour-operators/$tourOperatorId/settings/'
     | '/tour-operators/$tourOperatorId/content/media/$mediaId'
@@ -341,7 +363,9 @@ export interface FileRouteTypes {
     | '/'
     | '/tour-operators/new'
     | '/tour-operators/$tourOperatorId'
+    | '/tour-operators/$tourOperatorId/audiences/$audienceId'
     | '/tour-operators/$tourOperatorId/experiences/new'
+    | '/tour-operators/$tourOperatorId/audiences'
     | '/tour-operators/$tourOperatorId/experiences'
     | '/tour-operators/$tourOperatorId/settings'
     | '/tour-operators/$tourOperatorId/content/media/$mediaId'
@@ -372,7 +396,9 @@ export interface FileRouteTypes {
     | '/(app)/tour-operators/$tourOperatorId'
     | '/(app)/tour-operators/new'
     | '/(app)/tour-operators/$tourOperatorId/'
+    | '/(app)/tour-operators/$tourOperatorId/audiences/$audienceId'
     | '/(app)/tour-operators/$tourOperatorId/experiences/new'
+    | '/(app)/tour-operators/$tourOperatorId/audiences/'
     | '/(app)/tour-operators/$tourOperatorId/experiences/'
     | '/(app)/tour-operators/$tourOperatorId/settings/'
     | '/(app)/tour-operators/$tourOperatorId/content/media/$mediaId'
@@ -487,6 +513,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/tour-operators/$tourOperatorId/'
       preLoaderRoute: typeof appTourOperatorsTourOperatorIdIndexRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
+    '/(app)/tour-operators/$tourOperatorId/audiences/': {
+      id: '/(app)/tour-operators/$tourOperatorId/audiences/'
+      path: '/audiences'
+      fullPath: '/tour-operators/$tourOperatorId/audiences/'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdAudiencesIndexRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
+    '/(app)/tour-operators/$tourOperatorId/audiences/$audienceId': {
+      id: '/(app)/tour-operators/$tourOperatorId/audiences/$audienceId'
+      path: '/audiences/$audienceId'
+      fullPath: '/tour-operators/$tourOperatorId/audiences/$audienceId'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdAudiencesAudienceIdRouteImport
       parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
     }
     '/(app)/tour-operators/$tourOperatorId/experiences/': {
@@ -606,7 +646,9 @@ declare module '@tanstack/react-router' {
 
 interface appTourOperatorsTourOperatorIdRouteRouteChildren {
   appTourOperatorsTourOperatorIdIndexRoute: typeof appTourOperatorsTourOperatorIdIndexRoute
+  appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute: typeof appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute
   appTourOperatorsTourOperatorIdExperiencesNewRoute: typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
+  appTourOperatorsTourOperatorIdAudiencesIndexRoute: typeof appTourOperatorsTourOperatorIdAudiencesIndexRoute
   appTourOperatorsTourOperatorIdExperiencesIndexRoute: typeof appTourOperatorsTourOperatorIdExperiencesIndexRoute
   appTourOperatorsTourOperatorIdSettingsIndexRoute: typeof appTourOperatorsTourOperatorIdSettingsIndexRoute
   appTourOperatorsTourOperatorIdContentMediaMediaIdRoute: typeof appTourOperatorsTourOperatorIdContentMediaMediaIdRoute
@@ -628,8 +670,12 @@ const appTourOperatorsTourOperatorIdRouteRouteChildren: appTourOperatorsTourOper
   {
     appTourOperatorsTourOperatorIdIndexRoute:
       appTourOperatorsTourOperatorIdIndexRoute,
+    appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute:
+      appTourOperatorsTourOperatorIdAudiencesAudienceIdRoute,
     appTourOperatorsTourOperatorIdExperiencesNewRoute:
       appTourOperatorsTourOperatorIdExperiencesNewRoute,
+    appTourOperatorsTourOperatorIdAudiencesIndexRoute:
+      appTourOperatorsTourOperatorIdAudiencesIndexRoute,
     appTourOperatorsTourOperatorIdExperiencesIndexRoute:
       appTourOperatorsTourOperatorIdExperiencesIndexRoute,
     appTourOperatorsTourOperatorIdSettingsIndexRoute:

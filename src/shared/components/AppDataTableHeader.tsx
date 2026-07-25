@@ -9,6 +9,7 @@ import {
 import * as m from "#/paraglide/messages";
 import { AppAsyncSetFilter } from "./AppAsyncSetFilter";
 import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
+import { AppTextFilter } from "./AppTextFilter";
 
 interface BaseProps<TData> {
 	label: string;
@@ -28,13 +29,14 @@ type Props<TData> =
 			queryKey: readonly unknown[];
 			valueKey?: string;
 			labelKey?: string;
-	  });
+	  })
+	| (BaseProps<TData> & { allowFiltering: "text" });
 
-// A column header with opt-in server-side sorting (toggles asc/desc/none) and an
-// opt-in "set" filter → `filter[field][in]`, in two flavours: `set` (a static
-// option list) and `setAsync` (options fetched from an endpoint). Both render a
-// searchable, multi-select checkbox popover. The lean cut of the archive's
-// header; text/number/date filters land when a list needs them.
+// A column header with opt-in server-side sorting (toggles asc/desc/none) and
+// opt-in filters: `set` (static options) / `setAsync` (options from an endpoint)
+// → `filter[field][in]`, and `text` (operator + debounced search) →
+// `filter[field][contains]` etc. The lean cut of the archive's header;
+// number/date filters land when a list needs them.
 export function AppDataTableHeader<TData>(props: Props<TData>) {
 	const { label, headerContext, allowSorting, allowFiltering } = props;
 	const { column } = headerContext;
@@ -74,7 +76,9 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent align="end" className="w-52">
-						{props.allowFiltering === "set" ? (
+						{props.allowFiltering === "text" ? (
+							<AppTextFilter headerContext={headerContext} />
+						) : props.allowFiltering === "set" ? (
 							<AppSetFilter headerContext={headerContext} items={props.items} />
 						) : (
 							<AppAsyncSetFilter

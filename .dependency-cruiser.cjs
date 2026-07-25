@@ -16,6 +16,7 @@
  */
 
 const MODULES = [
+	"audiences",
 	"auth",
 	"reference",
 	"tour-operator",

@@ -16,6 +16,9 @@ export const queryKeys = {
 		["invitations", tourOperatorId] as const,
 	invitation: (tourOperatorId: string, invitationId: string) =>
 		["invitations", tourOperatorId, invitationId] as const,
+	audiences: (tourOperatorId: string) => ["audiences", tourOperatorId] as const,
+	audience: (tourOperatorId: string, audienceId: string) =>
+		["audiences", tourOperatorId, audienceId] as const,
 	media: (tourOperatorId: string) => ["media", tourOperatorId] as const,
 	mediaAsset: (tourOperatorId: string, mediaId: string) =>
 		["media", tourOperatorId, mediaId] as const,

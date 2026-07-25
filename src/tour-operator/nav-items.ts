@@ -10,6 +10,7 @@ import {
 	Settings,
 	UserRound,
 	Users,
+	UsersRound,
 } from "lucide-react";
 import * as m from "#/paraglide/messages";
 
@@ -42,6 +43,14 @@ export const catalogNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Compass,
 		link: {
 			to: "/tour-operators/$tourOperatorId/experiences",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.audiences(),
+		icon: UsersRound,
+		link: {
+			to: "/tour-operators/$tourOperatorId/audiences",
 			params: { tourOperatorId },
 		},
 	},
