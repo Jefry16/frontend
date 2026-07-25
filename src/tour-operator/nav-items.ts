@@ -7,6 +7,7 @@ import {
 	LayoutDashboard,
 	type LucideIcon,
 	Mail,
+	MapPin,
 	Settings,
 	UserRound,
 	Users,
@@ -51,6 +52,14 @@ export const catalogNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: UsersRound,
 		link: {
 			to: "/tour-operators/$tourOperatorId/audiences",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.pickup_locations(),
+		icon: MapPin,
+		link: {
+			to: "/tour-operators/$tourOperatorId/pickup-locations",
 			params: { tourOperatorId },
 		},
 	},

@@ -17,6 +17,7 @@
 
 const MODULES = [
 	"audiences",
+	"pickup-locations",
 	"auth",
 	"reference",
 	"tour-operator",
