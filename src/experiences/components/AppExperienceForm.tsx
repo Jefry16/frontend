@@ -10,10 +10,11 @@ import { AppField } from "#/shared/components/AppField";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { useExperienceForm } from "../hooks/use-experience-form";
 import type { Experience } from "../types";
+import { AppExperienceMediaSection } from "./AppExperienceMediaSection";
 
 // The experience content form — create (no `experience`) or edit (with one):
-// name, copy, duration, cutoff, highlights/inclusions/tags (AppArrayInput), and
-// featured. Media isn't edited here yet; the hook carries the refs through.
+// name, copy, media (thumbnail + gallery via the picker), duration, cutoff,
+// highlights/inclusions/tags (AppArrayInput), and featured.
 export const AppExperienceForm = ({
 	tourOperatorId,
 	experience,
@@ -61,6 +62,21 @@ export const AppExperienceForm = ({
 									rows={6}
 									required
 								/>
+							)}
+						</form.Field>
+						<form.Field name="thumbnailMediaId">
+							{(thumb) => (
+								<form.Field name="mediaIds">
+									{(gallery) => (
+										<AppExperienceMediaSection
+											tourOperatorId={tourOperatorId}
+											thumbnailMediaId={thumb.state.value}
+											mediaIds={gallery.state.value}
+											onThumbnailChange={thumb.handleChange}
+											onGalleryChange={gallery.handleChange}
+										/>
+									)}
+								</form.Field>
 							)}
 						</form.Field>
 						<div className="grid gap-4 sm:grid-cols-2">

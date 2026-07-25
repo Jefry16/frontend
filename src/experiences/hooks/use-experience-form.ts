@@ -15,11 +15,10 @@ import {
 	experienceSchema,
 } from "../validators/experience";
 
-// Create (no `experience`) or edit (with one). Edits every field except media:
-// scalars plus the content lists (tags / highlights / inclusions, via
-// AppArrayInput). Media refs are carried through unchanged (empty/null on
-// create, the record's values on edit) so a PATCH never wipes them — editing
-// them needs a media picker (later).
+// Create (no `experience`) or edit (with one). Edits every field: scalars, the
+// content lists (tags / highlights / inclusions, via AppArrayInput), and the
+// media refs (thumbnail + gallery, via the media picker) — all flow through the
+// form, so the whole parsed value is the PATCH/POST payload.
 export const useExperienceForm = (
 	tourOperatorId: string,
 	experience?: Experience,
@@ -35,14 +34,9 @@ export const useExperienceForm = (
 		ExperienceFields
 	>({
 		mutationFn: async (fields) => {
-			// Content lists (tags / highlights / inclusions) come from the form;
-			// media refs aren't edited here yet, so carry them through unchanged
-			// (null/empty on create, the record's values on edit).
-			const payload = {
-				...fields,
-				mediaIds: experience?.mediaIds ?? [],
-				thumbnailMediaId: experience?.thumbnailMediaId ?? null,
-			};
+			// Every field — scalars, content lists, and media refs — comes from the
+			// form now, so the parsed value is the payload as-is.
+			const payload = fields;
 			const base = `/tour-operators/${tourOperatorId}/experiences`;
 			if (experience) {
 				await authApi.patch(`${base}/${experience.id}`, payload);
@@ -89,6 +83,8 @@ export const useExperienceForm = (
 			included: experience?.included ?? [],
 			notIncluded: experience?.notIncluded ?? [],
 			tags: experience?.tags ?? [],
+			thumbnailMediaId: experience?.thumbnailMediaId ?? null,
+			mediaIds: experience?.mediaIds ?? [],
 		} as ExperienceFormData,
 		validators: { onSubmit: experienceSchema },
 		onSubmit: ({ value }) => mutate(experienceSchema.parse(value)),

@@ -1,0 +1,54 @@
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { MediaAsset } from "../types";
+import { AppMediaPicker } from "./AppMediaPicker";
+
+const asset = (n: number): MediaAsset => ({
+	id: `media-${n}`,
+	context: "media",
+	url: `https://picsum.photos/seed/vointika-${n}/240`,
+	contentType: "image/jpeg",
+	sizeBytes: 120_000,
+	originalName: `photo-${n}.jpg`,
+	createdAt: "2026-03-01T10:00:00Z",
+	uploadedBy: { id: "u-1", context: "users", name: "Ada" },
+});
+
+const ASSETS = Array.from({ length: 8 }, (_, i) => asset(i + 1));
+
+const qc = new QueryClient({
+	defaultOptions: {
+		queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
+	},
+});
+qc.setQueryData(["media-library", "op-1"], {
+	pages: [{ data: ASSETS, nextCursor: null }],
+	pageParams: [null],
+});
+
+const meta = {
+	title: "Media/AppMediaPicker",
+	component: AppMediaPicker,
+	args: {
+		tourOperatorId: "op-1",
+		open: true,
+		onOpenChange: () => {},
+		onConfirm: () => {},
+		initialSelected: [],
+	},
+	decorators: [
+		(Story) => (
+			<QueryClientProvider client={qc}>
+				<Story />
+			</QueryClientProvider>
+		),
+	],
+} satisfies Meta<typeof AppMediaPicker>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Single: Story = { args: { mode: "single" } };
+export const Multi: Story = {
+	args: { mode: "multi", initialSelected: [ASSETS[0], ASSETS[2]] },
+};
