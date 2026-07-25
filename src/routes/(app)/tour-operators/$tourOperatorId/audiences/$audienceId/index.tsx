@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppAudienceDetail } from "#/audiences";
 
 export const Route = createFileRoute(
-	"/(app)/tour-operators/$tourOperatorId/audiences/$audienceId",
+	"/(app)/tour-operators/$tourOperatorId/audiences/$audienceId/",
 )({
 	component: AudienceDetailPage,
 });

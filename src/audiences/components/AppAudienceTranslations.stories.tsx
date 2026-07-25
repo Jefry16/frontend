@@ -1,0 +1,51 @@
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { queryKeys } from "#/lib/query-keys";
+import type { Audience } from "../types";
+import { AppAudienceTranslations } from "./AppAudienceTranslations";
+
+const OP = "op-1";
+const AUD = "a-1";
+
+const AUDIENCE: Audience = {
+	id: AUD,
+	context: "audiences",
+	name: "Adults",
+	paxPerUnit: 1,
+	createdAt: "2026-03-01T10:00:00Z",
+};
+
+function client() {
+	const qc = new QueryClient({
+		defaultOptions: { queries: { staleTime: Number.POSITIVE_INFINITY } },
+	});
+	qc.setQueryData(queryKeys.audience(OP, AUD), AUDIENCE);
+	qc.setQueryData(queryKeys.operatorLocales(OP), {
+		primaryLocale: "en",
+		supportedLocales: ["en", "es"],
+	});
+	const key = queryKeys.audienceTranslations(OP, AUD);
+	qc.setQueryData([...key], []);
+	qc.setQueryData([...key, "es"], { locale: "es", name: null });
+	return qc;
+}
+
+const meta = {
+	title: "Audiences/AppAudienceTranslations",
+	component: AppAudienceTranslations,
+	args: { tourOperatorId: OP, audienceId: AUD },
+	decorators: [
+		(Story) => (
+			<QueryClientProvider client={client()}>
+				<div className="mx-auto w-full max-w-3xl">
+					<Story />
+				</div>
+			</QueryClientProvider>
+		),
+	],
+} satisfies Meta<typeof AppAudienceTranslations>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};

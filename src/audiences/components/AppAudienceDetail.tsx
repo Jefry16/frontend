@@ -1,17 +1,22 @@
-import { ArrowLeft, UsersRound } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, Languages, Pencil, UsersRound } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppLink } from "#/shared/components/AppLink";
+import {
+	type AppAction,
+	AppPageActions,
+} from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { useAudience } from "../hooks/use-audience";
 
-// Read-only audience detail: the tier's facts. Owns its fetch (skeleton / 404).
-// Mutating actions (edit/delete) land as a later slice. The list's name column
+// Audience detail: the tier's facts + an Edit action. Owns its fetch
+// (skeleton / 404). Delete lands as a later slice. The list's name column
 // links here.
 export const AppAudienceDetail = ({
 	tourOperatorId,
@@ -21,6 +26,7 @@ export const AppAudienceDetail = ({
 	audienceId: string;
 }) => {
 	const timeZone = useCurrentTourOperator()?.timezone;
+	const navigate = useNavigate();
 	const query = useAudience(tourOperatorId, audienceId);
 
 	const backLink = (
@@ -60,6 +66,28 @@ export const AppAudienceDetail = ({
 					dateStyle: "medium",
 					timeZone,
 				}).format(new Date(audience.createdAt));
+				const actions: AppAction[] = [
+					{
+						id: "edit",
+						label: m.edit(),
+						icon: Pencil,
+						onSelect: () =>
+							navigate({
+								to: "/tour-operators/$tourOperatorId/audiences/$audienceId/edit",
+								params: { tourOperatorId, audienceId },
+							}),
+					},
+					{
+						id: "translations",
+						label: m.translations(),
+						icon: Languages,
+						onSelect: () =>
+							navigate({
+								to: "/tour-operators/$tourOperatorId/audiences/$audienceId/translations",
+								params: { tourOperatorId, audienceId },
+							}),
+					},
+				];
 				return (
 					<>
 						<AppPageHeader
@@ -77,6 +105,7 @@ export const AppAudienceDetail = ({
 									]}
 								/>
 							}
+							actions={<AppPageActions actions={actions} />}
 						/>
 						<Card>
 							<CardContent>

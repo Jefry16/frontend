@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 import { AppAudiencesList } from "#/audiences";
+import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 
 export const Route = createFileRoute(
@@ -22,6 +25,17 @@ function AudiencesPage() {
 					<AppBreadcrumb
 						items={[{ label: m.catalog() }, { label: m.audiences() }]}
 					/>
+				}
+				actions={
+					<Button asChild>
+						<AppLink
+							to="/tour-operators/$tourOperatorId/audiences/new"
+							params={{ tourOperatorId }}
+						>
+							<Plus />
+							{m.new_audience()}
+						</AppLink>
+					</Button>
 				}
 			/>
 			<AppAudiencesList tourOperatorId={tourOperatorId} />
