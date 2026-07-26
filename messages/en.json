@@ -215,6 +215,7 @@
   "pickup_location_name_taken": "A pickup location with this name already exists.",
   "pickup_time_hint": "The local time travelers meet at this point.",
   "pick_a_time": "Pick a time",
+  "pick_a_date": "Pick a date",
   "hour": "Hour",
   "minute": "Minute",
   "validation_time": "Use a 24-hour time like 09:30",

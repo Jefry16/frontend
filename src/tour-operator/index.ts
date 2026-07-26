@@ -5,4 +5,5 @@ export { AppTourOperatorForm } from "./components/AppTourOperatorForm";
 export { AppTourOperatorSidebar } from "./components/AppTourOperatorSidebar";
 export { useCurrentTourOperator } from "./hooks/use-current-tour-operator";
 export { useOperatorLocales } from "./hooks/use-operator-locales";
+export { useOperatorToday } from "./hooks/use-operator-today";
 export { localeLabel, type OperatorLocales } from "./locales";
