@@ -11,7 +11,7 @@ export const Route = createFileRoute(
 function ActivityEntryPage() {
 	const { tourOperatorId, entryId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<div className="mx-auto flex w-full max-w-3xl flex-col gap-8 p-6">
 			<AppActivityEntryDetail
 				tourOperatorId={tourOperatorId}
 				entryId={entryId}

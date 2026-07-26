@@ -356,6 +356,8 @@
   "validation_select_one_day": "Select at least one day",
   "validation_pricing_row_incomplete": "Every row needs an audience, a price and a capacity",
   "validation_duplicate_audience": "The same audience is listed twice",
+  "no_invitations": "No invitations yet",
+  "no_invitations_body": "Invite teammates to help run the operator — pending and past invitations appear here.",
   "delete_pickup_location": "Delete",
   "delete_pickup_location_title": "Delete this pickup location?",
   "delete_pickup_location_body": "The meeting point is removed permanently. This cannot be undone.",

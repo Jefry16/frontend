@@ -5,6 +5,7 @@ import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { mediaColumns } from "../columns";
+import { AppMediaUploadButton } from "./AppMediaUploadButton";
 
 // The operator's media library as the standard cursor-paginated table: preview
 // first, filter by type, sort by Added, infinite scroll. Upload lives in the
@@ -29,6 +30,7 @@ export const AppMediaList = ({
 				icon: Images,
 				title: m.no_media(),
 				description: m.no_media_body(),
+				action: <AppMediaUploadButton tourOperatorId={tourOperatorId} />,
 			}}
 		/>
 	);

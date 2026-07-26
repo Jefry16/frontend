@@ -35,7 +35,15 @@ function AvailabilityPage() {
 					</Button>
 				}
 			/>
-			<AppSlotsList tourOperatorId={tourOperatorId} />
+			<AppSlotsList
+				tourOperatorId={tourOperatorId}
+				emptyAction={
+					<Button onClick={() => setAddOpen(true)}>
+						<Plus />
+						{m.add_availability()}
+					</Button>
+				}
+			/>
 			<AppAddAvailabilityDialog
 				tourOperatorId={tourOperatorId}
 				open={addOpen}
