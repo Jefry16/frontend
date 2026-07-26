@@ -23,6 +23,10 @@ const qc = new QueryClient({
 	},
 });
 qc.setQueryData(queryKeys.member(OP_ID, USER_ID), MEMBER);
+qc.setQueryData(queryKeys.activityTimeline(OP_ID, "MEMBER", USER_ID), {
+	pages: [{ data: [], nextCursor: null }],
+	pageParams: [null],
+});
 
 const meta = {
 	title: "Team/AppMemberDetail",

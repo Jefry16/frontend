@@ -28,6 +28,10 @@ const qc = new QueryClient({
 	},
 });
 qc.setQueryData(queryKeys.invitation(OP_ID, INV_ID), INVITATION);
+qc.setQueryData(queryKeys.activityTimeline(OP_ID, "INVITATION", INV_ID), {
+	pages: [{ data: [], nextCursor: null }],
+	pageParams: [null],
+});
 
 const meta = {
 	title: "Team/AppInvitationDetail",

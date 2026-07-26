@@ -1,7 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, FileText, FileX, Trash2 } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
+import { AppActivityLog } from "#/audit";
+import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
@@ -177,6 +178,18 @@ const MediaFacts = ({
 							{dateFormat.format(new Date(media.createdAt))}
 						</AppDetailField>
 					</dl>
+				</CardContent>
+			</Card>
+			<Card>
+				<CardHeader>
+					<CardTitle>{m.activity()}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<AppActivityLog
+						tourOperatorId={tourOperatorId}
+						entityType="MEDIA"
+						entityId={media.id}
+					/>
 				</CardContent>
 			</Card>
 		</>

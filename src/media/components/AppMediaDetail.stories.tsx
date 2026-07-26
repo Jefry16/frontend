@@ -31,6 +31,10 @@ const qc = new QueryClient({
 	},
 });
 qc.setQueryData(queryKeys.mediaAsset(OP_ID, MEDIA_ID), MEDIA);
+qc.setQueryData(queryKeys.activityTimeline(OP_ID, "MEDIA", MEDIA_ID), {
+	pages: [{ data: [], nextCursor: null }],
+	pageParams: [null],
+});
 
 const meta = {
 	title: "Media/AppMediaDetail",

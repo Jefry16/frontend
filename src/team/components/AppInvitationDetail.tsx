@@ -1,5 +1,6 @@
 import { ArrowLeft, MailX, Send, Trash2 } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
+import { AppActivityLog } from "#/audit";
+import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
@@ -196,6 +197,18 @@ const InvitationFacts = ({
 							</AppDetailField>
 						)}
 					</dl>
+				</CardContent>
+			</Card>
+			<Card>
+				<CardHeader>
+					<CardTitle>{m.activity()}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<AppActivityLog
+						tourOperatorId={tourOperatorId}
+						entityType="INVITATION"
+						entityId={invitation.id}
+					/>
 				</CardContent>
 			</Card>
 		</>

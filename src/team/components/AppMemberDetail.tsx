@@ -1,8 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Crown, LogOut, Trash2, UserCog, UserX } from "lucide-react";
+import { AppActivityLog } from "#/audit";
 import { useAuth } from "#/auth";
-import { Card, CardContent } from "#/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
@@ -247,6 +248,18 @@ const MemberFacts = ({
 							{dateFormat.format(new Date(member.joinedAt))}
 						</AppDetailField>
 					</dl>
+				</CardContent>
+			</Card>
+			<Card>
+				<CardHeader>
+					<CardTitle>{m.activity()}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<AppActivityLog
+						tourOperatorId={tourOperatorId}
+						entityType="MEMBER"
+						entityId={member.id}
+					/>
 				</CardContent>
 			</Card>
 		</>
