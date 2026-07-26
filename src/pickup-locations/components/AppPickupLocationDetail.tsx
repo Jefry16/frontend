@@ -1,19 +1,23 @@
-import { ArrowLeft, MapPin } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, MapPin, Pencil } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppLink } from "#/shared/components/AppLink";
+import {
+	type AppAction,
+	AppPageActions,
+} from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 
-// Pickup-location detail: the meeting point's facts. Owns its fetch
-// (skeleton / 404). Mutating actions land as a later slice. The list's name
-// column links here.
+// Pickup-location detail: the meeting point's facts + an Edit action. Owns its
+// fetch (skeleton / 404). The list's name column links here.
 export const AppPickupLocationDetail = ({
 	tourOperatorId,
 	pickupLocationId,
@@ -22,6 +26,7 @@ export const AppPickupLocationDetail = ({
 	pickupLocationId: string;
 }) => {
 	const timeZone = useCurrentTourOperator()?.timezone;
+	const navigate = useNavigate();
 	const query = usePickupLocation(tourOperatorId, pickupLocationId);
 
 	const backLink = (
@@ -61,6 +66,18 @@ export const AppPickupLocationDetail = ({
 					dateStyle: "medium",
 					timeZone,
 				}).format(new Date(pickup.createdAt));
+				const actions: AppAction[] = [
+					{
+						id: "edit",
+						label: m.edit(),
+						icon: Pencil,
+						onSelect: () =>
+							navigate({
+								to: "/tour-operators/$tourOperatorId/pickup-locations/$pickupLocationId/edit",
+								params: { tourOperatorId, pickupLocationId },
+							}),
+					},
+				];
 				return (
 					<>
 						<AppPageHeader
@@ -78,6 +95,7 @@ export const AppPickupLocationDetail = ({
 									]}
 								/>
 							}
+							actions={<AppPageActions actions={actions} />}
 						/>
 						<Card>
 							<CardContent>
