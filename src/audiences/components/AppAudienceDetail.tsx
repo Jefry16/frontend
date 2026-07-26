@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Languages, Pencil, UsersRound } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
+import { AppActivityLog } from "#/audit";
+import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
@@ -115,6 +116,18 @@ export const AppAudienceDetail = ({
 									</AppDetailField>
 									<AppDetailField label={m.created()}>{created}</AppDetailField>
 								</dl>
+							</CardContent>
+						</Card>
+						<Card>
+							<CardHeader>
+								<CardTitle>{m.activity()}</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<AppActivityLog
+									tourOperatorId={tourOperatorId}
+									entityType="AUDIENCE"
+									entityId={audienceId}
+								/>
 							</CardContent>
 						</Card>
 					</>

@@ -21,6 +21,17 @@ export const queryKeys = {
 		["audiences", tourOperatorId, audienceId] as const,
 	audienceTranslations: (tourOperatorId: string, audienceId: string) =>
 		["audiences", tourOperatorId, audienceId, "translations"] as const,
+	activity: (tourOperatorId: string) => ["activity", tourOperatorId] as const,
+	activityEntry: (tourOperatorId: string, entryId: string) =>
+		["activity", tourOperatorId, entryId] as const,
+	activityTimeline: (
+		tourOperatorId: string,
+		entityType: string,
+		entityId: string,
+	) => ["activity", tourOperatorId, "timeline", entityType, entityId] as const,
+	slots: (tourOperatorId: string) => ["slots", tourOperatorId] as const,
+	slot: (tourOperatorId: string, slotId: string) =>
+		["slots", tourOperatorId, slotId] as const,
 	pickupLocations: (tourOperatorId: string) =>
 		["pickup-locations", tourOperatorId] as const,
 	pickupLocation: (tourOperatorId: string, pickupLocationId: string) =>

@@ -17,6 +17,8 @@
 
 const MODULES = [
 	"audiences",
+	"audit",
+	"slots",
 	"pickup-locations",
 	"auth",
 	"reference",

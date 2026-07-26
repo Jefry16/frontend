@@ -1,7 +1,9 @@
 import type { LinkProps } from "@tanstack/react-router";
 import {
 	Building2,
+	CalendarDays,
 	Compass,
+	History,
 	Images,
 	Languages,
 	LayoutDashboard,
@@ -44,6 +46,14 @@ export const catalogNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Compass,
 		link: {
 			to: "/tour-operators/$tourOperatorId/experiences",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.availability(),
+		icon: CalendarDays,
+		link: {
+			to: "/tour-operators/$tourOperatorId/availability",
 			params: { tourOperatorId },
 		},
 	},
@@ -118,6 +128,20 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: UserRound,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/account",
+			params: { tourOperatorId },
+		},
+	},
+];
+
+// The main-nav "Operations" section — the operator's day-to-day running of the
+// business (activity now; bookings and orders join when the transaction half
+// lands). Rendered as a labeled group in the operator sidebar.
+export const operationsNavItems = (tourOperatorId: string): NavLeaf[] => [
+	{
+		label: m.activity(),
+		icon: History,
+		link: {
+			to: "/tour-operators/$tourOperatorId/activity",
 			params: { tourOperatorId },
 		},
 	},

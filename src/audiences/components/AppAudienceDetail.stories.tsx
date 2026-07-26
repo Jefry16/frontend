@@ -22,6 +22,10 @@ const qc = new QueryClient({
 	},
 });
 qc.setQueryData(queryKeys.audience(OP, AUD), AUDIENCE);
+qc.setQueryData(queryKeys.activityTimeline(OP, "AUDIENCE", AUD), {
+	pages: [{ data: [], nextCursor: null }],
+	pageParams: [null],
+});
 
 const meta = {
 	title: "Audiences/AppAudienceDetail",

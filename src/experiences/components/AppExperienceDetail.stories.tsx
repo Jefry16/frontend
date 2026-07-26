@@ -38,6 +38,10 @@ const qc = new QueryClient({
 	},
 });
 qc.setQueryData(queryKeys.experience(OP_ID, EXP_ID), EXPERIENCE);
+qc.setQueryData(queryKeys.activityTimeline(OP_ID, "EXPERIENCE", EXP_ID), {
+	pages: [{ data: [], nextCursor: null }],
+	pageParams: [null],
+});
 
 const meta = {
 	title: "Experiences/AppExperienceDetail",

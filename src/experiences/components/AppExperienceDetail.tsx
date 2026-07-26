@@ -1,12 +1,14 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
 	ArrowLeft,
+	CalendarDays,
 	Compass,
 	Eye,
 	EyeOff,
 	Languages,
 	Pencil,
 } from "lucide-react";
+import { AppActivityLog } from "#/audit";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
@@ -99,6 +101,18 @@ export const AppExperienceDetail = ({
 		>
 			{(experience) => {
 				const actions: AppAction[] = [
+					// First (the primary slot), matching the archive: scheduling
+					// departures is the experience's most common follow-up action.
+					{
+						id: "add-availability",
+						label: m.add_availability(),
+						icon: CalendarDays,
+						onSelect: () =>
+							navigate({
+								to: "/tour-operators/$tourOperatorId/availability/new/$experienceId",
+								params: { tourOperatorId, experienceId },
+							}),
+					},
 					{
 						id: "edit",
 						label: m.edit(),
@@ -275,6 +289,18 @@ const ExperienceView = ({
 					</CardContent>
 				</Card>
 			</div>
+			<Card>
+				<CardHeader>
+					<CardTitle>{m.activity()}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<AppActivityLog
+						tourOperatorId={tourOperatorId}
+						entityType="EXPERIENCE"
+						entityId={experience.id}
+					/>
+				</CardContent>
+			</Card>
 		</>
 	);
 };

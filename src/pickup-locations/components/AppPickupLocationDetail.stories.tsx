@@ -22,6 +22,10 @@ const qc = new QueryClient({
 	},
 });
 qc.setQueryData(queryKeys.pickupLocation(OP, PICKUP), PICKUP_LOCATION);
+qc.setQueryData(queryKeys.activityTimeline(OP, "PICKUP_LOCATION", PICKUP), {
+	pages: [{ data: [], nextCursor: null }],
+	pageParams: [null],
+});
 
 const meta = {
 	title: "PickupLocations/AppPickupLocationDetail",

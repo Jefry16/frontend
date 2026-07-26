@@ -1,7 +1,11 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, MapPin, Pencil } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
+import { ArrowLeft, MapPin, Pencil, Trash2 } from "lucide-react";
+import { AppActivityLog } from "#/audit";
+import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
+import { useAppToast } from "#/hooks/use-app-toast";
+import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
@@ -15,9 +19,12 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCurrentTourOperator } from "#/tour-operator";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
+import { usePickupLocationActions } from "../hooks/use-pickup-location-actions";
 
-// Pickup-location detail: the meeting point's facts + an Edit action. Owns its
-// fetch (skeleton / 404). The list's name column links here.
+// Pickup-location detail: the meeting point's facts + Edit and Delete actions
+// (delete is destructive-confirmed; pickups are a standalone catalog today, so
+// deleting one affects nothing else). Owns its fetch (skeleton / 404). The
+// list's name column links here.
 export const AppPickupLocationDetail = ({
 	tourOperatorId,
 	pickupLocationId,
@@ -27,7 +34,10 @@ export const AppPickupLocationDetail = ({
 }) => {
 	const timeZone = useCurrentTourOperator()?.timezone;
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	const toast = useAppToast();
 	const query = usePickupLocation(tourOperatorId, pickupLocationId);
+	const { remove } = usePickupLocationActions(tourOperatorId, pickupLocationId);
 
 	const backLink = (
 		<AppLink
@@ -77,6 +87,33 @@ export const AppPickupLocationDetail = ({
 								params: { tourOperatorId, pickupLocationId },
 							}),
 					},
+					{
+						id: "delete",
+						label: m.delete_pickup_location(),
+						icon: Trash2,
+						variant: "destructive",
+						pending: remove.isPending,
+						confirm: {
+							title: m.delete_pickup_location_title(),
+							description: m.delete_pickup_location_body(),
+						},
+						onSelect: () =>
+							remove.mutate(undefined, {
+								onSuccess: () => {
+									toast.deleted(m.pickup_location());
+									queryClient.removeQueries({
+										queryKey: queryKeys.pickupLocation(
+											tourOperatorId,
+											pickupLocationId,
+										),
+									});
+									navigate({
+										to: "/tour-operators/$tourOperatorId/pickup-locations",
+										params: { tourOperatorId },
+									});
+								},
+							}),
+					},
 				];
 				return (
 					<>
@@ -105,6 +142,18 @@ export const AppPickupLocationDetail = ({
 									</AppDetailField>
 									<AppDetailField label={m.created()}>{created}</AppDetailField>
 								</dl>
+							</CardContent>
+						</Card>
+						<Card>
+							<CardHeader>
+								<CardTitle>{m.activity()}</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<AppActivityLog
+									tourOperatorId={tourOperatorId}
+									entityType="PICKUP_LOCATION"
+									entityId={pickupLocationId}
+								/>
 							</CardContent>
 						</Card>
 					</>
