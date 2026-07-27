@@ -1,10 +1,9 @@
-import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
+import { AppFormActions } from "#/shared/components/AppFormActions";
 import { useAudienceForm } from "../hooks/use-audience-form";
 import type { Audience } from "../types";
 
@@ -51,12 +50,10 @@ export const AppAudienceForm = ({
 							)}
 						</form.Field>
 					</FieldGroup>
-					<div className="flex justify-end">
-						<Button type="submit" disabled={isPending}>
-							{isPending && <Spinner className="size-4" />}
-							{isEdit ? m.save_changes() : m.create()}
-						</Button>
-					</div>
+					<AppFormActions
+						isPending={isPending}
+						submitLabel={isEdit ? m.save_changes() : m.create()}
+					/>
 				</form>
 			</CardContent>
 		</Card>

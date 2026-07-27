@@ -6,6 +6,7 @@ import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppArrayInput } from "#/shared/components/AppArrayInput";
 import { AppField } from "#/shared/components/AppField";
+import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { useExperienceTranslationForm } from "../hooks/use-experience-translation-form";
 import type { Experience, ExperienceTranslation } from "../types";
@@ -140,23 +141,24 @@ export const AppExperienceTranslationForm = ({
 							</form.Field>
 						</div>
 					</FieldGroup>
-					<div className="flex justify-end gap-2 pt-2">
-						{hasTranslation(translation) && (
-							<Button
-								type="button"
-								variant="outline"
-								disabled={isPending || isClearing}
-								onClick={() => clear()}
-							>
-								{isClearing && <Spinner className="size-4" />}
-								{m.clear_translation()}
-							</Button>
-						)}
-						<Button type="submit" disabled={isPending || isClearing}>
-							{isPending && <Spinner className="size-4" />}
-							{m.save_translation()}
-						</Button>
-					</div>
+					<AppFormActions
+						isPending={isPending}
+						disabled={isClearing}
+						submitLabel={m.save_translation()}
+						secondary={
+							hasTranslation(translation) && (
+								<Button
+									type="button"
+									variant="outline"
+									disabled={isPending || isClearing}
+									onClick={() => clear()}
+								>
+									{isClearing && <Spinner className="size-4" />}
+									{m.clear_translation()}
+								</Button>
+							)
+						}
+					/>
 				</form>
 			</CardContent>
 		</Card>

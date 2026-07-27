@@ -2,10 +2,10 @@ import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
+import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { roleLabel } from "../format";
@@ -63,20 +63,20 @@ export const AppInviteMemberForm = ({
 							)}
 						</form.Field>
 					</FieldGroup>
-					<div className="flex justify-end gap-2">
-						<Button type="button" variant="outline" asChild>
-							<AppLink
-								to="/tour-operators/$tourOperatorId/settings/members"
-								params={{ tourOperatorId }}
-							>
-								{m.cancel()}
-							</AppLink>
-						</Button>
-						<Button type="submit" disabled={isPending}>
-							{isPending && <Spinner />}
-							{m.send_invitation()}
-						</Button>
-					</div>
+					<AppFormActions
+						isPending={isPending}
+						submitLabel={m.send_invitation()}
+						secondary={
+							<Button type="button" variant="outline" asChild>
+								<AppLink
+									to="/tour-operators/$tourOperatorId/settings/members"
+									params={{ tourOperatorId }}
+								>
+									{m.cancel()}
+								</AppLink>
+							</Button>
+						}
+					/>
 				</form>
 			</CardContent>
 		</Card>

@@ -1,5 +1,4 @@
 import type { Audience } from "#/audiences";
-import { Button } from "#/components/ui/button";
 import { Checkbox } from "#/components/ui/checkbox";
 import {
 	Field,
@@ -7,10 +6,10 @@ import {
 	FieldGroup,
 	FieldLabel,
 } from "#/components/ui/field";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppDateField } from "#/shared/components/AppDateField";
+import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppTimeField } from "#/shared/components/AppTimeField";
 import { RequiredMark } from "#/shared/components/RequiredMark";
 import { useOperatorToday } from "#/tour-operator";
@@ -150,12 +149,7 @@ export const AppRecurringSlotForm = ({
 					)}
 				</form.Field>
 			</FieldGroup>
-			<div className="flex justify-end">
-				<Button type="submit" disabled={isPending}>
-					{isPending && <Spinner className="size-4" />}
-					{m.create()}
-				</Button>
-			</div>
+			<AppFormActions isPending={isPending} submitLabel={m.create()} />
 		</form>
 	);
 };

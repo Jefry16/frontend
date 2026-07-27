@@ -1,4 +1,3 @@
-import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
 import { Checkbox } from "#/components/ui/checkbox";
 import {
@@ -10,10 +9,10 @@ import {
 } from "#/components/ui/field";
 import { Label } from "#/components/ui/label";
 import { SelectItem } from "#/components/ui/select";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { useLanguages } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { RequiredMark } from "#/shared/components/RequiredMark";
 import { useOperatorLanguagesForm } from "../hooks/use-operator-languages-form";
@@ -152,12 +151,10 @@ export const AppOperatorLanguagesForm = ({
 						</form.Subscribe>
 					</FieldGroup>
 
-					<div className="flex justify-end">
-						<Button type="submit" disabled={isPending}>
-							{isPending && <Spinner className="size-4" />}
-							{m.save_changes()}
-						</Button>
-					</div>
+					<AppFormActions
+						isPending={isPending}
+						submitLabel={m.save_changes()}
+					/>
 				</form>
 			</CardContent>
 		</Card>

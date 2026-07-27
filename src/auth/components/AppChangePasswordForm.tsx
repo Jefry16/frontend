@@ -1,4 +1,3 @@
-import { Button } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -7,9 +6,9 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useChangePasswordForm } from "../hooks/use-change-password-form";
 
@@ -64,12 +63,10 @@ export const AppChangePasswordForm = () => {
 							)}
 						</form.Field>
 					</FieldGroup>
-					<div className="flex justify-end">
-						<Button type="submit" disabled={isPending}>
-							{isPending && <Spinner className="size-4" />}
-							{m.change_password()}
-						</Button>
-					</div>
+					<AppFormActions
+						isPending={isPending}
+						submitLabel={m.change_password()}
+					/>
 				</form>
 			</CardContent>
 		</Card>

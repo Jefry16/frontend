@@ -1,11 +1,10 @@
 import { useStore } from "@tanstack/react-form";
 import type { Audience } from "#/audiences";
-import { Button } from "#/components/ui/button";
 import { FieldGroup } from "#/components/ui/field";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppDateField } from "#/shared/components/AppDateField";
+import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppTimeField } from "#/shared/components/AppTimeField";
 import { useOperatorToday } from "#/tour-operator";
 import { useSingleSlotForm } from "../hooks/use-single-slot-form";
@@ -104,12 +103,7 @@ export const AppSingleSlotForm = ({
 					)}
 				</form.Field>
 			</FieldGroup>
-			<div className="flex justify-end">
-				<Button type="submit" disabled={isPending}>
-					{isPending && <Spinner className="size-4" />}
-					{m.create()}
-				</Button>
-			</div>
+			<AppFormActions isPending={isPending} submitLabel={m.create()} />
 		</form>
 	);
 };

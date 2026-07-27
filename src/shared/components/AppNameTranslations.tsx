@@ -13,6 +13,7 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "./AppAlert";
+import { AppFormActions } from "./AppFormActions";
 import { AppLink } from "./AppLink";
 import { AppLocaleTabs } from "./AppLocaleTabs";
 
@@ -264,23 +265,24 @@ function NameFormBody({
 							{m.translation_canonical({ value: canonicalName })}
 						</FieldDescription>
 					</Field>
-					<div className="flex justify-end gap-2">
-						{hasTranslation && (
-							<Button
-								type="button"
-								variant="outline"
-								disabled={isSaving || isClearing}
-								onClick={onClear}
-							>
-								{isClearing && <Spinner className="size-4" />}
-								{m.clear_translation()}
-							</Button>
-						)}
-						<Button type="submit" disabled={isSaving || isClearing}>
-							{isSaving && <Spinner className="size-4" />}
-							{m.save_translation()}
-						</Button>
-					</div>
+					<AppFormActions
+						isPending={isSaving}
+						disabled={isClearing}
+						submitLabel={m.save_translation()}
+						secondary={
+							hasTranslation && (
+								<Button
+									type="button"
+									variant="outline"
+									disabled={isSaving || isClearing}
+									onClick={onClear}
+								>
+									{isClearing && <Spinner className="size-4" />}
+									{m.clear_translation()}
+								</Button>
+							)
+						}
+					/>
 				</form>
 			</CardContent>
 		</Card>
