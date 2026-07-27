@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { AuditLogEntry } from "../types";
 import { AppActivityEntryDetail } from "./AppActivityEntryDetail";
@@ -28,11 +29,7 @@ const entry = (overrides: Partial<AuditLogEntry>): AuditLogEntry => ({
 });
 
 const clientWith = (e: AuditLogEntry) => {
-	const qc = new QueryClient({
-		defaultOptions: {
-			queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
-		},
-	});
+	const qc = storyQueryClient();
 	qc.setQueryData(queryKeys.activityEntry(OP, ENTRY_ID), e);
 	return qc;
 };

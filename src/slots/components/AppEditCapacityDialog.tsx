@@ -8,13 +8,11 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
-import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
+import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import type { SlotAudiencePrice } from "../types";
-
-const INTEGER_INPUT = /^\d*$/;
 
 // Edits a slot's per-tier capacity. Every tier is listed with its booked count;
 // the server floors each capacity at the seats already booked (below → 422,
@@ -75,19 +73,16 @@ export const AppEditCapacityDialog = ({
 										{m.booked_count({ count: tier.bookedCount })}
 									</span>
 								</Label>
-								<Input
+								<AppNumericInput
 									id={id}
 									className="w-24 text-right"
-									inputMode="numeric"
 									value={valueFor(tier)}
 									aria-invalid={below || undefined}
-									onChange={(e) => {
-										if (INTEGER_INPUT.test(e.target.value)) {
-											setValues((prev) => ({
-												...prev,
-												[tier.audienceId]: e.target.value,
-											}));
-										}
+									onValueChange={(value) => {
+										setValues((prev) => ({
+											...prev,
+											[tier.audienceId]: value,
+										}));
 									}}
 								/>
 							</div>

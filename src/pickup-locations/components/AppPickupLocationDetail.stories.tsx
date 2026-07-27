@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
+import { listPage, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { PickupLocation } from "../types";
 import { AppPickupLocationDetail } from "./AppPickupLocationDetail";
@@ -16,16 +17,12 @@ const PICKUP_LOCATION: PickupLocation = {
 	createdAt: "2026-03-01T10:00:00Z",
 };
 
-const qc = new QueryClient({
-	defaultOptions: {
-		queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
-	},
-});
+const qc = storyQueryClient();
 qc.setQueryData(queryKeys.pickupLocation(OP, PICKUP), PICKUP_LOCATION);
-qc.setQueryData(queryKeys.activityTimeline(OP, "PICKUP_LOCATION", PICKUP), {
-	pages: [{ data: [], nextCursor: null }],
-	pageParams: [null],
-});
+qc.setQueryData(
+	queryKeys.activityTimeline(OP, "PICKUP_LOCATION", PICKUP),
+	listPage([]),
+);
 
 const meta = {
 	title: "PickupLocations/AppPickupLocationDetail",

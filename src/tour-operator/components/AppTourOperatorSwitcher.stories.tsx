@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, type AuthUser } from "#/auth";
 import { SidebarProvider } from "#/components/ui/sidebar";
+import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppTourOperatorSwitcher } from "./AppTourOperatorSwitcher";
 
@@ -33,7 +34,7 @@ const USER: AuthUser = {
 
 // Seed the profile in the query cache so useAuth resolves to a signed-in user
 // (React Query returns cached data even with the query disabled).
-const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+const qc = storyQueryClient();
 qc.setQueryData(queryKeys.authProfile, USER);
 
 const meta = {

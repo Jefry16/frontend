@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import type { Audience } from "#/audiences";
+import { storyQueryClient } from "#/dev/story-utils";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
 
 const AUDIENCES: Audience[] = [
@@ -20,7 +21,7 @@ const AUDIENCES: Audience[] = [
 	},
 ];
 
-const qc = new QueryClient();
+const qc = storyQueryClient();
 
 const meta = {
 	title: "Slots/AppRecurringSlotForm",

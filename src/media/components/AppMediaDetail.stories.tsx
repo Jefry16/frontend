@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
+import { listPage, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { MediaAsset } from "../types";
 import { AppMediaDetail } from "./AppMediaDetail";
@@ -25,16 +26,12 @@ const MEDIA: MediaAsset = {
 	uploadedBy: { id: "u-1", context: "users", name: "Ada Lovelace" },
 };
 
-const qc = new QueryClient({
-	defaultOptions: {
-		queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
-	},
-});
+const qc = storyQueryClient();
 qc.setQueryData(queryKeys.mediaAsset(OP_ID, MEDIA_ID), MEDIA);
-qc.setQueryData(queryKeys.activityTimeline(OP_ID, "MEDIA", MEDIA_ID), {
-	pages: [{ data: [], nextCursor: null }],
-	pageParams: [null],
-});
+qc.setQueryData(
+	queryKeys.activityTimeline(OP_ID, "MEDIA", MEDIA_ID),
+	listPage([]),
+);
 
 const meta = {
 	title: "Media/AppMediaDetail",

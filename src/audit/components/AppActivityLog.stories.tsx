@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { listPage, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { AuditLogEntry } from "../types";
 import { AppActivityLog } from "./AppActivityLog";
@@ -56,15 +57,11 @@ const ENTRIES: AuditLogEntry[] = [
 ];
 
 const clientWith = (entries: AuditLogEntry[]) => {
-	const qc = new QueryClient({
-		defaultOptions: {
-			queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
-		},
-	});
-	qc.setQueryData(queryKeys.activityTimeline(OP, "EXPERIENCE", ENTITY), {
-		pages: [{ data: entries, nextCursor: null }],
-		pageParams: [null],
-	});
+	const qc = storyQueryClient();
+	qc.setQueryData(
+		queryKeys.activityTimeline(OP, "EXPERIENCE", ENTITY),
+		listPage(entries),
+	);
 	return qc;
 };
 

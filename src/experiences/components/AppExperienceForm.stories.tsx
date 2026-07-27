@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { storyQueryClient } from "#/dev/story-utils";
 import { AppExperienceForm } from "./AppExperienceForm";
 
-const qc = new QueryClient();
+const qc = storyQueryClient();
 
 const meta = {
 	title: "Experiences/AppExperienceForm",

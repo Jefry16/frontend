@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { storyQueryClient } from "#/dev/story-utils";
 import type { PickupLocation } from "../types";
 import { AppPickupLocationForm } from "./AppPickupLocationForm";
 
@@ -11,7 +12,7 @@ const PICKUP: PickupLocation = {
 	createdAt: "2026-03-01T10:00:00Z",
 };
 
-const qc = new QueryClient();
+const qc = storyQueryClient();
 
 const meta = {
 	title: "PickupLocations/AppPickupLocationForm",

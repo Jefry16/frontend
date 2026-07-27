@@ -3,7 +3,6 @@ import { Plus, Trash2 } from "lucide-react";
 import type { Audience } from "#/audiences";
 import { Button } from "#/components/ui/button";
 import { FieldError, FieldLabel } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
 import {
 	Select,
 	SelectContent,
@@ -13,12 +12,10 @@ import {
 	SelectValue,
 } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
+import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import { RequiredMark } from "#/shared/components/RequiredMark";
 import type { AudiencePriceRow } from "../validators/slot";
 import { emptyPriceRow } from "../validators/slot";
-
-const INTEGER_INPUT = /^\d*$/;
-const DECIMAL_INPUT = /^\d*\.?\d*$/;
 
 // The per-audience pricing rows shared by both create forms: each row picks an
 // audience and sets its price + capacity for the departure(s). Follows the
@@ -88,30 +85,17 @@ export const AppAudiencePriceRows = ({
 								</SelectGroup>
 							</SelectContent>
 						</Select>
-						<Input
-							type="text"
-							inputMode="decimal"
-							autoComplete="off"
+						<AppNumericInput
+							decimal
 							aria-label={m.price()}
 							value={row.price}
-							onChange={(e) => {
-								if (DECIMAL_INPUT.test(e.target.value)) {
-									patch(row._key, { price: e.target.value });
-								}
-							}}
+							onValueChange={(price) => patch(row._key, { price })}
 							onBlur={field.handleBlur}
 						/>
-						<Input
-							type="text"
-							inputMode="numeric"
-							autoComplete="off"
+						<AppNumericInput
 							aria-label={m.capacity()}
 							value={row.capacity}
-							onChange={(e) => {
-								if (INTEGER_INPUT.test(e.target.value)) {
-									patch(row._key, { capacity: e.target.value });
-								}
-							}}
+							onValueChange={(capacity) => patch(row._key, { capacity })}
 							onBlur={field.handleBlur}
 						/>
 						<Button

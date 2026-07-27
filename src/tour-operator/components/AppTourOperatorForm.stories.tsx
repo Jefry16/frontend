@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, type AuthUser } from "#/auth";
+import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppTourOperatorForm } from "./AppTourOperatorForm";
 
@@ -35,7 +36,7 @@ const ONBOARDING_USER: AuthUser = {
 	tourOperators: [],
 };
 
-const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+const qc = storyQueryClient();
 qc.setQueryData(queryKeys.authProfile, ONBOARDING_USER);
 
 export const Onboarding: Story = {

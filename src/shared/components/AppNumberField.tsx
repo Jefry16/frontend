@@ -5,7 +5,7 @@ import {
 	FieldError,
 	FieldLabel,
 } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
+import { AppNumericInput } from "./AppNumericInput";
 import { RequiredMark } from "./RequiredMark";
 
 interface AppNumberFieldProps {
@@ -18,13 +18,9 @@ interface AppNumberFieldProps {
 	decimal?: boolean;
 }
 
-const INTEGER_INPUT = /^\d*$/;
-const DECIMAL_INPUT = /^\d*\.?\d*$/;
-
-// The numeric sibling of AppField: a text input that only accepts digits (and
-// optionally one decimal point), bound to a TanStack Form field holding the raw
-// string — the zod schema does the Number transform + bounds. A gated text
-// input beats type="number" (no scroll-wheel edits, no "e"/"+" surprises).
+// The numeric sibling of AppField: AppNumericInput's gated input bound to a
+// TanStack Form field holding the raw string — the zod schema does the Number
+// transform + bounds.
 export const AppNumberField = ({
 	field,
 	label,
@@ -35,7 +31,6 @@ export const AppNumberField = ({
 }: AppNumberFieldProps) => {
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
-	const allowed = decimal ? DECIMAL_INPUT : INTEGER_INPUT;
 
 	return (
 		<Field data-invalid={isInvalid || undefined}>
@@ -43,18 +38,12 @@ export const AppNumberField = ({
 				{label}
 				{required && <RequiredMark />}
 			</FieldLabel>
-			<Input
+			<AppNumericInput
 				id={field.name}
 				name={field.name}
-				type="text"
-				inputMode={decimal ? "decimal" : "numeric"}
-				autoComplete="off"
+				decimal={decimal}
 				value={field.state.value}
-				onChange={(e) => {
-					if (allowed.test(e.target.value)) {
-						field.handleChange(e.target.value);
-					}
-				}}
+				onValueChange={field.handleChange}
 				onBlur={field.handleBlur}
 				aria-invalid={isInvalid}
 				aria-required={required || undefined}

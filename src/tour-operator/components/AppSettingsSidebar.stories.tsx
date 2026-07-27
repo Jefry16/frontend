@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, type AuthUser } from "#/auth";
 import { SidebarProvider } from "#/components/ui/sidebar";
+import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppSettingsSidebar } from "./AppSettingsSidebar";
 
@@ -23,7 +24,7 @@ const USER: AuthUser = {
 	],
 };
 
-const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+const qc = storyQueryClient();
 qc.setQueryData(queryKeys.authProfile, USER);
 
 // The current operator is resolved from the route param, which the framework's

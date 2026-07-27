@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
+import { listPage, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Experience } from "../types";
 import { AppExperienceDetail } from "./AppExperienceDetail";
@@ -32,16 +33,12 @@ const EXPERIENCE: Experience = {
 	createdAt: "2026-03-01T10:00:00Z",
 };
 
-const qc = new QueryClient({
-	defaultOptions: {
-		queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
-	},
-});
+const qc = storyQueryClient();
 qc.setQueryData(queryKeys.experience(OP_ID, EXP_ID), EXPERIENCE);
-qc.setQueryData(queryKeys.activityTimeline(OP_ID, "EXPERIENCE", EXP_ID), {
-	pages: [{ data: [], nextCursor: null }],
-	pageParams: [null],
-});
+qc.setQueryData(
+	queryKeys.activityTimeline(OP_ID, "EXPERIENCE", EXP_ID),
+	listPage([]),
+);
 
 const meta = {
 	title: "Experiences/AppExperienceDetail",

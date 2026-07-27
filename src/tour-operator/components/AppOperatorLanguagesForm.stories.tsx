@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Language } from "#/reference";
 import { AppOperatorLanguagesForm } from "./AppOperatorLanguagesForm";
@@ -11,9 +12,7 @@ const ALLOWLIST: Language[] = [
 	{ id: "l-it", context: "languages", code: "it", name: "Italian" },
 ];
 
-const qc = new QueryClient({
-	defaultOptions: { queries: { staleTime: Number.POSITIVE_INFINITY } },
-});
+const qc = storyQueryClient();
 qc.setQueryData(queryKeys.languages, ALLOWLIST);
 
 const meta = {

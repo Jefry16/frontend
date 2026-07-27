@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import type { Audience } from "#/audiences";
+import { storyQueryClient } from "#/dev/story-utils";
 import { AppSingleSlotForm } from "./AppSingleSlotForm";
 
 const AUDIENCES: Audience[] = [
@@ -13,7 +14,7 @@ const AUDIENCES: Audience[] = [
 	},
 ];
 
-const qc = new QueryClient();
+const qc = storyQueryClient();
 
 const meta = {
 	title: "Slots/AppSingleSlotForm",

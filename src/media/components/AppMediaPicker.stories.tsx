@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { listPage, storyQueryClient } from "#/dev/story-utils";
 import type { MediaAsset } from "../types";
 import { AppMediaPicker } from "./AppMediaPicker";
 
@@ -16,15 +17,8 @@ const asset = (n: number): MediaAsset => ({
 
 const ASSETS = Array.from({ length: 8 }, (_, i) => asset(i + 1));
 
-const qc = new QueryClient({
-	defaultOptions: {
-		queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
-	},
-});
-qc.setQueryData(["media-library", "op-1"], {
-	pages: [{ data: ASSETS, nextCursor: null }],
-	pageParams: [null],
-});
+const qc = storyQueryClient();
+qc.setQueryData(["media-library", "op-1"], listPage(ASSETS));
 
 const meta = {
 	title: "Media/AppMediaPicker",

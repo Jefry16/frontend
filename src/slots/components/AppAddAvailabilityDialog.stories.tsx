@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { listPage, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppAddAvailabilityDialog } from "./AppAddAvailabilityDialog";
 
@@ -12,15 +13,8 @@ const EXPERIENCES = [
 ];
 
 const clientWith = (rows: { id: string; name: string }[]) => {
-	const qc = new QueryClient({
-		defaultOptions: {
-			queries: { staleTime: Number.POSITIVE_INFINITY, retry: false },
-		},
-	});
-	qc.setQueryData([...queryKeys.experiences(OP), "all-pages"], {
-		pages: [{ data: rows, nextCursor: null }],
-		pageParams: [null],
-	});
+	const qc = storyQueryClient();
+	qc.setQueryData([...queryKeys.experiences(OP), "all-pages"], listPage(rows));
 	return qc;
 };
 

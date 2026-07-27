@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { MediaAsset } from "#/media";
 import { AppExperienceMediaSection } from "./AppExperienceMediaSection";
@@ -19,9 +20,7 @@ const asset = (n: number): MediaAsset => ({
 
 // Seed the per-id cache so useMediaByIds resolves previews without a backend.
 function client(ids: number[]) {
-	const qc = new QueryClient({
-		defaultOptions: { queries: { staleTime: Number.POSITIVE_INFINITY } },
-	});
+	const qc = storyQueryClient();
 	for (const n of ids) {
 		qc.setQueryData(queryKeys.mediaAsset(OP, `media-${n}`), asset(n));
 	}
