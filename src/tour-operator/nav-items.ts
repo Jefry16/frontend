@@ -150,7 +150,7 @@ export const operationsNavItems = (tourOperatorId: string): NavLeaf[] => [
 ];
 
 // The main-nav "Content" section — storefront/catalog content the operator
-// manages (distinct from Settings). Grows per feature; Media is the first.
+// manages (distinct from Settings): pages, media, metafields.
 // Rendered as a labeled group in the operator sidebar, above the Settings leaf.
 export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
 	{
