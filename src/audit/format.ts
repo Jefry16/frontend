@@ -204,7 +204,7 @@ const ENTITY_TYPES: Record<
 	METAFIELD_DEFINITION: {
 		label: m.metafield_definition,
 		route: {
-			to: "/tour-operators/$tourOperatorId/settings/custom-data/$definitionId",
+			to: "/tour-operators/$tourOperatorId/content/metafields/$definitionId",
 			param: "definitionId",
 		},
 	},

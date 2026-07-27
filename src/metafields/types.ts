@@ -1,5 +1,5 @@
 // The metafield context: operator-defined custom-data fields on experiences
-// and pages. Definitions (the catalogue, managed in Settings → Custom data)
+// and pages. Definitions (the catalogue, managed in Content → Metafields)
 // carry the identity + type; values live on the owning resource.
 
 /** Wire code for the owning resource kind (payloads/responses). */

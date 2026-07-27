@@ -1,18 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppMetafieldDefinitionEdit } from "#/metafields";
+import { AppMetafieldDefinitionDetail } from "#/metafields";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
-	"/(app)/tour-operators/$tourOperatorId/settings/custom-data/$definitionId/edit",
+	"/(app)/tour-operators/$tourOperatorId/content/metafields/$definitionId/",
 )({
-	component: MetafieldDefinitionEditPage,
+	component: MetafieldDefinitionDetailPage,
 });
 
-function MetafieldDefinitionEditPage() {
+function MetafieldDefinitionDetailPage() {
 	const { tourOperatorId, definitionId } = Route.useParams();
 	return (
-		<AppPageShell variant="form">
-			<AppMetafieldDefinitionEdit
+		<AppPageShell variant="detail">
+			<AppMetafieldDefinitionDetail
 				tourOperatorId={tourOperatorId}
 				definitionId={definitionId}
 			/>

@@ -26,7 +26,7 @@ export const AppMetafieldDefinitionEdit = ({
 			icon={Database}
 			breadcrumb={
 				<AppBreadcrumb
-					items={[{ label: m.settings() }, { label: m.custom_data() }]}
+					items={[{ label: m.content() }, { label: m.metafields() }]}
 				/>
 			}
 			loading={
@@ -46,15 +46,15 @@ export const AppMetafieldDefinitionEdit = ({
 						breadcrumb={
 							<AppBreadcrumb
 								items={[
-									{ label: m.settings() },
+									{ label: m.content() },
 									{
-										label: m.custom_data(),
-										to: "/tour-operators/$tourOperatorId/settings/custom-data",
+										label: m.metafields(),
+										to: "/tour-operators/$tourOperatorId/content/metafields",
 										params: { tourOperatorId },
 									},
 									{
 										label: definition.name,
-										to: "/tour-operators/$tourOperatorId/settings/custom-data/$definitionId",
+										to: "/tour-operators/$tourOperatorId/content/metafields/$definitionId",
 										params: { tourOperatorId, definitionId },
 									},
 									{ label: m.edit() },

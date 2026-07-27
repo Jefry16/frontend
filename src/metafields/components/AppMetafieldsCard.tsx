@@ -32,7 +32,7 @@ import type {
 // The per-resource metafields editor: one input per definition for this owner
 // type (unset fields render empty), dirty fields saved together — a non-empty
 // value PUTs, an emptied one clears. Renders nothing while the operator has no
-// definitions for the kind; the catalogue is managed in Settings → Custom data.
+// definitions for the kind; the catalogue is managed in Content → Metafields.
 export const AppMetafieldsCard = ({
 	tourOperatorId,
 	ownerType,
@@ -82,9 +82,7 @@ export const AppMetafieldsCard = ({
 		.filter((d) => {
 			const id = `${d.namespace}.${d.key}`;
 			const draft = drafts[id];
-			return (
-				draft !== undefined && effective(draft) !== (stored.get(id) ?? "")
-			);
+			return draft !== undefined && effective(draft) !== (stored.get(id) ?? "");
 		})
 		.map((d) => ({
 			namespace: d.namespace,

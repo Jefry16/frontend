@@ -32,7 +32,7 @@ export const metafieldDefinitionColumns = (
 		),
 		cell: ({ row }) => (
 			<AppResourceLink
-				to="/tour-operators/$tourOperatorId/settings/custom-data/$definitionId"
+				to="/tour-operators/$tourOperatorId/content/metafields/$definitionId"
 				params={{ tourOperatorId, definitionId: row.original.id }}
 			>
 				{row.original.name}

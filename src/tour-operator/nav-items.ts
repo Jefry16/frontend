@@ -126,14 +126,6 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 		},
 	},
 	{
-		label: m.custom_data(),
-		icon: Database,
-		link: {
-			to: "/tour-operators/$tourOperatorId/settings/custom-data",
-			params: { tourOperatorId },
-		},
-	},
-	{
 		label: m.account(),
 		icon: UserRound,
 		link: {
@@ -174,6 +166,14 @@ export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Images,
 		link: {
 			to: "/tour-operators/$tourOperatorId/content/media",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.metafields(),
+		icon: Database,
+		link: {
+			to: "/tour-operators/$tourOperatorId/content/metafields",
 			params: { tourOperatorId },
 		},
 	},

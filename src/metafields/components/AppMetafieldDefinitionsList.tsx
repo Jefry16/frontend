@@ -7,8 +7,8 @@ import { AppNewLink } from "#/shared/components/AppNewLink";
 import { useOperatorDateTime } from "#/tour-operator";
 import { metafieldDefinitionColumns } from "../columns";
 
-// The operator's metafield definitions as the standard cursor table (Settings →
-// Custom data).
+// The operator's metafield definitions as the standard cursor table (Content →
+// Metafields).
 export const AppMetafieldDefinitionsList = ({
 	tourOperatorId,
 }: {
@@ -31,7 +31,7 @@ export const AppMetafieldDefinitionsList = ({
 				description: m.no_metafield_definitions_body(),
 				action: (
 					<AppNewLink
-						to="/tour-operators/$tourOperatorId/settings/custom-data/new"
+						to="/tour-operators/$tourOperatorId/content/metafields/new"
 						params={{ tourOperatorId }}
 					>
 						{m.new_metafield_definition()}

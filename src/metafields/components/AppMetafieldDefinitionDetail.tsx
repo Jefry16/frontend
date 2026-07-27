@@ -44,10 +44,10 @@ export const AppMetafieldDefinitionDetail = ({
 
 	const backLink = (
 		<AppBackLink
-			to="/tour-operators/$tourOperatorId/settings/custom-data"
+			to="/tour-operators/$tourOperatorId/content/metafields"
 			params={{ tourOperatorId }}
 		>
-			{m.back_to_custom_data()}
+			{m.back_to_metafields()}
 		</AppBackLink>
 	);
 
@@ -58,7 +58,7 @@ export const AppMetafieldDefinitionDetail = ({
 			icon={Database}
 			breadcrumb={
 				<AppBreadcrumb
-					items={[{ label: m.settings() }, { label: m.custom_data() }]}
+					items={[{ label: m.content() }, { label: m.metafields() }]}
 				/>
 			}
 			notFoundAction={backLink}
@@ -80,7 +80,7 @@ export const AppMetafieldDefinitionDetail = ({
 						icon: Pencil,
 						onSelect: () =>
 							navigate({
-								to: "/tour-operators/$tourOperatorId/settings/custom-data/$definitionId/edit",
+								to: "/tour-operators/$tourOperatorId/content/metafields/$definitionId/edit",
 								params: { tourOperatorId, definitionId },
 							}),
 					},
@@ -105,7 +105,7 @@ export const AppMetafieldDefinitionDetail = ({
 										),
 									});
 									navigate({
-										to: "/tour-operators/$tourOperatorId/settings/custom-data",
+										to: "/tour-operators/$tourOperatorId/content/metafields",
 										params: { tourOperatorId },
 									});
 								},
@@ -120,10 +120,10 @@ export const AppMetafieldDefinitionDetail = ({
 							breadcrumb={
 								<AppBreadcrumb
 									items={[
-										{ label: m.settings() },
+										{ label: m.content() },
 										{
-											label: m.custom_data(),
-											to: "/tour-operators/$tourOperatorId/settings/custom-data",
+											label: m.metafields(),
+											to: "/tour-operators/$tourOperatorId/content/metafields",
 											params: { tourOperatorId },
 										},
 										{ label: definition.name },

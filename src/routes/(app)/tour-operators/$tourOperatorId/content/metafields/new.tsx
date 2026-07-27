@@ -6,7 +6,7 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
-	"/(app)/tour-operators/$tourOperatorId/settings/custom-data/new",
+	"/(app)/tour-operators/$tourOperatorId/content/metafields/new",
 )({
 	component: NewMetafieldDefinitionPage,
 });
@@ -21,14 +21,10 @@ function NewMetafieldDefinitionPage() {
 				breadcrumb={
 					<AppBreadcrumb
 						items={[
+							{ label: m.content() },
 							{
-								label: m.settings(),
-								to: "/tour-operators/$tourOperatorId/settings",
-								params: { tourOperatorId },
-							},
-							{
-								label: m.custom_data(),
-								to: "/tour-operators/$tourOperatorId/settings/custom-data",
+								label: m.metafields(),
+								to: "/tour-operators/$tourOperatorId/content/metafields",
 								params: { tourOperatorId },
 							},
 							{ label: m.new_metafield_definition() },

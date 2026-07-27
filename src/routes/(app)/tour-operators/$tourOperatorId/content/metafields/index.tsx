@@ -9,35 +9,28 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
-	"/(app)/tour-operators/$tourOperatorId/settings/custom-data/",
+	"/(app)/tour-operators/$tourOperatorId/content/metafields/",
 )({
-	component: CustomDataSettingsPage,
+	component: MetafieldsPage,
 });
 
-// Custom data settings: the metafield-definition catalogue. Values are edited
-// on each experience/page detail.
-function CustomDataSettingsPage() {
+// Content → Metafields: the definition catalogue. Values are edited on each
+// experience/page detail.
+function MetafieldsPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader
-				title={m.custom_data()}
+				title={m.metafields()}
 				breadcrumb={
 					<AppBreadcrumb
-						items={[
-							{
-								label: m.settings(),
-								to: "/tour-operators/$tourOperatorId/settings",
-								params: { tourOperatorId },
-							},
-							{ label: m.custom_data() },
-						]}
+						items={[{ label: m.content() }, { label: m.metafields() }]}
 					/>
 				}
 				actions={
 					<Button asChild>
 						<AppLink
-							to="/tour-operators/$tourOperatorId/settings/custom-data/new"
+							to="/tour-operators/$tourOperatorId/content/metafields/new"
 							params={{ tourOperatorId }}
 						>
 							<Plus />

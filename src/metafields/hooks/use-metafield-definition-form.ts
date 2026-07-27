@@ -74,7 +74,7 @@ export const useMetafieldDefinitionForm = (
 				queryKey: queryKeys.activity(tourOperatorId),
 			});
 			navigate({
-				to: "/tour-operators/$tourOperatorId/settings/custom-data/$definitionId",
+				to: "/tour-operators/$tourOperatorId/content/metafields/$definitionId",
 				params: { tourOperatorId, definitionId },
 			});
 		},

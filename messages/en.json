@@ -433,7 +433,6 @@
 	"activity_action_translation_updated": "updated a translation",
 	"activity_action_translation_deleted": "removed a translation",
 	"validation_window_end_before_start": "Must not be before the first date",
-	"custom_data": "Custom data",
 	"metafield_definition": "Metafield definition",
 	"new_metafield_definition": "New definition",
 	"edit_metafield_definition": "Edit definition",
@@ -442,7 +441,6 @@
 	"delete_metafield_definition_body": "This also permanently deletes every value stored for this field across your experiences or pages.",
 	"no_metafield_definitions": "No definitions yet",
 	"no_metafield_definitions_body": "Define custom fields — subtitles, care notes, specs — and fill them in on each experience or page.",
-	"back_to_custom_data": "Back to custom data",
 	"metafield_identifier": "Identifier",
 	"metafield_identifier_taken": "A definition with this namespace and key already exists.",
 	"metafield_applies_to": "Applies to",
@@ -461,7 +459,7 @@
 	"metafield_type_url": "URL",
 	"metafield_type_json": "JSON",
 	"metafields": "Metafields",
-	"metafields_hint": "Custom fields defined in Settings → Custom data.",
+	"metafields_hint": "Custom fields defined in Content → Metafields.",
 	"metafields_saved": "Metafields saved",
 	"not_set": "Not set",
 	"value_true": "True",
@@ -471,5 +469,6 @@
 	"activity_action_metafield_definition_updated": "updated a metafield definition",
 	"activity_action_metafield_definition_deleted": "deleted a metafield definition",
 	"activity_action_metafield_updated": "updated a metafield",
-	"activity_action_metafield_cleared": "cleared a metafield"
+	"activity_action_metafield_cleared": "cleared a metafield",
+	"back_to_metafields": "Back to metafields"
 }
