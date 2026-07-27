@@ -18,7 +18,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useCurrentTourOperator, useOperatorDateTime } from "#/tour-operator";
 import { roleBadgeVariant, roleLabel } from "../format";
 import { useMember } from "../hooks/use-member";
 import { useMemberActions } from "../hooks/use-member-actions";
@@ -37,7 +37,6 @@ export const AppMemberDetail = ({
 	userId: string;
 }) => {
 	const operator = useCurrentTourOperator();
-	const timeZone = operator?.timezone;
 	const callerRole = operator?.role;
 	const { user } = useAuth();
 	const navigate = useNavigate();
@@ -180,7 +179,6 @@ export const AppMemberDetail = ({
 						member={member}
 						label={label}
 						tourOperatorId={tourOperatorId}
-						timeZone={timeZone}
 						actions={actions}
 					/>
 				);
@@ -193,19 +191,14 @@ const MemberFacts = ({
 	member,
 	label,
 	tourOperatorId,
-	timeZone,
 	actions,
 }: {
 	member: Member;
 	label: string;
 	tourOperatorId: string;
-	timeZone?: string;
 	actions: AppAction[];
 }) => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	});
+	const { formatDate } = useOperatorDateTime();
 
 	return (
 		<>
@@ -245,7 +238,7 @@ const MemberFacts = ({
 							{member.email ?? dash()}
 						</AppDetailField>
 						<AppDetailField label={m.joined()}>
-							{dateFormat.format(new Date(member.joinedAt))}
+							{formatDate(member.joinedAt)}
 						</AppDetailField>
 					</dl>
 				</CardContent>

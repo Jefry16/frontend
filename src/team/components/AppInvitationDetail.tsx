@@ -13,7 +13,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import {
 	effectiveStatus,
 	roleBadgeVariant,
@@ -35,7 +35,6 @@ export const AppInvitationDetail = ({
 	tourOperatorId: string;
 	invitationId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
 	const query = useInvitation(tourOperatorId, invitationId);
 	const { resend, revoke } = useInvitationActions(tourOperatorId, invitationId);
 
@@ -114,7 +113,6 @@ export const AppInvitationDetail = ({
 					<InvitationFacts
 						invitation={invitation}
 						tourOperatorId={tourOperatorId}
-						timeZone={timeZone}
 						actions={actions}
 					/>
 				);
@@ -127,20 +125,13 @@ export const AppInvitationDetail = ({
 const InvitationFacts = ({
 	invitation,
 	tourOperatorId,
-	timeZone,
 	actions,
 }: {
 	invitation: Invitation;
 	tourOperatorId: string;
-	timeZone?: string;
 	actions: AppAction[];
 }) => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeStyle: "short",
-		timeZone,
-	});
-	const format = (iso: string) => dateFormat.format(new Date(iso));
+	const { formatDateTime: format } = useOperatorDateTime();
 	const status = effectiveStatus(invitation);
 
 	return (

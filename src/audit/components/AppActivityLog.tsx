@@ -3,7 +3,7 @@ import { Skeleton } from "#/components/ui/skeleton";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppError } from "#/shared/components/AppError";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import {
 	formatAuditAction,
 	formatAuditActor,
@@ -25,7 +25,7 @@ export const AppActivityLog = ({
 	entityType: string;
 	entityId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDateTime } = useOperatorDateTime();
 	const log = useActivityLog(tourOperatorId, entityType, entityId);
 
 	if (log.isPending) {
@@ -51,13 +51,6 @@ export const AppActivityLog = ({
 			<p className="text-sm text-muted-foreground">{m.activity_empty()}</p>
 		);
 	}
-
-	const formatDateTime = (iso: string) =>
-		new Intl.DateTimeFormat(undefined, {
-			dateStyle: "medium",
-			timeStyle: "short",
-			timeZone,
-		}).format(new Date(iso));
 
 	return (
 		<div className="flex flex-col gap-4">

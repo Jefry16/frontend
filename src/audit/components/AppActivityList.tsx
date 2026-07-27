@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { activityColumns } from "../columns";
 
 // The operator's whole audit trail as the standard cursor table, newest first.
@@ -12,16 +12,11 @@ export const AppActivityList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
-	const columns = useMemo(() => {
-		const formatDateTime = (iso: string) =>
-			new Intl.DateTimeFormat(undefined, {
-				dateStyle: "medium",
-				timeStyle: "short",
-				timeZone,
-			}).format(new Date(iso));
-		return activityColumns(tourOperatorId, formatDateTime);
-	}, [tourOperatorId, timeZone]);
+	const { formatDateTime } = useOperatorDateTime();
+	const columns = useMemo(
+		() => activityColumns(tourOperatorId, formatDateTime),
+		[tourOperatorId, formatDateTime],
+	);
 
 	return (
 		<AppDataTable

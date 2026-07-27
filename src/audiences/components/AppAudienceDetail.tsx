@@ -13,7 +13,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { useAudience } from "../hooks/use-audience";
 
 // Audience detail: the tier's facts + an Edit action. Owns its fetch
@@ -26,7 +26,7 @@ export const AppAudienceDetail = ({
 	tourOperatorId: string;
 	audienceId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDate } = useOperatorDateTime();
 	const navigate = useNavigate();
 	const query = useAudience(tourOperatorId, audienceId);
 
@@ -63,10 +63,7 @@ export const AppAudienceDetail = ({
 			}
 		>
 			{(audience) => {
-				const created = new Intl.DateTimeFormat(undefined, {
-					dateStyle: "medium",
-					timeZone,
-				}).format(new Date(audience.createdAt));
+				const created = formatDate(audience.createdAt);
 				const actions: AppAction[] = [
 					{
 						id: "edit",

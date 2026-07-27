@@ -10,13 +10,9 @@ import type { PickupLocation } from "./types";
 // A factory so the cells close over the operator id and timezone.
 export const pickupLocationColumns = (
 	tourOperatorId: string,
-	timeZone?: string,
+	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	formatDate: (iso: string) => string,
 ): ColumnDef<PickupLocation, unknown>[] => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	});
-
 	return [
 		{
 			id: "name",
@@ -56,7 +52,7 @@ export const pickupLocationColumns = (
 					allowSorting
 				/>
 			),
-			cell: ({ row }) => dateFormat.format(new Date(row.original.createdAt)),
+			cell: ({ row }) => formatDate(row.original.createdAt),
 		},
 	];
 };

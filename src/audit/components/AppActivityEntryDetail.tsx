@@ -15,7 +15,7 @@ import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import {
 	entityRoute,
 	formatAuditAction,
@@ -36,7 +36,7 @@ export const AppActivityEntryDetail = ({
 	tourOperatorId: string;
 	entryId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatTimestamp } = useOperatorDateTime();
 	const query = useAuditLogEntry(tourOperatorId, entryId);
 
 	const backLink = (
@@ -72,11 +72,7 @@ export const AppActivityEntryDetail = ({
 			}
 		>
 			{(entry) => {
-				const when = new Intl.DateTimeFormat(undefined, {
-					dateStyle: "medium",
-					timeStyle: "medium",
-					timeZone,
-				}).format(new Date(entry.createdAt));
+				const when = formatTimestamp(entry.createdAt);
 				const route = entityRoute(
 					entry.entityType,
 					tourOperatorId,

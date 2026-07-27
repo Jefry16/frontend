@@ -14,13 +14,9 @@ import type { Experience } from "./types";
 // the Created cell closes over the operator tz.
 export const experienceColumns = (
 	tourOperatorId: string,
-	timeZone?: string,
+	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	formatDate: (iso: string) => string,
 ): ColumnDef<Experience, unknown>[] => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	});
-
 	return [
 		{
 			id: "thumbnail",
@@ -85,7 +81,7 @@ export const experienceColumns = (
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">
-					{dateFormat.format(new Date(row.original.createdAt))}
+					{formatDate(row.original.createdAt)}
 				</span>
 			),
 		},

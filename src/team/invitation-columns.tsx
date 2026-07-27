@@ -21,12 +21,9 @@ import type { Invitation } from "./types";
 // API default is newest-first (-createdAt).
 export const invitationColumns = (
 	tourOperatorId: string,
-	timeZone?: string,
+	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	formatDate: (iso: string) => string,
 ): ColumnDef<Invitation, unknown>[] => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	});
 	// Invitations are only ever ADMIN or STAFF (OWNER can't be invited).
 	const roleItems = [
 		{ value: "ADMIN", label: roleLabel("ADMIN") },
@@ -151,7 +148,7 @@ export const invitationColumns = (
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">
-					{dateFormat.format(new Date(row.original.createdAt))}
+					{formatDate(row.original.createdAt)}
 				</span>
 			),
 		},

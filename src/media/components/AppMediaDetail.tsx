@@ -16,7 +16,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { formatBytes, isImage, mimeLabel } from "../format";
 import { useMedia } from "../hooks/use-media";
 import { useMediaActions } from "../hooks/use-media-actions";
@@ -32,7 +32,6 @@ export const AppMediaDetail = ({
 	tourOperatorId: string;
 	mediaId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
 	const navigate = useNavigate();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
@@ -107,7 +106,6 @@ export const AppMediaDetail = ({
 				<MediaFacts
 					media={media}
 					tourOperatorId={tourOperatorId}
-					timeZone={timeZone}
 					actions={actions}
 				/>
 			)}
@@ -118,19 +116,13 @@ export const AppMediaDetail = ({
 const MediaFacts = ({
 	media,
 	tourOperatorId,
-	timeZone,
 	actions,
 }: {
 	media: MediaAsset;
 	tourOperatorId: string;
-	timeZone?: string;
 	actions: AppAction[];
 }) => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeStyle: "short",
-		timeZone,
-	});
+	const { formatDateTime } = useOperatorDateTime();
 
 	return (
 		<>
@@ -175,7 +167,7 @@ const MediaFacts = ({
 							{media.uploadedBy.name ?? "—"}
 						</AppDetailField>
 						<AppDetailField label={m.added()}>
-							{dateFormat.format(new Date(media.createdAt))}
+							{formatDateTime(media.createdAt)}
 						</AppDetailField>
 					</dl>
 				</CardContent>

@@ -5,7 +5,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppLink } from "#/shared/components/AppLink";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { experienceColumns } from "../columns";
 
 // The operator's experiences as the standard cursor-paginated table: thumbnail,
@@ -16,10 +16,10 @@ export const AppExperiencesList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDate } = useOperatorDateTime();
 	const columns = useMemo(
-		() => experienceColumns(tourOperatorId, timeZone),
-		[tourOperatorId, timeZone],
+		() => experienceColumns(tourOperatorId, formatDate),
+		[tourOperatorId, formatDate],
 	);
 
 	return (

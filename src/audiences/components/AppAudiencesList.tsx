@@ -5,7 +5,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppLink } from "#/shared/components/AppLink";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { audienceColumns } from "../columns";
 
 // The operator's audiences (pax pricing tiers) as the standard cursor-paginated
@@ -15,10 +15,10 @@ export const AppAudiencesList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDate } = useOperatorDateTime();
 	const columns = useMemo(
-		() => audienceColumns(tourOperatorId, timeZone),
-		[tourOperatorId, timeZone],
+		() => audienceColumns(tourOperatorId, formatDate),
+		[tourOperatorId, formatDate],
 	);
 
 	return (

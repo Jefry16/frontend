@@ -10,13 +10,9 @@ import type { Audience } from "./types";
 // the operator's timezone. The name cell links to the detail once it exists.
 export const audienceColumns = (
 	tourOperatorId: string,
-	timeZone?: string,
+	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	formatDate: (iso: string) => string,
 ): ColumnDef<Audience, unknown>[] => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	});
-
 	return [
 		{
 			id: "name",
@@ -60,7 +56,7 @@ export const audienceColumns = (
 					allowSorting
 				/>
 			),
-			cell: ({ row }) => dateFormat.format(new Date(row.original.createdAt)),
+			cell: ({ row }) => formatDate(row.original.createdAt),
 		},
 	];
 };

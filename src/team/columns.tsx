@@ -16,12 +16,9 @@ const dash = () => <span className="text-muted-foreground">—</span>;
 // is owner-first (joinedAt asc).
 export const memberColumns = (
 	tourOperatorId: string,
-	timeZone?: string,
+	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	formatDate: (iso: string) => string,
 ): ColumnDef<Member, unknown>[] => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	});
 	const roleItems = [
 		{ value: "OWNER", label: roleLabel("OWNER") },
 		{ value: "ADMIN", label: roleLabel("ADMIN") },
@@ -106,7 +103,7 @@ export const memberColumns = (
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">
-					{dateFormat.format(new Date(row.original.joinedAt))}
+					{formatDate(row.original.joinedAt)}
 				</span>
 			),
 		},

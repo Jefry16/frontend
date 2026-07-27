@@ -5,7 +5,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppLink } from "#/shared/components/AppLink";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { pickupLocationColumns } from "../columns";
 
 // The operator's pickup locations (meeting points) as the standard
@@ -15,10 +15,10 @@ export const AppPickupLocationsList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDate } = useOperatorDateTime();
 	const columns = useMemo(
-		() => pickupLocationColumns(tourOperatorId, timeZone),
-		[tourOperatorId, timeZone],
+		() => pickupLocationColumns(tourOperatorId, formatDate),
+		[tourOperatorId, formatDate],
 	);
 
 	return (

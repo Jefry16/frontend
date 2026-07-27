@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { memberColumns } from "../columns";
 
 // The team roster as the standard cursor-paginated table: filter by role, sort
@@ -11,10 +11,10 @@ export const AppMembersList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDate } = useOperatorDateTime();
 	const columns = useMemo(
-		() => memberColumns(tourOperatorId, timeZone),
-		[tourOperatorId, timeZone],
+		() => memberColumns(tourOperatorId, formatDate),
+		[tourOperatorId, formatDate],
 	);
 
 	return (

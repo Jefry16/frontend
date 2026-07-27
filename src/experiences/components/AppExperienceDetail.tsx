@@ -22,7 +22,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { formatDuration, statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";
@@ -53,7 +53,6 @@ export const AppExperienceDetail = ({
 	tourOperatorId: string;
 	experienceId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
 	const navigate = useNavigate();
 	const query = useExperience(tourOperatorId, experienceId);
 	const { publish, unpublish } = useExperienceActions(
@@ -153,7 +152,6 @@ export const AppExperienceDetail = ({
 					<ExperienceView
 						experience={experience}
 						tourOperatorId={tourOperatorId}
-						timeZone={timeZone}
 						actions={actions}
 					/>
 				);
@@ -165,18 +163,14 @@ export const AppExperienceDetail = ({
 const ExperienceView = ({
 	experience,
 	tourOperatorId,
-	timeZone,
 	actions,
 }: {
 	experience: Experience;
 	tourOperatorId: string;
-	timeZone?: string;
 	actions: AppAction[];
 }) => {
-	const created = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	}).format(new Date(experience.createdAt));
+	const { formatDate } = useOperatorDateTime();
+	const created = formatDate(experience.createdAt);
 
 	return (
 		<>

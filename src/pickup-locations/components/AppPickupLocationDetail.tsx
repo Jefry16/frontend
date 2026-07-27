@@ -16,7 +16,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 import { usePickupLocationActions } from "../hooks/use-pickup-location-actions";
@@ -32,7 +32,7 @@ export const AppPickupLocationDetail = ({
 	tourOperatorId: string;
 	pickupLocationId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDate } = useOperatorDateTime();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -72,10 +72,7 @@ export const AppPickupLocationDetail = ({
 			}
 		>
 			{(pickup) => {
-				const created = new Intl.DateTimeFormat(undefined, {
-					dateStyle: "medium",
-					timeZone,
-				}).format(new Date(pickup.createdAt));
+				const created = formatDate(pickup.createdAt);
 				const actions: AppAction[] = [
 					{
 						id: "edit",

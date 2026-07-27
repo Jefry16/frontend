@@ -24,13 +24,9 @@ const typeItems = [
 // the rest are display-only. A factory so the Added cell closes over the tz.
 export const mediaColumns = (
 	tourOperatorId: string,
-	timeZone?: string,
+	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	formatDate: (iso: string) => string,
 ): ColumnDef<MediaAsset, unknown>[] => {
-	const dateFormat = new Intl.DateTimeFormat(undefined, {
-		dateStyle: "medium",
-		timeZone,
-	});
-
 	return [
 		{
 			id: "preview",
@@ -122,7 +118,7 @@ export const mediaColumns = (
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">
-					{dateFormat.format(new Date(row.original.createdAt))}
+					{formatDate(row.original.createdAt)}
 				</span>
 			),
 		},

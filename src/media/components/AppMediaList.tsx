@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { useCurrentTourOperator } from "#/tour-operator";
+import { useOperatorDateTime } from "#/tour-operator";
 import { mediaColumns } from "../columns";
 import { AppMediaUploadButton } from "./AppMediaUploadButton";
 
@@ -15,10 +15,10 @@ export const AppMediaList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const timeZone = useCurrentTourOperator()?.timezone;
+	const { formatDate } = useOperatorDateTime();
 	const columns = useMemo(
-		() => mediaColumns(tourOperatorId, timeZone),
-		[tourOperatorId, timeZone],
+		() => mediaColumns(tourOperatorId, formatDate),
+		[tourOperatorId, formatDate],
 	);
 
 	return (
