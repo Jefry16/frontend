@@ -9,7 +9,7 @@ import type { MetafieldOwnerTypeCode } from "../types";
 import { ownerMetafieldsEndpoint } from "./use-owner-metafields";
 
 /** One edited field: empty `value` clears (DELETE), anything else sets (PUT). */
-export interface MetafieldValueChange {
+interface MetafieldValueChange {
 	namespace: string;
 	key: string;
 	/** The definition's display name — prefixes a per-field 422 message. */
@@ -48,15 +48,23 @@ export const useMetafieldValueSave = (
 				}
 			}
 		},
-		onSettled: () => {
-			queryClient.invalidateQueries({
-				queryKey: queryKeys.metafieldValues(tourOperatorId, ownerType, ownerId),
-			});
-			// Each write appended an audit entry on the owner's timeline.
-			queryClient.invalidateQueries({
-				queryKey: queryKeys.activity(tourOperatorId),
-			});
-		},
+		// Returned so the mutation stays pending until the values refetch lands —
+		// the editor clears its drafts in ITS onSettled (which runs after this
+		// resolves) against the fresh cache, never flashing pre-save values.
+		onSettled: () =>
+			Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.metafieldValues(
+						tourOperatorId,
+						ownerType,
+						ownerId,
+					),
+				}),
+				// Each write appended an audit entry on the owner's timeline.
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.activity(tourOperatorId),
+				}),
+			]),
 		onSuccess: () => toast.success(m.metafields_saved()),
 		onError: (error) => toast.error(error.message),
 	});

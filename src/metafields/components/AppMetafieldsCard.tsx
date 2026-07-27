@@ -76,16 +76,21 @@ export const AppMetafieldsCard = ({
 	const setDraft = (id: string, value: string) =>
 		setDrafts((prev) => ({ ...prev, [id]: value }));
 
+	// A whitespace-only draft means "clear" — the backend 422s a blank PUT.
+	const effective = (raw: string) => (raw.trim() === "" ? "" : raw);
 	const changes = definitions
 		.filter((d) => {
 			const id = `${d.namespace}.${d.key}`;
-			return drafts[id] !== undefined && drafts[id] !== (stored.get(id) ?? "");
+			const draft = drafts[id];
+			return (
+				draft !== undefined && effective(draft) !== (stored.get(id) ?? "")
+			);
 		})
 		.map((d) => ({
 			namespace: d.namespace,
 			key: d.key,
 			name: d.name,
-			value: current(`${d.namespace}.${d.key}`),
+			value: effective(drafts[`${d.namespace}.${d.key}`] ?? ""),
 		}));
 
 	return (
@@ -98,7 +103,14 @@ export const AppMetafieldsCard = ({
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
-						save.mutate(changes, { onSuccess: () => setDrafts({}) });
+						// Clear drafts in onSettled — it runs AFTER the hook's
+						// invalidation resolves, so the inputs land on the fresh
+						// cache. On error the drafts stay (the failed edit survives).
+						save.mutate(changes, {
+							onSettled: (_data, error) => {
+								if (!error) setDrafts({});
+							},
+						});
 					}}
 					className="space-y-4"
 				>
