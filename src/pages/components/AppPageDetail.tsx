@@ -16,6 +16,7 @@ import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
+import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
@@ -216,6 +217,12 @@ export const AppPageDetail = ({
 								</pre>
 							</CardContent>
 						</Card>
+
+						<AppMetafieldsCard
+							tourOperatorId={tourOperatorId}
+							ownerType="page"
+							ownerId={pageId}
+						/>
 
 						<AppActivityCard
 							tourOperatorId={tourOperatorId}

@@ -25,6 +25,7 @@ const MODULES = [
 	"tour-operator",
 	"team",
 	"media",
+	"metafields",
 	"pages",
 	"experiences",
 ];

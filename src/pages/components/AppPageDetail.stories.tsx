@@ -30,6 +30,12 @@ const clientWith = (p: Page) =>
 			queryKeys.activityTimeline(OP, "PAGE", PAGE_ID),
 			listPage([]),
 		);
+		// Empty definitions catalogue — the metafields card resolves and renders null.
+		qc.setQueryData(
+			[...queryKeys.metafieldDefinitions(OP), "all-pages"],
+			listPage([]),
+		);
+		qc.setQueryData(queryKeys.metafieldValues(OP, "page", PAGE_ID), []);
 	});
 
 const meta = {

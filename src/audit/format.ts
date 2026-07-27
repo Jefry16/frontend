@@ -42,6 +42,17 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"pickup_location.created": m.activity_action_pickup_location_created,
 	"pickup_location.updated": m.activity_action_pickup_location_updated,
 	"pickup_location.deleted": m.activity_action_pickup_location_deleted,
+	"metafield_definition.created":
+		m.activity_action_metafield_definition_created,
+	"metafield_definition.updated":
+		m.activity_action_metafield_definition_updated,
+	"metafield_definition.deleted":
+		m.activity_action_metafield_definition_deleted,
+	// Value writes audit on the OWNER's timeline, namespaced per owner kind.
+	"experience.metafield_updated": m.activity_action_metafield_updated,
+	"experience.metafield_cleared": m.activity_action_metafield_cleared,
+	"page.metafield_updated": m.activity_action_metafield_updated,
+	"page.metafield_cleared": m.activity_action_metafield_cleared,
 };
 
 // Field → label for the `{field, from, to}` diff rows. Reuses the form labels
@@ -72,6 +83,7 @@ const FIELD_LABELS: Record<string, () => string> = {
 	templateSuffix: m.template_suffix,
 	primaryLocale: m.primary_language,
 	supportedLocales: m.supported_languages,
+	value: m.value,
 };
 
 /** The actor line: the frozen display name, or the per-type generic label. */
@@ -187,6 +199,13 @@ const ENTITY_TYPES: Record<
 		route: {
 			to: "/tour-operators/$tourOperatorId/settings/invitations/$invitationId",
 			param: "invitationId",
+		},
+	},
+	METAFIELD_DEFINITION: {
+		label: m.metafield_definition,
+		route: {
+			to: "/tour-operators/$tourOperatorId/settings/custom-data/$definitionId",
+			param: "definitionId",
 		},
 	},
 	TOUR_OPERATOR: {

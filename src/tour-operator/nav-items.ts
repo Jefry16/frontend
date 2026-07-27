@@ -3,6 +3,7 @@ import {
 	Building2,
 	CalendarDays,
 	Compass,
+	Database,
 	FileText,
 	History,
 	Images,
@@ -121,6 +122,14 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Languages,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/languages",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.custom_data(),
+		icon: Database,
+		link: {
+			to: "/tour-operators/$tourOperatorId/settings/custom-data",
 			params: { tourOperatorId },
 		},
 	},

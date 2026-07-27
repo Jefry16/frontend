@@ -10,6 +10,7 @@ import {
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
+import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
@@ -280,6 +281,11 @@ const ExperienceView = ({
 					</CardContent>
 				</Card>
 			</div>
+			<AppMetafieldsCard
+				tourOperatorId={tourOperatorId}
+				ownerType="experience"
+				ownerId={experience.id}
+			/>
 			<AppActivityCard
 				tourOperatorId={tourOperatorId}
 				entityType="EXPERIENCE"

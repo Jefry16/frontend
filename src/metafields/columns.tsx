@@ -1,0 +1,101 @@
+import type { ColumnDef } from "@tanstack/react-table";
+import * as m from "#/paraglide/messages";
+import { AppBadge } from "#/shared/components/AppBadge";
+import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
+import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import {
+	OWNER_TYPE_FILTER_OPTIONS,
+	ownerTypeLabel,
+	TYPE_FILTER_OPTIONS,
+	typeLabel,
+} from "./format";
+import type { MetafieldDefinitionListItem } from "./types";
+
+// The definitions columns: name (searchable, links to the detail), the
+// namespace.key identifier (mono — what themes reference), owner type + type
+// (set filters; NB the filter values are the backend enum NAMES while the row
+// data carries the lowercase codes), created.
+export const metafieldDefinitionColumns = (
+	tourOperatorId: string,
+	formatDate: (iso: string) => string,
+): ColumnDef<MetafieldDefinitionListItem, unknown>[] => [
+	{
+		id: "name",
+		accessorKey: "name",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.name()}
+				headerContext={ctx}
+				allowSorting
+				allowFiltering="text"
+			/>
+		),
+		cell: ({ row }) => (
+			<AppResourceLink
+				to="/tour-operators/$tourOperatorId/settings/custom-data/$definitionId"
+				params={{ tourOperatorId, definitionId: row.original.id }}
+			>
+				{row.original.name}
+			</AppResourceLink>
+		),
+	},
+	{
+		id: "namespace",
+		accessorKey: "namespace",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.metafield_identifier()}
+				headerContext={ctx}
+				allowSorting
+				allowFiltering="text"
+			/>
+		),
+		cell: ({ row }) => (
+			<span className="font-mono text-xs">
+				{row.original.namespace}.{row.original.key}
+			</span>
+		),
+	},
+	{
+		id: "ownerType",
+		accessorKey: "ownerType",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.metafield_applies_to()}
+				headerContext={ctx}
+				allowFiltering="set"
+				items={OWNER_TYPE_FILTER_OPTIONS}
+			/>
+		),
+		cell: ({ row }) => (
+			<AppBadge variant="secondary">
+				{ownerTypeLabel(row.original.ownerType)}
+			</AppBadge>
+		),
+	},
+	{
+		id: "type",
+		accessorKey: "type",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.metafield_type()}
+				headerContext={ctx}
+				allowFiltering="set"
+				items={TYPE_FILTER_OPTIONS}
+			/>
+		),
+		cell: ({ row }) => typeLabel(row.original.type),
+	},
+	{
+		id: "createdAt",
+		accessorKey: "createdAt",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.created()}
+				headerContext={ctx}
+				allowSorting
+			/>
+		),
+		cell: ({ row }) => formatDate(row.original.createdAt),
+	},
+];
