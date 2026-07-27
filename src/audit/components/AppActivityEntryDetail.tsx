@@ -1,4 +1,4 @@
-import { ArrowLeft, History } from "lucide-react";
+import { History } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import {
@@ -10,6 +10,7 @@ import {
 	TableRow,
 } from "#/components/ui/table";
 import * as m from "#/paraglide/messages";
+import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppLink } from "#/shared/components/AppLink";
@@ -40,14 +41,12 @@ export const AppActivityEntryDetail = ({
 	const query = useAuditLogEntry(tourOperatorId, entryId);
 
 	const backLink = (
-		<AppLink
+		<AppBackLink
 			to="/tour-operators/$tourOperatorId/activity"
 			params={{ tourOperatorId }}
-			className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 		>
-			<ArrowLeft className="size-4" />
 			{m.back_to_activity()}
-		</AppLink>
+		</AppBackLink>
 	);
 
 	return (

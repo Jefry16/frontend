@@ -1,9 +1,9 @@
-import { ArrowLeft, Compass } from "lucide-react";
+import { Compass } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
+import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useExperience } from "../hooks/use-experience";
@@ -22,14 +22,12 @@ export const AppExperienceEdit = ({
 	const query = useExperience(tourOperatorId, experienceId);
 
 	const backLink = (
-		<AppLink
+		<AppBackLink
 			to="/tour-operators/$tourOperatorId/experiences"
 			params={{ tourOperatorId }}
-			className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 		>
-			<ArrowLeft className="size-4" />
 			{m.back_to_experiences()}
-		</AppLink>
+		</AppBackLink>
 	);
 
 	return (

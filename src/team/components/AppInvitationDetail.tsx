@@ -1,12 +1,12 @@
-import { ArrowLeft, MailX, Send, Trash2 } from "lucide-react";
-import { AppActivityLog } from "#/audit";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
+import { MailX, Send, Trash2 } from "lucide-react";
+import { AppActivityCard } from "#/audit";
+import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
+import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppLink } from "#/shared/components/AppLink";
 import {
 	type AppAction,
 	AppPageActions,
@@ -39,14 +39,12 @@ export const AppInvitationDetail = ({
 	const { resend, revoke } = useInvitationActions(tourOperatorId, invitationId);
 
 	const backLink = (
-		<AppLink
+		<AppBackLink
 			to="/tour-operators/$tourOperatorId/settings/invitations"
 			params={{ tourOperatorId }}
-			className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 		>
-			<ArrowLeft className="size-4" />
 			{m.back_to_invitations()}
-		</AppLink>
+		</AppBackLink>
 	);
 
 	return (
@@ -190,18 +188,11 @@ const InvitationFacts = ({
 					</dl>
 				</CardContent>
 			</Card>
-			<Card>
-				<CardHeader>
-					<CardTitle>{m.activity()}</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<AppActivityLog
-						tourOperatorId={tourOperatorId}
-						entityType="INVITATION"
-						entityId={invitation.id}
-					/>
-				</CardContent>
-			</Card>
+			<AppActivityCard
+				tourOperatorId={tourOperatorId}
+				entityType="INVITATION"
+				entityId={invitation.id}
+			/>
 		</>
 	);
 };

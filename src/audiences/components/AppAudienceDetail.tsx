@@ -1,12 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Languages, Pencil, UsersRound } from "lucide-react";
-import { AppActivityLog } from "#/audit";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
+import { Languages, Pencil, UsersRound } from "lucide-react";
+import { AppActivityCard } from "#/audit";
+import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
+import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppLink } from "#/shared/components/AppLink";
 import {
 	type AppAction,
 	AppPageActions,
@@ -31,14 +31,12 @@ export const AppAudienceDetail = ({
 	const query = useAudience(tourOperatorId, audienceId);
 
 	const backLink = (
-		<AppLink
+		<AppBackLink
 			to="/tour-operators/$tourOperatorId/audiences"
 			params={{ tourOperatorId }}
-			className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 		>
-			<ArrowLeft className="size-4" />
 			{m.back_to_audiences()}
-		</AppLink>
+		</AppBackLink>
 	);
 
 	return (
@@ -115,18 +113,11 @@ export const AppAudienceDetail = ({
 								</dl>
 							</CardContent>
 						</Card>
-						<Card>
-							<CardHeader>
-								<CardTitle>{m.activity()}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<AppActivityLog
-									tourOperatorId={tourOperatorId}
-									entityType="AUDIENCE"
-									entityId={audienceId}
-								/>
-							</CardContent>
-						</Card>
+						<AppActivityCard
+							tourOperatorId={tourOperatorId}
+							entityType="AUDIENCE"
+							entityId={audienceId}
+						/>
 					</>
 				);
 			}}

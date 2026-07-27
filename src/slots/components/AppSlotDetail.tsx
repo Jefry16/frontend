@@ -1,13 +1,6 @@
-import {
-	ArrowLeft,
-	Ban,
-	CalendarDays,
-	Eye,
-	EyeOff,
-	Pencil,
-} from "lucide-react";
+import { Ban, CalendarDays, Eye, EyeOff, Pencil } from "lucide-react";
 import { useState } from "react";
-import { AppActivityLog } from "#/audit";
+import { AppActivityCard } from "#/audit";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import {
@@ -19,6 +12,7 @@ import {
 	TableRow,
 } from "#/components/ui/table";
 import * as m from "#/paraglide/messages";
+import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
@@ -60,14 +54,12 @@ export const AppSlotDetail = ({
 	const [capacityOpen, setCapacityOpen] = useState(false);
 
 	const backLink = (
-		<AppLink
+		<AppBackLink
 			to="/tour-operators/$tourOperatorId/availability"
 			params={{ tourOperatorId }}
-			className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 		>
-			<ArrowLeft className="size-4" />
 			{m.back_to_availability()}
-		</AppLink>
+		</AppBackLink>
 	);
 
 	return (
@@ -228,18 +220,11 @@ export const AppSlotDetail = ({
 							</CardContent>
 						</Card>
 
-						<Card>
-							<CardHeader>
-								<CardTitle>{m.activity()}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<AppActivityLog
-									tourOperatorId={tourOperatorId}
-									entityType="SLOT"
-									entityId={slotId}
-								/>
-							</CardContent>
-						</Card>
+						<AppActivityCard
+							tourOperatorId={tourOperatorId}
+							entityType="SLOT"
+							entityId={slotId}
+						/>
 
 						<AppEditCapacityDialog
 							open={capacityOpen}

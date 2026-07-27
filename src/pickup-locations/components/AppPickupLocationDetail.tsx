@@ -1,15 +1,15 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, MapPin, Pencil, Trash2 } from "lucide-react";
-import { AppActivityLog } from "#/audit";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
+import { MapPin, Pencil, Trash2 } from "lucide-react";
+import { AppActivityCard } from "#/audit";
+import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppLink } from "#/shared/components/AppLink";
 import {
 	type AppAction,
 	AppPageActions,
@@ -40,14 +40,12 @@ export const AppPickupLocationDetail = ({
 	const { remove } = usePickupLocationActions(tourOperatorId, pickupLocationId);
 
 	const backLink = (
-		<AppLink
+		<AppBackLink
 			to="/tour-operators/$tourOperatorId/pickup-locations"
 			params={{ tourOperatorId }}
-			className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 		>
-			<ArrowLeft className="size-4" />
 			{m.back_to_pickup_locations()}
-		</AppLink>
+		</AppBackLink>
 	);
 
 	return (
@@ -141,18 +139,11 @@ export const AppPickupLocationDetail = ({
 								</dl>
 							</CardContent>
 						</Card>
-						<Card>
-							<CardHeader>
-								<CardTitle>{m.activity()}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<AppActivityLog
-									tourOperatorId={tourOperatorId}
-									entityType="PICKUP_LOCATION"
-									entityId={pickupLocationId}
-								/>
-							</CardContent>
-						</Card>
+						<AppActivityCard
+							tourOperatorId={tourOperatorId}
+							entityType="PICKUP_LOCATION"
+							entityId={pickupLocationId}
+						/>
 					</>
 				);
 			}}

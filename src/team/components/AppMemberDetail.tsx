@@ -1,17 +1,17 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Crown, LogOut, Trash2, UserCog, UserX } from "lucide-react";
-import { AppActivityLog } from "#/audit";
+import { Crown, LogOut, Trash2, UserCog, UserX } from "lucide-react";
+import { AppActivityCard } from "#/audit";
 import { useAuth } from "#/auth";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
+import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppLink } from "#/shared/components/AppLink";
 import {
 	type AppAction,
 	AppPageActions,
@@ -49,14 +49,12 @@ export const AppMemberDetail = ({
 	);
 
 	const backLink = (
-		<AppLink
+		<AppBackLink
 			to="/tour-operators/$tourOperatorId/settings/members"
 			params={{ tourOperatorId }}
-			className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 		>
-			<ArrowLeft className="size-4" />
 			{m.back_to_members()}
-		</AppLink>
+		</AppBackLink>
 	);
 
 	return (
@@ -243,18 +241,11 @@ const MemberFacts = ({
 					</dl>
 				</CardContent>
 			</Card>
-			<Card>
-				<CardHeader>
-					<CardTitle>{m.activity()}</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<AppActivityLog
-						tourOperatorId={tourOperatorId}
-						entityType="MEMBER"
-						entityId={member.id}
-					/>
-				</CardContent>
-			</Card>
+			<AppActivityCard
+				tourOperatorId={tourOperatorId}
+				entityType="MEMBER"
+				entityId={member.id}
+			/>
 		</>
 	);
 };
