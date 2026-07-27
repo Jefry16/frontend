@@ -1,4 +1,4 @@
-import { CalendarDays, Plus, UsersRound } from "lucide-react";
+import { CalendarDays, UsersRound } from "lucide-react";
 import { useState } from "react";
 import type { Audience } from "#/audiences";
 import { Button } from "#/components/ui/button";
@@ -12,7 +12,7 @@ import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppEmptyState } from "#/shared/components/AppEmptyState";
 import { AppError } from "#/shared/components/AppError";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
@@ -88,15 +88,12 @@ export const AppAvailabilityEditor = ({
 							title={m.no_audiences_for_slots()}
 							description={m.no_audiences_for_slots_body()}
 							action={
-								<Button asChild>
-									<AppLink
-										to="/tour-operators/$tourOperatorId/audiences/new"
-										params={{ tourOperatorId }}
-									>
-										<Plus />
-										{m.new_audience()}
-									</AppLink>
-								</Button>
+								<AppNewLink
+									to="/tour-operators/$tourOperatorId/audiences/new"
+									params={{ tourOperatorId }}
+								>
+									{m.new_audience()}
+								</AppNewLink>
 							}
 						/>
 					) : (

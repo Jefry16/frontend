@@ -1,10 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
-import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppPickupLocationsList } from "#/pickup-locations";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 
@@ -27,15 +25,12 @@ function PickupLocationsPage() {
 					/>
 				}
 				actions={
-					<Button asChild>
-						<AppLink
-							to="/tour-operators/$tourOperatorId/pickup-locations/new"
-							params={{ tourOperatorId }}
-						>
-							<Plus />
-							{m.new_pickup_location()}
-						</AppLink>
-					</Button>
+					<AppNewLink
+						to="/tour-operators/$tourOperatorId/pickup-locations/new"
+						params={{ tourOperatorId }}
+					>
+						{m.new_pickup_location()}
+					</AppNewLink>
 				}
 			/>
 			<AppPickupLocationsList tourOperatorId={tourOperatorId} />

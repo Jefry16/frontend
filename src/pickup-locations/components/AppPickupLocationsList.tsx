@@ -1,10 +1,9 @@
-import { MapPin, Plus } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useMemo } from "react";
-import { Button } from "#/components/ui/button";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppNewLink } from "#/shared/components/AppNewLink";
 import { useOperatorDateTime } from "#/tour-operator";
 import { pickupLocationColumns } from "../columns";
 
@@ -31,15 +30,12 @@ export const AppPickupLocationsList = ({
 				title: m.no_pickup_locations(),
 				description: m.no_pickup_locations_body(),
 				action: (
-					<Button asChild>
-						<AppLink
-							to="/tour-operators/$tourOperatorId/pickup-locations/new"
-							params={{ tourOperatorId }}
-						>
-							<Plus />
-							{m.new_pickup_location()}
-						</AppLink>
-					</Button>
+					<AppNewLink
+						to="/tour-operators/$tourOperatorId/pickup-locations/new"
+						params={{ tourOperatorId }}
+					>
+						{m.new_pickup_location()}
+					</AppNewLink>
 				),
 			}}
 		/>

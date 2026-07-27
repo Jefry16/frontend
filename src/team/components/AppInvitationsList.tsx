@@ -1,10 +1,9 @@
-import { Mail, Plus } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useMemo } from "react";
-import { Button } from "#/components/ui/button";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppNewLink } from "#/shared/components/AppNewLink";
 import { useOperatorDateTime } from "#/tour-operator";
 import { invitationColumns } from "../invitation-columns";
 
@@ -32,15 +31,12 @@ export const AppInvitationsList = ({
 				title: m.no_invitations(),
 				description: m.no_invitations_body(),
 				action: (
-					<Button asChild>
-						<AppLink
-							to="/tour-operators/$tourOperatorId/settings/members/new"
-							params={{ tourOperatorId }}
-						>
-							<Plus />
-							{m.invite_member()}
-						</AppLink>
-					</Button>
+					<AppNewLink
+						to="/tour-operators/$tourOperatorId/settings/members/new"
+						params={{ tourOperatorId }}
+					>
+						{m.invite_member()}
+					</AppNewLink>
 				),
 			}}
 		/>

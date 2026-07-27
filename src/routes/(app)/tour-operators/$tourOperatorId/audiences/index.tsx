@@ -1,10 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
 import { AppAudiencesList } from "#/audiences";
-import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 
@@ -28,15 +26,12 @@ function AudiencesPage() {
 					/>
 				}
 				actions={
-					<Button asChild>
-						<AppLink
-							to="/tour-operators/$tourOperatorId/audiences/new"
-							params={{ tourOperatorId }}
-						>
-							<Plus />
-							{m.new_audience()}
-						</AppLink>
-					</Button>
+					<AppNewLink
+						to="/tour-operators/$tourOperatorId/audiences/new"
+						params={{ tourOperatorId }}
+					>
+						{m.new_audience()}
+					</AppNewLink>
 				}
 			/>
 			<AppAudiencesList tourOperatorId={tourOperatorId} />
