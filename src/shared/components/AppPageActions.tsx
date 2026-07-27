@@ -95,14 +95,17 @@ export function AppPageActions({ actions }: { actions: AppAction[] }) {
 							<MoreHorizontal />
 						</Button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
+					{/* The vendored content pins itself to the trigger's width — here that's
+					    the tiny "…" button, clipping labels. Size to the content instead. */}
+					<DropdownMenuContent align="end" className="w-auto min-w-40">
 						{overflow.map((action) => (
 							<DropdownMenuItem
 								key={action.id}
 								disabled={action.disabled || action.pending}
 								onSelect={() => trigger(action)}
 								className={cn(
-									"cursor-pointer",
+									// Labels stay on one line — the menu grows instead of wrapping.
+									"cursor-pointer whitespace-nowrap",
 									action.variant === "destructive" &&
 										"text-destructive focus:text-destructive",
 								)}
