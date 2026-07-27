@@ -3,6 +3,7 @@ import { AppAudienceForm } from "#/audiences";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/audiences/new",
@@ -15,7 +16,7 @@ export const Route = createFileRoute(
 function NewAudiencePage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<AppPageShell variant="form">
 			<AppPageHeader
 				title={m.new_audience()}
 				breadcrumb={
@@ -33,6 +34,6 @@ function NewAudiencePage() {
 				}
 			/>
 			<AppAudienceForm tourOperatorId={tourOperatorId} />
-		</div>
+		</AppPageShell>
 	);
 }

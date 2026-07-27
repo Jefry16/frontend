@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { useCurrentTourOperator } from "#/tour-operator";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId/")({
@@ -15,7 +16,7 @@ function TourOperatorDashboard() {
 	const operator = useCurrentTourOperator();
 
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-8 p-6">
+		<AppPageShell variant="detail">
 			<AppPageHeader title={m.dashboard()} />
 			{operator && (
 				<dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-3">
@@ -25,6 +26,6 @@ function TourOperatorDashboard() {
 					</AppDetailField>
 				</dl>
 			)}
-		</div>
+		</AppPageShell>
 	);
 }

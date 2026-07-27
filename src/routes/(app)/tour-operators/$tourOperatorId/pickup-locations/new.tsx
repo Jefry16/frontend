@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppPickupLocationForm } from "#/pickup-locations";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/pickup-locations/new",
@@ -15,7 +16,7 @@ export const Route = createFileRoute(
 function NewPickupLocationPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<AppPageShell variant="form">
 			<AppPageHeader
 				title={m.new_pickup_location()}
 				breadcrumb={
@@ -33,6 +34,6 @@ function NewPickupLocationPage() {
 				}
 			/>
 			<AppPickupLocationForm tourOperatorId={tourOperatorId} />
-		</div>
+		</AppPageShell>
 	);
 }

@@ -7,6 +7,7 @@ import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import {
 	AppOperatorLanguagesForm,
@@ -45,7 +46,7 @@ function LanguagesSettingsPage() {
 	);
 
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<AppPageShell variant="form">
 			<AppResourceView
 				query={query}
 				resource={m.languages()}
@@ -83,7 +84,7 @@ function LanguagesSettingsPage() {
 					</>
 				)}
 			</AppResourceView>
-		</div>
+		</AppPageShell>
 	);
 }
 

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppAvailabilityEditor } from "#/slots";
 
 export const Route = createFileRoute(
@@ -11,11 +12,11 @@ export const Route = createFileRoute(
 function NewAvailabilityPage() {
 	const { tourOperatorId, experienceId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<AppPageShell variant="form">
 			<AppAvailabilityEditor
 				tourOperatorId={tourOperatorId}
 				experienceId={experienceId}
 			/>
-		</div>
+		</AppPageShell>
 	);
 }

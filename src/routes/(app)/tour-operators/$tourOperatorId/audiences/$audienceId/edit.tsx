@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppAudienceEdit } from "#/audiences";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/audiences/$audienceId/edit",
@@ -11,11 +12,11 @@ export const Route = createFileRoute(
 function EditAudiencePage() {
 	const { tourOperatorId, audienceId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<AppPageShell variant="form">
 			<AppAudienceEdit
 				tourOperatorId={tourOperatorId}
 				audienceId={audienceId}
 			/>
-		</div>
+		</AppPageShell>
 	);
 }

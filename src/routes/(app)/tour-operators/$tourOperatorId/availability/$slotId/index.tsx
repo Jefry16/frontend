@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppSlotDetail } from "#/slots";
 
 export const Route = createFileRoute(
@@ -11,8 +12,8 @@ export const Route = createFileRoute(
 function SlotDetailPage() {
 	const { tourOperatorId, slotId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-8 p-6">
+		<AppPageShell variant="detail">
 			<AppSlotDetail tourOperatorId={tourOperatorId} slotId={slotId} />
-		</div>
+		</AppPageShell>
 	);
 }

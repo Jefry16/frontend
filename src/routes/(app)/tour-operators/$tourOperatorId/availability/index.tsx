@@ -5,6 +5,7 @@ import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppAddAvailabilityDialog, AppSlotsList } from "#/slots";
 
 export const Route = createFileRoute(
@@ -20,7 +21,7 @@ function AvailabilityPage() {
 	const { tourOperatorId } = Route.useParams();
 	const [addOpen, setAddOpen] = useState(false);
 	return (
-		<div className="flex flex-col gap-6 p-6">
+		<AppPageShell variant="list">
 			<AppPageHeader
 				title={m.availability()}
 				breadcrumb={
@@ -49,6 +50,6 @@ function AvailabilityPage() {
 				open={addOpen}
 				onOpenChange={setAddOpen}
 			/>
-		</div>
+		</AppPageShell>
 	);
 }

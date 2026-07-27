@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppPickupLocationDetail } from "#/pickup-locations";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/pickup-locations/$pickupLocationId/",
@@ -11,11 +12,11 @@ export const Route = createFileRoute(
 function PickupLocationDetailPage() {
 	const { tourOperatorId, pickupLocationId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-8 p-6">
+		<AppPageShell variant="detail">
 			<AppPickupLocationDetail
 				tourOperatorId={tourOperatorId}
 				pickupLocationId={pickupLocationId}
 			/>
-		</div>
+		</AppPageShell>
 	);
 }

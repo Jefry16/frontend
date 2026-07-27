@@ -6,6 +6,7 @@ import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/audiences/",
@@ -18,7 +19,7 @@ export const Route = createFileRoute(
 function AudiencesPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
-		<div className="flex flex-col gap-6 p-6">
+		<AppPageShell variant="list">
 			<AppPageHeader
 				title={m.audiences()}
 				breadcrumb={
@@ -39,6 +40,6 @@ function AudiencesPage() {
 				}
 			/>
 			<AppAudiencesList tourOperatorId={tourOperatorId} />
-		</div>
+		</AppPageShell>
 	);
 }

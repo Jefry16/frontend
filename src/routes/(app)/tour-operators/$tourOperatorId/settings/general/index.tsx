@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppOperatorLogoCard, useCurrentTourOperator } from "#/tour-operator";
 
 export const Route = createFileRoute(
@@ -16,7 +17,7 @@ function GeneralSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const operator = useCurrentTourOperator();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<AppPageShell variant="form">
 			<AppPageHeader
 				title={m.general()}
 				breadcrumb={
@@ -38,6 +39,6 @@ function GeneralSettingsPage() {
 					logoUrl={operator.logoUrl}
 				/>
 			)}
-		</div>
+		</AppPageShell>
 	);
 }

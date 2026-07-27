@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppInviteMemberForm } from "#/team";
 
 export const Route = createFileRoute(
@@ -15,7 +16,7 @@ export const Route = createFileRoute(
 function InviteMemberPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
+		<AppPageShell variant="form">
 			<AppPageHeader
 				title={m.invite_member()}
 				description={m.invite_member_subtitle()}
@@ -38,6 +39,6 @@ function InviteMemberPage() {
 				}
 			/>
 			<AppInviteMemberForm tourOperatorId={tourOperatorId} />
-		</div>
+		</AppPageShell>
 	);
 }

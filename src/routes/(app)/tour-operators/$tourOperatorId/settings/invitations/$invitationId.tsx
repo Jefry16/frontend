@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppInvitationDetail } from "#/team";
 
 export const Route = createFileRoute(
@@ -11,11 +12,11 @@ export const Route = createFileRoute(
 function InvitationDetailPage() {
 	const { tourOperatorId, invitationId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-8 p-6">
+		<AppPageShell variant="detail">
 			<AppInvitationDetail
 				tourOperatorId={tourOperatorId}
 				invitationId={invitationId}
 			/>
-		</div>
+		</AppPageShell>
 	);
 }

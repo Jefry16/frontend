@@ -3,6 +3,7 @@ import { AppMediaList, AppMediaUploadButton } from "#/media";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/media/",
@@ -14,7 +15,7 @@ export const Route = createFileRoute(
 function MediaPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
-		<div className="flex flex-col gap-6 p-6">
+		<AppPageShell variant="list">
 			<AppPageHeader
 				title={m.media()}
 				breadcrumb={
@@ -25,6 +26,6 @@ function MediaPage() {
 				actions={<AppMediaUploadButton tourOperatorId={tourOperatorId} />}
 			/>
 			<AppMediaList tourOperatorId={tourOperatorId} />
-		</div>
+		</AppPageShell>
 	);
 }

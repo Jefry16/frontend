@@ -3,6 +3,7 @@ import { AppActivityList } from "#/audit";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/activity/",
@@ -16,7 +17,7 @@ export const Route = createFileRoute(
 function ActivityPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
-		<div className="flex flex-col gap-6 p-6">
+		<AppPageShell variant="list">
 			<AppPageHeader
 				title={m.activity()}
 				breadcrumb={
@@ -26,6 +27,6 @@ function ActivityPage() {
 				}
 			/>
 			<AppActivityList tourOperatorId={tourOperatorId} />
-		</div>
+		</AppPageShell>
 	);
 }

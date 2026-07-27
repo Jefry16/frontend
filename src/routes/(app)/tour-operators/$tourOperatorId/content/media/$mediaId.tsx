@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppMediaDetail } from "#/media";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/media/$mediaId",
@@ -11,8 +12,8 @@ export const Route = createFileRoute(
 function MediaDetailPage() {
 	const { tourOperatorId, mediaId } = Route.useParams();
 	return (
-		<div className="mx-auto flex w-full max-w-3xl flex-col gap-8 p-6">
+		<AppPageShell variant="detail">
 			<AppMediaDetail tourOperatorId={tourOperatorId} mediaId={mediaId} />
-		</div>
+		</AppPageShell>
 	);
 }

@@ -5,6 +5,7 @@ import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppMembersList } from "#/team";
 
 export const Route = createFileRoute(
@@ -20,7 +21,7 @@ function MembersSettingsPage() {
 	// Table page → full width (no mx-auto/max-w). Single-resource pages stay
 	// centered at max-w-3xl; a list wants the room.
 	return (
-		<div className="flex flex-col gap-6 p-6">
+		<AppPageShell variant="list">
 			<AppPageHeader
 				title={m.members()}
 				breadcrumb={
@@ -48,6 +49,6 @@ function MembersSettingsPage() {
 				}
 			/>
 			<AppMembersList tourOperatorId={tourOperatorId} />
-		</div>
+		</AppPageShell>
 	);
 }
