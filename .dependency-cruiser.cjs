@@ -25,6 +25,7 @@ const MODULES = [
 	"tour-operator",
 	"team",
 	"media",
+	"pages",
 	"experiences",
 ];
 // A never-matching group while MODULES is empty, so the module-scoped rules below

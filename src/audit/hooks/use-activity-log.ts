@@ -19,8 +19,9 @@ export const useActivityLog = (
 		queryKey: queryKeys.activityTimeline(tourOperatorId, entityType, entityId),
 		queryFn: async ({ pageParam }) => {
 			const params = new URLSearchParams();
-			params.set("filter[entityType][eq]", entityType);
-			params.set("filter[entityId][eq]", entityId);
+			// Set-type filters accept IN (not eq) — the list framework's grammar.
+			params.set("filter[entityType][in]", entityType);
+			params.set("filter[entityId][in]", entityId);
 			if (pageParam) params.set("cursor", pageParam);
 			const { data } = await authApi.get<ActivityPage>(
 				`/tour-operators/${tourOperatorId}/audit-log?${params}`,

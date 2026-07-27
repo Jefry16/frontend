@@ -1,0 +1,43 @@
+import { FileText } from "lucide-react";
+import { useMemo } from "react";
+import { queryKeys } from "#/lib/query-keys";
+import * as m from "#/paraglide/messages";
+import { AppDataTable } from "#/shared/components/AppDataTable";
+import { AppNewLink } from "#/shared/components/AppNewLink";
+import { useOperatorDateTime } from "#/tour-operator";
+import { pageColumns } from "../columns";
+
+// The operator's CMS pages as the standard cursor table (bodies excluded
+// server-side — rows stay light).
+export const AppPagesList = ({
+	tourOperatorId,
+}: {
+	tourOperatorId: string;
+}) => {
+	const { formatDate } = useOperatorDateTime();
+	const columns = useMemo(
+		() => pageColumns(tourOperatorId, formatDate),
+		[tourOperatorId, formatDate],
+	);
+
+	return (
+		<AppDataTable
+			columns={columns}
+			endpoint={`/tour-operators/${tourOperatorId}/pages`}
+			queryKey={queryKeys.pages(tourOperatorId)}
+			emptyState={{
+				icon: FileText,
+				title: m.no_pages(),
+				description: m.no_pages_body(),
+				action: (
+					<AppNewLink
+						to="/tour-operators/$tourOperatorId/content/pages/new"
+						params={{ tourOperatorId }}
+					>
+						{m.new_page()}
+					</AppNewLink>
+				),
+			}}
+		/>
+	);
+};

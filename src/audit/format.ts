@@ -31,6 +31,14 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"audience.updated": m.activity_action_audience_updated,
 	"audience.translation_updated": m.activity_action_translation_updated,
 	"audience.translation_deleted": m.activity_action_translation_deleted,
+	"page.created": m.activity_action_page_created,
+	"page.updated": m.activity_action_page_updated,
+	"page.published": m.activity_action_page_published,
+	"page.unpublished": m.activity_action_page_unpublished,
+	"page.renamed": m.activity_action_page_renamed,
+	"page.deleted": m.activity_action_page_deleted,
+	"page.translation_updated": m.activity_action_translation_updated,
+	"page.translation_deleted": m.activity_action_translation_deleted,
 	"pickup_location.created": m.activity_action_pickup_location_created,
 	"pickup_location.updated": m.activity_action_pickup_location_updated,
 	"pickup_location.deleted": m.activity_action_pickup_location_deleted,
@@ -58,6 +66,10 @@ const FIELD_LABELS: Record<string, () => string> = {
 	time: m.time,
 	role: m.role,
 	logoMediaId: m.logo,
+	handle: m.handle,
+	seoTitle: m.seo_title,
+	seoDescription: m.seo_description,
+	templateSuffix: m.template_suffix,
 	primaryLocale: m.primary_language,
 	supportedLocales: m.supported_languages,
 };
@@ -154,6 +166,13 @@ const ENTITY_TYPES: Record<
 		route: {
 			to: "/tour-operators/$tourOperatorId/content/media/$mediaId",
 			param: "mediaId",
+		},
+	},
+	PAGE: {
+		label: m.page,
+		route: {
+			to: "/tour-operators/$tourOperatorId/content/pages/$pageId",
+			param: "pageId",
 		},
 	},
 	MEMBER: {

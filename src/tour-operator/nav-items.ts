@@ -3,6 +3,7 @@ import {
 	Building2,
 	CalendarDays,
 	Compass,
+	FileText,
 	History,
 	Images,
 	Languages,
@@ -151,6 +152,14 @@ export const operationsNavItems = (tourOperatorId: string): NavLeaf[] => [
 // manages (distinct from Settings). Grows per feature; Media is the first.
 // Rendered as a labeled group in the operator sidebar, above the Settings leaf.
 export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
+	{
+		label: m.pages(),
+		icon: FileText,
+		link: {
+			to: "/tour-operators/$tourOperatorId/content/pages",
+			params: { tourOperatorId },
+		},
+	},
 	{
 		label: m.media(),
 		icon: Images,
