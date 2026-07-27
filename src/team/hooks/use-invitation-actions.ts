@@ -24,6 +24,10 @@ export const useInvitationActions = (
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.invitations(tourOperatorId),
 		});
+		// The action appended an audit entry — refresh the trail.
+		queryClient.invalidateQueries({
+			queryKey: queryKeys.activity(tourOperatorId),
+		});
 	};
 
 	const resend = useMutation<unknown, AxiosError>({

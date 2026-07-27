@@ -43,6 +43,10 @@ export const useMediaUpload = (tourOperatorId: string) => {
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.media(tourOperatorId),
 				});
+				// Uploads append audit entries — refresh the trail.
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.activity(tourOperatorId),
+				});
 				toast.success(m.media_uploaded());
 			}
 			if (failed > 0) toast.error(m.media_upload_failed());

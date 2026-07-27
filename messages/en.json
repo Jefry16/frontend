@@ -367,6 +367,8 @@
   "activity_entry": "Activity entry",
   "back_to_activity": "Back to activity",
   "activity_empty": "No activity yet.",
+  "no_activity": "No activity yet",
+  "no_activity_body": "Actions your team takes across the operator will appear here.",
   "actor": "Actor",
   "action_label": "Action",
   "entity": "Entity",

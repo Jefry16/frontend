@@ -35,6 +35,10 @@ export const useExperienceTranslationForm = ({
 	const endpoint = `/tour-operators/${tourOperatorId}/experiences/${experienceId}/translations/${locale}`;
 
 	const invalidate = () => {
+		// Translation saves append audit entries — refresh the trail too.
+		queryClient.invalidateQueries({
+			queryKey: queryKeys.activity(tourOperatorId),
+		});
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.experienceTranslations(tourOperatorId, experienceId),
 		});

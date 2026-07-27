@@ -30,8 +30,8 @@ export const AppActivityList = ({
 			queryKey={queryKeys.activity(tourOperatorId)}
 			emptyState={{
 				icon: History,
-				title: m.activity_empty(),
-				description: "",
+				title: m.no_activity(),
+				description: m.no_activity_body(),
 			}}
 		/>
 	);

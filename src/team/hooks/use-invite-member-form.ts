@@ -33,6 +33,10 @@ export const useInviteMemberForm = (tourOperatorId: string) => {
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.invitations(tourOperatorId),
 				});
+				// The invite appended an audit entry — refresh the trail.
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.activity(tourOperatorId),
+				});
 				// The new invitation's detail (create-navigates-to-detail rule) — it
 				// shows the pending status and carries the resend/revoke actions.
 				navigate({

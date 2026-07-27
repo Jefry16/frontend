@@ -21,6 +21,11 @@ export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.slots(tourOperatorId),
 		});
+		// Cancel / status / capacity all append audit entries — refresh the
+		// trail (this page's own Activity timeline included).
+		queryClient.invalidateQueries({
+			queryKey: queryKeys.activity(tourOperatorId),
+		});
 	};
 
 	const cancel = useMutation<Slot, AxiosError>({

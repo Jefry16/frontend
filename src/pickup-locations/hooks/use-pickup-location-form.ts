@@ -58,6 +58,10 @@ export const usePickupLocationForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.pickupLocations(tourOperatorId),
 			});
+			// Create/update appended an audit entry — refresh the trail.
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
 			navigate({
 				to: "/tour-operators/$tourOperatorId/pickup-locations/$pickupLocationId",
 				params: { tourOperatorId, pickupLocationId },

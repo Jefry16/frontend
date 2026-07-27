@@ -10,6 +10,7 @@ import { Spinner } from "#/components/ui/spinner";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
+import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "./AppAlert";
 import { AppLink } from "./AppLink";
@@ -105,6 +106,7 @@ export const AppNameTranslations = ({
 				<LocaleNameForm
 					key={active}
 					locale={active}
+					tourOperatorId={tourOperatorId}
 					endpointBase={endpointBase}
 					queryKeyBase={queryKeyBase}
 					canonicalName={canonicalName}
@@ -119,12 +121,14 @@ export const AppNameTranslations = ({
 // the stored value (keyed by locale in the parent to reseed on switch).
 function LocaleNameForm({
 	locale,
+	tourOperatorId,
 	endpointBase,
 	queryKeyBase,
 	canonicalName,
 	maxLength,
 }: {
 	locale: string;
+	tourOperatorId: string;
 	endpointBase: string;
 	queryKeyBase: readonly unknown[];
 	canonicalName: string;
@@ -142,6 +146,10 @@ function LocaleNameForm({
 
 	const invalidate = () => {
 		queryClient.invalidateQueries({ queryKey: [...queryKeyBase] });
+		// Translation saves append audit entries — refresh the trail too.
+		queryClient.invalidateQueries({
+			queryKey: queryKeys.activity(tourOperatorId),
+		});
 	};
 
 	const save = useMutation<void, AxiosError, string | null>({

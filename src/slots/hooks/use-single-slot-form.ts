@@ -50,6 +50,10 @@ export const useSingleSlotForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.slots(tourOperatorId),
 			});
+			// The create appended an audit entry — refresh the trail.
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
 			navigate({
 				to: "/tour-operators/$tourOperatorId/availability/$slotId",
 				params: { tourOperatorId, slotId },

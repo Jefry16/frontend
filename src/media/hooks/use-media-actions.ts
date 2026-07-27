@@ -15,10 +15,15 @@ export const useMediaActions = (tourOperatorId: string, mediaId: string) => {
 	const remove = useMutation<unknown, AxiosError>({
 		mutationFn: () =>
 			authApi.delete(`/tour-operators/${tourOperatorId}/media/${mediaId}`),
-		onSuccess: () =>
+		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.media(tourOperatorId),
-			}),
+			});
+			// The delete appended an audit entry — refresh the trail.
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
+		},
 		onError: () => toast.error(m.error()),
 	});
 

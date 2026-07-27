@@ -58,6 +58,10 @@ export const useExperienceForm = (
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.experiences(tourOperatorId),
 				});
+				// Create/update appended an audit entry — refresh the trail.
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.activity(tourOperatorId),
+				});
 			} else {
 				toast.created(m.experience());
 			}

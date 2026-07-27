@@ -16,10 +16,15 @@ export const useMemberActions = (tourOperatorId: string, userId: string) => {
 	const toast = useAppToast();
 	const base = `/tour-operators/${tourOperatorId}/members/${userId}`;
 
-	const invalidateRoster = () =>
+	const invalidateRoster = () => {
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.members(tourOperatorId),
 		});
+		// Role changes / removals append audit entries — refresh the trail.
+		queryClient.invalidateQueries({
+			queryKey: queryKeys.activity(tourOperatorId),
+		});
+	};
 
 	const invalidateMember = () =>
 		queryClient.invalidateQueries({

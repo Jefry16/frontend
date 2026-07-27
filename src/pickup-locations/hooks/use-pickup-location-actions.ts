@@ -20,10 +20,15 @@ export const usePickupLocationActions = (
 			authApi.delete(
 				`/tour-operators/${tourOperatorId}/pickup-locations/${pickupLocationId}`,
 			),
-		onSuccess: () =>
+		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.pickupLocations(tourOperatorId),
-			}),
+			});
+			// The delete appended an audit entry — refresh the trail.
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
+		},
 		onError: () => toast.error(m.error()),
 	});
 

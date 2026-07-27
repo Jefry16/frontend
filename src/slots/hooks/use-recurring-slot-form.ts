@@ -44,6 +44,10 @@ export const useRecurringSlotForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.slots(tourOperatorId),
 			});
+			// The batch create appended an audit entry — refresh the trail.
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
 			navigate({
 				to: "/tour-operators/$tourOperatorId/availability",
 				params: { tourOperatorId },

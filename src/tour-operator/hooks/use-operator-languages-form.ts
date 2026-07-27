@@ -38,6 +38,10 @@ export const useOperatorLanguagesForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.operatorLocales(tourOperatorId),
 			});
+			// The change appended an audit entry — refresh the trail.
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
 		},
 		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});

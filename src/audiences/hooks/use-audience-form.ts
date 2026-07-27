@@ -54,6 +54,10 @@ export const useAudienceForm = (
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.audiences(tourOperatorId),
 				});
+				// Create/update appended an audit entry — refresh the trail.
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.activity(tourOperatorId),
+				});
 				navigate({
 					to: "/tour-operators/$tourOperatorId/audiences/$audienceId",
 					params: { tourOperatorId, audienceId },

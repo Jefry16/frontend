@@ -8,6 +8,14 @@ const meta = {
 	title: "Team/AppInviteMemberForm",
 	component: AppInviteMemberForm,
 	args: { tourOperatorId: "op-1" },
+	decorators: [
+		// The route owns the page wrapper in the app; mirror its width here.
+		(Story) => (
+			<div className="mx-auto w-full max-w-3xl">
+				<Story />
+			</div>
+		),
+	],
 } satisfies Meta<typeof AppInviteMemberForm>;
 
 export default meta;
