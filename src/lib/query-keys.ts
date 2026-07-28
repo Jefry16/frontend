@@ -36,6 +36,9 @@ export const queryKeys = {
 		["pickup-locations", tourOperatorId] as const,
 	pickupLocation: (tourOperatorId: string, pickupLocationId: string) =>
 		["pickup-locations", tourOperatorId, pickupLocationId] as const,
+	menus: (tourOperatorId: string) => ["menus", tourOperatorId] as const,
+	menu: (tourOperatorId: string, menuId: string) =>
+		["menus", tourOperatorId, menuId] as const,
 	pages: (tourOperatorId: string) => ["pages", tourOperatorId] as const,
 	pageDetail: (tourOperatorId: string, pageId: string) =>
 		["pages", tourOperatorId, pageId] as const,

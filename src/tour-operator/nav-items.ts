@@ -9,6 +9,7 @@ import {
 	Images,
 	Languages,
 	LayoutDashboard,
+	ListTree,
 	type LucideIcon,
 	Mail,
 	MapPin,
@@ -183,6 +184,14 @@ export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Shapes,
 		link: {
 			to: "/tour-operators/$tourOperatorId/content/metaobjects",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.menus(),
+		icon: ListTree,
+		link: {
+			to: "/tour-operators/$tourOperatorId/content/menus",
 			params: { tourOperatorId },
 		},
 	},

@@ -1,0 +1,60 @@
+import type { ColumnDef } from "@tanstack/react-table";
+import * as m from "#/paraglide/messages";
+import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
+import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import type { MenuListItem } from "./types";
+
+// The menus columns: title (links to the detail), handle (mono — what the
+// theme references), created.
+export const menuColumns = (
+	tourOperatorId: string,
+	formatDate: (iso: string) => string,
+): ColumnDef<MenuListItem, unknown>[] => [
+	{
+		id: "title",
+		accessorKey: "title",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.title()}
+				headerContext={ctx}
+				allowSorting
+				allowFiltering="text"
+			/>
+		),
+		cell: ({ row }) => (
+			<AppResourceLink
+				to="/tour-operators/$tourOperatorId/content/menus/$menuId"
+				params={{ tourOperatorId, menuId: row.original.id }}
+			>
+				{row.original.title}
+			</AppResourceLink>
+		),
+	},
+	{
+		id: "handle",
+		accessorKey: "handle",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.handle()}
+				headerContext={ctx}
+				allowSorting
+				allowFiltering="text"
+			/>
+		),
+		cell: ({ row }) => (
+			<span className="font-mono text-xs">{row.original.handle}</span>
+		),
+	},
+	{
+		id: "createdAt",
+		accessorKey: "createdAt",
+		header: (ctx) => (
+			<AppDataTableHeader
+				label={m.created()}
+				headerContext={ctx}
+				allowSorting
+			/>
+		),
+		cell: ({ row }) => formatDate(row.original.createdAt),
+	},
+];

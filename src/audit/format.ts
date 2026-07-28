@@ -69,6 +69,10 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"experience.metafield_cleared": m.activity_action_metafield_cleared,
 	"page.metafield_updated": m.activity_action_metafield_updated,
 	"page.metafield_cleared": m.activity_action_metafield_cleared,
+	"menu.created": m.activity_action_menu_created,
+	"menu.renamed": m.activity_action_menu_renamed,
+	"menu.items_replaced": m.activity_action_menu_items_replaced,
+	"menu.deleted": m.activity_action_menu_deleted,
 };
 
 // Field → label for the `{field, from, to}` diff rows. Reuses the form labels
@@ -236,6 +240,13 @@ const ENTITY_TYPES: Record<
 		route: {
 			to: "/tour-operators/$tourOperatorId/content/metafields/$definitionId",
 			param: "definitionId",
+		},
+	},
+	MENU: {
+		label: m.menu,
+		route: {
+			to: "/tour-operators/$tourOperatorId/content/menus/$menuId",
+			param: "menuId",
 		},
 	},
 	TOUR_OPERATOR: {
