@@ -49,6 +49,10 @@ export const useMetafieldDefinitionForm = (
 				namespace: fields.namespace,
 				key: fields.key,
 				type: fields.type,
+				metaobjectDefinitionId:
+					fields.type === "metaobject_reference"
+						? fields.metaobjectDefinitionId
+						: null,
 				name: fields.name,
 				description,
 			});
@@ -92,6 +96,7 @@ export const useMetafieldDefinitionForm = (
 			namespace: definition?.namespace ?? "custom",
 			key: definition?.key ?? "",
 			type: definition?.type ?? "single_line_text",
+			metaobjectDefinitionId: definition?.metaobjectDefinitionId ?? "",
 			name: definition?.name ?? "",
 			description: definition?.description ?? "",
 		} as DefinitionFormData,

@@ -17,6 +17,7 @@ import type {
 	MetafieldDefinitionListItem,
 	MetafieldOwnerTypeCode,
 } from "../types";
+import { AppMetaobjectEntrySelect } from "./AppMetaobjectEntrySelect";
 import { AppTypedValueInput } from "./AppTypedValueInput";
 
 // The per-resource metafields editor: one input per definition for this owner
@@ -106,6 +107,7 @@ export const AppMetafieldsCard = ({
 						{definitions.map((definition) => (
 							<MetafieldInput
 								key={definition.id}
+								tourOperatorId={tourOperatorId}
 								definition={definition}
 								value={current(`${definition.namespace}.${definition.key}`)}
 								onChange={(value) =>
@@ -129,10 +131,12 @@ export const AppMetafieldsCard = ({
 // One definition's labelled, type-aware input. Values are strings on the wire
 // for every type; the backend validates + normalizes against the definition.
 const MetafieldInput = ({
+	tourOperatorId,
 	definition,
 	value,
 	onChange,
 }: {
+	tourOperatorId: string;
 	definition: MetafieldDefinitionListItem;
 	value: string;
 	onChange: (value: string) => void;
@@ -146,12 +150,23 @@ const MetafieldInput = ({
 					{definition.namespace}.{definition.key}
 				</span>
 			</FieldLabel>
-			<AppTypedValueInput
-				inputId={inputId}
-				type={definition.type}
-				value={value}
-				onValueChange={onChange}
-			/>
+			{definition.type === "metaobject_reference" &&
+			definition.metaobjectDefinitionId ? (
+				<AppMetaobjectEntrySelect
+					inputId={inputId}
+					tourOperatorId={tourOperatorId}
+					metaobjectDefinitionId={definition.metaobjectDefinitionId}
+					value={value}
+					onValueChange={onChange}
+				/>
+			) : (
+				<AppTypedValueInput
+					inputId={inputId}
+					type={definition.type}
+					value={value}
+					onValueChange={onChange}
+				/>
+			)}
 		</Field>
 	);
 };

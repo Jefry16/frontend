@@ -4,6 +4,7 @@ import { Database, Pencil, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
+import { useAllPages } from "#/hooks/use-all-pages";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
@@ -16,6 +17,7 @@ import {
 	AppPageActions,
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useOperatorDateTime } from "#/tour-operator";
 import { ownerTypeLabel, typeLabel } from "../format";
@@ -40,6 +42,12 @@ export const AppMetafieldDefinitionDetail = ({
 	const { remove } = useMetafieldDefinitionActions(
 		tourOperatorId,
 		definitionId,
+	);
+	// Names the pinned metaobject type on reference definitions (bounded
+	// catalogue, cached with the metaobjects lists).
+	const metaobjectTypes = useAllPages<{ id: string; name: string }>(
+		queryKeys.metaobjectDefinitions(tourOperatorId),
+		`/tour-operators/${tourOperatorId}/metaobject-definitions`,
 	);
 
 	const backLink = (
@@ -148,6 +156,21 @@ export const AppMetafieldDefinitionDetail = ({
 									<AppDetailField label={m.metafield_type()}>
 										{typeLabel(definition.type)}
 									</AppDetailField>
+									{definition.metaobjectDefinitionId && (
+										<AppDetailField label={m.metafield_references()}>
+											<AppResourceLink
+												to="/tour-operators/$tourOperatorId/content/metaobjects/$definitionId"
+												params={{
+													tourOperatorId,
+													definitionId: definition.metaobjectDefinitionId,
+												}}
+											>
+												{metaobjectTypes.rows.find(
+													(t) => t.id === definition.metaobjectDefinitionId,
+												)?.name ?? m.metaobject_definition()}
+											</AppResourceLink>
+										</AppDetailField>
+									)}
 									<AppDetailField label={m.created()}>
 										{formatDate(definition.createdAt)}
 									</AppDetailField>

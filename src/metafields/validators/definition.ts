@@ -14,33 +14,50 @@ const slugField = z
 	.max(64, m.validation_max_length({ count: 64 }))
 	.regex(SLUG, m.validation_slug());
 
-export const definitionSchema = z.object({
-	ownerType: z.enum(["experience", "page"], m.validation_required()),
-	namespace: slugField,
-	key: slugField,
-	type: z.enum(
-		[
-			"single_line_text",
-			"multi_line_text",
-			"number_integer",
-			"number_decimal",
-			"boolean",
-			"date",
-			"url",
-			"json",
-		],
-		m.validation_required(),
-	),
-	name: z
-		.string()
-		.trim()
-		.min(1, m.validation_required())
-		.max(120, m.validation_max_length({ count: 120 })),
-	description: z
-		.string()
-		.trim()
-		.max(500, m.validation_max_length({ count: 500 })),
-});
+export const definitionSchema = z
+	.object({
+		ownerType: z.enum(["experience", "page"], m.validation_required()),
+		namespace: slugField,
+		key: slugField,
+		type: z.enum(
+			[
+				"single_line_text",
+				"multi_line_text",
+				"number_integer",
+				"number_decimal",
+				"boolean",
+				"date",
+				"url",
+				"json",
+				"metaobject_reference",
+			],
+			m.validation_required(),
+		),
+		// The pinned metaobject type — meaningful (and required, see superRefine)
+		// only for metaobject_reference.
+		metaobjectDefinitionId: z.string(),
+		name: z
+			.string()
+			.trim()
+			.min(1, m.validation_required())
+			.max(120, m.validation_max_length({ count: 120 })),
+		description: z
+			.string()
+			.trim()
+			.max(500, m.validation_max_length({ count: 500 })),
+	})
+	.superRefine((value, ctx) => {
+		if (
+			value.type === "metaobject_reference" &&
+			!value.metaobjectDefinitionId
+		) {
+			ctx.addIssue({
+				code: "custom",
+				path: ["metaobjectDefinitionId"],
+				message: m.validation_required(),
+			});
+		}
+	});
 
 export type DefinitionFormData = z.input<typeof definitionSchema>;
 export type DefinitionFields = z.output<typeof definitionSchema>;

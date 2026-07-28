@@ -521,5 +521,8 @@
 	"activity_action_metaobject_updated": "updated a metaobject entry",
 	"activity_action_metaobject_published": "published a metaobject entry",
 	"activity_action_metaobject_unpublished": "unpublished a metaobject entry",
-	"activity_action_metaobject_deleted": "deleted a metaobject entry"
+	"activity_action_metaobject_deleted": "deleted a metaobject entry",
+	"metafield_type_metaobject_reference": "Metaobject reference",
+	"metafield_references": "References",
+	"metafield_reference_pin_hint": "Entries of this metaobject type become the valid values. Permanent."
 }

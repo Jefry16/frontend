@@ -15,6 +15,7 @@ const DEFINITION: MetafieldDefinition = {
 	namespace: "custom",
 	key: "hero-subtitle",
 	type: "multi_line_text",
+	metaobjectDefinitionId: null,
 	name: "Hero subtitle",
 	description: null,
 	createdAt: "2026-07-20T10:00:00Z",

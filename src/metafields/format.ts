@@ -13,6 +13,7 @@ const TYPE_LABELS: Record<MetafieldTypeCode, () => string> = {
 	date: m.metafield_type_date,
 	url: m.metafield_type_url,
 	json: m.metafield_type_json,
+	metaobject_reference: m.metafield_type_metaobject_reference,
 };
 
 export const typeLabel = (code: MetafieldTypeCode): string =>
@@ -38,3 +39,9 @@ export const TYPE_FILTER_OPTIONS = TYPE_CODES.map((code) => ({
 // forms from the same catalogue).
 export const metafieldTypeLabel = typeLabel;
 export const METAFIELD_TYPE_CODES = TYPE_CODES;
+
+// Metaobject FIELDS can't be references (no nested metaobject→metaobject in
+// v1 — the backend 422s it), so their type selects use this subset.
+export const METAOBJECT_FIELD_TYPE_CODES = TYPE_CODES.filter(
+	(code) => code !== "metaobject_reference",
+);

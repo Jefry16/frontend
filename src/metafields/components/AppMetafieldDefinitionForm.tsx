@@ -1,6 +1,8 @@
 import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
+import { useAllPages } from "#/hooks/use-all-pages";
+import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
@@ -26,6 +28,12 @@ export const AppMetafieldDefinitionForm = ({
 	const { form, isPending, errorMessage, isEdit } = useMetafieldDefinitionForm(
 		tourOperatorId,
 		definition,
+	);
+	// The pin select's options — the operator's metaobject types (a bounded
+	// catalogue; only rendered once the reference type is chosen).
+	const metaobjectTypes = useAllPages<{ id: string; name: string }>(
+		queryKeys.metaobjectDefinitions(tourOperatorId),
+		`/tour-operators/${tourOperatorId}/metaobject-definitions`,
 	);
 
 	return (
@@ -83,6 +91,28 @@ export const AppMetafieldDefinitionForm = ({
 										</AppSelectField>
 									)}
 								</form.Field>
+								<form.Subscribe selector={(state) => state.values.type}>
+									{(type) =>
+										type === "metaobject_reference" && (
+											<form.Field name="metaobjectDefinitionId">
+												{(field) => (
+													<AppSelectField
+														field={field}
+														label={m.metafield_references()}
+														description={m.metafield_reference_pin_hint()}
+														placeholder={m.metaobject_definition()}
+													>
+														{metaobjectTypes.rows.map((t) => (
+															<SelectItem key={t.id} value={t.id}>
+																{t.name}
+															</SelectItem>
+														))}
+													</AppSelectField>
+												)}
+											</form.Field>
+										)
+									}
+								</form.Subscribe>
 							</>
 						)}
 						<form.Field

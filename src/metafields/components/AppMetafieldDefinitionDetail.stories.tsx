@@ -16,6 +16,7 @@ const DEFINITION: MetafieldDefinition = {
 	namespace: "custom",
 	key: "difficulty",
 	type: "single_line_text",
+	metaobjectDefinitionId: null,
 	name: "Difficulty",
 	description: "Shown on the storefront's experience card.",
 	createdAt: "2026-07-20T10:00:00Z",
@@ -24,6 +25,10 @@ const DEFINITION: MetafieldDefinition = {
 
 const qc = storyQueryClient();
 qc.setQueryData(queryKeys.metafieldDefinition(OP, DEF), DEFINITION);
+qc.setQueryData(
+	[...queryKeys.metaobjectDefinitions(OP), "all-pages"],
+	listPage([]),
+);
 qc.setQueryData(
 	queryKeys.activityTimeline(OP, "METAFIELD_DEFINITION", DEF),
 	listPage([]),

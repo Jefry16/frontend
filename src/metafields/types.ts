@@ -14,7 +14,8 @@ export type MetafieldTypeCode =
 	| "boolean"
 	| "date"
 	| "url"
-	| "json";
+	| "json"
+	| "metaobject_reference";
 
 /** A list row (no description — that lives on the detail). */
 export interface MetafieldDefinitionListItem {
@@ -24,6 +25,8 @@ export interface MetafieldDefinitionListItem {
 	namespace: string;
 	key: string;
 	type: MetafieldTypeCode;
+	/** The pinned metaobject type (metaobject_reference only), else null. */
+	metaobjectDefinitionId: string | null;
 	name: string;
 	createdAt: string;
 }
@@ -36,6 +39,8 @@ export interface MetafieldDefinition {
 	namespace: string;
 	key: string;
 	type: MetafieldTypeCode;
+	/** The pinned metaobject type (metaobject_reference only), else null. */
+	metaobjectDefinitionId: string | null;
 	name: string;
 	description: string | null;
 	createdAt: string;

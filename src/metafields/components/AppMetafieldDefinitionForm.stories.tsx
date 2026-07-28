@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { storyQueryClient } from "#/dev/story-utils";
+import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { queryKeys } from "#/lib/query-keys";
 import type { MetafieldDefinition } from "../types";
 import { AppMetafieldDefinitionForm } from "./AppMetafieldDefinitionForm";
 
@@ -11,13 +12,20 @@ const DEFINITION: MetafieldDefinition = {
 	namespace: "custom",
 	key: "difficulty",
 	type: "single_line_text",
+	metaobjectDefinitionId: null,
 	name: "Difficulty",
 	description: "Shown on the storefront's experience card.",
 	createdAt: "2026-07-20T10:00:00Z",
 	updatedAt: "2026-07-22T10:00:00Z",
 };
 
-const qc = storyQueryClient();
+const qc = storyQueryClient((qc) =>
+	// The pin select's options once "Metaobject reference" is chosen.
+	qc.setQueryData(
+		[...queryKeys.metaobjectDefinitions("op-1"), "all-pages"],
+		listPage([{ id: "mo-1", name: "Size chart" }]),
+	),
+);
 
 const meta = {
 	title: "Metafields/AppMetafieldDefinitionForm",

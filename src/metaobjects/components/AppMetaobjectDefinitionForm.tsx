@@ -13,7 +13,7 @@ import {
 	SelectValue,
 } from "#/components/ui/select";
 import {
-	METAFIELD_TYPE_CODES,
+	METAOBJECT_FIELD_TYPE_CODES,
 	type MetafieldTypeCode,
 	metafieldTypeLabel,
 } from "#/metafields";
@@ -171,7 +171,7 @@ export const AppMetaobjectDefinitionForm = ({
 										</SelectTrigger>
 										<SelectContent>
 											<SelectGroup>
-												{METAFIELD_TYPE_CODES.map((code) => (
+												{METAOBJECT_FIELD_TYPE_CODES.map((code) => (
 													<SelectItem key={code} value={code}>
 														{metafieldTypeLabel(code)}
 													</SelectItem>

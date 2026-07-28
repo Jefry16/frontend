@@ -20,7 +20,7 @@ import {
 } from "#/components/ui/select";
 import { Spinner } from "#/components/ui/spinner";
 import {
-	METAFIELD_TYPE_CODES,
+	METAOBJECT_FIELD_TYPE_CODES,
 	type MetafieldTypeCode,
 	metafieldTypeLabel,
 } from "#/metafields";
@@ -128,7 +128,7 @@ export const AppMetaobjectFieldDialog = ({
 									</SelectTrigger>
 									<SelectContent>
 										<SelectGroup>
-											{METAFIELD_TYPE_CODES.map((code) => (
+											{METAOBJECT_FIELD_TYPE_CODES.map((code) => (
 												<SelectItem key={code} value={code}>
 													{metafieldTypeLabel(code)}
 												</SelectItem>
