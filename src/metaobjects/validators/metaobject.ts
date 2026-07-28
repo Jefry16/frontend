@@ -40,7 +40,6 @@ export const entrySchema = z.object({
 });
 
 export type DefinitionFormData = z.input<typeof definitionSchema>;
-export type EntryFormData = z.input<typeof entrySchema>;
 
 /** Name → suggested slug: "Size chart" → "size-chart". */
 export const deriveSlug = (name: string): string =>

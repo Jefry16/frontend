@@ -98,8 +98,10 @@ const DefinitionView = ({
 		useMetaobjectDefinitionActions(tourOperatorId, definition.id);
 
 	// One dialog instance per mode: add (no field), rename (with one), and a
-	// removal confirm; keyed state decides which is open.
+	// removal confirm. Rename keeps its target through the close animation
+	// (a separate open flag) so the dialog doesn't flash into add-mode.
 	const [addOpen, setAddOpen] = useState(false);
+	const [renameOpen, setRenameOpen] = useState(false);
 	const [renaming, setRenaming] = useState<MetaobjectField | null>(null);
 	const [removing, setRemoving] = useState<MetaobjectField | null>(null);
 
@@ -206,7 +208,10 @@ const DefinitionView = ({
 									<Button
 										variant="ghost"
 										size="sm"
-										onClick={() => setRenaming(field)}
+										onClick={() => {
+											setRenaming(field);
+											setRenameOpen(true);
+										}}
 									>
 										{m.rename()}
 									</Button>
@@ -275,17 +280,15 @@ const DefinitionView = ({
 				}
 			/>
 			<AppMetaobjectFieldDialog
-				open={renaming !== null}
-				onOpenChange={(open) => {
-					if (!open) setRenaming(null);
-				}}
+				open={renameOpen}
+				onOpenChange={setRenameOpen}
 				field={renaming ?? undefined}
 				pending={renameField.isPending}
 				errorMessage={null}
 				onSubmit={(field) =>
 					renameField.mutate(
 						{ key: field.key, name: field.name },
-						{ onSuccess: () => setRenaming(null) },
+						{ onSuccess: () => setRenameOpen(false) },
 					)
 				}
 			/>
