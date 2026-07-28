@@ -73,6 +73,8 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"menu.renamed": m.activity_action_menu_renamed,
 	"menu.items_replaced": m.activity_action_menu_items_replaced,
 	"menu.deleted": m.activity_action_menu_deleted,
+	"tour_operator.storefront_password_updated":
+		m.activity_action_storefront_password_updated,
 };
 
 // Field → label for the `{field, from, to}` diff rows. Reuses the form labels

@@ -562,5 +562,14 @@
 	"activity_action_menu_renamed": "renamed the menu",
 	"activity_action_menu_items_replaced": "updated the menu's items",
 	"activity_action_menu_deleted": "deleted the menu",
-	"url": "URL"
+	"url": "URL",
+	"store_access": "Store access",
+	"store_access_hint": "Control who can see your storefront while you get ready to launch.",
+	"store_access_toggle": "Restrict access to visitors with the password",
+	"store_access_toggle_hint": "Visitors see a password page instead of your storefront until they enter it.",
+	"store_access_password_hint": "The password you share with people who should get in. Leaving it unchanged keeps the current one.",
+	"store_access_password_required": "A password is required to enable password protection.",
+	"visitor_message": "Message for your visitors",
+	"visitor_message_hint": "Shown on the password page — set expectations, like “We’re launching soon”.",
+	"activity_action_storefront_password_updated": "updated store access"
 }

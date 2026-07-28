@@ -1,6 +1,7 @@
 export { AppOperatorLanguagesForm } from "./components/AppOperatorLanguagesForm";
 export { AppOperatorLogoCard } from "./components/AppOperatorLogoCard";
 export { AppSettingsSidebar } from "./components/AppSettingsSidebar";
+export { AppStorefrontPasswordCard } from "./components/AppStorefrontPasswordCard";
 export { AppTourOperatorForm } from "./components/AppTourOperatorForm";
 export { AppTourOperatorSidebar } from "./components/AppTourOperatorSidebar";
 export { useCurrentTourOperator } from "./hooks/use-current-tour-operator";

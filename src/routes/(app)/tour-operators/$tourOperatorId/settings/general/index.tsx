@@ -3,7 +3,11 @@ import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { AppOperatorLogoCard, useCurrentTourOperator } from "#/tour-operator";
+import {
+	AppOperatorLogoCard,
+	AppStorefrontPasswordCard,
+	useCurrentTourOperator,
+} from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/settings/general/",
@@ -34,10 +38,13 @@ function GeneralSettingsPage() {
 				}
 			/>
 			{operator && (
-				<AppOperatorLogoCard
-					tourOperatorId={operator.id}
-					logoUrl={operator.logoUrl}
-				/>
+				<>
+					<AppOperatorLogoCard
+						tourOperatorId={operator.id}
+						logoUrl={operator.logoUrl}
+					/>
+					<AppStorefrontPasswordCard tourOperatorId={operator.id} />
+				</>
 			)}
 		</AppPageShell>
 	);
