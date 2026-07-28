@@ -47,6 +47,11 @@ export const AppMetaobjectEntrySelect = ({
 	if (catalogue.isPending) {
 		return <Skeleton className="h-9 w-full" />;
 	}
+	// Without this, a failed fetch renders an empty select that reads as
+	// "Not set" — a lie about the stored value.
+	if (catalogue.isError) {
+		return <p className="text-sm text-destructive">{m.error()}</p>;
+	}
 	const entries = catalogue.rows.filter(
 		(row) => row.definitionId === metaobjectDefinitionId,
 	);

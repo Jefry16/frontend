@@ -4,11 +4,7 @@ export { AppMetafieldDefinitionForm } from "./components/AppMetafieldDefinitionF
 export { AppMetafieldDefinitionsList } from "./components/AppMetafieldDefinitionsList";
 export { AppMetafieldsCard } from "./components/AppMetafieldsCard";
 export { AppTypedValueInput } from "./components/AppTypedValueInput";
-export {
-	METAFIELD_TYPE_CODES,
-	METAOBJECT_FIELD_TYPE_CODES,
-	metafieldTypeLabel,
-} from "./format";
+export { METAOBJECT_FIELD_TYPE_CODES, metafieldTypeLabel } from "./format";
 export type {
 	MetafieldDefinition,
 	MetafieldDefinitionListItem,
