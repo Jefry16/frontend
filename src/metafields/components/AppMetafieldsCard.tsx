@@ -7,27 +7,17 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "#/components/ui/select";
 import { Skeleton } from "#/components/ui/skeleton";
-import { Textarea } from "#/components/ui/textarea";
 import * as m from "#/paraglide/messages";
 import { AppError } from "#/shared/components/AppError";
 import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import { useMetafieldValueSave } from "../hooks/use-metafield-value-save";
 import { useOwnerMetafields } from "../hooks/use-owner-metafields";
 import type {
 	MetafieldDefinitionListItem,
 	MetafieldOwnerTypeCode,
 } from "../types";
+import { AppTypedValueInput } from "./AppTypedValueInput";
 
 // The per-resource metafields editor: one input per definition for this owner
 // type (unset fields render empty), dirty fields saved together — a non-empty
@@ -156,90 +146,12 @@ const MetafieldInput = ({
 					{definition.namespace}.{definition.key}
 				</span>
 			</FieldLabel>
-			{renderInput(definition, inputId, value, onChange)}
+			<AppTypedValueInput
+				inputId={inputId}
+				type={definition.type}
+				value={value}
+				onValueChange={onChange}
+			/>
 		</Field>
 	);
-};
-
-const renderInput = (
-	definition: MetafieldDefinitionListItem,
-	inputId: string,
-	value: string,
-	onChange: (value: string) => void,
-) => {
-	switch (definition.type) {
-		case "boolean":
-			return (
-				<Select
-					value={value || undefined}
-					onValueChange={(v) => onChange(v === "unset" ? "" : v)}
-				>
-					<SelectTrigger id={inputId} className="w-full">
-						<SelectValue placeholder={m.not_set()} />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectGroup>
-							<SelectItem value="unset">{m.not_set()}</SelectItem>
-							<SelectItem value="true">{m.value_true()}</SelectItem>
-							<SelectItem value="false">{m.value_false()}</SelectItem>
-						</SelectGroup>
-					</SelectContent>
-				</Select>
-			);
-		case "date":
-			return (
-				<Input
-					id={inputId}
-					type="date"
-					value={value}
-					onChange={(e) => onChange(e.target.value)}
-				/>
-			);
-		case "number_integer":
-		case "number_decimal":
-			return (
-				<AppNumericInput
-					id={inputId}
-					decimal={definition.type === "number_decimal"}
-					value={value}
-					onValueChange={onChange}
-				/>
-			);
-		case "multi_line_text":
-			return (
-				<Textarea
-					id={inputId}
-					rows={3}
-					value={value}
-					onChange={(e) => onChange(e.target.value)}
-				/>
-			);
-		case "json":
-			return (
-				<Textarea
-					id={inputId}
-					rows={4}
-					className="font-mono text-xs"
-					value={value}
-					onChange={(e) => onChange(e.target.value)}
-				/>
-			);
-		case "url":
-			return (
-				<Input
-					id={inputId}
-					value={value}
-					placeholder="https://"
-					onChange={(e) => onChange(e.target.value)}
-				/>
-			);
-		default:
-			return (
-				<Input
-					id={inputId}
-					value={value}
-					onChange={(e) => onChange(e.target.value)}
-				/>
-			);
-	}
 };

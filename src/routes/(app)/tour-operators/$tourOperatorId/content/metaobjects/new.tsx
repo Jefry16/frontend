@@ -1,0 +1,38 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { AppMetaobjectDefinitionForm } from "#/metaobjects";
+import * as m from "#/paraglide/messages";
+import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
+
+export const Route = createFileRoute(
+	"/(app)/tour-operators/$tourOperatorId/content/metaobjects/new",
+)({
+	component: NewMetaobjectDefinitionPage,
+});
+
+// Static "new" wins over the dynamic $definitionId sibling.
+function NewMetaobjectDefinitionPage() {
+	const { tourOperatorId } = Route.useParams();
+	return (
+		<AppPageShell variant="form">
+			<AppPageHeader
+				title={m.new_metaobject_definition()}
+				breadcrumb={
+					<AppBreadcrumb
+						items={[
+							{ label: m.content() },
+							{
+								label: m.metaobjects(),
+								to: "/tour-operators/$tourOperatorId/content/metaobjects",
+								params: { tourOperatorId },
+							},
+							{ label: m.new_metaobject_definition() },
+						]}
+					/>
+				}
+			/>
+			<AppMetaobjectDefinitionForm tourOperatorId={tourOperatorId} />
+		</AppPageShell>
+	);
+}

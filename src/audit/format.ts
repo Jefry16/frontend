@@ -49,6 +49,22 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"metafield_definition.deleted":
 		m.activity_action_metafield_definition_deleted,
 	// Value writes audit on the OWNER's timeline, namespaced per owner kind.
+	"metaobject_definition.created":
+		m.activity_action_metaobject_definition_created,
+	"metaobject_definition.updated":
+		m.activity_action_metaobject_definition_updated,
+	"metaobject_definition.deleted":
+		m.activity_action_metaobject_definition_deleted,
+	"metaobject_definition.field_added": m.activity_action_metaobject_field_added,
+	"metaobject_definition.field_updated":
+		m.activity_action_metaobject_field_updated,
+	"metaobject_definition.field_removed":
+		m.activity_action_metaobject_field_removed,
+	"metaobject.created": m.activity_action_metaobject_created,
+	"metaobject.updated": m.activity_action_metaobject_updated,
+	"metaobject.published": m.activity_action_metaobject_published,
+	"metaobject.unpublished": m.activity_action_metaobject_unpublished,
+	"metaobject.deleted": m.activity_action_metaobject_deleted,
 	"experience.metafield_updated": m.activity_action_metafield_updated,
 	"experience.metafield_cleared": m.activity_action_metafield_cleared,
 	"page.metafield_updated": m.activity_action_metafield_updated,
@@ -199,6 +215,20 @@ const ENTITY_TYPES: Record<
 		route: {
 			to: "/tour-operators/$tourOperatorId/settings/invitations/$invitationId",
 			param: "invitationId",
+		},
+	},
+	METAOBJECT_DEFINITION: {
+		label: m.metaobject_definition,
+		route: {
+			to: "/tour-operators/$tourOperatorId/content/metaobjects/$definitionId",
+			param: "definitionId",
+		},
+	},
+	METAOBJECT: {
+		label: m.metaobject,
+		route: {
+			to: "/tour-operators/$tourOperatorId/content/metaobjects/entries/$metaobjectId",
+			param: "metaobjectId",
 		},
 	},
 	METAFIELD_DEFINITION: {

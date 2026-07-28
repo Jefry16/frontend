@@ -33,3 +33,8 @@ export const TYPE_FILTER_OPTIONS = TYPE_CODES.map((code) => ({
 	value: filterValue(code),
 	label: TYPE_LABELS[code](),
 }));
+
+// Barrel-facing aliases (the metaobjects module builds its dynamic entry
+// forms from the same catalogue).
+export const metafieldTypeLabel = typeLabel;
+export const METAFIELD_TYPE_CODES = TYPE_CODES;

@@ -26,6 +26,7 @@ const MODULES = [
 	"team",
 	"media",
 	"metafields",
+	"metaobjects",
 	"pages",
 	"experiences",
 ];

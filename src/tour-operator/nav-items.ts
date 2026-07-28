@@ -13,6 +13,7 @@ import {
 	Mail,
 	MapPin,
 	Settings,
+	Shapes,
 	UserRound,
 	Users,
 	UsersRound,
@@ -150,7 +151,7 @@ export const operationsNavItems = (tourOperatorId: string): NavLeaf[] => [
 ];
 
 // The main-nav "Content" section — storefront/catalog content the operator
-// manages (distinct from Settings): pages, media, metafields.
+// manages (distinct from Settings): pages, media, metafields, metaobjects.
 // Rendered as a labeled group in the operator sidebar, above the Settings leaf.
 export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
 	{
@@ -174,6 +175,14 @@ export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Database,
 		link: {
 			to: "/tour-operators/$tourOperatorId/content/metafields",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.metaobjects(),
+		icon: Shapes,
+		link: {
+			to: "/tour-operators/$tourOperatorId/content/metaobjects",
 			params: { tourOperatorId },
 		},
 	},
