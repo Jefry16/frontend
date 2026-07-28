@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
+import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { MenuItemInput } from "../types";
@@ -32,6 +33,7 @@ export const useMenuActions = (tourOperatorId: string, menuId: string) => {
 			toast.updated(m.menu());
 			invalidate();
 		},
+		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 
 	const remove = useMutation<unknown, AxiosError>({

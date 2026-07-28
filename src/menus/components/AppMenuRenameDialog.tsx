@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
 	Dialog,
@@ -32,14 +32,15 @@ export const AppMenuRenameDialog = ({
 	const trimmed = title.trim();
 	const valid = trimmed.length >= 1 && trimmed.length <= 120;
 
+	// The dialog opens programmatically (no trigger), so onOpenChange never
+	// fires with `true` — without this, a cancelled edit leaks into the next
+	// open.
+	useEffect(() => {
+		if (open) setTitle(currentTitle);
+	}, [open, currentTitle]);
+
 	return (
-		<Dialog
-			open={open}
-			onOpenChange={(next) => {
-				onOpenChange(next);
-				if (next) setTitle(currentTitle);
-			}}
-		>
+		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="max-w-md">
 				<DialogHeader>
 					<DialogTitle>{m.rename_menu_title()}</DialogTitle>
