@@ -1,0 +1,35 @@
+import { Inbox } from "lucide-react";
+import { useMemo } from "react";
+import { queryKeys } from "#/lib/query-keys";
+import * as m from "#/paraglide/messages";
+import { AppDataTable } from "#/shared/components/AppDataTable";
+import { useOperatorDateTime } from "#/tour-operator";
+import { contactMessageColumns } from "../columns";
+
+// The operator's contact inbox as the standard cursor table (Operations →
+// Inbox), newest first. No "new message" action — messages arrive from the
+// storefront's contact form.
+export const AppContactMessagesList = ({
+	tourOperatorId,
+}: {
+	tourOperatorId: string;
+}) => {
+	const { formatDate } = useOperatorDateTime();
+	const columns = useMemo(
+		() => contactMessageColumns(tourOperatorId, formatDate),
+		[tourOperatorId, formatDate],
+	);
+
+	return (
+		<AppDataTable
+			columns={columns}
+			endpoint={`/tour-operators/${tourOperatorId}/contact-messages`}
+			queryKey={queryKeys.contactMessages(tourOperatorId)}
+			emptyState={{
+				icon: Inbox,
+				title: m.inbox_empty(),
+				description: m.inbox_empty_body(),
+			}}
+		/>
+	);
+};

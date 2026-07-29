@@ -38,6 +38,10 @@ export const queryKeys = {
 		["pickup-locations", tourOperatorId] as const,
 	pickupLocation: (tourOperatorId: string, pickupLocationId: string) =>
 		["pickup-locations", tourOperatorId, pickupLocationId] as const,
+	contactMessages: (tourOperatorId: string) =>
+		["contact-messages", tourOperatorId] as const,
+	contactMessage: (tourOperatorId: string, messageId: string) =>
+		["contact-messages", tourOperatorId, messageId] as const,
 	menus: (tourOperatorId: string) => ["menus", tourOperatorId] as const,
 	menu: (tourOperatorId: string, menuId: string) =>
 		["menus", tourOperatorId, menuId] as const,

@@ -7,6 +7,7 @@ import {
 	FileText,
 	History,
 	Images,
+	Inbox,
 	Languages,
 	LayoutDashboard,
 	ListTree,
@@ -141,6 +142,14 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 // business (activity now; bookings and orders join when the transaction half
 // lands). Rendered as a labeled group in the operator sidebar.
 export const operationsNavItems = (tourOperatorId: string): NavLeaf[] => [
+	{
+		label: m.inbox(),
+		icon: Inbox,
+		link: {
+			to: "/tour-operators/$tourOperatorId/inbox",
+			params: { tourOperatorId },
+		},
+	},
 	{
 		label: m.activity(),
 		icon: History,

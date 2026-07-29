@@ -75,6 +75,7 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"menu.deleted": m.activity_action_menu_deleted,
 	"tour_operator.storefront_password_updated":
 		m.activity_action_storefront_password_updated,
+	"contact_message.deleted": m.activity_action_contact_message_deleted,
 };
 
 // Field → label for the `{field, from, to}` diff rows. Reuses the form labels
@@ -249,6 +250,13 @@ const ENTITY_TYPES: Record<
 		route: {
 			to: "/tour-operators/$tourOperatorId/content/menus/$menuId",
 			param: "menuId",
+		},
+	},
+	CONTACT_MESSAGE: {
+		label: m.inbox_message,
+		route: {
+			to: "/tour-operators/$tourOperatorId/inbox/$messageId",
+			param: "messageId",
 		},
 	},
 	TOUR_OPERATOR: {

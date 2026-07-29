@@ -28,6 +28,7 @@ const MODULES = [
 	"metafields",
 	"metaobjects",
 	"menus",
+	"contact",
 	"pages",
 	"experiences",
 ];
