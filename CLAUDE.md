@@ -1,12 +1,19 @@
-# Vointika Admin — Frontend (greenfield rebuild)
+# Vointika Admin — Frontend
 
-The operator-facing admin SPA. This is a **fresh rebuild**: the old app is archived
-(`Jefry16/frontend-archived`). We rebuild **feature module by feature module**, in the
-same order the backend shipped its contexts (auth/identity first), keeping only what a
-shipped feature needs — strict subtraction, no speculative scaffolding.
+The operator-facing admin SPA. A **fresh rebuild** — the old app is archived
+(`Jefry16/frontend-archived`) — built **feature module by feature module**, in the same
+order the backend shipped its contexts, keeping only what a shipped feature needs.
 
-Right now the repo is the **foundation only**: tooling, app shell, design tokens, base
-UI primitives, the API client, i18n wiring, and the test harness. No feature modules yet.
+Cross-repo law and state live one level up, in their own git repo:
+`/home/jefrycayo/vointika/CONSTITUTION.md` (LAW) and `MAP.md` (the living
+architecture). LAW arrives automatically; **load MAP yourself**.
+
+In this repo: this file is the *context and local calibration*, `docs/COMPONENTS.md`
+the *recipes*, `docs/STACK.md` the *versions and their gotchas*.
+
+The foundation phase is over — which feature modules exist is answered by `MODULES` in
+`.dependency-cruiser.cjs`, and that list is the source of truth, because a module missing
+from it has no enforced boundaries.
 
 > **Authoritative package docs live in [`docs/STACK.md`](./docs/STACK.md)** — every
 > dependency with its pinned version, purpose, and the canonical documentation URL.
@@ -18,23 +25,26 @@ UI primitives, the API client, i18n wiring, and the test harness. No feature mod
 > (componentize on the 2nd real use), `App*` naming, styling rules, the forms pattern, and
 > the rule that **every `App*` component ships a `.stories.tsx`** (Storybook is the living inventory).
 
-## Working agreement (read first)
+## Gates
 
-How to work in this repo — these override default behavior.
+`pnpm typecheck` · `pnpm test` · `pnpm depcheck` · `pnpm check` · `pnpm build` — all green
+before a commit. Run `pnpm paraglide:compile` first: `src/paraglide/` is generated and
+gitignored, so typecheck and test fail without it.
 
-1. **Never assume — ask when genuinely undetermined.** If a request is ambiguous and the
-   choice changes the outcome, ask before writing code. Proceed on a default only when it's
-   a clear convention here or verifiable in the repo (read it) — and when you do, say which
-   default you used.
-2. **Verify before claiming.** Don't say something works/is done unless you ran it
-   (typecheck, tests, the app) and observed it. If you didn't verify, say so.
-3. **Don't deviate from established patterns.** Follow this file + `docs/COMPONENTS.md` and
-   mirror surrounding code. Don't introduce a new library/abstraction/layout when an
-   existing one fits; if it genuinely doesn't, surface it and ask.
-4. **Stay in scope.** Do what was asked; don't refactor unrelated code or expand scope
-   without checking.
-5. **Report honestly.** If something failed, was skipped, or is uncertain, say so with the
-   evidence.
+## Working rules
+
+The working rules are LAW: §2.4 never over-engineer · §3 the landing ritual · §4 never
+assume · §6 craft (comments, commits, dead code). Only the calibration for this repo
+lives here.
+
+- **Boundaries and formatting are caught at the gate.** `pnpm depcheck`
+  (dependency-cruiser) enforces the module rules below and Biome enforces lint/format, so
+  LAW §6.3's mechanical half is automatic — except for a new module, which is unenforced
+  until its folder name is in `MODULES`. The list *is* the enforcement.
+- **`docs/COMPONENTS.md` is this repo's PATTERNS** — check it for a matching recipe before
+  building (LAW §5.2), and mirror surrounding code rather than introducing a second way.
+- **Stay in scope.** Do what was asked; don't refactor unrelated code or widen scope
+  without checking. (The one working rule here that LAW does not carry.)
 
 ## Stack
 
@@ -89,7 +99,7 @@ Each feature lives in `src/<module>/` and exposes a **barrel** `index.ts`. The r
 4. `shared/` and `components/ui/` must **not** import any feature module.
 
 When you create a module, **add its folder name to `MODULES` in `.dependency-cruiser.cjs`**
-or its boundaries go unenforced. (The list is empty now — the first module to add is `auth`.)
+or its boundaries go unenforced — silently, since `depcheck` still passes.
 
 ## Conventions
 

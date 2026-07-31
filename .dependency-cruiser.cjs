@@ -11,8 +11,8 @@
  *
  * `MODULES` lists the top-level domain folder names — it must stay in sync with the actual
  * `src/<module>/` folders. Add a new module here when one is created, or its boundaries go
- * unenforced. Greenfield rebuild: no feature modules exist yet — they are added here as each
- * is built (auth first). While the list is empty, the module-scoped rules match nothing.
+ * unenforced — silently, because the module-scoped rules then match nothing and the run
+ * still passes.
  */
 
 const MODULES = [
