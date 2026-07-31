@@ -34,8 +34,8 @@ gitignored, so typecheck and test fail without it.
 ## Working rules
 
 The working rules are LAW: §2.4 never over-engineer · §3 the landing ritual · §4 never
-assume · §6 craft (comments, commits, dead code). Only the calibration for this repo
-lives here.
+assume · §6 craft (comments, commits, dead code, staying in scope). Only the calibration
+for this repo lives here.
 
 - **Boundaries and formatting are caught at the gate.** `pnpm depcheck`
   (dependency-cruiser) enforces the module rules below and Biome enforces lint/format, so
@@ -43,8 +43,6 @@ lives here.
   until its folder name is in `MODULES`. The list *is* the enforcement.
 - **`docs/COMPONENTS.md` is this repo's PATTERNS** — check it for a matching recipe before
   building (LAW §5.2), and mirror surrounding code rather than introducing a second way.
-- **Stay in scope.** Do what was asked; don't refactor unrelated code or widen scope
-  without checking. (The one working rule here that LAW does not carry.)
 
 ## Stack
 
