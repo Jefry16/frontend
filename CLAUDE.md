@@ -1,7 +1,6 @@
 # Vointika Admin — Frontend
 
-The operator-facing admin SPA. A **fresh rebuild** — the old app is archived
-(`Jefry16/frontend-archived`) — built **feature module by feature module**, in the same
+The operator-facing admin SPA. A **fresh rebuild**, built **feature module by feature module**, in the same
 order the backend shipped its contexts, keeping only what a shipped feature needs.
 
 Cross-repo law and state live one level up, in their own git repo:
