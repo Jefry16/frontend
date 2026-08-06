@@ -120,6 +120,17 @@ the page rhythm; a route wraps its body in one and passes a `variant`:
   a `list`). Don't hand-write the container classes — a copied string once shipped `gap-6`
   where a detail page wanted `gap-8`, which is why the variants exist.
 
+**Loading — `Skeleton` or `Spinner`, by whether the shape is known.**
+  - **`Skeleton`** for the **first paint of content whose shape you already know**: a detail
+    page, a form, a list. It reserves the layout, so nothing jumps when the data lands.
+    In practice this is almost always `AppResourceView`'s `loading` prop.
+  - **`Spinner`** for a wait with **no shape to reserve**: a pending mutation inside a
+    button (`AppFormActions` does this for you), a route-level auth gate that hasn't decided
+    which page to render, an in-place append like `AppDataTable`'s next page, or a short swap
+    inside chrome that is already painted (switching a locale tab, a dialog body).
+
+  The test is layout shift, not duration: if you can draw the box, draw a skeleton.
+
 ---
 
 ## 5. Forms (the current pattern)
