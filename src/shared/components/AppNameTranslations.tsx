@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { Languages } from "lucide-react";
 import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
@@ -14,8 +13,8 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "./AppAlert";
 import { AppFormActions } from "./AppFormActions";
-import { AppLink } from "./AppLink";
 import { AppLocaleTabs } from "./AppLocaleTabs";
+import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
 
 interface NameTranslation {
 	locale: string;
@@ -75,23 +74,7 @@ export const AppNameTranslations = ({
 	}
 
 	if (translatable.length === 0) {
-		return (
-			<Card>
-				<CardContent className="flex flex-col items-center gap-2 py-10 text-center">
-					<Languages className="size-8 text-muted-foreground" />
-					<p className="text-sm text-muted-foreground">
-						{m.translations_no_languages_generic()}
-					</p>
-					<AppLink
-						to="/tour-operators/$tourOperatorId/settings/languages"
-						params={{ tourOperatorId }}
-						className="text-sm font-medium text-primary hover:underline"
-					>
-						{m.manage_languages()}
-					</AppLink>
-				</CardContent>
-			</Card>
-		);
+		return <AppNoTranslatableLocales tourOperatorId={tourOperatorId} />;
 	}
 
 	return (

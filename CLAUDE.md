@@ -108,6 +108,15 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
 - **API errors:** the backend returns `{ status, error, message, code?, timestamp }`.
   Use `apiErrorMessage()` for the human string and branch on `code` (never `message`) when
   a specific cause needs custom UX (`lib/api-error.ts`).
+  **Where it surfaces follows the hook's kind**, and the split is deliberate: a
+  `use-*-form.ts` hook puts `apiErrorMessage(err)` into the form's inline `AppAlert`, because
+  the operator needs the server's reason beside the field that caused it; a
+  `use-*-actions.ts` hook shows the generic `toast.error(m.error())`, because a row action
+  has no banner to own a message. Deviating is fine with a reason in a comment — the two
+  that deviate have one, and neither is a bug to "fix": `use-forgot-password-form` stays
+  generic on purpose (anti-enumeration — the endpoint 204s whether or not the address
+  exists), and `use-metafield-value-save` applies `apiErrorMessage` inside its loop so the
+  toast can name the field that failed.
 - **API identity (backend house rule):** responses use `id` (never a prefixed `userId`) and
   a `context` discriminator (the entity's collection, e.g. `"users"`) — never `type`.
 - **i18n:** user-facing strings come from `#/paraglide/messages` (`import * as m`), keyed in
