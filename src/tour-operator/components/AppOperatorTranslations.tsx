@@ -1,0 +1,137 @@
+import { Languages } from "lucide-react";
+import { useState } from "react";
+import { Card, CardContent } from "#/components/ui/card";
+import { Spinner } from "#/components/ui/spinner";
+import * as m from "#/paraglide/messages";
+import { AppAlert } from "#/shared/components/AppAlert";
+import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppLink } from "#/shared/components/AppLink";
+import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
+import { useOperatorLocales } from "../hooks/use-operator-locales";
+import {
+	useOperatorTranslation,
+	useOperatorTranslations,
+} from "../hooks/use-operator-translations";
+import { localeLabel } from "../locales";
+import type { OperatorTranslation } from "../types";
+import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
+
+// Settings → Translations: the shop's own text per locale — the page-level
+// translation editor's shell (a locale switcher over a per-locale overlay form,
+// keyed by locale so it reseeds on switch), but for the operator itself rather
+// than one resource.
+//
+// The primary locale is absent from the strip on purpose: it IS the canonical
+// text, so there is nothing to overlay onto it.
+//
+// Reads are member-visible while writes are ADMIN+, so `canManage` decides
+// between the form and a read-only summary — a staff member gets the content
+// rather than a form that 403s on save, the same split the Languages section makes.
+export const AppOperatorTranslations = ({
+	tourOperatorId,
+	canManage,
+}: {
+	tourOperatorId: string;
+	canManage: boolean;
+}) => {
+	const localesQuery = useOperatorLocales(tourOperatorId);
+	const listQuery = useOperatorTranslations(tourOperatorId);
+
+	const primary = localesQuery.data?.primaryLocale;
+	const translatable = (localesQuery.data?.supportedLocales ?? []).filter(
+		(code) => code !== primary,
+	);
+	const [picked, setPicked] = useState<string>();
+	const active = picked ?? translatable[0];
+
+	const translationQuery = useOperatorTranslation(tourOperatorId, active);
+	const translated = new Set((listQuery.data ?? []).map((t) => t.locale));
+
+	if (localesQuery.isPending) {
+		return (
+			<div className="flex justify-center py-10">
+				<Spinner />
+			</div>
+		);
+	}
+
+	if (localesQuery.isError) {
+		return <AppAlert title={m.error()} description={m.error()} />;
+	}
+
+	if (translatable.length === 0) {
+		return (
+			<Card>
+				<CardContent className="flex flex-col items-center gap-2 py-10 text-center">
+					<Languages className="size-8 text-muted-foreground" />
+					<p className="text-sm text-muted-foreground">
+						{m.translations_no_languages_generic()}
+					</p>
+					<AppLink
+						to="/tour-operators/$tourOperatorId/settings/languages"
+						params={{ tourOperatorId }}
+						className="text-sm font-medium text-primary hover:underline"
+					>
+						{m.manage_languages()}
+					</AppLink>
+				</CardContent>
+			</Card>
+		);
+	}
+
+	return (
+		<div className="flex flex-col gap-4">
+			<AppLocaleTabs
+				locales={translatable}
+				active={active}
+				onSelect={setPicked}
+				translated={translated}
+				label={(code) => localeLabel(code)}
+			/>
+			{active && translationQuery.data ? (
+				canManage ? (
+					<AppOperatorTranslationForm
+						key={active}
+						tourOperatorId={tourOperatorId}
+						locale={active}
+						translation={translationQuery.data}
+					/>
+				) : (
+					<OperatorTranslationSummary translation={translationQuery.data} />
+				)
+			) : (
+				<div className="flex justify-center py-10">
+					<Spinner />
+				</div>
+			)}
+		</div>
+	);
+};
+
+// Read-only view for non-admins: what this locale overrides, with the
+// untranslated fields saying so rather than rendering an empty row.
+const OperatorTranslationSummary = ({
+	translation,
+}: {
+	translation: OperatorTranslation;
+}) => (
+	<Card>
+		<CardContent className="flex flex-col gap-6">
+			{(
+				[
+					[m.slogan(), translation.slogan],
+					[m.short_description(), translation.shortDescription],
+					[m.seo_title(), translation.seoTitle],
+					[m.seo_description(), translation.seoDescription],
+					[m.visitor_message(), translation.passwordMessage],
+				] as const
+			).map(([label, value]) => (
+				<AppDetailField key={label} label={label}>
+					{value ?? (
+						<span className="text-muted-foreground">{m.not_translated()}</span>
+					)}
+				</AppDetailField>
+			))}
+		</CardContent>
+	</Card>
+);

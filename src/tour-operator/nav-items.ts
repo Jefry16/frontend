@@ -5,6 +5,7 @@ import {
 	Compass,
 	Database,
 	FileText,
+	Globe,
 	History,
 	Images,
 	Inbox,
@@ -125,6 +126,14 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Languages,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/languages",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.translations(),
+		icon: Globe,
+		link: {
+			to: "/tour-operators/$tourOperatorId/settings/translations",
 			params: { tourOperatorId },
 		},
 	},

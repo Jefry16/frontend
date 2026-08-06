@@ -1,5 +1,6 @@
 export { AppOperatorLanguagesForm } from "./components/AppOperatorLanguagesForm";
 export { AppOperatorLogoCard } from "./components/AppOperatorLogoCard";
+export { AppOperatorTranslations } from "./components/AppOperatorTranslations";
 export { AppSettingsSidebar } from "./components/AppSettingsSidebar";
 export { AppStorefrontPasswordCard } from "./components/AppStorefrontPasswordCard";
 export { AppTourOperatorForm } from "./components/AppTourOperatorForm";
@@ -9,3 +10,4 @@ export { useOperatorDateTime } from "./hooks/use-operator-date-time";
 export { useOperatorLocales } from "./hooks/use-operator-locales";
 export { useOperatorToday } from "./hooks/use-operator-today";
 export { localeLabel, type OperatorLocales } from "./locales";
+export type { OperatorTranslation } from "./types";
