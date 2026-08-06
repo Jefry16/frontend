@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppInviteMemberForm } from "#/team";
+import { usePermissions } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/settings/members/new",
@@ -14,6 +16,7 @@ export const Route = createFileRoute(
 // Single-resource form page → centered at max-w-3xl; the route owns the page
 // chrome, the component is just the form card.
 function InviteMemberPage() {
+	const { canWrite } = usePermissions();
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
@@ -38,7 +41,11 @@ function InviteMemberPage() {
 					/>
 				}
 			/>
-			<AppInviteMemberForm tourOperatorId={tourOperatorId} />
+			{canWrite ? (
+				<AppInviteMemberForm tourOperatorId={tourOperatorId} />
+			) : (
+				<AppNotPermitted />
+			)}
 		</AppPageShell>
 	);
 }

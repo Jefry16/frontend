@@ -2,8 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppAudienceForm } from "#/audiences";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
+import { usePermissions } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/audiences/new",
@@ -14,6 +16,7 @@ export const Route = createFileRoute(
 // Single-resource page → centered at max-w-3xl. Static "new" wins over the
 // dynamic $audienceId sibling.
 function NewAudiencePage() {
+	const { canWrite } = usePermissions();
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
@@ -33,7 +36,11 @@ function NewAudiencePage() {
 					/>
 				}
 			/>
-			<AppAudienceForm tourOperatorId={tourOperatorId} />
+			{canWrite ? (
+				<AppAudienceForm tourOperatorId={tourOperatorId} />
+			) : (
+				<AppNotPermitted />
+			)}
 		</AppPageShell>
 	);
 }

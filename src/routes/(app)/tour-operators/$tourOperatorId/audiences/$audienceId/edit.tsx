@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppAudienceEdit } from "#/audiences";
+import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageShell } from "#/shared/components/AppPageShell";
+import { usePermissions } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/audiences/$audienceId/edit",
@@ -10,13 +12,18 @@ export const Route = createFileRoute(
 
 // Single-resource page → centered at max-w-3xl.
 function EditAudiencePage() {
+	const { canWrite } = usePermissions();
 	const { tourOperatorId, audienceId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppAudienceEdit
-				tourOperatorId={tourOperatorId}
-				audienceId={audienceId}
-			/>
+			{canWrite ? (
+				<AppAudienceEdit
+					tourOperatorId={tourOperatorId}
+					audienceId={audienceId}
+				/>
+			) : (
+				<AppNotPermitted />
+			)}
 		</AppPageShell>
 	);
 }
