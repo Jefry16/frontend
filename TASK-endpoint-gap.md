@@ -1,96 +1,107 @@
 # Endpoint Gap Inventory — backend endpoints not yet used by the frontend
 
-Point-in-time diff of **backend HTTP surface** vs **what the rebuilt admin frontend
+Point-in-time diff of the **backend admin HTTP surface** vs **what the admin frontend
 consumes**. Tick an endpoint when a real frontend consumer ships.
 
-> **Snapshot basis:** current backend HEAD (`14e8fba`, tour-operator-create era) —
-> **46 endpoints across 5 contexts** with an HTTP surface: `identity`, `reference`,
-> `touroperator`, `media`, `experience` (`notification` is event-driven, no controller).
-> This is an *earlier* backend than the auto-memory describes (no `contact`/`theme`/
-> `storefront`/`cart`/`booking` in this checkout). **Re-run the diff when the backend
-> advances** — see `endpoint-sync-playbook` memory.
+> **Snapshot basis:** backend `main` @ `3f7685e` (PR #102, storefront policies), re-diffed
+> 2026-08-06. **125 admin endpoints** across the 11 contexts with an admin HTTP surface
+> (`notification` is event-driven, so it has none). The open PR #103 branch adds **no
+> endpoint** — it widens the payload of an existing one (see the gap list).
+>
+> **Out of scope:** the `storefront` context's 8 public page routes (`/`, `/{locale}`,
+> `/experiences`, `/policies/{type}`, `/password`, + HEAD/POST). Those are unauthenticated
+> HTML rendered in-process by the backend — nothing for this SPA to call.
 
-Frontend call surface lives in: `lib/api.ts` (client + interceptors), `auth/AuthProvider.tsx`,
-`auth/hooks/*`, `auth/verify-token.ts`, `reference/hooks/*`, `tour-operator/hooks/*`.
-
----
-
-## ✅ Consumed (11)
-
-`POST /auth/register` · `GET /auth/verify` · `POST /auth/login` · `POST /auth/refresh` ·
-`POST /auth/logout` · `GET /auth/profile` · `POST /auth/request-password-reset` ·
-`POST /auth/reset-password` · `GET /timezones` · `GET /currencies` · `POST /tour-operators`
+Frontend call surface: `lib/api.ts` (client + interceptors), `auth/AuthProvider.tsx`, each
+module's `hooks/`, plus the two generic readers — `shared/components/useDataTable` (every
+cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## ⬜ Not yet used (35)
+## Coverage: 123 / 125 consumed
 
-### identity / auth — 5
-- [ ] `POST /auth/change-password` — change current user's password (authed)
-- [x] ~~`POST /auth/request-password-reset`~~ — forgot/reset slice (done)
-- [x] ~~`POST /auth/reset-password`~~ — forgot/reset slice (done)
-- [ ] `POST /auth/resend-verification` — resend verification email (public)
-- [ ] `POST /auth/profile/avatar` — upload/set avatar, multipart (authed)
-- [ ] `DELETE /auth/profile/avatar` — clear avatar (authed)
-- [ ] `POST /auth/profile/language` — change UI language (authed)
+| Context | Endpoints | Consumed | Open |
+|---|---:|---:|---:|
+| `identity` — `/auth/**` | 13 | 13 | — |
+| `identity` — `/ui-languages` | 1 | 1 | — |
+| `reference` — timezones · currencies · languages | 3 | 3 | — |
+| `touroperator` — create · locales · logo · members · invitations · accept · menus · storefront-password | 24 | 24 | — |
+| `touroperator` — translations | 4 | 4 | — |
+| `touroperator` — **SEO** | 2 | 0 | **2** |
+| `audience` — CRUD + translations | 8 | 8 | — |
+| `experience` — CRUD/publish + translations + slots | 16 | 16 | — |
+| `pickup` | 5 | 5 | — |
+| `audit` | 2 | 2 | — |
+| `media` | 4 | 4 | — |
+| `page` — CRUD/publish/rename + translations | 12 | 12 | — |
+| `metafield` — definitions · owner values · metaobjects | 26 | 26 | — |
+| `contact` | 5 | 5 | — |
+| **Total** | **125** | **123** | **2** |
 
-> ⚠️ `resend-verification` is still pre-listed in `lib/api.ts` `SKIP_AUTH_URLS` but
-> **nothing calls it** — scaffolded, not wired.
-
-### reference — 1
-- [ ] `GET /languages` — list platform content languages (authed)
-
-### admin UI languages — 1
-- [ ] `GET /ui-languages` — list supported admin-UI languages (authed)
-
-### touroperator — 14
-**Locales**
-- [ ] `GET /tour-operators/{id}/locales` — operator primary + supported locales (member)
-- [ ] `PATCH /tour-operators/{id}/locales` — replace content languages (ADMIN+)
-
-**Logo**
-- [ ] `PUT /tour-operators/{id}/logo` — set operator logo to media (ADMIN+)
-- [ ] `DELETE /tour-operators/{id}/logo` — clear operator logo (ADMIN+)
-
-**Members**
-- [ ] `GET /tour-operators/{id}/members` — team roster, paginated (member)
-- [ ] `PATCH /tour-operators/{id}/members/{userId}` — change role / transfer ownership (ADMIN+/OWNER)
-- [ ] `DELETE /tour-operators/{id}/members/{userId}` — remove member / self-leave (member/ADMIN+)
-
-**Invitations — operator side**
-- [ ] `GET /tour-operators/{id}/invitations` — list invitations, paginated (member)
-- [ ] `POST /tour-operators/{id}/invitations` — invite a member (ADMIN+)
-- [ ] `GET /tour-operators/{id}/invitations/{invitationId}` — get one invitation (member)
-- [ ] `POST /tour-operators/{id}/invitations/{invitationId}/resend` — re-issue + resend (ADMIN+)
-- [ ] `DELETE /tour-operators/{id}/invitations/{invitationId}` — revoke pending (ADMIN+)
-
-**Invitations — invitee side** (public, token)
-- [ ] `GET /invitations/{token}/preview` — preview invitation by token
-- [ ] `POST /invitations/{token}/accept` — accept (auto-login if new)
-
-### media — 4  (all under `/tour-operators/{id}/media`)
-- [ ] `POST …/media` — upload a media file, multipart (ADMIN+)
-- [ ] `GET …/media` — list media library, paginated (member)
-- [ ] `GET …/media/{mediaId}` — get a single media record (member)
-- [ ] `DELETE …/media/{mediaId}` — delete media, row + object (ADMIN+)
-
-### experience — 10  (all under `/tour-operators/{id}/experiences`)
-- [ ] `GET …/experiences` — list, cursor-paginated (member)
-- [ ] `GET …/experiences/{experienceId}` — get one (member)
-- [ ] `POST …/experiences` — create DRAFT (ADMIN+)
-- [ ] `PATCH …/experiences/{experienceId}` — update editable fields (ADMIN+)
-- [ ] `POST …/experiences/{experienceId}/publish` — DRAFT → PUBLISHED (ADMIN+)
-- [ ] `POST …/experiences/{experienceId}/unpublish` — PUBLISHED → DRAFT (ADMIN+)
-- [ ] `GET …/experiences/{experienceId}/translations` — list translated locales (member)
-- [ ] `GET …/experiences/{experienceId}/translations/{locale}` — get one overlay (member)
-- [ ] `PUT …/experiences/{experienceId}/translations/{locale}` — create/replace overlay (ADMIN+)
-- [ ] `DELETE …/experiences/{experienceId}/translations/{locale}` — delete overlay (ADMIN+)
+Owner-scoped metafield values are one generic path in
+`metafields/hooks/use-owner-metafields.ts` — both owner types (`experiences/{id}/metafields`
+and `pages/{id}/metafields`) are wired, from `AppExperienceDetail` and `AppPageDetail`.
 
 ---
 
-## Suggested slice grouping
-1. **Auth completion** — forgot/reset/resend-verification + change-password.
-2. **Account/profile** — avatar (upload + clear) + UI-language picker (`GET /ui-languages`).
-3. **Team space** — members + operator-side invitations + the public accept page (`/invitations/{token}/*`).
-4. **Experiences** — CRUD + publish/unpublish + translations (largest; pulls in `GET /languages`).
-5. **Media** — library (list/upload/delete) + wire logo (`PUT/DELETE …/logo`) & locales into operator settings.
+## ✅ Operator translations — shipped (2026-08-06)
+
+Settings → **Translations** (`/settings/translations`), built on the per-locale editor shape
+the page and experience translations already use: `AppLocaleTabs` over a per-locale form,
+keyed by locale so it reseeds on switch. `AppNameTranslations` was the wrong shape — it is
+single-field (`name`) and this overlay has five.
+
+- [x] `GET /tour-operators/{id}/translations` — locales that carry an overlay (member)
+- [x] `GET /tour-operators/{id}/translations/{locale}` — one overlay (member)
+- [x] `PUT /tour-operators/{id}/translations/{locale}` — create/replace (ADMIN+)
+- [x] `DELETE /tour-operators/{id}/translations/{locale}` — drop the locale (ADMIN+)
+
+> ⚠️ **`PUT` is a full replace, not a patch.** The backend rebuilds the row from the body,
+> so an omitted field is a *cleared* field. The form seeds `defaultValues` from the fetched
+> overlay and submits all five every time — that is what keeps an untouched field intact,
+> not an accident of the form library.
+
+**The SPA is ahead of merged `main` by two fields, deliberately.** `slogan` and
+`shortDescription` land on this endpoint in backend **PR #103**, which is still open;
+`main` (`3f7685e`) serves a 3-field payload. Verified against the running backend: a
+5-field `PUT` returns **204** and the two unknown fields are silently ignored (Spring Boot
+disables Jackson's `FAIL_ON_UNKNOWN_PROPERTIES`), and the `GET` simply omits them, so the
+form seeds them empty. The two inputs are therefore inert until #103 merges, at which point
+they start working with **no frontend change**. Nothing to undo here — just re-verify after
+that merge.
+
+---
+
+## ⬜ Not yet used (2)
+
+### `touroperator` — shop SEO
+- [ ] `GET /tour-operators/{id}/seo` — `seoTitle` / `seoDescription` / `ogImageMediaId` (member)
+- [ ] `PUT /tour-operators/{id}/seo` — replace them (ADMIN+; `ogImageMediaId` validated
+      against the operator's own media library)
+
+This is the **canonical** half of what Settings → Translations now overlays: the translation
+editor writes per-locale `seoTitle`/`seoDescription`, but nothing authors the default-language
+values those fall back to. It belongs beside `AppOperatorLogoCard` in Settings → General, and
+`ogImageMediaId` wants the existing `AppMediaPicker`.
+
+Wiring it would also let the translation form show each field's canonical value as a hint,
+the way the page and experience translation forms do — today it cannot, and says so in a
+comment. The canonical `slogan`/`shortDescription` would still be missing: the brand row is
+read-path-only and **no admin endpoint exposes it at all**.
+
+---
+
+## Re-running this diff
+
+```bash
+# backend surface (run in ../backend)
+grep -rn '@RequestMapping\|@\(Get\|Post\|Put\|Patch\|Delete\)Mapping' \
+  src/main/java --include=*Controller.java
+
+# frontend call sites (run here) — note the bases, then the calls
+grep -rn 'authApi\.\(get\|post\|put\|patch\|delete\)' src --include=*.ts --include=*.tsx
+grep -rn 'endpoint=\|useAllPages' src --include=*.tsx   # the generic list readers
+```
+
+The two generic readers are what make a naive `authApi.` grep undercount: a list endpoint
+usually appears only as an `endpoint=` prop on an `AppDataTable`.
