@@ -4,7 +4,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { metafieldDefinitionColumns } from "../columns";
 
 // The operator's metafield definitions as the standard cursor table (Content →
@@ -20,6 +20,8 @@ export const AppMetafieldDefinitionsList = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppDataTable
 			columns={columns}
@@ -29,7 +31,7 @@ export const AppMetafieldDefinitionsList = ({
 				icon: Database,
 				title: m.no_metafield_definitions(),
 				description: m.no_metafield_definitions_body(),
-				action: (
+				action: canWrite && (
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/content/metafields/new"
 						params={{ tourOperatorId }}

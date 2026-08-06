@@ -4,7 +4,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { audienceColumns } from "../columns";
 
 // The operator's audiences (pax pricing tiers) as the standard cursor-paginated
@@ -20,6 +20,8 @@ export const AppAudiencesList = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppDataTable
 			columns={columns}
@@ -29,7 +31,7 @@ export const AppAudiencesList = ({
 				icon: UsersRound,
 				title: m.no_audiences(),
 				description: m.no_audiences_body(),
-				action: (
+				action: canWrite && (
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/audiences/new"
 						params={{ tourOperatorId }}

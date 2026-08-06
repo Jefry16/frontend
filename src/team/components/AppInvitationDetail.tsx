@@ -13,7 +13,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import {
 	effectiveStatus,
 	roleBadgeVariant,
@@ -46,6 +46,8 @@ export const AppInvitationDetail = ({
 			{m.back_to_invitations()}
 		</AppBackLink>
 	);
+
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppResourceView
@@ -83,7 +85,7 @@ export const AppInvitationDetail = ({
 				// "Expired" row is still PENDING and can be resent or revoked). Terminal
 				// states (ACCEPTED / REVOKED) offer none.
 				const actions: AppAction[] =
-					invitation.status === "PENDING"
+					canWrite && invitation.status === "PENDING"
 						? [
 								{
 									id: "resend",

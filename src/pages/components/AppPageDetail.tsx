@@ -28,7 +28,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { pageStatusBadgeVariant, pageStatusLabel } from "../format";
 import { usePage } from "../hooks/use-page";
 import { usePageActions } from "../hooks/use-page-actions";
@@ -63,6 +63,8 @@ export const AppPageDetail = ({
 			{m.back_to_pages()}
 		</AppBackLink>
 	);
+
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppResourceView
@@ -169,7 +171,13 @@ export const AppPageDetail = ({
 									]}
 								/>
 							}
-							actions={<AppPageActions actions={actions} />}
+							actions={
+								<AppPageActions
+									actions={actions.filter(
+										(a) => canWrite || a.id === "translations",
+									)}
+								/>
+							}
 						/>
 
 						<Card>

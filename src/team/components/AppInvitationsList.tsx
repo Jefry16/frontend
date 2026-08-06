@@ -4,7 +4,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { invitationColumns } from "../invitation-columns";
 
 // The operator's invitations as the standard cursor-paginated table: all
@@ -21,6 +21,8 @@ export const AppInvitationsList = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppDataTable
 			columns={columns}
@@ -30,7 +32,7 @@ export const AppInvitationsList = ({
 				icon: Mail,
 				title: m.no_invitations(),
 				description: m.no_invitations_body(),
-				action: (
+				action: canWrite && (
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/settings/members/new"
 						params={{ tourOperatorId }}

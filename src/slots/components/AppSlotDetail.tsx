@@ -23,6 +23,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { usePermissions } from "#/tour-operator";
 import {
 	formatBookedCapacity,
 	formatDayName,
@@ -61,6 +62,8 @@ export const AppSlotDetail = ({
 			{m.back_to_availability()}
 		</AppBackLink>
 	);
+
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppResourceView
@@ -142,7 +145,7 @@ export const AppSlotDetail = ({
 									]}
 								/>
 							}
-							actions={<AppPageActions actions={actions} />}
+							actions={<AppPageActions actions={canWrite ? actions : []} />}
 						/>
 
 						<Card>

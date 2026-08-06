@@ -5,6 +5,7 @@ import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
+import { usePermissions } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/experiences/",
@@ -15,6 +16,8 @@ export const Route = createFileRoute(
 // Experiences — the operator's sellable products. Table page → full width.
 function ExperiencesPage() {
 	const { tourOperatorId } = Route.useParams();
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader
@@ -25,12 +28,14 @@ function ExperiencesPage() {
 					/>
 				}
 				actions={
-					<AppNewLink
-						to="/tour-operators/$tourOperatorId/experiences/new"
-						params={{ tourOperatorId }}
-					>
-						{m.new_experience()}
-					</AppNewLink>
+					canWrite && (
+						<AppNewLink
+							to="/tour-operators/$tourOperatorId/experiences/new"
+							params={{ tourOperatorId }}
+						>
+							{m.new_experience()}
+						</AppNewLink>
+					)
 				}
 			/>
 			<AppExperiencesList tourOperatorId={tourOperatorId} />

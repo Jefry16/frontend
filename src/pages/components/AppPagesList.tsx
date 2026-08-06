@@ -4,7 +4,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { pageColumns } from "../columns";
 
 // The operator's CMS pages as the standard cursor table (bodies excluded
@@ -20,6 +20,8 @@ export const AppPagesList = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppDataTable
 			columns={columns}
@@ -29,7 +31,7 @@ export const AppPagesList = ({
 				icon: FileText,
 				title: m.no_pages(),
 				description: m.no_pages_body(),
-				action: (
+				action: canWrite && (
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/content/pages/new"
 						params={{ tourOperatorId }}

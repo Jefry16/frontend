@@ -301,12 +301,26 @@ sections come from `settingsSectionItems` (General · Members · Invitations · 
 Translations · Account). Pages open with `AppPageHeader`, wrapped in an `AppPageShell`
 variant (§4), and nested pages carry an `AppBreadcrumb`.
 
-**Two settings sections gate on role**, because their reads are member-visible while their
-writes are ADMIN+: Languages and Translations compute `canManage` from
-`useCurrentTourOperator().role` and render a read-only summary instead of a form that would
-403 on save. The per-resource translation editors (experience, page) deliberately do *not* —
-they show the form to everyone and surface the 403. Follow the settings split inside
-`/settings/**`.
+**Role gating — `usePermissions()` from `#/tour-operator`.** Every write in the product is
+ADMIN+ behind the backend's `ensureAdmin`; reads are `ensureMember`. So a write affordance a
+STAFF member can see is a dead end. `usePermissions()` returns `{ canWrite, isOwner }` and
+gates the affordance at its call site:
+
+- **A "New X" button:** `action: canWrite && <AppNewLink …>`.
+- **A detail page's actions:** `<AppPageActions actions={canWrite ? actions : []} />` — it
+  returns `null` for an empty array. Where a page mixes tiers, filter instead of replacing:
+  `actions.filter((a) => canWrite || a.id === "translations")`.
+- **A settings form:** render a read-only summary instead (Languages, Translations).
+
+Two rules keep it honest. **It is cosmetic** — the backend re-checks every write, so a
+hidden button is a courtesy, never a permission; don't let a reviewer read it as the
+security boundary. And **don't hide what a member may actually do** — the read-only tiers
+are real: marking a contact message read is `ensureMember`, and so is every translation
+*read*, which is why the links into the per-locale editors stay visible for STAFF.
+
+The check lives in `tour-operator/` and not `shared/` because `shared/` may not import a
+feature module (§2) — which is also why `AppNewLink` and `AppPageActions` can't gate
+themselves, and every call site does it explicitly.
 
 **Still deferred**, each re-earned with the feature that needs it: collapsible nav groups ·
 `usePermissions` role-gating (hide-don't-disable — today `AppMemberDetail` branches on the

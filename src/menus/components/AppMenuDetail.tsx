@@ -18,7 +18,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { menuLinkTypeLabel } from "../format";
 import { useMenu } from "../hooks/use-menu";
 import { useMenuActions } from "../hooks/use-menu-actions";
@@ -84,6 +84,7 @@ const MenuView = ({
 	const { rename, remove } = useMenuActions(tourOperatorId, menu.id);
 	const [renameOpen, setRenameOpen] = useState(false);
 
+	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
 			id: "edit-items",
@@ -144,7 +145,7 @@ const MenuView = ({
 						]}
 					/>
 				}
-				actions={<AppPageActions actions={actions} />}
+				actions={<AppPageActions actions={canWrite ? actions : []} />}
 			/>
 
 			<Card>

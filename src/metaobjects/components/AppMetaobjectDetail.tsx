@@ -17,7 +17,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { metaobjectStatusBadgeVariant, metaobjectStatusLabel } from "../format";
 import { useMetaobject } from "../hooks/use-metaobject";
 import { useMetaobjectActions } from "../hooks/use-metaobject-actions";
@@ -95,6 +95,7 @@ const MetaobjectView = ({
 		entry.id,
 	);
 
+	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
 			id: "edit",
@@ -176,7 +177,7 @@ const MetaobjectView = ({
 						]}
 					/>
 				}
-				actions={<AppPageActions actions={actions} />}
+				actions={<AppPageActions actions={canWrite ? actions : []} />}
 			/>
 
 			<Card>

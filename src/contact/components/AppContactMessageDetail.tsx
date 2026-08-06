@@ -16,7 +16,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { useContactMessage } from "../hooks/use-contact-message";
 import { useContactMessageActions } from "../hooks/use-contact-message-actions";
 import type { ContactMessage } from "../types";
@@ -95,6 +95,7 @@ const MessageView = ({
 		}
 	}, [message.read]);
 
+	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
 			id: "reply",
@@ -165,7 +166,11 @@ const MessageView = ({
 						]}
 					/>
 				}
-				actions={<AppPageActions actions={actions} />}
+				actions={
+					<AppPageActions
+						actions={actions.filter((a) => canWrite || a.id !== "delete")}
+					/>
+				}
 			/>
 
 			<Card>

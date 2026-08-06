@@ -4,7 +4,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { pickupLocationColumns } from "../columns";
 
 // The operator's pickup locations (meeting points) as the standard
@@ -20,6 +20,8 @@ export const AppPickupLocationsList = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppDataTable
 			columns={columns}
@@ -29,7 +31,7 @@ export const AppPickupLocationsList = ({
 				icon: MapPin,
 				title: m.no_pickup_locations(),
 				description: m.no_pickup_locations_body(),
-				action: (
+				action: canWrite && (
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/pickup-locations/new"
 						params={{ tourOperatorId }}

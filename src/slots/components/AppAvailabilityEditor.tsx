@@ -15,6 +15,7 @@ import { AppError } from "#/shared/components/AppError";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { usePermissions } from "#/tour-operator";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
 import { AppSingleSlotForm } from "./AppSingleSlotForm";
 
@@ -34,6 +35,7 @@ export const AppAvailabilityEditor = ({
 		`/tour-operators/${tourOperatorId}/audiences`,
 	);
 	const [mode, setMode] = useState<"recurring" | "single">("recurring");
+	const { canWrite } = usePermissions();
 
 	const breadcrumb = (label?: string) => (
 		<AppBreadcrumb
@@ -88,12 +90,14 @@ export const AppAvailabilityEditor = ({
 							title={m.no_audiences_for_slots()}
 							description={m.no_audiences_for_slots_body()}
 							action={
-								<AppNewLink
-									to="/tour-operators/$tourOperatorId/audiences/new"
-									params={{ tourOperatorId }}
-								>
-									{m.new_audience()}
-								</AppNewLink>
+								canWrite && (
+									<AppNewLink
+										to="/tour-operators/$tourOperatorId/audiences/new"
+										params={{ tourOperatorId }}
+									>
+										{m.new_audience()}
+									</AppNewLink>
+								)
 							}
 						/>
 					) : (
