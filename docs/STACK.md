@@ -5,8 +5,13 @@ version we run, and the **authoritative documentation URL** to consult. Read thi
 before reaching for an API — we verify against these docs rather than assume. When a
 package is upgraded, update the version and re-check the doc link here.
 
-Versions are the **resolved** versions in the lockfile (2026-07-21). `@tanstack/*`
-packages pinned to `latest` in `package.json` are noted with their resolved version.
+Versions are the **resolved** versions in `node_modules` (2026-08-06). `@tanstack/*`
+packages pinned to `latest` in `package.json` are noted with their resolved version, so
+they drift on any reinstall — re-read them rather than trusting the number:
+
+```bash
+node -p "require('./node_modules/<pkg>/package.json').version"
+```
 
 ---
 
@@ -27,62 +32,66 @@ packages pinned to `latest` in `package.json` are noted with their resolved vers
 | Package | Version | Role | Docs |
 |---|---|---|---|
 | `@tanstack/react-query` | 5.100.14 | server state (the profile query, mutations) | https://tanstack.com/query/latest/docs/framework/react/overview |
-| `@tanstack/react-form` | 1.33.2 | form state (auth forms build on the base `useForm`) | https://tanstack.com/form/latest/docs/framework/react/quick-start |
-| `zod` | 4.3.6 | schema validation (form validators mirror backend VOs) — **v4** API | https://zod.dev |
-| `axios` | 1.14 | HTTP client (`lib/api.ts`, token + 401 refresh interceptors) | https://axios-http.com/docs/intro |
+| `@tanstack/react-form` | 1.33.2 | form state (every app form builds on the base `useForm`) | https://tanstack.com/form/latest/docs/framework/react/quick-start |
+| `@tanstack/react-table` | 8.21.3 | headless table — drives `AppDataTable` + `useDataTable` | https://tanstack.com/table/latest/docs/introduction |
+| `zod` | 4.4.3 | schema validation (form validators mirror backend VOs) — **v4** API | https://zod.dev |
+| `axios` | 1.18.1 | HTTP client (`lib/api.ts`, token + 401 refresh interceptors) | https://axios-http.com/docs/intro |
 
 ## Styling · UI primitives
 
 | Package | Version | Role | Docs |
 |---|---|---|---|
-| `tailwindcss` | 4.1 | utility CSS — **v4** (CSS-first config, no `tailwind.config.js`) | https://tailwindcss.com/docs |
+| `tailwindcss` | 4.3.3 | utility CSS — **v4** (CSS-first config, no `tailwind.config.js`) | https://tailwindcss.com/docs |
 | ↳ v4 upgrade notes | — | breaking changes vs v3 | https://tailwindcss.com/docs/upgrade-guide |
-| `@tailwindcss/vite` | 4.1 | the Vite plugin (how Tailwind is wired here) | https://tailwindcss.com/docs/installation/using-vite |
-| `shadcn` | 4.1 (CLI) | component registry; our style is **`radix-nova`** (see `components.json`) | https://ui.shadcn.com/docs |
+| `@tailwindcss/vite` | 4.3.3 | the Vite plugin (how Tailwind is wired here) | https://tailwindcss.com/docs/installation/using-vite |
+| `shadcn` | 4.13.1 (CLI) | component registry; our style is **`radix-nova`** (see `components.json`) | https://ui.shadcn.com/docs |
 | ↳ shadcn CLI | — | `shadcn add` — the ONLY sanctioned way to add/update `components/ui/*` | https://ui.shadcn.com/docs/cli |
-| `radix-ui` | 1.4 | headless primitives (unified package the shadcn components import) | https://www.radix-ui.com/primitives/docs/overview/introduction |
+| `radix-ui` | 1.6.4 | headless primitives (unified package the shadcn components import) | https://www.radix-ui.com/primitives/docs/overview/introduction |
+| `react-day-picker` | 10.0.1 | the date picker behind `components/ui/calendar` + `AppDateField` | https://daypicker.dev |
 | `lucide-react` | 0.545 | icon set | https://lucide.dev/guide/packages/lucide-react |
-| `sonner` | 2.0 | toasts (wrapped by `components/ui/sonner.tsx`) | https://sonner.emilkowal.ski |
-| `next-themes` | 0.4 | theme signal consumed by the sonner wrapper (our own `ThemeProvider` is custom) | https://github.com/pacocoursey/next-themes |
-| `class-variance-authority` | 0.7 | variant API (`cva`) used across the primitives | https://cva.style/docs |
-| `clsx` | 2.1 | class join (inside `cn()`) | https://github.com/lukeed/clsx |
-| `tailwind-merge` | 3.5 | Tailwind class de-dup (inside `cn()`) | https://github.com/dcastil/tailwind-merge |
-| `tw-animate-css` | 1.4 | animation utilities imported in `styles.css` | https://github.com/Wombosvideo/tw-animate-css |
-| `@fontsource-variable/geist` | 5.2 | the Geist variable font | https://fontsource.org/fonts/geist |
+| `sonner` | 2.0.7 | toasts (wrapped by `components/ui/sonner.tsx`) | https://sonner.emilkowal.ski |
+| `next-themes` | 0.4.6 | theme signal consumed by the sonner wrapper (our own `ThemeProvider` is custom) | https://github.com/pacocoursey/next-themes |
+| `class-variance-authority` | 0.7.1 | variant API (`cva`) used across the primitives | https://cva.style/docs |
+| `clsx` | 2.1.1 | class join (inside `cn()`) | https://github.com/lukeed/clsx |
+| `tailwind-merge` | 3.6.0 | Tailwind class de-dup (inside `cn()`) | https://github.com/dcastil/tailwind-merge |
+| `tw-animate-css` | 1.4.0 | animation utilities imported in `styles.css` | https://github.com/Wombosvideo/tw-animate-css |
+| `@fontsource-variable/geist` | 5.3.0 | the Geist variable font | https://fontsource.org/fonts/geist |
 
 ## Internationalization
 
 | Package | Version | Role | Docs |
 |---|---|---|---|
-| `@inlang/paraglide-js` | 2.15 | compiler-based i18n (`#/paraglide/*` output) — **v2** | https://inlang.com/m/gerre34r/library-inlang-paraglideJs |
-| `@inlang/cli` | 3.0 | `inlang machine translate` etc. | https://inlang.com/m/2qj2w8pu/app-inlang-cli |
+| `@inlang/paraglide-js` | 2.22.0 | compiler-based i18n (`#/paraglide/*` output) — **v2** | https://inlang.com/m/gerre34r/library-inlang-paraglideJs |
+| `@inlang/cli` | 3.2.0 | `inlang machine translate` etc. | https://inlang.com/m/2qj2w8pu/app-inlang-cli |
 
 ## Build · Test
 
 | Package | Version | Role | Docs |
 |---|---|---|---|
-| `vite` | 7.3 | bundler / dev server | https://vite.dev |
-| `@vitejs/plugin-react` | 5.x | React fast-refresh + JSX | https://github.com/vitejs/vite-plugin-react |
-| `vite-tsconfig-paths` | 5.1 | resolves the `#/*` path alias | https://github.com/aleclarson/vite-tsconfig-paths |
-| `typescript` | 5.9 | types | https://www.typescriptlang.org/docs/ |
-| `vitest` | 3.2 | test runner (jsdom) | https://vitest.dev |
-| `@testing-library/react` | 16.3 | component/hook rendering in tests | https://testing-library.com/docs/react-testing-library/intro/ |
-| `@testing-library/user-event` | 14.6 | user-interaction simulation | https://testing-library.com/docs/user-event/intro/ |
-| `@testing-library/jest-dom` | 6.9 | DOM matchers | https://github.com/testing-library/jest-dom |
-| `msw` | 2.13 | network mocking (`src/test/handlers.ts`) | https://mswjs.io/docs |
-| `jsdom` | 28 | the test DOM environment | https://github.com/jsdom/jsdom |
+| `vite` | 7.3.6 | bundler / dev server | https://vite.dev |
+| `@vitejs/plugin-react` | 5.2.0 | React fast-refresh + JSX | https://github.com/vitejs/vite-plugin-react |
+| `vite-tsconfig-paths` | 5.1.4 | resolves the `#/*` path alias | https://github.com/aleclarson/vite-tsconfig-paths |
+| `typescript` | 5.9.3 | types | https://www.typescriptlang.org/docs/ |
+| `vitest` | 3.2.7 | test runner (jsdom) | https://vitest.dev |
+| `@vitest/coverage-v8` | 3.2.7 | coverage provider (`vitest run --coverage`) | https://vitest.dev/guide/coverage |
+| `@testing-library/react` | 16.3.2 | component/hook rendering in tests | https://testing-library.com/docs/react-testing-library/intro/ |
+| `@testing-library/user-event` | 14.6.1 | user-interaction simulation | https://testing-library.com/docs/user-event/intro/ |
+| `@testing-library/jest-dom` | 6.10.0 | DOM matchers | https://github.com/testing-library/jest-dom |
+| `msw` | 2.15.0 | network mocking (`src/test/handlers.ts`) | https://mswjs.io/docs |
+| `jsdom` | 28.1.0 | the test DOM environment | https://github.com/jsdom/jsdom |
+| `@tanstack/react-devtools` + `react-router-devtools` + `devtools-vite` | 0.10.8 / 1.167.0 / 0.8.1 | the dev-only devtools panel mounted in `__root.tsx` | https://tanstack.com/devtools/latest/docs |
 
 ## Tooling · Quality gates
 
 | Package | Version | Role | Docs |
 |---|---|---|---|
-| `@biomejs/biome` | 2.4 | lint + format (NOT a CI gate here — local hygiene) | https://biomejs.dev |
+| `@biomejs/biome` | 2.4.5 | lint + format. Run `pnpm check` before a commit; **CI does not run it** (`.github/workflows/deploy.yml` runs typecheck · depcheck · test only) | https://biomejs.dev |
 | ↳ config reference | — | `biome.json` options | https://biomejs.dev/reference/configuration/ |
 | ↳ lint rules | — | rule names for `biome-ignore` | https://biomejs.dev/linter/rules/ |
-| `dependency-cruiser` | 17.3 | module-boundary enforcement (`.dependency-cruiser.cjs`) | https://github.com/sverweij/dependency-cruiser |
+| `dependency-cruiser` | 17.4.3 | module-boundary enforcement (`.dependency-cruiser.cjs`) | https://github.com/sverweij/dependency-cruiser |
 | ↳ rules reference | — | the rule schema our config uses | https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md |
 
-## Storybook (installed, no stories yet)
+## Storybook — the living component inventory (122 stories)
 
 | Package | Version | Role | Docs |
 |---|---|---|---|

@@ -111,32 +111,54 @@ never hardcode a color.** Use `bg-background`, `text-foreground`, `text-muted-fo
 - **Spacing from Tailwind's scale — no magic pixel values.** Use `gap-*`/`p-*`/`m-*`
   (and layout via flex/grid `gap`), not arbitrary `p-[13px]`.
 
-**Page width — two conventions.** A page container is one of:
-  - **Table / list page** (an `AppDataTable`): **full width** — `flex flex-col gap-6 p-6`,
-    no `mx-auto`/`max-w-*`. A table wants the room.
-  - **Single-resource page** (detail, form, settings sub-page): **centered and narrow** —
-    `mx-auto flex w-full max-w-3xl flex-col gap-8 p-6` (a wide form may use `max-w-4xl`).
+**Page width — pick a variant, never a class string.** `AppPageShell` is the only home of
+the page rhythm; a route wraps its body in one and passes a `variant`:
+  - **`list`** — full width (`gap-6 p-6`). A table owns its horizontal space.
+  - **`detail`** — centered `max-w-3xl`, `gap-8`. Single-resource card stacks breathe wider.
+  - **`form`** — centered `max-w-3xl`, `gap-6`. Create / edit / translations / settings forms.
   Pick by what the page holds, not where it lives (a table in the settings space is still
-  a table page).
+  a `list`). Don't hand-write the container classes — a copied string once shipped `gap-6`
+  where a detail page wanted `gap-8`, which is why the variants exist.
 
 ---
 
 ## 5. Forms (the current pattern)
 
 Built on the **base `@tanstack/react-form` `useForm`** + `zod` validators + shadcn
-`Field`/`Input`, composed as:
+`Field`/`Input`. Every app form has the same skeleton — mirror it rather than inventing a
+second shape:
 
-- `AppField` — one field: shadcn `Field` + `Input` bound to a TanStack Form field, errors
-  below. (Auth-local today; promote to `shared/` on the second feature that needs a form.)
-- `AppAuthFormWrapper` — the auth-page shell (logo, card, inline error banner, submit).
+```tsx
+<Card><CardContent>
+  <form onSubmit={…} className="space-y-4">
+    {errorMessage && <AppAlert title={m.error()} description={errorMessage} />}
+    <FieldGroup>
+      <form.Field name="…">{(field) => <AppField field={field} label={…} required />}</form.Field>
+    </FieldGroup>
+    <AppFormActions isPending={…} submitLabel={…} />
+  </form>
+</CardContent></Card>
+```
+
+- **Field renderers live in `shared/components/`**, one per input kind, each taking a
+  TanStack Form `field` plus `label`/`description`/`required` and rendering the errors
+  below: `AppField` (text/email/password) · `AppTextareaField` · `AppSelectField` ·
+  `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
+  `AppPasswordField` · `AppArrayInput`. (`AppNumericInput` is the bare numeric control the
+  number/price fields build on — not a form field itself.)
+- `AppFormActions` — the footer: right-aligned submit with the pending spinner, plus an
+  optional `secondary` slot (Cancel link, Clear-translation button).
+- `AppAuthFormWrapper` — the auth-page shell (logo, card, inline error banner, **full-width**
+  submit). Auth and onboarding are a different layout and skip `AppFormActions`.
 - `use-<x>-form.ts` — the hook: `useForm` + a `useMutation`, mapping server errors to an
   inline `errorMessage` and navigating on success.
 - `validators/<x>.ts` — a zod schema that **mirrors the backend value objects** (so a bad
   field fails client-side with a precise message instead of an opaque 422).
 
-> The archive's richer app-wide form framework (`AppFormWrapper` + a typed-input factory)
-> is **deferred** — reintroduce it (in `shared/`) only when a feature needs its breadth
-> (R2). Until then, forms compose `AppField` directly.
+> The archive's richer form *framework* (`AppFormWrapper` + a typed-input factory whose
+> inputs hang off `form.AppField`) is still **deferred** and has not been re-earned:
+> forms compose the field renderers directly. Reintroduce it only when a feature needs
+> its breadth (R2).
 
 ---
 
@@ -172,36 +194,64 @@ A ratchet enforcing story-per-`App*` is a planned follow-up (the archive shipped
 
 ## 8. Current inventory
 
-### `components/ui/` — shadcn primitives (radix-nova), 18 — vendored, no stories
+Counts are a snapshot; **Storybook is the authoritative browsable catalog** (§6) and the
+filesystem is the authoritative list. Regenerate the numbers rather than trusting them:
 
-`alert` · `avatar` · `badge` · `button` · `card` · `dialog` · `dropdown-menu` · `field` ·
-`input` · `label` · `select` · `separator` · `skeleton` · `sonner` · `spinner` · `table` ·
+```bash
+ls src/components/ui | wc -l                                   # primitives
+find src -name 'App*.tsx' -not -name '*.stories.tsx' | wc -l   # App* components
+find src -name '*.stories.tsx' | wc -l                         # stories
+```
+
+### `components/ui/` — shadcn primitives (radix-nova), 24 — vendored, no stories
+
+`alert` · `avatar` · `badge` · `breadcrumb` · `button` · `calendar` · `card` · `checkbox` ·
+`dialog` · `dropdown-menu` · `field` · `input` · `label` · `popover` · `select` ·
+`separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 4 (all in `auth/`, each with a story)
+### `App*` components — 126, of which 122 ship a story
 
-| Component | Location | Role | Story |
-|---|---|---|---|
-| `AppField` | `auth/components/` | one form field (Field + Input + errors) | ✅ |
-| `AppAuthFormWrapper` | `auth/components/` | auth-page shell (logo, card, error, submit) | ✅ |
-| `AppLoginForm` | `auth/components/` | the login form | ✅ |
-| `AppRegisterForm` | `auth/components/` | the register form | ✅ |
+**`shared/` — 36.** The cross-cutting design layer.
+- *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
+  `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
+- *States:* `AppResourceView` (loading / 404 / error around a query) · `AppNotFound` ·
+  `AppError` · `AppEmptyState` · `AppAlert` · `AppBadge`
+- *Table:* `AppDataTable` · `AppDataTableHeader` · `AppTextFilter` · `AppSetFilter` ·
+  `AppAsyncSetFilter` · `AppFilterInput`
+- *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
+  `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
+  `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormActions`
+- *Detail / i18n / misc:* `AppDetailField` · `AppConfirmDialog` · `AppLocaleTabs` ·
+  `AppNameTranslations` · `AppImageDropzone`
+- Not counted above (not `App*`, so no story owed): `useDataTable` — the table hook
+  `AppDataTable` builds on — and `RequiredMark`, a one-glyph label affordance.
+
+**Modules — 90.** Each owns its list / detail / form / edit set:
+`auth` 13 · `tour-operator` 9 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
+`metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 · `media` 4 ·
+`pickup-locations` 4 · `contact` 2.
+
+**The four without a story**, all data-table internals in `shared/`: `AppDataTable` ·
+`AppDataTableHeader` · `AppAsyncSetFilter` · `AppFilterInput`. They are the §6 debt the
+planned story-per-`App*` ratchet would catch — write the story when you next touch one.
 
 ### Providers — 2
 
 `AuthProvider` (`auth/`) · `ThemeProvider` (`shared/theme.tsx`)
 
-### Route / page components — 6 (thin, in `routes/`)
+### Routes — 67 files under `routes/`
 
-`RootDocument` (shell) · `AppLayout` (auth gate) · `Home` (authenticated landing) ·
-`AuthLayout` · `LoginPage` · `RegisterPage`
+`__root.tsx` (shell + pre-paint theme guard) → `(app)/route.tsx` (auth gate) →
+`(app)/tour-operators/$tourOperatorId/route.tsx` (workspace shell; `/settings/**` swaps
+the operator sidebar for the settings rail). Everything else is a thin page.
 
 ### Not yet built — build to the shape above when a feature needs them
 
-`AppBreadcrumb` · `AppDataTable` (+ `useDataTable`) · `AppResourceDetail` · `AppSaveBar` ·
-`AppStatusBadge` · `AppEmptyState` · `AppConfirmDialog` · `AppModal` · the shared form
-framework. (These existed in the archive; re-earn each on first real use, don't port
-speculatively.)
+`AppSaveBar` · `AppModal` · the shared form framework (§5). These existed in the archive;
+re-earn each on first real use, don't port speculatively. (`AppStatusBadge` is **not**
+coming back as its own component — `AppBadge` is the seam, and semantic tones get added
+there.)
 
 > **Deferred conventions — consult the archive when you build the slice.** The detailed
 > shapes for forms (full-width `AppFormWrapper` + typed-input factory + 2-col grid, *never
@@ -215,20 +265,32 @@ speculatively.)
 ### The operator app shell grows with features
 
 The operator shell (`tour-operator/components/AppTourOperatorSidebar.tsx` + the
-`$tourOperatorId` layout route) is intentionally minimal and **converges to the archive as
-features land** — don't build shell chrome ahead of the pages it points at. When a feature
-slice adds an operator page, it also:
+`$tourOperatorId` layout route) **grows with the pages it points at** — don't build shell
+chrome ahead of them. When a feature slice adds an operator page, it also adds its **nav
+leaf** to `tour-operator/nav-items.ts` (icon + `to`/`params`), in the right group.
 
-1. adds its **nav leaf** to `tour-operator/nav-items.ts` (icon + `to`/`params`);
-2. later adds its **settings section** (when the settings space exists) and its **⌘K
-   command-palette destination** (when the palette exists).
+**What exists.** `nav-items.ts` is the catalog: Dashboard, then three labeled groups —
+**Catalog** (experiences, availability, audiences, pickup locations) · **Operations**
+(inbox, activity) · **Content** (pages, media, metafields, metaobjects, menus) — with the
+**Settings** leaf pinned in the sidebar footer. `/settings/**` is its own space (Shopify's
+model): the layout route swaps `AppTourOperatorSidebar` for `AppSettingsSidebar`, whose
+sections come from `settingsSectionItems` (General · Members · Invitations · Languages ·
+Translations · Account). Pages open with `AppPageHeader`, wrapped in an `AppPageShell`
+variant (§4), and nested pages carry an `AppBreadcrumb`.
 
-Deferred shell subsystems, each re-earned from the archive's `tour-operator/` with its
-feature: grouped/collapsible nav · `usePermissions` role-gating (hide-don't-disable) · the
-⌘K command palette · the second "settings space" sidebar + `settings-sections` catalog + hub
-· footer `AppLanguagePicker` (needs the ui-languages feature) · per-page `AppBreadcrumb`
-(joins `AppPageHeader` on the first nested page). Like the archive, there is **no desktop top
-bar** — the sidebar is always visible (toggle via its rail or Ctrl/Cmd+B); a mobile-only strip
-holds the `SidebarTrigger`. The footer user-menu (sign-out + theme toggle) has been **removed**;
-those actions are unhoused pending their real home (an account menu / settings). Pages open with
-`AppPageHeader` and use the `mx-auto w-full max-w-*` centered container.
+**Two settings sections gate on role**, because their reads are member-visible while their
+writes are ADMIN+: Languages and Translations compute `canManage` from
+`useCurrentTourOperator().role` and render a read-only summary instead of a form that would
+403 on save. The per-resource translation editors (experience, page) deliberately do *not* —
+they show the form to everyone and surface the 403. Follow the settings split inside
+`/settings/**`.
+
+**Still deferred**, each re-earned with the feature that needs it: collapsible nav groups ·
+`usePermissions` role-gating (hide-don't-disable — today `AppMemberDetail` branches on the
+caller's role inline, the only site that needs it) · the ⌘K command palette · a grouped
+**settings hub** (`/settings` is a redirect to General) · a footer `AppLanguagePicker`
+(admin-UI language lives in Settings → Account as `AppLanguageCard`). There is **no desktop
+top bar** — the sidebar is always visible (toggle via its rail or Ctrl/Cmd+B); a mobile-only
+strip holds the `SidebarTrigger`. **Sign-out is still unhoused**: the only trigger is on the
+onboarding screen (`AppTourOperatorForm`), so a signed-in operator inside the app cannot
+sign out. It needs an account menu — pick that home when the next account-shaped slice lands.

@@ -75,9 +75,10 @@ The backend must be running on `:8080` (see `VITE_API_URL` in `.env`).
 src/
   routes/            file-based routes (TanStack Router discovers these). __root.tsx = shell.
   components/ui/     shadcn primitives — must not import feature modules.
-  shared/            cross-feature building blocks (theme.tsx today). No feature-module imports.
+  shared/            the App* design layer (page frame, table, form fields, states) + theme.tsx.
+                     No feature-module imports. See docs/COMPONENTS.md §8.
   lib/               framework-agnostic helpers: api client, tokens, query helpers, cn().
-  hooks/             app-wide hooks (use-app-toast).
+  hooks/             app-wide hooks (use-app-toast, use-all-pages, use-mobile).
   test/              MSW server + handlers + renderWithProviders.
   paraglide/         GENERATED i18n output (gitignored) — recompile after pulling.
   <feature>/         a feature module (auth, tour-operator, experiences, …) — added one at a time.
