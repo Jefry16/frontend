@@ -16,7 +16,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { formatBytes, isImage, mimeLabel } from "../format";
 import { useMedia } from "../hooks/use-media";
 import { useMediaActions } from "../hooks/use-media-actions";
@@ -48,6 +48,7 @@ export const AppMediaDetail = ({
 	);
 
 	// Delete is independent of the loaded record, so it's built once here.
+	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
 			id: "delete",
@@ -104,7 +105,7 @@ export const AppMediaDetail = ({
 				<MediaFacts
 					media={media}
 					tourOperatorId={tourOperatorId}
-					actions={actions}
+					actions={canWrite ? actions : []}
 				/>
 			)}
 		</AppResourceView>

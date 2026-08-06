@@ -16,7 +16,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 import { usePickupLocationActions } from "../hooks/use-pickup-location-actions";
@@ -47,6 +47,8 @@ export const AppPickupLocationDetail = ({
 			{m.back_to_pickup_locations()}
 		</AppBackLink>
 	);
+
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppResourceView
@@ -127,7 +129,7 @@ export const AppPickupLocationDetail = ({
 									]}
 								/>
 							}
-							actions={<AppPageActions actions={actions} />}
+							actions={<AppPageActions actions={canWrite ? actions : []} />}
 						/>
 						<Card>
 							<CardContent>

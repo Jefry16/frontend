@@ -13,7 +13,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { useAudience } from "../hooks/use-audience";
 
 // Audience detail: the tier's facts + an Edit action. Owns its fetch
@@ -38,6 +38,8 @@ export const AppAudienceDetail = ({
 			{m.back_to_audiences()}
 		</AppBackLink>
 	);
+
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppResourceView
@@ -101,7 +103,13 @@ export const AppAudienceDetail = ({
 									]}
 								/>
 							}
-							actions={<AppPageActions actions={actions} />}
+							actions={
+								<AppPageActions
+									actions={actions.filter(
+										(a) => canWrite || a.id === "translations",
+									)}
+								/>
+							}
 						/>
 						<Card>
 							<CardContent>

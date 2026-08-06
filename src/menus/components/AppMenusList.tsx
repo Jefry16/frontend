@@ -4,7 +4,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { menuColumns } from "../columns";
 
 // The operator's navigation menus as the standard cursor table
@@ -21,6 +21,8 @@ export const AppMenusList = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppDataTable
 			columns={columns}
@@ -30,7 +32,7 @@ export const AppMenusList = ({
 				icon: ListTree,
 				title: m.no_menus(),
 				description: m.no_menus_body(),
-				action: (
+				action: canWrite && (
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/content/menus/new"
 						params={{ tourOperatorId }}

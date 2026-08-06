@@ -19,7 +19,7 @@ import {
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { ownerTypeLabel, typeLabel } from "../format";
 import { useMetafieldDefinition } from "../hooks/use-metafield-definition";
 import { useMetafieldDefinitionActions } from "../hooks/use-metafield-definition-actions";
@@ -58,6 +58,8 @@ export const AppMetafieldDefinitionDetail = ({
 			{m.back_to_metafields()}
 		</AppBackLink>
 	);
+
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppResourceView
@@ -138,7 +140,7 @@ export const AppMetafieldDefinitionDetail = ({
 									]}
 								/>
 							}
-							actions={<AppPageActions actions={actions} />}
+							actions={<AppPageActions actions={canWrite ? actions : []} />}
 						/>
 						<Card>
 							<CardContent>

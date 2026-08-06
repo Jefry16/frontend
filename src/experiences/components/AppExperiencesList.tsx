@@ -4,7 +4,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { experienceColumns } from "../columns";
 
 // The operator's experiences as the standard cursor-paginated table: thumbnail,
@@ -21,6 +21,8 @@ export const AppExperiencesList = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppDataTable
 			columns={columns}
@@ -30,7 +32,7 @@ export const AppExperiencesList = ({
 				icon: Compass,
 				title: m.no_experiences(),
 				description: m.no_experiences_body(),
-				action: (
+				action: canWrite && (
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/experiences/new"
 						params={{ tourOperatorId }}

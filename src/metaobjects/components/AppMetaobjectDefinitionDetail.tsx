@@ -23,7 +23,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { metaobjectEntryColumns } from "../columns";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
 import { useMetaobjectDefinitionActions } from "../hooks/use-metaobject-definition-actions";
@@ -110,6 +110,7 @@ const DefinitionView = ({
 		[tourOperatorId, formatDate],
 	);
 
+	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
 			id: "edit",
@@ -168,7 +169,7 @@ const DefinitionView = ({
 						]}
 					/>
 				}
-				actions={<AppPageActions actions={actions} />}
+				actions={<AppPageActions actions={canWrite ? actions : []} />}
 			/>
 
 			<Card>

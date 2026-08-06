@@ -22,7 +22,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { formatDuration, statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";
@@ -68,6 +68,8 @@ export const AppExperienceDetail = ({
 			{m.back_to_experiences()}
 		</AppBackLink>
 	);
+
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppResourceView
@@ -150,7 +152,7 @@ export const AppExperienceDetail = ({
 					<ExperienceView
 						experience={experience}
 						tourOperatorId={tourOperatorId}
-						actions={actions}
+						actions={actions.filter((a) => canWrite || a.id === "translations")}
 					/>
 				);
 			}}
