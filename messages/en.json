@@ -187,6 +187,7 @@
 	"invitations": "Invitations",
 	"languages": "Languages",
 	"languages_description": "The languages your storefront content is available in.",
+	"no_permission_body": "You don't have permission to do this. Ask an admin of this operator if you need access.",
 	"operator_translations_description": "Translate your shop's own text for each supported language. An empty field falls back to the default language.",
 	"slogan": "Slogan",
 	"slogan_hint": "A short tagline shown on your storefront (max 80).",

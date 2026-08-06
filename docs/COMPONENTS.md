@@ -233,13 +233,13 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 127, of which 123 ship a story
+### `App*` components — 128, of which 124 ship a story
 
-**`shared/` — 37.** The cross-cutting design layer.
+**`shared/` — 38.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a query) · `AppNotFound` ·
-  `AppError` · `AppEmptyState` · `AppAlert` · `AppBadge`
+  `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` · `AppBadge`
 - *Table:* `AppDataTable` · `AppDataTableHeader` · `AppTextFilter` · `AppSetFilter` ·
   `AppAsyncSetFilter` · `AppFilterInput`
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
@@ -311,6 +311,9 @@ gates the affordance at its call site:
   returns `null` for an empty array. Where a page mixes tiers, filter instead of replacing:
   `actions.filter((a) => canWrite || a.id === "translations")`.
 - **A settings form:** render a read-only summary instead (Languages, Translations).
+- **A `/new` or `/edit` page:** `canWrite ? <AppXForm …/> : <AppNotPermitted />`, keeping the
+  page header so the visitor knows where they are and can navigate away. Hiding the button
+  that leads somewhere never stopped a bookmark or a typed URL.
 
 Two rules keep it honest. **It is cosmetic** — the backend re-checks every write, so a
 hidden button is a courtesy, never a permission; don't let a reviewer read it as the
