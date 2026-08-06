@@ -6,8 +6,8 @@ import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppLink } from "#/shared/components/AppLink";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
+import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { localeLabel, useOperatorLocales } from "#/tour-operator";
@@ -111,21 +111,10 @@ export const AppExperienceTranslations = ({
 							<Spinner />
 						</div>
 					) : translatable.length === 0 ? (
-						<Card>
-							<CardContent className="flex flex-col items-center gap-2 py-10 text-center">
-								<Languages className="size-8 text-muted-foreground" />
-								<p className="text-sm text-muted-foreground">
-									{m.translations_no_languages()}
-								</p>
-								<AppLink
-									to="/tour-operators/$tourOperatorId/settings/languages"
-									params={{ tourOperatorId }}
-									className="text-sm font-medium text-primary hover:underline"
-								>
-									{m.manage_languages()}
-								</AppLink>
-							</CardContent>
-						</Card>
+						<AppNoTranslatableLocales
+							tourOperatorId={tourOperatorId}
+							message={m.translations_no_languages()}
+						/>
 					) : (
 						<div className="flex flex-col gap-4">
 							<AppLocaleTabs

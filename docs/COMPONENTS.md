@@ -158,7 +158,9 @@ second shape:
 **Per-locale translation editors** (experience · page · operator, plus the single-field
 `AppNameTranslations`) are one shape, and it is worth naming because it drifted once: an
 `AppLocaleTabs` strip over a form keyed by locale, whose fields are all optional and whose
-empty values collapse to `null` so the storefront falls back to canonical. Inside the form:
+empty values collapse to `null` so the storefront falls back to canonical. An operator with
+one configured language gets `AppNoTranslatableLocales` instead — there is no locale to
+overlay onto. Inside the form:
 the fallback rule renders as **`<AppAlert variant="info" title={m.translation()}>` above the
 error alert** — not as a raw `<p>`, which is for per-field hints — a module-local
 `hasTranslation(t)` decides whether *Clear translation* shows, and the footer is
@@ -220,9 +222,9 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 126, of which 122 ship a story
+### `App*` components — 127, of which 123 ship a story
 
-**`shared/` — 36.** The cross-cutting design layer.
+**`shared/` — 37.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a query) · `AppNotFound` ·
@@ -233,7 +235,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
   `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormActions`
 - *Detail / i18n / misc:* `AppDetailField` · `AppConfirmDialog` · `AppLocaleTabs` ·
-  `AppNameTranslations` · `AppImageDropzone`
+  `AppNameTranslations` · `AppNoTranslatableLocales` · `AppImageDropzone`
 - Not counted above (not `App*`, so no story owed): `useDataTable` — the table hook
   `AppDataTable` builds on — and `RequiredMark`, a one-glyph label affordance.
 

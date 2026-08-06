@@ -1,12 +1,11 @@
-import { Languages } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppLink } from "#/shared/components/AppLink";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
+import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { useOperatorLocales } from "../hooks/use-operator-locales";
 import {
 	useOperatorTranslation,
@@ -60,23 +59,7 @@ export const AppOperatorTranslations = ({
 	}
 
 	if (translatable.length === 0) {
-		return (
-			<Card>
-				<CardContent className="flex flex-col items-center gap-2 py-10 text-center">
-					<Languages className="size-8 text-muted-foreground" />
-					<p className="text-sm text-muted-foreground">
-						{m.translations_no_languages_generic()}
-					</p>
-					<AppLink
-						to="/tour-operators/$tourOperatorId/settings/languages"
-						params={{ tourOperatorId }}
-						className="text-sm font-medium text-primary hover:underline"
-					>
-						{m.manage_languages()}
-					</AppLink>
-				</CardContent>
-			</Card>
-		);
+		return <AppNoTranslatableLocales tourOperatorId={tourOperatorId} />;
 	}
 
 	return (
