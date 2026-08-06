@@ -155,6 +155,16 @@ second shape:
 - `validators/<x>.ts` — a zod schema that **mirrors the backend value objects** (so a bad
   field fails client-side with a precise message instead of an opaque 422).
 
+**Per-locale translation editors** (experience · page · operator, plus the single-field
+`AppNameTranslations`) are one shape, and it is worth naming because it drifted once: an
+`AppLocaleTabs` strip over a form keyed by locale, whose fields are all optional and whose
+empty values collapse to `null` so the storefront falls back to canonical. Inside the form:
+the fallback rule renders as **`<AppAlert variant="info" title={m.translation()}>` above the
+error alert** — not as a raw `<p>`, which is for per-field hints — a module-local
+`hasTranslation(t)` decides whether *Clear translation* shows, and the footer is
+`AppFormActions` with Clear in its `secondary` slot. **The `PUT` is a full replace
+everywhere**, so the form always submits every field.
+
 > The archive's richer form *framework* (`AppFormWrapper` + a typed-input factory whose
 > inputs hang off `form.AppField`) is still **deferred** and has not been re-earned:
 > forms compose the field renderers directly. Reintroduce it only when a feature needs

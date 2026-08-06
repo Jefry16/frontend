@@ -46,12 +46,14 @@ export const AppPageTranslationForm = ({
 					}}
 					className="space-y-4"
 				>
+					<AppAlert
+						variant="info"
+						title={m.translation()}
+						description={m.translation_fallback_help()}
+					/>
 					{errorMessage && (
 						<AppAlert title={m.error()} description={errorMessage} />
 					)}
-					<p className="text-sm text-muted-foreground">
-						{m.translation_fallback_help()}
-					</p>
 					<FieldGroup>
 						<form.Field name="title">
 							{(field) => (
