@@ -10,7 +10,7 @@ import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { useOperatorTranslationForm } from "../hooks/use-operator-translation-form";
 import type { OperatorTranslation } from "../types";
 
-const hasOperatorTranslation = (t: OperatorTranslation) =>
+const hasTranslation = (t: OperatorTranslation) =>
 	t.slogan !== null ||
 	t.shortDescription !== null ||
 	t.seoTitle !== null ||
@@ -48,12 +48,14 @@ export const AppOperatorTranslationForm = ({
 					}}
 					className="space-y-4"
 				>
+					<AppAlert
+						variant="info"
+						title={m.translation()}
+						description={m.translation_fallback_help()}
+					/>
 					{errorMessage && (
 						<AppAlert title={m.error()} description={errorMessage} />
 					)}
-					<p className="text-sm text-muted-foreground">
-						{m.translation_fallback_help()}
-					</p>
 					<FieldGroup>
 						<form.Field name="slogan">
 							{(field) => (
@@ -109,7 +111,7 @@ export const AppOperatorTranslationForm = ({
 						disabled={isClearing}
 						submitLabel={m.save_translation()}
 						secondary={
-							hasOperatorTranslation(translation) && (
+							hasTranslation(translation) && (
 								<Button
 									type="button"
 									variant="outline"
