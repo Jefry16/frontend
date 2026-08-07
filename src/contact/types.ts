@@ -13,8 +13,9 @@ export interface ContactMessageListItem {
 	createdAt: string;
 }
 
-export interface ContactMessage extends Omit<ContactMessageListItem, "read"> {
+// The detail read: the list row plus the verbatim body and when it was read.
+export interface ContactMessage extends ContactMessageListItem {
 	content: string;
-	read: boolean;
+	/** When `read` flipped true; null while unread. */
 	readAt: string | null;
 }
