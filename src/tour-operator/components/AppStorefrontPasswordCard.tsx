@@ -15,6 +15,7 @@ import { Textarea } from "#/components/ui/textarea";
 import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import {
 	type StorefrontPasswordSettings,
@@ -28,8 +29,11 @@ import {
 // it's the gate the operator hands out, not a credential.
 export const AppStorefrontPasswordCard = ({
 	tourOperatorId,
+	canWrite,
 }: {
 	tourOperatorId: string;
+	/** ADMIN+. False shows the settings read-only — the read is member-level. */
+	canWrite: boolean;
 }) => {
 	const query = useStorefrontPassword(tourOperatorId);
 
@@ -48,11 +52,13 @@ export const AppStorefrontPasswordCard = ({
 					</div>
 				) : query.isError ? (
 					<AppAlert title={m.error()} description={m.error()} />
-				) : (
+				) : canWrite ? (
 					<StoreAccessForm
 						tourOperatorId={tourOperatorId}
 						settings={query.data}
 					/>
+				) : (
+					<StoreAccessSummary settings={query.data} />
 				)}
 			</CardContent>
 		</Card>
@@ -141,5 +147,25 @@ const StoreAccessForm = ({
 				submitLabel={m.save_changes()}
 			/>
 		</form>
+	);
+};
+
+// Read-only face. The password itself stays visible — it is the gate the
+// operator hands out, not a credential (the card's own premise).
+const StoreAccessSummary = ({
+	settings,
+}: {
+	settings: StorefrontPasswordSettings;
+}) => {
+	const none = <span className="text-muted-foreground">{m.not_set()}</span>;
+	return (
+		<div className="flex flex-col gap-6">
+			<AppDetailField label={m.store_access()}>
+				{settings.enabled ? m.store_access_on() : m.store_access_off()}
+			</AppDetailField>
+			<AppDetailField label={m.visitor_message()}>
+				{settings.message ?? none}
+			</AppDetailField>
+		</div>
 	);
 };

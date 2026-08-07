@@ -17,7 +17,7 @@ const qc = storyQueryClient((qc) =>
 const meta = {
 	title: "TourOperator/AppStorefrontPasswordCard",
 	component: AppStorefrontPasswordCard,
-	args: { tourOperatorId: OP },
+	args: { tourOperatorId: OP, canWrite: true },
 	decorators: [
 		(Story) => (
 			<QueryClientProvider client={qc}>
@@ -33,3 +33,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/** A STAFF member: the same settings, read-only. */
+export const ReadOnly: Story = {
+	args: { canWrite: false },
+};

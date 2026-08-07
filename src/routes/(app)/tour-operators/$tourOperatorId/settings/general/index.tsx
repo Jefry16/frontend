@@ -5,8 +5,10 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 import {
 	AppOperatorLogoCard,
+	AppOperatorSeoCard,
 	AppStorefrontPasswordCard,
 	useCurrentTourOperator,
+	usePermissions,
 } from "#/tour-operator";
 
 export const Route = createFileRoute(
@@ -15,11 +17,14 @@ export const Route = createFileRoute(
 	component: GeneralSettingsPage,
 });
 
-// General operator settings. Today it holds the operator logo; more general
-// settings join here as they land. Single-resource page → centered at max-w-3xl.
+// General operator settings: logo, store access and the shop's SEO defaults.
+// Every card here writes through an ADMIN+ endpoint while its read is
+// member-visible, so each takes `canWrite` and shows a read-only face to STAFF.
+// Single-resource page → centered at max-w-3xl.
 function GeneralSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const operator = useCurrentTourOperator();
+	const { canWrite } = usePermissions();
 	return (
 		<AppPageShell variant="form">
 			<AppPageHeader
@@ -42,8 +47,16 @@ function GeneralSettingsPage() {
 					<AppOperatorLogoCard
 						tourOperatorId={operator.id}
 						logoUrl={operator.logoUrl}
+						canWrite={canWrite}
 					/>
-					<AppStorefrontPasswordCard tourOperatorId={operator.id} />
+					<AppOperatorSeoCard
+						tourOperatorId={operator.id}
+						canWrite={canWrite}
+					/>
+					<AppStorefrontPasswordCard
+						tourOperatorId={operator.id}
+						canWrite={canWrite}
+					/>
 				</>
 			)}
 		</AppPageShell>
