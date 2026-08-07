@@ -234,7 +234,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 129, of which 125 ship a story
+### `App*` components — 130, of which 126 ship a story
 
 **`shared/` — 39.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
@@ -252,8 +252,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 - Not counted above (not `App*`, so no story owed): `useDataTable` — the table hook
   `AppDataTable` builds on — and `RequiredMark`, a one-glyph label affordance.
 
-**Modules — 90.** Each owns its list / detail / form / edit set:
-`auth` 13 · `tour-operator` 9 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
+**Modules — 91.** Each owns its list / detail / form / edit set:
+`auth` 13 · `tour-operator` 10 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
 `metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 · `media` 4 ·
 `pickup-locations` 4 · `contact` 2.
 
@@ -318,7 +318,9 @@ gates the affordance at its call site:
   than calling the hook: `AppNameTranslations` lives in `shared/` and cannot call it at all,
   and a prop keeps every editor storyable in both states instead of throwing on a missing
   `AuthProvider`.
-- **A settings form:** render a read-only summary instead (Languages).
+- **A settings form:** render a read-only summary instead — Settings → General's three
+  cards and Languages all do this, since each writes through an ADMIN+ endpoint whose read
+  is member-visible.
 - **A `/new` or `/edit` page:** `canWrite ? <AppXForm …/> : <AppNotPermitted />`, keeping the
   page header so the visitor knows where they are and can navigate away. Hiding the button
   that leads somewhere never stopped a bookmark or a typed URL.

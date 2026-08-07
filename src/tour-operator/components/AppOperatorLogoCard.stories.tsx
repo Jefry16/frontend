@@ -27,7 +27,7 @@ qc.setQueryData(queryKeys.authProfile, USER);
 const meta = {
 	title: "TourOperator/AppOperatorLogoCard",
 	component: AppOperatorLogoCard,
-	args: { tourOperatorId: "op-1" },
+	args: { tourOperatorId: "op-1", canWrite: true },
 	decorators: [
 		(Story) => (
 			<QueryClientProvider client={qc}>
@@ -46,3 +46,8 @@ type Story = StoryObj<typeof meta>;
 
 export const NoLogo: Story = { args: { logoUrl: null } };
 export const WithLogo: Story = { args: { logoUrl: SAMPLE } };
+
+/** A STAFF member: the same settings, read-only. */
+export const ReadOnly: Story = {
+	args: { logoUrl: SAMPLE, canWrite: false },
+};

@@ -18,7 +18,7 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## Coverage: 123 / 125 consumed
+## Coverage: 125 / 125 consumed
 
 | Context | Endpoints | Consumed | Open |
 |---|---:|---:|---:|
@@ -27,7 +27,7 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 | `reference` — timezones · currencies · languages | 3 | 3 | — |
 | `touroperator` — create · locales · logo · members · invitations · accept · menus · storefront-password | 24 | 24 | — |
 | `touroperator` — translations | 4 | 4 | — |
-| `touroperator` — **SEO** | 2 | 0 | **2** |
+| `touroperator` — SEO | 2 | 2 | — |
 | `audience` — CRUD + translations | 8 | 8 | — |
 | `experience` — CRUD/publish + translations + slots | 16 | 16 | — |
 | `pickup` | 5 | 5 | — |
@@ -36,7 +36,7 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
 | `metafield` — definitions · owner values · metaobjects | 26 | 26 | — |
 | `contact` | 5 | 5 | — |
-| **Total** | **125** | **123** | **2** |
+| **Total** | **125** | **125** | **—** |
 
 Owner-scoped metafield values are one generic path in
 `metafields/hooks/use-owner-metafields.ts` — both owner types (`experiences/{id}/metafields`
@@ -72,36 +72,21 @@ that merge.
 
 ---
 
-## ⬜ Not yet used (2)
+## ✅ Nothing left
 
-### `touroperator` — shop SEO
-- [ ] `GET /tour-operators/{id}/seo` — `seoTitle` / `seoDescription` / `ogImageMediaId` (member)
-- [ ] `PUT /tour-operators/{id}/seo` — replace them (ADMIN+; `ogImageMediaId` validated
-      against the operator's own media library)
+Every admin endpoint the backend exposes now has a frontend consumer. The last two —
+`GET`/`PUT /tour-operators/{id}/seo` — landed as **Settings → General → Search engine
+listing**, the canonical text that Settings → Translations overlays per locale.
 
-This is the **canonical** half of what Settings → Translations now overlays: the translation
-editor writes per-locale `seoTitle`/`seoDescription`, but nothing authors the default-language
-values those fall back to. It belongs beside `AppOperatorLogoCard` in Settings → General, and
-`ogImageMediaId` wants the existing `AppMediaPicker`.
+Two notes for whoever extends that card:
 
-Wiring it would also let the translation form show each field's canonical value as a hint,
-the way the page and experience translation forms do — today it cannot, and says so in a
-comment. The canonical `slogan`/`shortDescription` would still be missing: the brand row is
-read-path-only and **no admin endpoint exposes it at all**.
+- **`PUT` is a full replace**, like the translations one: the form always sends all three
+  fields, so an `ogImageMediaId` the operator never touched rides along instead of being
+  cleared.
+- **The og:image uploads rather than picking from the library.** `AppMediaPicker` would be
+  the natural control, but `media` imports `#/tour-operator`, so importing it back through
+  this module's barrel is a cycle — verified: it produces 6 `no-circular` errors. The card
+  therefore uses the same raw two-step the logo card does (multipart POST → `Location` → id),
+  and resolves the preview with a direct `GET .../media/{id}`.
 
----
-
-## Re-running this diff
-
-```bash
-# backend surface (run in ../backend)
-grep -rn '@RequestMapping\|@\(Get\|Post\|Put\|Patch\|Delete\)Mapping' \
-  src/main/java --include=*Controller.java
-
-# frontend call sites (run here) — note the bases, then the calls
-grep -rn 'authApi\.\(get\|post\|put\|patch\|delete\)' src --include=*.ts --include=*.tsx
-grep -rn 'endpoint=\|useAllPages' src --include=*.tsx   # the generic list readers
-```
-
-The two generic readers are what make a naive `authApi.` grep undercount: a list endpoint
-usually appears only as an `endpoint=` prop on an `AppDataTable`.
+When the backend adds an endpoint, re-run the diff below.
