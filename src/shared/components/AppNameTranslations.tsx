@@ -15,6 +15,7 @@ import { AppAlert } from "./AppAlert";
 import { AppFormActions } from "./AppFormActions";
 import { AppLocaleTabs } from "./AppLocaleTabs";
 import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
+import { AppTranslationSummary } from "./AppTranslationSummary";
 
 interface NameTranslation {
 	locale: string;
@@ -35,6 +36,12 @@ interface Props {
 	localesPending: boolean;
 	/** Code → display label (the wrapper passes its localeLabel). */
 	localeLabel: (code: string) => string;
+	/**
+	 * ADMIN+ (the wrapper reads usePermissions — shared/ may not). False shows
+	 * the stored translation read-only: reads are member-level, so a STAFF
+	 * member keeps them and only loses the form that would 403.
+	 */
+	canWrite: boolean;
 }
 
 // The shared single-name translation editor (resources whose only translatable
@@ -52,6 +59,7 @@ export const AppNameTranslations = ({
 	translatable,
 	localesPending,
 	localeLabel,
+	canWrite,
 }: Props) => {
 	const [picked, setPicked] = useState<string>();
 	const active = picked ?? translatable[0];
@@ -86,17 +94,29 @@ export const AppNameTranslations = ({
 				translated={translated}
 				label={localeLabel}
 			/>
-			{active && (
-				<LocaleNameForm
-					key={active}
-					locale={active}
-					tourOperatorId={tourOperatorId}
-					endpointBase={endpointBase}
-					queryKeyBase={queryKeyBase}
-					canonicalName={canonicalName}
-					maxLength={maxLength}
-				/>
-			)}
+			{active &&
+				(canWrite ? (
+					<LocaleNameForm
+						key={active}
+						locale={active}
+						tourOperatorId={tourOperatorId}
+						endpointBase={endpointBase}
+						queryKeyBase={queryKeyBase}
+						canonicalName={canonicalName}
+						maxLength={maxLength}
+					/>
+				) : (
+					// The list query already carries every locale's name, so the
+					// read-only face needs no second fetch.
+					<AppTranslationSummary
+						fields={[
+							[
+								m.name(),
+								listQuery.data?.find((t) => t.locale === active)?.name ?? null,
+							],
+						]}
+					/>
+				))}
 		</div>
 	);
 };

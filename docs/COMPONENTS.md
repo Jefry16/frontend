@@ -171,7 +171,8 @@ second shape:
 `AppLocaleTabs` strip over a form keyed by locale, whose fields are all optional and whose
 empty values collapse to `null` so the storefront falls back to canonical. An operator with
 one configured language gets `AppNoTranslatableLocales` instead — there is no locale to
-overlay onto. Inside the form:
+overlay onto — and a member without write access gets `AppTranslationSummary`, the
+read-only face of the same fields. Inside the form:
 the fallback rule renders as **`<AppAlert variant="info" title={m.translation()}>` above the
 error alert** — not as a raw `<p>`, which is for per-field hints — a module-local
 `hasTranslation(t)` decides whether *Clear translation* shows, and the footer is
@@ -233,9 +234,9 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 128, of which 124 ship a story
+### `App*` components — 129, of which 125 ship a story
 
-**`shared/` — 38.** The cross-cutting design layer.
+**`shared/` — 39.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a query) · `AppNotFound` ·
@@ -246,7 +247,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
   `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormActions`
 - *Detail / i18n / misc:* `AppDetailField` · `AppConfirmDialog` · `AppLocaleTabs` ·
-  `AppNameTranslations` · `AppNoTranslatableLocales` · `AppImageDropzone`
+  `AppNameTranslations` · `AppNoTranslatableLocales` · `AppTranslationSummary` ·
+  `AppImageDropzone`
 - Not counted above (not `App*`, so no story owed): `useDataTable` — the table hook
   `AppDataTable` builds on — and `RequiredMark`, a one-glyph label affordance.
 
@@ -310,7 +312,13 @@ gates the affordance at its call site:
 - **A detail page's actions:** `<AppPageActions actions={canWrite ? actions : []} />` — it
   returns `null` for an empty array. Where a page mixes tiers, filter instead of replacing:
   `actions.filter((a) => canWrite || a.id === "translations")`.
-- **A settings form:** render a read-only summary instead (Languages, Translations).
+- **A per-locale translation editor:** `canWrite ? <Form/> : <AppTranslationSummary/>`.
+  **Not** `AppNotPermitted` — reading a translation is `ensureMember`, so hiding the values
+  would take away access STAFF has. All four editors take `canWrite` as a **prop** rather
+  than calling the hook: `AppNameTranslations` lives in `shared/` and cannot call it at all,
+  and a prop keeps every editor storyable in both states instead of throwing on a missing
+  `AuthProvider`.
+- **A settings form:** render a read-only summary instead (Languages).
 - **A `/new` or `/edit` page:** `canWrite ? <AppXForm …/> : <AppNotPermitted />`, keeping the
   page header so the visitor knows where they are and can navigate away. Hiding the button
   that leads somewhere never stopped a bookmark or a typed URL.

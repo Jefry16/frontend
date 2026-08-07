@@ -15,9 +15,11 @@ import { useAudience } from "../hooks/use-audience";
 export const AppAudienceTranslations = ({
 	tourOperatorId,
 	audienceId,
+	canWrite,
 }: {
 	tourOperatorId: string;
 	audienceId: string;
+	canWrite: boolean;
 }) => {
 	const query = useAudience(tourOperatorId, audienceId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
@@ -81,6 +83,7 @@ export const AppAudienceTranslations = ({
 						translatable={translatable}
 						localesPending={localesQuery.isPending}
 						localeLabel={localeLabel}
+						canWrite={canWrite}
 					/>
 				</>
 			)}

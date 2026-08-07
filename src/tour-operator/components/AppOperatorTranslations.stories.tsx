@@ -42,7 +42,7 @@ const primaryOnly = seed(["en"]);
 const meta = {
 	title: "TourOperator/AppOperatorTranslations",
 	component: AppOperatorTranslations,
-	args: { tourOperatorId: OP, canManage: true },
+	args: { tourOperatorId: OP, canWrite: true },
 	decorators: [
 		(Story) => (
 			<QueryClientProvider client={twoSecondaries}>
@@ -62,7 +62,7 @@ export const Default: Story = {};
 
 /** A staff member: the same overlay, read-only. */
 export const ReadOnly: Story = {
-	args: { tourOperatorId: OP, canManage: false },
+	args: { tourOperatorId: OP, canWrite: false },
 };
 
 /** Only the primary language configured — nothing to translate onto. */

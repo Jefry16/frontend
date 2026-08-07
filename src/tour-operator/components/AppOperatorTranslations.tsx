@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Card, CardContent } from "#/components/ui/card";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
-import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
+import {
+	AppTranslationSummary,
+	type TranslatedField,
+} from "#/shared/components/AppTranslationSummary";
 import { useOperatorLocales } from "../hooks/use-operator-locales";
 import {
 	useOperatorTranslation,
@@ -23,15 +25,15 @@ import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
 // The primary locale is absent from the strip on purpose: it IS the canonical
 // text, so there is nothing to overlay onto it.
 //
-// Reads are member-visible while writes are ADMIN+, so `canManage` decides
+// Reads are member-visible while writes are ADMIN+, so `canWrite` decides
 // between the form and a read-only summary — a staff member gets the content
 // rather than a form that 403s on save, the same split the Languages section makes.
 export const AppOperatorTranslations = ({
 	tourOperatorId,
-	canManage,
+	canWrite,
 }: {
 	tourOperatorId: string;
-	canManage: boolean;
+	canWrite: boolean;
 }) => {
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const listQuery = useOperatorTranslations(tourOperatorId);
@@ -72,7 +74,7 @@ export const AppOperatorTranslations = ({
 				label={(code) => localeLabel(code)}
 			/>
 			{active && translationQuery.data ? (
-				canManage ? (
+				canWrite ? (
 					<AppOperatorTranslationForm
 						key={active}
 						tourOperatorId={tourOperatorId}
@@ -80,7 +82,9 @@ export const AppOperatorTranslations = ({
 						translation={translationQuery.data}
 					/>
 				) : (
-					<OperatorTranslationSummary translation={translationQuery.data} />
+					<AppTranslationSummary
+						fields={operatorFields(translationQuery.data)}
+					/>
 				)
 			) : (
 				<div className="flex justify-center py-10">
@@ -91,30 +95,12 @@ export const AppOperatorTranslations = ({
 	);
 };
 
-// Read-only view for non-admins: what this locale overrides, with the
-// untranslated fields saying so rather than rendering an empty row.
-const OperatorTranslationSummary = ({
-	translation,
-}: {
-	translation: OperatorTranslation;
-}) => (
-	<Card>
-		<CardContent className="flex flex-col gap-6">
-			{(
-				[
-					[m.slogan(), translation.slogan],
-					[m.short_description(), translation.shortDescription],
-					[m.seo_title(), translation.seoTitle],
-					[m.seo_description(), translation.seoDescription],
-					[m.visitor_message(), translation.passwordMessage],
-				] as const
-			).map(([label, value]) => (
-				<AppDetailField key={label} label={label}>
-					{value ?? (
-						<span className="text-muted-foreground">{m.not_translated()}</span>
-					)}
-				</AppDetailField>
-			))}
-		</CardContent>
-	</Card>
-);
+// This resource's rows for AppTranslationSummary — the same five fields the
+// form edits, in the same order.
+const operatorFields = (t: OperatorTranslation): TranslatedField[] => [
+	[m.slogan(), t.slogan],
+	[m.short_description(), t.shortDescription],
+	[m.seo_title(), t.seoTitle],
+	[m.seo_description(), t.seoDescription],
+	[m.visitor_message(), t.passwordMessage],
+];
