@@ -59,7 +59,7 @@ function client() {
 const meta = {
 	title: "Experiences/AppExperienceTranslations",
 	component: AppExperienceTranslations,
-	args: { tourOperatorId: OP, experienceId: EXP },
+	args: { tourOperatorId: OP, experienceId: EXP, canWrite: true },
 	decorators: [
 		(Story) => (
 			<QueryClientProvider client={client()}>
@@ -75,3 +75,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/** A STAFF member: the stored overlay, read-only — reads are member-level. */
+export const ReadOnly: Story = {
+	args: { canWrite: false },
+};

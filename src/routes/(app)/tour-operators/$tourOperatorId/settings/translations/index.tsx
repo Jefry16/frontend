@@ -20,7 +20,7 @@ export const Route = createFileRoute(
 function TranslationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const operator = useCurrentTourOperator();
-	const canManage = operator?.role === "OWNER" || operator?.role === "ADMIN";
+	const canWrite = operator?.role === "OWNER" || operator?.role === "ADMIN";
 
 	return (
 		<AppPageShell variant="form">
@@ -42,7 +42,7 @@ function TranslationsSettingsPage() {
 			/>
 			<AppOperatorTranslations
 				tourOperatorId={tourOperatorId}
-				canManage={canManage}
+				canWrite={canWrite}
 			/>
 		</AppPageShell>
 	);

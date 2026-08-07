@@ -52,7 +52,7 @@ const qc = storyQueryClient((qc) => {
 const meta = {
 	title: "Pages/AppPageTranslations",
 	component: AppPageTranslations,
-	args: { tourOperatorId: OP, pageId: PAGE_ID },
+	args: { tourOperatorId: OP, pageId: PAGE_ID, canWrite: true },
 	decorators: [
 		(Story) => (
 			<QueryClientProvider client={qc}>
@@ -68,3 +68,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/** A STAFF member: the stored overlay, read-only — reads are member-level. */
+export const ReadOnly: Story = {
+	args: { canWrite: false },
+};

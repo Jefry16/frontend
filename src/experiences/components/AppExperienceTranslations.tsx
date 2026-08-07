@@ -10,12 +10,17 @@ import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import {
+	AppTranslationSummary,
+	type TranslatedField,
+} from "#/shared/components/AppTranslationSummary";
 import { localeLabel, useOperatorLocales } from "#/tour-operator";
 import { useExperience } from "../hooks/use-experience";
 import {
 	useExperienceTranslation,
 	useExperienceTranslations,
 } from "../hooks/use-experience-translations";
+import type { ExperienceTranslation } from "../types";
 import { AppExperienceTranslationForm } from "./AppExperienceTranslationForm";
 
 // The experience translations editor: a locale switcher (supported languages
@@ -26,9 +31,11 @@ import { AppExperienceTranslationForm } from "./AppExperienceTranslationForm";
 export const AppExperienceTranslations = ({
 	tourOperatorId,
 	experienceId,
+	canWrite,
 }: {
 	tourOperatorId: string;
 	experienceId: string;
+	canWrite: boolean;
 }) => {
 	const experienceQuery = useExperience(tourOperatorId, experienceId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
@@ -125,14 +132,20 @@ export const AppExperienceTranslations = ({
 								label={(code) => localeLabel(code)}
 							/>
 							{active && translationQuery.data ? (
-								<AppExperienceTranslationForm
-									key={active}
-									tourOperatorId={tourOperatorId}
-									experienceId={experienceId}
-									locale={active}
-									canonical={experience}
-									translation={translationQuery.data}
-								/>
+								canWrite ? (
+									<AppExperienceTranslationForm
+										key={active}
+										tourOperatorId={tourOperatorId}
+										experienceId={experienceId}
+										locale={active}
+										canonical={experience}
+										translation={translationQuery.data}
+									/>
+								) : (
+									<AppTranslationSummary
+										fields={experienceFields(translationQuery.data)}
+									/>
+								)
 							) : (
 								<div className="flex justify-center py-10">
 									<Spinner />
@@ -145,3 +158,18 @@ export const AppExperienceTranslations = ({
 		</AppResourceView>
 	);
 };
+
+// This resource's rows for AppTranslationSummary. The list fields flatten to a
+// single line — the summary reads, it does not re-render the array editor.
+const list = (v: string[] | null): string | null =>
+	v?.length ? v.join(", ") : null;
+
+const experienceFields = (t: ExperienceTranslation): TranslatedField[] => [
+	[m.name(), t.name],
+	[m.slug(), t.slug],
+	[m.description(), t.description],
+	[m.long_description(), t.longDescription],
+	[m.highlights(), list(t.highlights)],
+	[m.whats_included(), list(t.included)],
+	[m.not_included(), list(t.notIncluded)],
+];

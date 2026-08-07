@@ -33,6 +33,7 @@ const meta = {
 		translatable: ["es", "fr"],
 		localesPending: false,
 		localeLabel: (code: string) => LABELS[code] ?? code,
+		canWrite: true,
 	},
 	decorators: [
 		(Story) => (
@@ -49,3 +50,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/** A STAFF member: the stored translation, read-only — reads are member-level. */
+export const ReadOnly: Story = {
+	args: { canWrite: false },
+};

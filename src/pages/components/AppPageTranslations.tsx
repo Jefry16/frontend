@@ -10,12 +10,17 @@ import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import {
+	AppTranslationSummary,
+	type TranslatedField,
+} from "#/shared/components/AppTranslationSummary";
 import { localeLabel, useOperatorLocales } from "#/tour-operator";
 import { usePage } from "../hooks/use-page";
 import {
 	usePageTranslation,
 	usePageTranslations,
 } from "../hooks/use-page-translations";
+import type { PageTranslation } from "../types";
 import { AppPageTranslationForm } from "./AppPageTranslationForm";
 
 // The page translations editor — the experience-translations shell: a locale
@@ -24,9 +29,11 @@ import { AppPageTranslationForm } from "./AppPageTranslationForm";
 export const AppPageTranslations = ({
 	tourOperatorId,
 	pageId,
+	canWrite,
 }: {
 	tourOperatorId: string;
 	pageId: string;
+	canWrite: boolean;
 }) => {
 	const pageQuery = usePage(tourOperatorId, pageId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
@@ -114,14 +121,20 @@ export const AppPageTranslations = ({
 								label={(code) => localeLabel(code)}
 							/>
 							{active && translationQuery.data ? (
-								<AppPageTranslationForm
-									key={active}
-									tourOperatorId={tourOperatorId}
-									pageId={pageId}
-									locale={active}
-									canonical={page}
-									translation={translationQuery.data}
-								/>
+								canWrite ? (
+									<AppPageTranslationForm
+										key={active}
+										tourOperatorId={tourOperatorId}
+										pageId={pageId}
+										locale={active}
+										canonical={page}
+										translation={translationQuery.data}
+									/>
+								) : (
+									<AppTranslationSummary
+										fields={pageFields(translationQuery.data)}
+									/>
+								)
 							) : (
 								<div className="flex justify-center py-10">
 									<Spinner />
@@ -134,3 +147,12 @@ export const AppPageTranslations = ({
 		</AppResourceView>
 	);
 };
+
+// This resource's rows for AppTranslationSummary — the fields the form edits.
+const pageFields = (t: PageTranslation): TranslatedField[] => [
+	[m.title(), t.title],
+	[m.page_body(), t.body],
+	[m.seo_title(), t.seoTitle],
+	[m.seo_description(), t.seoDescription],
+	[m.slug(), t.slug],
+];
