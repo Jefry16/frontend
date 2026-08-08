@@ -9,6 +9,12 @@ export interface MediaAsset {
 	contentType: string;
 	sizeBytes: number;
 	originalName: string;
+	/** What the image shows, for screen readers and broken-image fallback. Only
+	 * the uploader knows it, so it is written after the upload; null until then. */
+	alt: string | null;
+	/** Measured from the bytes on upload; null for a non-image asset. */
+	width: number | null;
+	height: number | null;
 	createdAt: string;
 	uploadedBy: {
 		id: string;
