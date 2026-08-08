@@ -4,7 +4,6 @@ import { Crown, LogOut, Trash2, UserCog, Users } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { useAuth } from "#/auth";
 import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
@@ -12,6 +11,7 @@ import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
@@ -73,18 +73,7 @@ export const AppMemberDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-						{["a", "b", "c"].map((k) => (
-							<div key={k} className="flex flex-col gap-2">
-								<Skeleton className="h-3 w-16" />
-								<Skeleton className="h-5 w-32" />
-							</div>
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={3} variant="labelled" />}
 		>
 			{(member) => {
 				const isSelf = user?.id === member.id;

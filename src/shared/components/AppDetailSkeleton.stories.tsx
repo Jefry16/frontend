@@ -15,3 +15,7 @@ export const FourFields: Story = {};
 
 // A short record (an audience, a pickup location) reserves less height.
 export const TwoFields: Story = { args: { fields: 2 } };
+
+// The roomier cards (a member, an invitation) show a label bar over its value,
+// matching AppDetailField rather than a single flat block.
+export const Labelled: Story = { args: { fields: 3, variant: "labelled" } };
