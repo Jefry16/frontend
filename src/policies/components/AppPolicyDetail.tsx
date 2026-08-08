@@ -165,7 +165,9 @@ export const AppPolicyDetail = ({
 										{formatDateTime(policy.updatedAt)}
 									</AppDetailField>
 									<AppDetailField label={m.policy_body()}>
-										<AppSourceBlock>{policy.body}</AppSourceBlock>
+										<AppSourceBlock label={m.policy_body()}>
+											{policy.body}
+										</AppSourceBlock>
 									</AppDetailField>
 								</dl>
 							</CardContent>
