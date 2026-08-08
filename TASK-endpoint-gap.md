@@ -19,13 +19,13 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## Coverage: 134 / 136 consumed
+## Coverage: 136 / 136 consumed
 
 | Context | Endpoints | Consumed | Open |
 |---|---:|---:|---:|
 | `identity` — `/auth/**` + `/ui-languages` | 14 | 14 | — |
 | `reference` — timezones · currencies · languages | 3 | 3 | — |
-| `touroperator` | 40 | 38 | **2** |
+| `touroperator` | 40 | 40 | — |
 | `audience` — CRUD + translations | 8 | 8 | — |
 | `experience` — CRUD/publish + translations + slots | 16 | 16 | — |
 | `pickup` | 5 | 5 | — |
@@ -34,16 +34,19 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
 | `metafield` — definitions · owner values · metaobjects | 26 | 26 | — |
 | `contact` | 5 | 5 | — |
-| **Total** | **136** | **134** | **2** |
+| **Total** | **136** | **136** | **—** |
 
-### The 2 unconsumed
-
-| Verb | Path | Backend PR | Note |
-|---|---|---|---|
-| `GET` | `/tour-operators/{id}` | #108 | nothing reads the operator record — `useCurrentTourOperator` picks the summary out of the auth profile |
-| `PATCH` | `/tour-operators/{id}` | #108 | so name · address · phone · email · timezone · currency cannot be edited after onboarding |
+Every admin endpoint has a consumer. The **field-level** gap below is the one
+thing this count cannot see, so read it before assuming the surface is complete.
 
 ### ✅ Closed since the re-diff
+
+- **`GET`/`PATCH /tour-operators/{id}`** — Settings → General → Shop details. A genuine
+  PATCH, unlike most writes here: absent leaves a field unchanged and a **blank string
+  clears** an optional one, so the form sends all six fields and keeps empty as `""`.
+  `handle` is displayed read-only — it is the storefront subdomain. Changing the timezone
+  is confirmed first: stored departures keep their wall-clock time and silently mean a
+  different instant, and nothing rewrites them.
 
 - **The two dead calls are gone.** `use-operator-logo.ts` called `PUT`/`DELETE .../logo`,
   which #106 had deleted; Settings → General now uses `AppOperatorBrandCard` against

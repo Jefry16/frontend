@@ -11,6 +11,8 @@ export const queryKeys = {
 		["operator-locales", tourOperatorId] as const,
 	storefrontPassword: (tourOperatorId: string) =>
 		["storefront-password", tourOperatorId] as const,
+	operatorDetails: (tourOperatorId: string) =>
+		["operator-details", tourOperatorId] as const,
 	brand: (tourOperatorId: string) => ["brand", tourOperatorId] as const,
 	operatorSeo: (tourOperatorId: string) =>
 		["operator-seo", tourOperatorId] as const,
