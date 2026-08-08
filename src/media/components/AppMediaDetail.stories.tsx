@@ -22,6 +22,9 @@ const MEDIA: MediaAsset = {
 	contentType: "image/png",
 	sizeBytes: 245760,
 	originalName: "ada-tour.png",
+	alt: null,
+	width: 1600,
+	height: 1067,
 	createdAt: "2026-03-01T10:00:00Z",
 	uploadedBy: { id: "u-1", context: "users", name: "Ada Lovelace" },
 };

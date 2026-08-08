@@ -628,5 +628,12 @@
 	"inbox_delete": "Delete message",
 	"inbox_delete_confirm_title": "Delete this message?",
 	"inbox_delete_confirm_body": "The message will be permanently deleted. This can't be undone.",
-	"activity_action_contact_message_deleted": "deleted an inbox message"
+	"activity_action_contact_message_deleted": "deleted an inbox message",
+	"media_alt": "Alt text",
+	"media_alt_title": "Describe this image",
+	"media_alt_hint": "What the image shows, for screen readers and when it fails to load. Leave it empty only if the image is purely decorative.",
+	"media_alt_placeholder": "Kayakers paddling past a limestone cliff",
+	"media_alt_edit": "Edit alt text",
+	"media_alt_saved": "Alt text saved",
+	"media_dimensions": "Dimensions"
 }
