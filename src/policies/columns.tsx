@@ -4,7 +4,7 @@ import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { POLICY_TYPE_OPTIONS, policySlug, policyTypeLabel } from "./format";
-import type { PolicyListItem } from "./types";
+import type { Policy } from "./types";
 
 // The policies columns: title (searchable, links to the detail), type (set
 // filter + badge), the storefront path it renders at, and last updated. The
@@ -13,7 +13,7 @@ import type { PolicyListItem } from "./types";
 export const policyColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,
-): ColumnDef<PolicyListItem, unknown>[] => [
+): ColumnDef<Policy, unknown>[] => [
 	{
 		id: "title",
 		accessorKey: "title",

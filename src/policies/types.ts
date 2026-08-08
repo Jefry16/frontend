@@ -12,18 +12,20 @@ export const POLICY_TYPES = [
 
 export type PolicyTypeCode = (typeof POLICY_TYPES)[number];
 
-export interface PolicyListItem {
+/**
+ * One policy. List and detail return the SAME shape — the backend maps both
+ * through PolicyResponse — so there is no thinner list row to model. Verified
+ * against the running API rather than assumed from the two endpoints existing.
+ */
+export interface Policy {
 	id: string;
 	context: "policies";
 	type: PolicyTypeCode;
 	title: string;
+	/** Raw operator-authored HTML; the storefront renders it unescaped. */
+	body: string;
 	createdAt: string;
 	updatedAt: string;
-}
-
-/** The detail read — the list row plus the raw-HTML body. */
-export interface Policy extends PolicyListItem {
-	body: string;
 }
 
 /** One locale's overlay. A null field falls back to the canonical policy. */
