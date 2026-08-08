@@ -26,6 +26,16 @@ interface Props<TData> {
 	// The tailored loading body (a skeleton), shown under the section header.
 	loading: ReactNode;
 	// The success render: the page's own header (title = the record) + body.
+	//
+	// This is a plain callback, not a component, so it may NOT call hooks —
+	// `lint/correctness/useHookAtTopLevel` rejects it and `pnpm check` is a gate.
+	// (It happens to survive at runtime, verified against React 19 through a
+	// success → error transition, so the lint is the thing that stops you, not a
+	// crash.) So: a body needing a hook of its own becomes a named sub-component
+	// — always the case when a hook takes the LOADED record's id, e.g.
+	// `useMenuActions(tourOperatorId, menu.id)`, which the parent can't call
+	// because the id doesn't exist until the query resolves. A body needing only
+	// a formatter inlines here, with `useOperatorDateTime()` hoisted to the parent.
 	children: (data: TData) => ReactNode;
 }
 
