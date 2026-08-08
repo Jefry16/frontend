@@ -1,0 +1,111 @@
+import { useState } from "react";
+import { Button } from "#/components/ui/button";
+import { Label } from "#/components/ui/label";
+import * as m from "#/paraglide/messages";
+import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
+import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
+import { useBrandImage } from "../hooks/use-operator-brand";
+import type { BrandImageSlot } from "../types";
+
+const MAX_BYTES = 25 * 1024 * 1024;
+
+// One of the brand's four image slots. Each is the same two-step — upload to
+// the media library, then point the slot at the new id — so this is the shape
+// four times rather than four near-copies.
+export const AppBrandImageSlot = ({
+	tourOperatorId,
+	slot,
+	label,
+	hint,
+	mediaId,
+	canWrite,
+	pending,
+	onFile,
+	onClear,
+}: {
+	tourOperatorId: string;
+	slot: BrandImageSlot;
+	label: string;
+	hint: string;
+	mediaId: string | null;
+	canWrite: boolean;
+	pending: boolean;
+	onFile: (slot: BrandImageSlot, file: File) => void;
+	onClear: (slot: BrandImageSlot) => void;
+}) => {
+	const image = useBrandImage(tourOperatorId, mediaId);
+	const [error, setError] = useState<string | null>(null);
+	const [confirmOpen, setConfirmOpen] = useState(false);
+	const url = image.data?.url ?? null;
+
+	if (!canWrite) {
+		return (
+			<div className="space-y-2">
+				<Label>{label}</Label>
+				{url ? (
+					<img
+						src={url}
+						alt={label}
+						className="size-24 rounded-md border object-cover"
+					/>
+				) : (
+					<p className="text-sm text-muted-foreground">{m.not_set()}</p>
+				)}
+			</div>
+		);
+	}
+
+	return (
+		<div className="space-y-2">
+			<Label>{label}</Label>
+			<div className="flex items-start gap-3">
+				<AppImageDropzone
+					className="size-24 min-h-0 shrink-0"
+					previewUrl={url}
+					accept="image/*"
+					maxBytes={MAX_BYTES}
+					pending={pending}
+					disabled={pending}
+					errorMessages={{
+						wrongType: m.logo_wrong_type(),
+						tooLarge: m.logo_too_large(),
+					}}
+					onFile={(file) => {
+						setError(null);
+						onFile(slot, file);
+					}}
+					onError={setError}
+				/>
+				<div className="flex min-w-0 flex-col items-start gap-2">
+					<p className="text-xs text-muted-foreground">{hint}</p>
+					{mediaId && (
+						<Button
+							variant="outline"
+							size="sm"
+							className="text-destructive hover:text-destructive"
+							disabled={pending}
+							onClick={() => setConfirmOpen(true)}
+						>
+							{m.remove()}
+						</Button>
+					)}
+				</div>
+			</div>
+			{error && <p className="text-sm text-destructive">{error}</p>}
+
+			<AppConfirmDialog
+				open={confirmOpen}
+				onOpenChange={setConfirmOpen}
+				title={m.brand_image_remove_title({ label })}
+				description={m.brand_image_remove_body()}
+				confirmLabel={m.remove()}
+				destructive
+				pending={pending}
+				onConfirm={() => {
+					onClear(slot);
+					setConfirmOpen(false);
+				}}
+			/>
+		</div>
+	);
+};
