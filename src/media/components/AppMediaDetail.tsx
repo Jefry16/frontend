@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { FileText, Images, Trash2 } from "lucide-react";
+import { FileText, Images, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
@@ -16,11 +17,13 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { formatBytes, isImage, mimeLabel } from "../format";
 import { useMedia } from "../hooks/use-media";
 import { useMediaActions } from "../hooks/use-media-actions";
 import type { MediaAsset } from "../types";
+import { AppMediaAltDialog } from "./AppMediaAltDialog";
 
 // Read-only media detail (preview + facts) plus a destructive Delete, via the
 // shared action pattern. Owns its fetch (skeleton / 404 empty state). The
@@ -36,7 +39,8 @@ export const AppMediaDetail = ({
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
 	const query = useMedia(tourOperatorId, mediaId);
-	const { remove } = useMediaActions(tourOperatorId, mediaId);
+	const { describe, remove } = useMediaActions(tourOperatorId, mediaId);
+	const [altOpen, setAltOpen] = useState(false);
 
 	const backLink = (
 		<AppBackLink
@@ -50,6 +54,12 @@ export const AppMediaDetail = ({
 	// Delete is independent of the loaded record, so it's built once here.
 	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
+		{
+			id: "alt",
+			label: m.media_alt_edit(),
+			icon: Pencil,
+			onSelect: () => setAltOpen(true),
+		},
 		{
 			id: "delete",
 			label: m.remove_media(),
@@ -102,12 +112,28 @@ export const AppMediaDetail = ({
 			}
 		>
 			{(media) => (
-				<MediaFacts
-					media={media}
-					tourOperatorId={tourOperatorId}
-					actions={actions}
-					canWrite={canWrite}
-				/>
+				<>
+					<MediaFacts
+						media={media}
+						tourOperatorId={tourOperatorId}
+						actions={actions}
+						canWrite={canWrite}
+					/>
+					<AppMediaAltDialog
+						open={altOpen}
+						onOpenChange={setAltOpen}
+						currentAlt={media.alt}
+						pending={describe.isPending}
+						onSave={(alt) =>
+							describe.mutate(alt, {
+								onSuccess: () => {
+									toast.success(m.media_alt_saved());
+									setAltOpen(false);
+								},
+							})
+						}
+					/>
+				</>
 			)}
 		</AppResourceView>
 	);
@@ -151,7 +177,9 @@ const MediaFacts = ({
 						{isImage(media.contentType) ? (
 							<img
 								src={media.url}
-								alt={media.originalName}
+								// The filename is a poor description but beats nothing while
+								// alt is unset; the Edit alt text action fills it in.
+								alt={media.alt ?? media.originalName}
 								className="max-h-64 rounded object-contain"
 							/>
 						) : (
@@ -165,8 +193,18 @@ const MediaFacts = ({
 						<AppDetailField label={m.size()}>
 							{formatBytes(media.sizeBytes)}
 						</AppDetailField>
+						<AppDetailField label={m.media_alt()} className="sm:col-span-2">
+							{media.alt ?? <EmptyValue />}
+						</AppDetailField>
+						<AppDetailField label={m.media_dimensions()}>
+							{media.width && media.height ? (
+								`${media.width} × ${media.height}`
+							) : (
+								<EmptyValue />
+							)}
+						</AppDetailField>
 						<AppDetailField label={m.uploaded_by()}>
-							{media.uploadedBy.name ?? "—"}
+							{media.uploadedBy.name ?? <EmptyValue />}
 						</AppDetailField>
 						<AppDetailField label={m.added()}>
 							{formatDateTime(media.createdAt)}
