@@ -154,5 +154,5 @@ const pageFields = (t: PageTranslation): TranslatedField[] => [
 	[m.page_body(), t.body],
 	[m.seo_title(), t.seoTitle],
 	[m.seo_description(), t.seoDescription],
-	[m.slug(), t.slug],
+	[m.handle(), t.handle],
 ];

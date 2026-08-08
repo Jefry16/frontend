@@ -28,7 +28,7 @@ const ES: PageTranslation = {
 	body: "<h1>Quiénes somos</h1>",
 	seoTitle: null,
 	seoDescription: null,
-	slug: "sobre-nosotros",
+	handle: "sobre-nosotros",
 };
 
 const qc = storyQueryClient((qc) => {
@@ -45,7 +45,7 @@ const qc = storyQueryClient((qc) => {
 		body: null,
 		seoTitle: null,
 		seoDescription: null,
-		slug: null,
+		handle: null,
 	});
 });
 

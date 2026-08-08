@@ -17,7 +17,7 @@ const hasTranslation = (t: ExperienceTranslation): boolean =>
 		t.name ||
 			t.description ||
 			t.longDescription ||
-			t.slug ||
+			t.handle ||
 			t.highlights?.length ||
 			t.included?.length ||
 			t.notIncluded?.length,
@@ -82,12 +82,12 @@ export const AppExperienceTranslationForm = ({
 								/>
 							)}
 						</form.Field>
-						<form.Field name="slug">
+						<form.Field name="handle">
 							{(field) => (
 								<AppField
 									field={field}
 									label={m.slug()}
-									placeholder={canonical.slug}
+									placeholder={canonical.handle}
 									description={m.translation_slug_help()}
 								/>
 							)}

@@ -91,7 +91,7 @@ export const useExperienceTranslationForm = ({
 			highlights: translation.highlights ?? [],
 			included: translation.included ?? [],
 			notIncluded: translation.notIncluded ?? [],
-			slug: translation.slug ?? "",
+			handle: translation.handle ?? "",
 		} as ExperienceTranslationFormData,
 		validators: { onSubmit: experienceTranslationSchema },
 		onSubmit: ({ value }) =>

@@ -15,7 +15,7 @@ const hasTranslation = (t: PageTranslation) =>
 	t.body !== null ||
 	t.seoTitle !== null ||
 	t.seoDescription !== null ||
-	t.slug !== null;
+	t.handle !== null;
 
 // One locale's overlay form: every field optional (empty = fall back to the
 // canonical content, shown as each field's placeholder-style hint). Clear
@@ -88,7 +88,7 @@ export const AppPageTranslationForm = ({
 								/>
 							)}
 						</form.Field>
-						<form.Field name="slug">
+						<form.Field name="handle">
 							{(field) => (
 								<AppField
 									field={field}

@@ -24,7 +24,7 @@ export const pageTranslationSchema = z.object({
 	seoDescription: text(320),
 	// Localized handle: empty → null (absent w/ a translated title the backend
 	// derives one; absent without = canonical serves the locale).
-	slug: z
+	handle: z
 		.string()
 		.transform((v) => v.trim())
 		.pipe(

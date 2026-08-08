@@ -8,7 +8,7 @@ const CANONICAL: Experience = {
 	id: "e-1",
 	context: "experiences",
 	name: "Sunset Kayak Tour",
-	slug: "sunset-kayak-tour",
+	handle: "sunset-kayak-tour",
 	description: "Paddle the bay as the sun goes down, with a local guide.",
 	longDescription:
 		"A relaxed two-and-a-half hour paddle timed for golden hour.",
@@ -36,7 +36,7 @@ const EMPTY: ExperienceTranslation = {
 	highlights: null,
 	included: null,
 	notIncluded: null,
-	slug: null,
+	handle: null,
 };
 
 const TRANSLATED: ExperienceTranslation = {
@@ -47,7 +47,7 @@ const TRANSLATED: ExperienceTranslation = {
 	highlights: ["Luz dorada", "Grupos pequeños"],
 	included: null,
 	notIncluded: null,
-	slug: "tour-kayak-atardecer",
+	handle: "tour-kayak-atardecer",
 };
 
 const qc = storyQueryClient();
