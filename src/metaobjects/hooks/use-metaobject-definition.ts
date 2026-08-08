@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { authApi } from "#/lib/api";
+import { useResource } from "#/hooks/use-resource";
 import { queryKeys } from "#/lib/query-keys";
 import type { MetaobjectDefinition } from "../types";
 
@@ -8,12 +7,7 @@ export const useMetaobjectDefinition = (
 	tourOperatorId: string,
 	definitionId: string,
 ) =>
-	useQuery({
-		queryKey: queryKeys.metaobjectDefinition(tourOperatorId, definitionId),
-		queryFn: async () => {
-			const { data } = await authApi.get<MetaobjectDefinition>(
-				`/tour-operators/${tourOperatorId}/metaobject-definitions/${definitionId}`,
-			);
-			return data;
-		},
-	});
+	useResource<MetaobjectDefinition>(
+		queryKeys.metaobjectDefinition(tourOperatorId, definitionId),
+		`/tour-operators/${tourOperatorId}/metaobject-definitions/${definitionId}`,
+	);

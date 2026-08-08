@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { authApi } from "#/lib/api";
+import { useResource } from "#/hooks/use-resource";
 import { queryKeys } from "#/lib/query-keys";
 import type { PickupLocation } from "../types";
 
@@ -9,12 +8,7 @@ export const usePickupLocation = (
 	tourOperatorId: string,
 	pickupLocationId: string,
 ) =>
-	useQuery({
-		queryKey: queryKeys.pickupLocation(tourOperatorId, pickupLocationId),
-		queryFn: async () => {
-			const { data } = await authApi.get<PickupLocation>(
-				`/tour-operators/${tourOperatorId}/pickup-locations/${pickupLocationId}`,
-			);
-			return data;
-		},
-	});
+	useResource<PickupLocation>(
+		queryKeys.pickupLocation(tourOperatorId, pickupLocationId),
+		`/tour-operators/${tourOperatorId}/pickup-locations/${pickupLocationId}`,
+	);
