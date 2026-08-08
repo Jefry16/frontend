@@ -19,45 +19,39 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## Coverage: 131 / 136 consumed — and 2 dead calls
+## Coverage: 134 / 136 consumed
 
 | Context | Endpoints | Consumed | Open |
 |---|---:|---:|---:|
 | `identity` — `/auth/**` + `/ui-languages` | 14 | 14 | — |
 | `reference` — timezones · currencies · languages | 3 | 3 | — |
-| `touroperator` | 40 | 36 | **4** |
+| `touroperator` | 40 | 38 | **2** |
 | `audience` — CRUD + translations | 8 | 8 | — |
 | `experience` — CRUD/publish + translations + slots | 16 | 16 | — |
 | `pickup` | 5 | 5 | — |
 | `audit` | 2 | 2 | — |
-| `media` | 5 | 4 | **1** |
+| `media` | 5 | 5 | — |
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
 | `metafield` — definitions · owner values · metaobjects | 26 | 26 | — |
 | `contact` | 5 | 5 | — |
-| **Total** | **136** | **131** | **5** |
+| **Total** | **136** | **134** | **2** |
 
-### 🔴 Two calls point at endpoints that no longer exist
-
-`tour-operator/hooks/use-operator-logo.ts` still calls **`PUT`** and
-**`DELETE /tour-operators/{id}/logo`**. Backend #106 deleted both — `BrandController`'s
-javadoc says so outright: *"This replaced PUT/DELETE .../logo."* Settings → General's logo
-card therefore fails against current `main`. This is a break, not a gap, and it outranks
-everything below.
-
-The replacement is `/brand`, which is a superset rather than a rename — `BrandResponse`
-carries `slogan`, `shortDescription`, `logoMediaId`, `squareLogoMediaId`, `faviconMediaId`,
-`coverImageMediaId`, `colors` and `socialLinks`. So `AppOperatorLogoCard` cannot be
-point-patched onto it; the card is a slice's worth of work.
-
-### The 5 unconsumed
+### The 2 unconsumed
 
 | Verb | Path | Backend PR | Note |
 |---|---|---|---|
-| `GET` | `/tour-operators/{id}/brand` | #106 | replaces the logo pair; see above |
-| `PUT` | `/tour-operators/{id}/brand` | #106 | |
-| `GET` | `/tour-operators/{id}` | #108 | the app never reads the operator record — `useCurrentTourOperator` picks the summary out of the auth profile |
-| `PATCH` | `/tour-operators/{id}` | #108 | so name · address · timezone · currency cannot be edited after onboarding |
-| `PATCH` | `/media/{mediaId}` | #109 | alt text — `use-media-actions` exposes only `remove` |
+| `GET` | `/tour-operators/{id}` | #108 | nothing reads the operator record — `useCurrentTourOperator` picks the summary out of the auth profile |
+| `PATCH` | `/tour-operators/{id}` | #108 | so name · address · phone · email · timezone · currency cannot be edited after onboarding |
+
+### ✅ Closed since the re-diff
+
+- **The two dead calls are gone.** `use-operator-logo.ts` called `PUT`/`DELETE .../logo`,
+  which #106 had deleted; Settings → General now uses `AppOperatorBrandCard` against
+  `GET`/`PUT /brand`. **`PUT /brand` is a full replace** — `readColors` yields an empty list
+  for an absent `colors` — so every write echoes the whole row. The palette and social
+  links are read and re-sent untouched; editing them is a later slice.
+- **`PATCH /media/{mediaId}`** — alt text, via `AppMediaAltDialog`. `MediaAsset` gained
+  `alt`, `width` and `height`, which `MediaResponse` had been returning unread.
 
 Owner-scoped metafield values are one generic path in
 `metafields/hooks/use-owner-metafields.ts` — both owner types (`experiences/{id}/metafields`
