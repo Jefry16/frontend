@@ -73,6 +73,34 @@ that merge.
 
 ---
 
+## ⚠️ One field-level gap the endpoint count can't see
+
+The table above counts **endpoints**, not payload fields — so it reads 133/133 while a
+field on a consumed endpoint goes unused. One does.
+
+**`ExperienceRequest` accepts `seoTitle` and `seoDescription`; `ExperienceResponse` never
+returns them.** The write side exists, the read side does not, so the admin cannot show an
+experience's SEO, cannot seed a form field from it, and therefore does not send it. Worse,
+`ExperienceInputMapper` maps blank-or-absent to `null` and the update writes that, so **every
+experience edit from the admin clears both fields** — including a value set by any other
+route.
+
+This is not fixable frontend-side alone: a form field would have nothing to populate from.
+It needs `ExperienceResponse` to expose the two fields first, after which the experience
+form adds them the way the page form already does (`use-page-form` sends all five of
+`UpdatePageRequest`'s fields precisely because the page GET returns all five).
+
+Verified 2026-08-08 against backend `main`: `ExperienceRequest`, `ExperienceResponse`,
+`ExperienceInputMapper.seoTitle/seoDescription`.
+
+Everything else checked in the same pass matches exactly — `UpdatePageRequest`,
+`CreatePageRequest`, `UpdateMetafieldDefinitionRequest`, `UpdateMetaobjectDefinitionRequest`
+and `UpdateMetaobjectRequest` against their forms, and every validation bound against its
+backend value object (experience name 200, long description 10 000, page title 255, body
+262 144, SEO title 70, SEO description 320).
+
+---
+
 ## ✅ Nothing left
 
 Every admin endpoint the backend exposes has a frontend consumer.
