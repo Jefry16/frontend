@@ -1,8 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import { notFoundAwareRetry } from "./lib/query-retry";
 import { routeTree } from "./routeTree.gen";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+	defaultOptions: { queries: { retry: notFoundAwareRetry } },
+});
 
 export function getRouter() {
 	const router = createTanStackRouter({

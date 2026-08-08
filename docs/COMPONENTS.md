@@ -280,8 +280,8 @@ there.)
 
 > **Deferred conventions — consult the archive when you build the slice.** The detailed
 > shapes for forms (full-width `AppFormWrapper` + typed-input factory + 2-col grid, *never
-> hand-roll `<input>`+`<label>`*), data/cache (hierarchical query-keys, `notFoundAwareRetry`
-> on by-id queries, the create/update/delete/publish invalidation convention,
+> hand-roll `<input>`+`<label>`*), data/cache (hierarchical query-keys,
+> the create/update/delete/publish invalidation convention,
 > `onError = toast.error(apiErrorMessage(err))`, branch on `code` never `message`),
 > instants/money (operator-timezone formatters, minor-units), and the list/detail page
 > vocabularies live in the archive's `ARCHITECTURE.md` (`/home/jefrycayo/archive-vointika/frontend`).

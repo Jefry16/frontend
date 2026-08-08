@@ -117,6 +117,11 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
   generic on purpose (anti-enumeration — the endpoint 204s whether or not the address
   exists), and `use-metafield-value-save` applies `apiErrorMessage` inside its loop so the
   toast can name the field that failed.
+- **Query retry:** the app's `QueryClient` (`router.tsx`) defaults every query to
+  `notFoundAwareRetry` (`lib/query-retry.ts`) — the library's 3-attempt backoff for
+  transient failures, but **zero retries on a 404**, since a missing (or cross-tenant)
+  record never becomes present. Without it every by-id detail page sat ~7s on a skeleton
+  before `AppResourceView` could paint `AppNotFound`.
 - **API identity (backend house rule):** responses use `id` (never a prefixed `userId`) and
   a `context` discriminator (the entity's collection, e.g. `"users"`) — never `type`.
 - **i18n:** user-facing strings come from `#/paraglide/messages` (`import * as m`), keyed in
