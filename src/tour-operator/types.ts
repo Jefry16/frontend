@@ -60,3 +60,24 @@ export type BrandImageSlot =
 	| "squareLogoMediaId"
 	| "faviconMediaId"
 	| "coverImageMediaId";
+
+/**
+ * The operator's own details (GET/PATCH /tour-operators/{id}).
+ *
+ * `handle` is READ-ONLY and absent from the PATCH input by design: it is the
+ * storefront subdomain, so changing it would move the shop's public address and
+ * break every link to it.
+ */
+export interface TourOperatorDetails {
+	id: string;
+	context: "tour-operators";
+	name: string;
+	handle: string;
+	address: string;
+	phone: string | null;
+	email: string | null;
+	timezoneId: string;
+	currencyId: string;
+	createdAt: string;
+	updatedAt: string;
+}

@@ -1,4 +1,5 @@
 export { AppOperatorBrandCard } from "./components/AppOperatorBrandCard";
+export { AppOperatorDetailsCard } from "./components/AppOperatorDetailsCard";
 export { AppOperatorLanguagesForm } from "./components/AppOperatorLanguagesForm";
 export { AppOperatorSeoCard } from "./components/AppOperatorSeoCard";
 export { AppOperatorTranslations } from "./components/AppOperatorTranslations";

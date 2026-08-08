@@ -5,6 +5,7 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 import {
 	AppOperatorBrandCard,
+	AppOperatorDetailsCard,
 	AppOperatorSeoCard,
 	AppStorefrontPasswordCard,
 	useCurrentTourOperator,
@@ -44,6 +45,10 @@ function GeneralSettingsPage() {
 			/>
 			{operator && (
 				<>
+					<AppOperatorDetailsCard
+						tourOperatorId={operator.id}
+						canWrite={canWrite}
+					/>
 					<AppOperatorBrandCard
 						tourOperatorId={operator.id}
 						canWrite={canWrite}
