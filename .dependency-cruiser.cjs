@@ -30,6 +30,7 @@ const MODULES = [
 	"menus",
 	"contact",
 	"pages",
+	"policies",
 	"experiences",
 ];
 // A never-matching group while MODULES is empty, so the module-scoped rules below

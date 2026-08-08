@@ -58,6 +58,11 @@ export const queryKeys = {
 		["pages", tourOperatorId, pageId, "translations"] as const,
 	pageTranslation: (tourOperatorId: string, pageId: string, locale: string) =>
 		["pages", tourOperatorId, pageId, "translations", locale] as const,
+	policies: (tourOperatorId: string) => ["policies", tourOperatorId] as const,
+	policy: (tourOperatorId: string, policyId: string) =>
+		["policies", tourOperatorId, policyId] as const,
+	policyTranslations: (tourOperatorId: string, policyId: string) =>
+		["policies", tourOperatorId, policyId, "translations"] as const,
 	metafieldDefinitions: (tourOperatorId: string) =>
 		["metafield-definitions", tourOperatorId] as const,
 	metafieldDefinition: (tourOperatorId: string, definitionId: string) =>

@@ -8,6 +8,16 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"tour_operator.locales_updated":
 		m.activity_action_tour_operator_locales_updated,
 	"tour_operator.logo_updated": m.activity_action_tour_operator_logo_updated,
+	"tour_operator.policy_created":
+		m.activity_action_tour_operator_policy_created,
+	"tour_operator.policy_updated":
+		m.activity_action_tour_operator_policy_updated,
+	"tour_operator.policy_deleted":
+		m.activity_action_tour_operator_policy_deleted,
+	"tour_operator.policy_translation_updated":
+		m.activity_action_tour_operator_policy_translation_updated,
+	"tour_operator.policy_translation_deleted":
+		m.activity_action_tour_operator_policy_translation_deleted,
 	"member.role_changed": m.activity_action_member_role_changed,
 	"member.removed": m.activity_action_member_removed,
 	"ownership.transferred": m.activity_action_ownership_transferred,

@@ -4,7 +4,7 @@ Point-in-time diff of the **backend admin HTTP surface** vs **what the admin fro
 consumes**. Tick an endpoint when a real frontend consumer ships.
 
 > **Snapshot basis:** backend `main` @ `3f7685e` (PR #102, storefront policies), re-diffed
-> 2026-08-06. **125 admin endpoints** across the 11 contexts with an admin HTTP surface
+> re-diffed 2026-08-08 after backend #105. **133 admin endpoints** across the 11 contexts with an admin HTTP surface
 > (`notification` is event-driven, so it has none). The open PR #103 branch adds **no
 > endpoint** — it widens the payload of an existing one (see the gap list).
 >
@@ -18,7 +18,7 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## Coverage: 125 / 125 consumed
+## Coverage: 133 / 133 consumed
 
 | Context | Endpoints | Consumed | Open |
 |---|---:|---:|---:|
@@ -36,7 +36,8 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
 | `metafield` — definitions · owner values · metaobjects | 26 | 26 | — |
 | `contact` | 5 | 5 | — |
-| **Total** | **125** | **125** | **—** |
+| `touroperator` — policies + policy translations | 8 | 8 | — |
+| **Total** | **133** | **133** | **—** |
 
 Owner-scoped metafield values are one generic path in
 `metafields/hooks/use-owner-metafields.ts` — both owner types (`experiences/{id}/metafields`
@@ -74,9 +75,16 @@ that merge.
 
 ## ✅ Nothing left
 
-Every admin endpoint the backend exposes now has a frontend consumer. The last two —
-`GET`/`PUT /tour-operators/{id}/seo` — landed as **Settings → General → Search engine
-listing**, the canonical text that Settings → Translations overlays per locale.
+Every admin endpoint the backend exposes has a frontend consumer.
+
+**Backend #105 added eight** (`/policies` ×5 + `/policies/{id}/translations` ×3) and they
+landed together as the `policies` module — Content → Policies. Two things about that surface
+are worth carrying forward: a policy's **type is its storefront address**, so it is chosen at
+create and the update endpoint has no field for it; and its translations have **no per-locale
+GET**, so the editor seeds each locale's form from the list the switcher already needs.
+
+Before that, `GET`/`PUT /tour-operators/{id}/seo` landed as **Settings → General → Search
+engine listing**, the canonical text that Settings → Translations overlays per locale.
 
 Two notes for whoever extends that card:
 

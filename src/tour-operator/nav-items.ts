@@ -15,6 +15,7 @@ import {
 	type LucideIcon,
 	Mail,
 	MapPin,
+	Scale,
 	Settings,
 	Shapes,
 	UserRound,
@@ -178,6 +179,14 @@ export const contentNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: FileText,
 		link: {
 			to: "/tour-operators/$tourOperatorId/content/pages",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.policies(),
+		icon: Scale,
+		link: {
+			to: "/tour-operators/$tourOperatorId/content/policies",
 			params: { tourOperatorId },
 		},
 	},
