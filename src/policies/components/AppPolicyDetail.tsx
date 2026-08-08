@@ -1,8 +1,10 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Languages, Pencil, Scale, Trash2 } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
+import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
@@ -42,6 +44,7 @@ export const AppPolicyDetail = ({
 	const { formatDateTime } = useOperatorDateTime();
 	const { canWrite } = usePermissions();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const toast = useAppToast();
 
 	const backLink = (
@@ -113,6 +116,9 @@ export const AppPolicyDetail = ({
 							remove.mutate(undefined, {
 								onSuccess: () => {
 									toast.deleted(m.policy());
+									queryClient.removeQueries({
+										queryKey: queryKeys.policy(tourOperatorId, policyId),
+									});
 									navigate({
 										to: "/tour-operators/$tourOperatorId/content/policies",
 										params: { tourOperatorId },

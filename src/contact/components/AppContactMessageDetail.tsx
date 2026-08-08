@@ -25,6 +25,12 @@ import type { ContactMessage } from "../types";
 // message auto-marks it read (silently — the inbox badge just clears);
 // actions are Reply by email (mailto), Mark as unread, Delete (ADMIN+,
 // confirmed — audited backend-side).
+//
+// No activity card, though CONTACT_MESSAGE is an audited entity: delete is the
+// context's ONLY audited action (read-state is unaudited by design), so the
+// only entry a message can ever have is the one that removed it — by which
+// point this page 404s. The timeline would be empty on every message that can
+// reach it. The deletions show up in Operations -> Activity.
 export const AppContactMessageDetail = ({
 	tourOperatorId,
 	messageId,

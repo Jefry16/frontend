@@ -117,6 +117,9 @@ export const AppMemberDetail = ({
 								remove.mutate(undefined, {
 									onSuccess: () => {
 										toast.success(m.left_team());
+										queryClient.removeQueries({
+											queryKey: queryKeys.member(tourOperatorId, userId),
+										});
 										// Their memberships changed — refresh the profile, then leave.
 										queryClient.invalidateQueries({
 											queryKey: queryKeys.authProfile,
@@ -163,6 +166,9 @@ export const AppMemberDetail = ({
 							remove.mutate(undefined, {
 								onSuccess: () => {
 									toast.success(m.member_removed());
+									queryClient.removeQueries({
+										queryKey: queryKeys.member(tourOperatorId, userId),
+									});
 									navigate({
 										to: "/tour-operators/$tourOperatorId/settings/members",
 										params: { tourOperatorId },
