@@ -10,7 +10,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+// Always inside a `<dl>` — the component renders the dt/dd pair, not the list.
+export const Default: Story = {
+	decorators: [
+		(Story) => (
+			<dl>
+				<Story />
+			</dl>
+		),
+	],
+};
 
 export const InGrid: Story = {
 	render: () => (
