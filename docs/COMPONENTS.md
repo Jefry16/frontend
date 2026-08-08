@@ -234,7 +234,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 130, of which 126 ship a story
+### `App*` components — 136, of which 132 ship a story
 
 **`shared/` — 39.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
@@ -252,8 +252,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 - Not counted above (not `App*`, so no story owed): `useDataTable` — the table hook
   `AppDataTable` builds on — and `RequiredMark`, a one-glyph label affordance.
 
-**Modules — 91.** Each owns its list / detail / form / edit set:
-`auth` 13 · `tour-operator` 10 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
+**Modules — 97.** Each owns its list / detail / form / edit set:
+`auth` 13 · `tour-operator` 10 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
 `metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 · `media` 4 ·
 `pickup-locations` 4 · `contact` 2.
 
@@ -265,7 +265,7 @@ planned story-per-`App*` ratchet would catch — write the story when you next t
 
 `AuthProvider` (`auth/`) · `ThemeProvider` (`shared/theme.tsx`)
 
-### Routes — 67 files under `routes/`
+### Routes — 72 files under `routes/`
 
 `__root.tsx` (shell + pre-paint theme guard) → `(app)/route.tsx` (auth gate) →
 `(app)/tour-operators/$tourOperatorId/route.tsx` (workspace shell; `/settings/**` swaps

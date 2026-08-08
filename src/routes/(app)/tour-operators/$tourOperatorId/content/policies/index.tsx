@@ -1,0 +1,44 @@
+import { createFileRoute } from "@tanstack/react-router";
+import * as m from "#/paraglide/messages";
+import { AppPoliciesList } from "#/policies";
+import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppNewLink } from "#/shared/components/AppNewLink";
+import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppPageShell } from "#/shared/components/AppPageShell";
+import { usePermissions } from "#/tour-operator";
+
+export const Route = createFileRoute(
+	"/(app)/tour-operators/$tourOperatorId/content/policies/",
+)({
+	component: PoliciesPage,
+});
+
+// Table page → full width.
+function PoliciesPage() {
+	const { tourOperatorId } = Route.useParams();
+	const { canWrite } = usePermissions();
+	return (
+		<AppPageShell variant="list">
+			<AppPageHeader
+				title={m.policies()}
+				description={m.policies_description()}
+				breadcrumb={
+					<AppBreadcrumb
+						items={[{ label: m.content() }, { label: m.policies() }]}
+					/>
+				}
+				actions={
+					canWrite && (
+						<AppNewLink
+							to="/tour-operators/$tourOperatorId/content/policies/new"
+							params={{ tourOperatorId }}
+						>
+							{m.new_policy()}
+						</AppNewLink>
+					)
+				}
+			/>
+			<AppPoliciesList tourOperatorId={tourOperatorId} />
+		</AppPageShell>
+	);
+}
