@@ -17,8 +17,7 @@ export const statusLabel = (published: boolean): string =>
 /**
  * Badge variant: a published experience stands out; a draft is muted. Same
  * pair pages and metaobjects use — one Draft badge, one look, whatever the
- * entity is. (This returned `outline` until 2026-08-08, which drew the same
- * m.draft() label as an outlined chip here and a filled one everywhere else.)
+ * entity is.
  */
 export const statusBadgeVariant = (
 	published: boolean,

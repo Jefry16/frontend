@@ -4,7 +4,6 @@ import { describe, expect, it, vi } from "vitest";
 import { renderWithProviders } from "#/test/test-utils";
 import { type AppAction, AppPageActions } from "./AppPageActions";
 
-// Editing is ADMIN+; reading the translations is member-visible.
 const mixedTiers = (): AppAction[] => [
 	{ id: "edit", label: "Edit", icon: Pencil, onSelect: vi.fn() },
 	{
@@ -33,7 +32,6 @@ describe("AppPageActions", () => {
 			screen.getByRole("button", { name: "Translations" }),
 		).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: "Edit" })).toBeNull();
-		// The sole survivor takes the primary slot, so there is no overflow menu.
 		expect(screen.queryByRole("button", { name: /more/i })).toBeNull();
 	});
 
@@ -51,7 +49,6 @@ describe("AppPageActions", () => {
 	it("gives an ADMIN+ the full set, destructive still out of the primary slot", () => {
 		renderWithProviders(<AppPageActions actions={mixedTiers()} canWrite />);
 
-		// First non-destructive action is primary; the rest go to the overflow.
 		expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: "Delete" })).toBeNull();
 		expect(screen.getByRole("button", { name: /more/i })).toBeInTheDocument();

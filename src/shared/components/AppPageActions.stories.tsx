@@ -61,13 +61,11 @@ const MIXED_TIERS: AppAction[] = [
 	},
 ];
 
-// What an ADMIN+ sees: the whole set.
 export const MixedTiersAsAdmin: Story = {
 	args: { actions: MIXED_TIERS, canWrite: true },
 };
 
-// What a STAFF member sees: only the `member` action survives, and it takes the
-// primary slot the ADMIN+ action vacated.
+// The `member` action survives alone, and takes the primary slot.
 export const MixedTiersAsStaff: Story = {
 	args: { actions: MIXED_TIERS, canWrite: false },
 };

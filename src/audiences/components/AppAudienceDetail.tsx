@@ -2,11 +2,11 @@ import { useNavigate } from "@tanstack/react-router";
 import { Languages, Pencil, UsersRound } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
@@ -52,15 +52,7 @@ export const AppAudienceDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-2 gap-4">
-						{["a", "b"].map((k) => (
-							<Skeleton key={k} className="h-12 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={2} />}
 		>
 			{(audience) => {
 				const created = formatDate(audience.createdAt);

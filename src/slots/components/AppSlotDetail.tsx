@@ -2,7 +2,6 @@ import { Ban, CalendarDays, Eye, EyeOff, Pencil } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import {
 	Table,
 	TableBody,
@@ -16,6 +15,7 @@ import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import { AppLink } from "#/shared/components/AppLink";
 import {
 	type AppAction,
@@ -76,15 +76,7 @@ export const AppSlotDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-2 gap-4">
-						{["a", "b", "c", "d"].map((k) => (
-							<Skeleton key={k} className="h-12 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={4} />}
 		>
 			{(slot) => {
 				const cancelled = slot.status === "CANCELLED";

@@ -236,17 +236,19 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 
 ### `App*` components — 136, of which 132 ship a story
 
-**`shared/` — 39.** The cross-cutting design layer.
+**`shared/` — 41.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
-- *States:* `AppResourceView` (loading / 404 / error around a query) · `AppNotFound` ·
-  `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` · `AppBadge`
+- *States:* `AppResourceView` (loading / 404 / error around a query) · `AppDetailSkeleton`
+  (its `loading` placeholder — pass the field count, don't hand-roll the grid) ·
+  `AppNotFound` · `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` · `AppBadge`
 - *Table:* `AppDataTable` · `AppDataTableHeader` · `AppTextFilter` · `AppSetFilter` ·
   `AppAsyncSetFilter` · `AppFilterInput`
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
   `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
   `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormActions`
-- *Detail / i18n / misc:* `AppDetailField` · `AppConfirmDialog` · `AppLocaleTabs` ·
+- *Detail / i18n / misc:* `AppDetailField` · `AppSourceBlock` (operator-authored HTML shown
+  verbatim, never rendered) · `AppConfirmDialog` · `AppLocaleTabs` ·
   `AppNameTranslations` · `AppNoTranslatableLocales` · `AppTranslationSummary` ·
   `AppImageDropzone`
 - Not counted above (not `App*`, so no story owed): `useDataTable` — the table hook

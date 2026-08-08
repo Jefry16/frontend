@@ -16,6 +16,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppSourceBlock } from "#/shared/components/AppSourceBlock";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { policySlug, policyTypeLabel } from "../format";
 import { usePolicy } from "../hooks/use-policy";
@@ -163,9 +164,7 @@ export const AppPolicyDetail = ({
 									{formatDateTime(policy.updatedAt)}
 								</AppDetailField>
 								<AppDetailField label={m.policy_body()}>
-									<pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-md border bg-muted/40 p-3 font-mono text-xs">
-										{policy.body}
-									</pre>
+									<AppSourceBlock>{policy.body}</AppSourceBlock>
 								</AppDetailField>
 							</CardContent>
 						</Card>
