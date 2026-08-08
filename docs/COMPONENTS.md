@@ -154,8 +154,9 @@ second shape:
 - **Field renderers live in `shared/components/`**, one per input kind, each taking a
   TanStack Form `field` plus `label`/`description`/`required` and rendering the errors
   below: `AppField` (text/email/password) · `AppTextareaField` · `AppSelectField` ·
-  `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
-  `AppPasswordField` · `AppArrayInput`. (`AppNumericInput` is the bare numeric control the
+  `AppCheckboxField` (one boolean) · `AppCheckboxGroupField` (membership of an array —
+  supported languages, recurring weekdays) · `AppDateField` · `AppTimeField` ·
+  `AppNumberField` · `AppPasswordField` · `AppArrayInput`. (`AppNumericInput` is the bare numeric control the
   number/price fields build on — not a form field itself.)
 - `AppFormActions` — the footer: right-aligned submit with the pending spinner, plus an
   optional `secondary` slot (Cancel link, Clear-translation button).
@@ -180,12 +181,15 @@ error alert** — not as a raw `<p>`, which is for per-field hints — a module-
 everywhere**, so the form always submits every field.
 
 **The gate.** `src/shared/form-pattern.test.ts` fails when a component renders a `<form>`
-with raw controls (`Input` / `Textarea` / `Checkbox` / `select`) and **no `form.Field`** —
-i.e. hand-rolls a form instead of using `useForm` + the renderers. A §5 form that *also*
-holds a dynamic control is fine: a checkbox per weekday or per locale has no single named
-field to hang a renderer on. Two pre-gate editors are frozen in an allowlist with reasons.
-This exists because §5 was the one prescriptive rule here with nothing enforcing it, and
-four settings cards drifted — two of them written by copying a third.
+containing **any** raw control (`Input` / `Textarea` / `Checkbox` / `Select` / `select` / …).
+Every field goes through a renderer, with no exception for "it's a dynamic control" — if
+none fits, **write the renderer**. That is exactly how `AppCheckboxGroupField` came to
+exist: two forms were hand-rolling a checkbox-per-option group, which is R2's second real
+use. Three **row builders** are frozen in an allowlist with reasons — their cells hold
+`useState` rows rather than TanStack fields, so converting them means moving that state
+into form array fields first. This gate exists because §5 was the one prescriptive rule
+here with nothing enforcing it, and four settings cards drifted — two written by copying a
+third.
 
 > The archive's richer form *framework* (`AppFormWrapper` + a typed-input factory whose
 > inputs hang off `form.AppField`) is still **deferred** and has not been re-earned:
@@ -244,7 +248,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 
 ### `App*` components — 136, of which 132 ship a story
 
-**`shared/` — 42.** The cross-cutting design layer.
+**`shared/` — 43.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`

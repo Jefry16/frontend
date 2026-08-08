@@ -1,17 +1,11 @@
 import type { Audience } from "#/audiences";
-import { Checkbox } from "#/components/ui/checkbox";
-import {
-	Field,
-	FieldError,
-	FieldGroup,
-	FieldLabel,
-} from "#/components/ui/field";
+import { FieldGroup } from "#/components/ui/field";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppCheckboxGroupField } from "#/shared/components/AppCheckboxGroupField";
 import { AppDateField } from "#/shared/components/AppDateField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppTimeField } from "#/shared/components/AppTimeField";
-import { RequiredMark } from "#/shared/components/RequiredMark";
 import { useOperatorToday } from "#/tour-operator";
 import { DAY_OPTIONS } from "../format";
 import { useRecurringSlotForm } from "../hooks/use-recurring-slot-form";
@@ -52,48 +46,17 @@ export const AppRecurringSlotForm = ({
 			)}
 			<FieldGroup>
 				<form.Field name="days">
-					{(field) => {
-						const days = field.state.value as number[];
-						const fieldInvalid =
-							field.state.meta.isTouched && field.state.meta.errors.length > 0;
-						return (
-							<Field data-invalid={fieldInvalid || undefined}>
-								<FieldLabel>
-									{m.days()}
-									<RequiredMark />
-								</FieldLabel>
-								<div className="flex flex-wrap gap-x-4 gap-y-2">
-									{DAY_OPTIONS.map((day) => {
-										const value = Number(day.value);
-										return (
-											<label
-												key={day.value}
-												htmlFor={`day-${day.value}`}
-												className="flex items-center gap-2 text-sm"
-											>
-												<Checkbox
-													id={`day-${day.value}`}
-													checked={days.includes(value)}
-													onCheckedChange={(checked) => {
-														field.handleChange(
-															checked === true
-																? [...days, value].sort((a, b) => a - b)
-																: days.filter((d) => d !== value),
-														);
-														field.handleBlur();
-													}}
-												/>
-												{day.label}
-											</label>
-										);
-									})}
-								</div>
-								{fieldInvalid && (
-									<FieldError errors={field.state.meta.errors} />
-								)}
-							</Field>
-						);
-					}}
+					{(field) => (
+						<AppCheckboxGroupField
+							field={field}
+							label={m.days()}
+							required
+							options={DAY_OPTIONS.map((day) => ({
+								value: Number(day.value),
+								label: day.label,
+							}))}
+						/>
+					)}
 				</form.Field>
 				<div className="grid gap-4 sm:grid-cols-2">
 					<form.Field

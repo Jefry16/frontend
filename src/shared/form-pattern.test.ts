@@ -8,21 +8,28 @@ import { describe, expect, it } from "vitest";
 // those were written by copying a third. Every other rule here has a gate:
 // depcheck for boundaries, biome for style, tsc for props. This is §5's.
 //
-// The rule: a component rendering a <form> with raw input controls and NO
-// `form.Field` is hand-rolling a form. A §5 form that *also* holds a dynamic
-// control is fine — a checkbox per weekday or per locale has no single named
-// field to hang a renderer on. <Label> is not listed either: the SEO card
-// labels an image dropzone, which is not a field.
-const RAW_CONTROLS = /<(Input|Textarea|Checkbox|select|input|textarea)[\s/>]/;
+// The rule: a component that renders a <form> must not render a raw input
+// control at all — every field goes through a renderer (AppField,
+// AppSelectField, AppTextareaField, AppCheckboxField, AppCheckboxGroupField,
+// AppNumberField, AppDateField, AppTimeField, AppPasswordField, AppArrayInput).
+// If none fits, the answer is a new renderer in shared/, not a raw control:
+// that is how AppCheckboxGroupField came to exist, on the second real use.
+//
+// <Label> is not listed — the SEO card labels an image dropzone, which is not a
+// field and has no renderer.
+const RAW_CONTROLS =
+	/<(Input|Textarea|Checkbox|Select|select|input|textarea|RadioGroup|Switch)[\s/>]/;
 
-// Frozen, not endorsed. Both predate the gate and neither maps onto one
-// `useForm`, so converting them is its own change rather than a condition of
-// closing the door on new ones.
+// Frozen, not endorsed. Three ROW BUILDERS: each renders a repeating row of
+// cells (name + key + type, a menu item, a per-locale name) whose values live in
+// plain `useState`, not in a TanStack field. The renderers all take a `field`
+// and draw a label + description + error block, so none of them fits a compact
+// cell. Converting these means first moving their row state into form array
+// fields — a real refactor per component, not a substitution, and worth doing
+// deliberately rather than as the price of closing the door on new drift.
 const FROZEN = new Set([
-	// A nested add/remove/reorder tree, not a flat field set.
 	"menus/components/AppMenuItemsEditor.tsx",
-	// One field per locale with its own save/clear per row; §5 names it as part
-	// of the translation-editor shape rather than the standard form skeleton.
+	"metaobjects/components/AppMetaobjectDefinitionForm.tsx",
 	"shared/components/AppNameTranslations.tsx",
 ]);
 
@@ -39,15 +46,10 @@ const walk = (dir: string): string[] =>
 	});
 
 describe("COMPONENTS.md §5 — forms use the field renderers", () => {
-	it("no new component hand-rolls a form out of raw controls", () => {
+	it("no form renders a raw control instead of a field renderer", () => {
 		const offenders = walk("src")
 			.map((path) => ({ path, src: readFileSync(path, "utf8") }))
-			.filter(
-				({ src }) =>
-					src.includes("<form") &&
-					RAW_CONTROLS.test(src) &&
-					!src.includes("form.Field"),
-			)
+			.filter(({ src }) => src.includes("<form") && RAW_CONTROLS.test(src))
 			.map(({ path }) => path.replace(/^src\//, ""))
 			.filter((path) => !FROZEN.has(path));
 
