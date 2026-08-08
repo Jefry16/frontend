@@ -1,3 +1,4 @@
+import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
@@ -8,15 +9,15 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import { FieldDescription, FieldGroup } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { Skeleton } from "#/components/ui/skeleton";
-import { Textarea } from "#/components/ui/textarea";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
+import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
+import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
 	useOperatorSeo,
 	useOperatorSeoImage,
@@ -24,14 +25,24 @@ import {
 	useOperatorSeoSave,
 } from "../hooks/use-operator-seo";
 import type { OperatorSeo } from "../types";
+import {
+	type OperatorSeoFormData,
+	operatorSeoSchema,
+} from "../validators/operator-seo";
 
 // The backend's OperatorSeoTitle / OperatorSeoDescription value objects.
-const TITLE_MAX = 70;
-const DESCRIPTION_MAX = 320;
 const MAX_IMAGE_BYTES = 25 * 1024 * 1024;
 
 // Settings → General → Search engine listing: the shop's canonical SEO text
 // plus the og:image, which Translations then overrides per locale.
+const CardSkeleton = () => (
+	<div className="flex flex-col gap-4">
+		{["a", "b", "c"].map((k) => (
+			<Skeleton key={k} className="h-9 w-full" />
+		))}
+	</div>
+);
+
 export const AppOperatorSeoCard = ({
 	tourOperatorId,
 	canWrite,
@@ -48,19 +59,15 @@ export const AppOperatorSeoCard = ({
 				<CardDescription>{m.seo_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{query.isPending ? (
-					<div className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-9 w-full" />
-						))}
-					</div>
-				) : query.isError ? (
-					<AppAlert title={m.error()} description={m.error()} />
-				) : canWrite ? (
-					<SeoForm tourOperatorId={tourOperatorId} seo={query.data} />
-				) : (
-					<SeoSummary tourOperatorId={tourOperatorId} seo={query.data} />
-				)}
+				<AppCardBody query={query} loading={<CardSkeleton />}>
+					{(seo) =>
+						canWrite ? (
+							<SeoForm tourOperatorId={tourOperatorId} seo={seo} />
+						) : (
+							<SeoSummary tourOperatorId={tourOperatorId} seo={seo} />
+						)
+					}
+				</AppCardBody>
 			</CardContent>
 		</Card>
 	);
@@ -73,8 +80,6 @@ const SeoForm = ({
 	tourOperatorId: string;
 	seo: OperatorSeo;
 }) => {
-	const [title, setTitle] = useState(seo.seoTitle ?? "");
-	const [description, setDescription] = useState(seo.seoDescription ?? "");
 	const [imageId, setImageId] = useState(seo.ogImageMediaId);
 	const [imageError, setImageError] = useState<string | null>(null);
 
@@ -82,46 +87,53 @@ const SeoForm = ({
 	const upload = useOperatorSeoImageUpload(tourOperatorId);
 	const image = useOperatorSeoImage(tourOperatorId, imageId);
 
-	const submit = () => {
-		// A full replace: blank collapses to null so the field falls back, and
-		// the untouched image id rides along rather than being cleared.
-		save.mutate({
-			seoTitle: title.trim() || null,
-			seoDescription: description.trim() || null,
-			ogImageMediaId: imageId,
-		});
-	};
+	const form = useForm({
+		defaultValues: {
+			seoTitle: seo.seoTitle ?? "",
+			seoDescription: seo.seoDescription ?? "",
+		} as OperatorSeoFormData,
+		validators: { onSubmit: operatorSeoSchema },
+		// A full replace: blank collapses to null so the field falls back, and the
+		// image id — which is not a form field, the dropzone uploads on drop —
+		// rides along rather than being cleared.
+		onSubmit: ({ value }) => {
+			const v = operatorSeoSchema.parse(value);
+			save.mutate({
+				seoTitle: v.seoTitle || null,
+				seoDescription: v.seoDescription || null,
+				ogImageMediaId: imageId,
+			});
+		},
+	});
 
 	return (
 		<form
 			onSubmit={(e) => {
 				e.preventDefault();
-				submit();
+				form.handleSubmit();
 			}}
 			className="space-y-4"
 		>
 			<FieldGroup>
-				<div className="space-y-2">
-					<Label htmlFor="seo-title">{m.seo_title()}</Label>
-					<Input
-						id="seo-title"
-						value={title}
-						maxLength={TITLE_MAX}
-						onChange={(e) => setTitle(e.target.value)}
-					/>
-					<FieldDescription>{m.seo_title_hint()}</FieldDescription>
-				</div>
-				<div className="space-y-2">
-					<Label htmlFor="seo-description">{m.seo_description()}</Label>
-					<Textarea
-						id="seo-description"
-						value={description}
-						rows={3}
-						maxLength={DESCRIPTION_MAX}
-						onChange={(e) => setDescription(e.target.value)}
-					/>
-					<FieldDescription>{m.seo_description_hint()}</FieldDescription>
-				</div>
+				<form.Field name="seoTitle">
+					{(field) => (
+						<AppField
+							field={field}
+							label={m.seo_title()}
+							description={m.seo_title_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="seoDescription">
+					{(field) => (
+						<AppTextareaField
+							field={field}
+							label={m.seo_description()}
+							description={m.seo_description_hint()}
+							rows={3}
+						/>
+					)}
+				</form.Field>
 				<div className="space-y-2">
 					<Label>{m.og_image()}</Label>
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center">

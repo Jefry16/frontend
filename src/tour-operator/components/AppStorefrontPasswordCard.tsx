@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
 	Card,
 	CardContent,
@@ -6,27 +5,34 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-import { Checkbox } from "#/components/ui/checkbox";
-import { FieldDescription, FieldGroup } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
-import { Label } from "#/components/ui/label";
+import { FieldGroup } from "#/components/ui/field";
 import { Skeleton } from "#/components/ui/skeleton";
-import { Textarea } from "#/components/ui/textarea";
-import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppCardBody } from "#/shared/components/AppCardBody";
+import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppPasswordField } from "#/shared/components/AppPasswordField";
+import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
 	type StorefrontPasswordSettings,
 	useStorefrontPassword,
-	useStorefrontPasswordSave,
+	useStorefrontPasswordForm,
 } from "../hooks/use-storefront-password";
 
 // Settings → General → Store access (Shopify's password protection): restrict
 // the storefront to visitors with the shared password, plus the optional
 // message the password page shows. The password is member-visible by design —
 // it's the gate the operator hands out, not a credential.
+const CardSkeleton = () => (
+	<div className="flex flex-col gap-4">
+		{["a", "b", "c"].map((k) => (
+			<Skeleton key={k} className="h-9 w-full" />
+		))}
+	</div>
+);
+
 export const AppStorefrontPasswordCard = ({
 	tourOperatorId,
 	canWrite,
@@ -44,22 +50,18 @@ export const AppStorefrontPasswordCard = ({
 				<CardDescription>{m.store_access_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{query.isPending ? (
-					<div className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-9 w-full" />
-						))}
-					</div>
-				) : query.isError ? (
-					<AppAlert title={m.error()} description={m.error()} />
-				) : canWrite ? (
-					<StoreAccessForm
-						tourOperatorId={tourOperatorId}
-						settings={query.data}
-					/>
-				) : (
-					<StoreAccessSummary settings={query.data} />
-				)}
+				<AppCardBody query={query} loading={<CardSkeleton />}>
+					{(settings) =>
+						canWrite ? (
+							<StoreAccessForm
+								tourOperatorId={tourOperatorId}
+								settings={settings}
+							/>
+						) : (
+							<StoreAccessSummary settings={settings} />
+						)
+					}
+				</AppCardBody>
 			</CardContent>
 		</Card>
 	);
@@ -72,34 +74,16 @@ const StoreAccessForm = ({
 	tourOperatorId: string;
 	settings: StorefrontPasswordSettings;
 }) => {
-	const save = useStorefrontPasswordSave(tourOperatorId);
-	const [enabled, setEnabled] = useState(settings.enabled);
-	const [password, setPassword] = useState(settings.password ?? "");
-	const [message, setMessage] = useState(settings.message ?? "");
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-	const submit = () => {
-		// Mirror the backend's rule so the common case never round-trips.
-		if (enabled && !password.trim()) {
-			setErrorMessage(m.store_access_password_required());
-			return;
-		}
-		setErrorMessage(null);
-		save.mutate(
-			{
-				enabled,
-				password: password.trim() || null,
-				message: message.trim() || null,
-			},
-			{ onError: (error) => setErrorMessage(apiErrorMessage(error)) },
-		);
-	};
+	const { form, isPending, errorMessage } = useStorefrontPasswordForm(
+		tourOperatorId,
+		settings,
+	);
 
 	return (
 		<form
 			onSubmit={(e) => {
 				e.preventDefault();
-				submit();
+				form.handleSubmit();
 			}}
 			className="space-y-6"
 		>
@@ -107,51 +91,40 @@ const StoreAccessForm = ({
 				<AppAlert title={m.error()} description={errorMessage} />
 			)}
 			<FieldGroup>
-				{/* The Radix Checkbox is a <button>: htmlFor, never a wrapping label. */}
-				<div className="flex items-start gap-2">
-					<Checkbox
-						id="store-access-enabled"
-						checked={enabled}
-						onCheckedChange={(checked) => setEnabled(checked === true)}
-					/>
-					<div className="flex flex-col gap-1">
-						<Label htmlFor="store-access-enabled">
-							{m.store_access_toggle()}
-						</Label>
-						<FieldDescription>{m.store_access_toggle_hint()}</FieldDescription>
-					</div>
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="store-access-password">{m.password()}</Label>
-					<Input
-						id="store-access-password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						className="max-w-sm font-mono"
-					/>
-					<FieldDescription>{m.store_access_password_hint()}</FieldDescription>
-				</div>
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="store-access-message">{m.visitor_message()}</Label>
-					<Textarea
-						id="store-access-message"
-						value={message}
-						onChange={(e) => setMessage(e.target.value)}
-						rows={3}
-					/>
-					<FieldDescription>{m.visitor_message_hint()}</FieldDescription>
-				</div>
+				<form.Field name="enabled">
+					{(field) => (
+						<AppCheckboxField
+							field={field}
+							label={m.store_access_toggle()}
+							description={m.store_access_toggle_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="password">
+					{(field) => (
+						<AppPasswordField
+							field={field}
+							label={m.password()}
+							description={m.store_access_password_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="message">
+					{(field) => (
+						<AppTextareaField
+							field={field}
+							label={m.visitor_message()}
+							description={m.store_access_hint()}
+							rows={3}
+						/>
+					)}
+				</form.Field>
 			</FieldGroup>
-			<AppFormActions
-				isPending={save.isPending}
-				submitLabel={m.save_changes()}
-			/>
+			<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
 		</form>
 	);
 };
 
-// Read-only face. The password itself stays visible — it is the gate the
-// operator hands out, not a credential (the card's own premise).
 const StoreAccessSummary = ({
 	settings,
 }: {

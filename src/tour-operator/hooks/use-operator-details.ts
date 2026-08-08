@@ -1,3 +1,4 @@
+import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
@@ -8,7 +9,10 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { TourOperatorDetails } from "../types";
-import type { OperatorDetailsFormData } from "../validators/operator-details";
+import {
+	type OperatorDetailsFormData,
+	operatorDetailsSchema,
+} from "../validators/operator-details";
 
 /** The operator's own record — the only read of it in the app. */
 export const useOperatorDetails = (tourOperatorId: string) =>
@@ -25,18 +29,25 @@ export const useOperatorDetails = (tourOperatorId: string) =>
 /**
  * Saves the details. A genuine PATCH, unlike most writes here: the backend
  * leaves an absent field unchanged and clears an optional one on a BLANK
- * string. So the form sends all six every time — an untouched value re-sends
+ * string. So the form submits all six every time — an untouched value re-sends
  * itself and changes nothing, and a cleared phone arrives as "" and clears.
  * Nothing is written when nothing changed, so a no-op save records no audit
  * entry either.
  */
-export const useOperatorDetailsForm = (tourOperatorId: string) => {
+export const useOperatorDetailsForm = (
+	tourOperatorId: string,
+	operator: TourOperatorDetails,
+) => {
 	const { refreshUser } = useAuth();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	const save = useMutation<void, AxiosError, OperatorDetailsFormData>({
+	const { mutate, isPending } = useMutation<
+		void,
+		AxiosError,
+		OperatorDetailsFormData
+	>({
 		mutationFn: async (fields) => {
 			await authApi.patch(`/tour-operators/${tourOperatorId}`, fields);
 		},
@@ -56,5 +67,20 @@ export const useOperatorDetailsForm = (tourOperatorId: string) => {
 		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});
 
-	return { save, errorMessage, setErrorMessage };
+	const form = useForm({
+		defaultValues: {
+			name: operator.name,
+			address: operator.address,
+			// Optional columns: the backend clears one with "" rather than an absent
+			// field, so empty stays empty instead of collapsing to null.
+			phone: operator.phone ?? "",
+			email: operator.email ?? "",
+			timezoneId: operator.timezoneId,
+			currencyId: operator.currencyId,
+		} as OperatorDetailsFormData,
+		validators: { onSubmit: operatorDetailsSchema },
+		onSubmit: ({ value }) => mutate(operatorDetailsSchema.parse(value)),
+	});
+
+	return { form, isPending, errorMessage, submit: mutate };
 };

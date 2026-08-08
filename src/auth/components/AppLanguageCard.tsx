@@ -16,6 +16,7 @@ import {
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { getLocale, type Locale } from "#/paraglide/runtime";
+import { AppCardBody } from "#/shared/components/AppCardBody";
 import { useChangeUiLanguage } from "../hooks/use-change-ui-language";
 import { useUiLanguages } from "../hooks/use-ui-languages";
 
@@ -32,7 +33,7 @@ const languageLabel = (code: string): string => {
 // (/ui-languages), current value from Paraglide. Changing it persists to the
 // profile then reloads with the new catalog (via the mutation).
 export const AppLanguageCard = () => {
-	const { data: options, isPending } = useUiLanguages();
+	const languages = useUiLanguages();
 	const changeLanguage = useChangeUiLanguage();
 
 	return (
@@ -42,28 +43,31 @@ export const AppLanguageCard = () => {
 				<CardDescription>{m.interface_language_description()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{isPending || !options ? (
-					<Skeleton className="h-9 w-full sm:max-w-xs" />
-				) : (
-					<Select
-						value={getLocale()}
-						onValueChange={(value) => changeLanguage.mutate(value as Locale)}
-						disabled={changeLanguage.isPending}
-					>
-						<SelectTrigger className="w-full sm:max-w-xs">
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectGroup>
-								{options.map((code) => (
-									<SelectItem key={code} value={code}>
-										{languageLabel(code)}
-									</SelectItem>
-								))}
-							</SelectGroup>
-						</SelectContent>
-					</Select>
-				)}
+				<AppCardBody
+					query={languages}
+					loading={<Skeleton className="h-9 w-full sm:max-w-xs" />}
+				>
+					{(options) => (
+						<Select
+							value={getLocale()}
+							onValueChange={(value) => changeLanguage.mutate(value as Locale)}
+							disabled={changeLanguage.isPending}
+						>
+							<SelectTrigger className="w-full sm:max-w-xs">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									{options.map((code) => (
+										<SelectItem key={code} value={code}>
+											{languageLabel(code)}
+										</SelectItem>
+									))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					)}
+				</AppCardBody>
 			</CardContent>
 		</Card>
 	);

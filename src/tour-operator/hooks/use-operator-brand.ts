@@ -1,5 +1,7 @@
+import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { useState } from "react";
 import { useAuth } from "#/auth";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
@@ -7,6 +9,7 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { Brand, BrandImageSlot } from "../types";
+import { type BrandTextFormData, brandTextSchema } from "../validators/brand";
 
 /** The shop's brand row — images, slogan, palette, social links. */
 export const useBrand = (tourOperatorId: string) =>
@@ -110,21 +113,59 @@ export const useBrandActions = (tourOperatorId: string, brand?: Brand) => {
 		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 
-	const saveText = useMutation<
+	return { setImage, clearImage };
+};
+
+/**
+ * The slogan + short-description form (§5). Split from `useBrandActions`
+ * because the images are not form fields — they upload on drop — while these
+ * two submit together.
+ *
+ * The mutation still spreads over the loaded brand: `PUT /brand` is a full
+ * replace, so the images, palette and social links have to ride along.
+ */
+export const useBrandTextForm = (tourOperatorId: string, brand: Brand) => {
+	const { refreshUser } = useAuth();
+	const toast = useAppToast();
+	const queryClient = useQueryClient();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const { mutate, isPending } = useMutation<
 		void,
 		AxiosError,
-		{ slogan: string | null; shortDescription: string | null }
+		BrandTextFormData
 	>({
 		mutationFn: async (text) => {
-			if (!brand) throw new Error("Brand not loaded");
-			await put({ ...brand, ...text });
+			await authApi.put(`/tour-operators/${tourOperatorId}/brand`, {
+				...brand,
+				// Blank collapses to null so the storefront falls back rather than
+				// rendering an empty line.
+				slogan: text.slogan || null,
+				shortDescription: text.shortDescription || null,
+			});
 		},
 		onSuccess: async () => {
-			await settled();
+			setErrorMessage(null);
+			await refreshUser();
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.brand(tourOperatorId),
+			});
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
 			toast.success(m.brand_saved());
 		},
-		onError: (error) => toast.error(apiErrorMessage(error)),
+		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});
 
-	return { setImage, clearImage, saveText };
+	const form = useForm({
+		defaultValues: {
+			slogan: brand.slogan ?? "",
+			shortDescription: brand.shortDescription ?? "",
+		} as BrandTextFormData,
+		validators: { onSubmit: brandTextSchema },
+		onSubmit: ({ value }) => mutate(brandTextSchema.parse(value)),
+	});
+
+	return { form, isPending, errorMessage };
 };

@@ -179,6 +179,14 @@ error alert** — not as a raw `<p>`, which is for per-field hints — a module-
 `AppFormActions` with Clear in its `secondary` slot. **The `PUT` is a full replace
 everywhere**, so the form always submits every field.
 
+**The gate.** `src/shared/form-pattern.test.ts` fails when a component renders a `<form>`
+with raw controls (`Input` / `Textarea` / `Checkbox` / `select`) and **no `form.Field`** —
+i.e. hand-rolls a form instead of using `useForm` + the renderers. A §5 form that *also*
+holds a dynamic control is fine: a checkbox per weekday or per locale has no single named
+field to hang a renderer on. Two pre-gate editors are frozen in an allowlist with reasons.
+This exists because §5 was the one prescriptive rule here with nothing enforcing it, and
+four settings cards drifted — two of them written by copying a third.
+
 > The archive's richer form *framework* (`AppFormWrapper` + a typed-input factory whose
 > inputs hang off `form.AppField`) is still **deferred** and has not been re-earned:
 > forms compose the field renderers directly. Reintroduce it only when a feature needs
@@ -236,10 +244,12 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 
 ### `App*` components — 136, of which 132 ship a story
 
-**`shared/` — 41.** The cross-cutting design layer.
+**`shared/` — 42.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
-- *States:* `AppResourceView` (loading / 404 / error around a query) · `AppDetailSkeleton`
+- *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`
+  (the same for a **card's** query — pending / error-with-retry / loaded, no header and no
+  404, because a settings singleton has neither) · `AppDetailSkeleton`
   (its `loading` placeholder — pass the field count, don't hand-roll the grid) ·
   `AppNotFound` · `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` · `AppBadge`
 - *Table:* `AppDataTable` · `AppDataTableHeader` · `AppTextFilter` · `AppSetFilter` ·
