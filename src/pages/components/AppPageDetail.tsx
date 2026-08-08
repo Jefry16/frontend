@@ -28,6 +28,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { pageStatusBadgeVariant, pageStatusLabel } from "../format";
 import { usePage } from "../hooks/use-page";
@@ -190,19 +191,13 @@ export const AppPageDetail = ({
 										</span>
 									</AppDetailField>
 									<AppDetailField label={m.seo_title()}>
-										{page.seoTitle ?? (
-											<span className="text-muted-foreground">—</span>
-										)}
+										{page.seoTitle ?? <EmptyValue />}
 									</AppDetailField>
 									<AppDetailField label={m.template_suffix()}>
-										{page.templateSuffix ?? (
-											<span className="text-muted-foreground">—</span>
-										)}
+										{page.templateSuffix ?? <EmptyValue />}
 									</AppDetailField>
 									<AppDetailField label={m.seo_description()}>
-										{page.seoDescription ?? (
-											<span className="text-muted-foreground">—</span>
-										)}
+										{page.seoDescription ?? <EmptyValue />}
 									</AppDetailField>
 									<AppDetailField label={m.created()}>
 										{formatDate(page.createdAt)}

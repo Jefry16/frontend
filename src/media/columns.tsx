@@ -3,10 +3,9 @@ import { FileText } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { formatBytes, isImage, mimeLabel } from "./format";
 import type { MediaAsset } from "./types";
-
-const dash = () => <span className="text-muted-foreground">—</span>;
 
 // The type filter — the raw MIME is the filter value the backend stores. Only
 // the four types the backend accepts (ContentType.ALLOWED), so every option can
@@ -105,7 +104,7 @@ export const mediaColumns = (
 					allowSorting
 				/>
 			),
-			cell: ({ row }) => row.original.uploadedBy.name ?? dash(),
+			cell: ({ row }) => row.original.uploadedBy.name ?? <EmptyValue />,
 		},
 		{
 			id: "createdAt",

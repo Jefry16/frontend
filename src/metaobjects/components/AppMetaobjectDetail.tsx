@@ -17,6 +17,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { metaobjectStatusBadgeVariant, metaobjectStatusLabel } from "../format";
 import { useMetaobject } from "../hooks/use-metaobject";
@@ -215,7 +216,7 @@ const MetaobjectView = ({
 										field.value
 									)
 								) : (
-									<span className="text-muted-foreground">—</span>
+									<EmptyValue />
 								)}
 							</AppDetailField>
 						))}

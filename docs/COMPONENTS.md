@@ -250,7 +250,9 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   `AppNameTranslations` · `AppNoTranslatableLocales` · `AppTranslationSummary` ·
   `AppImageDropzone`
 - Not counted above (not `App*`, so no story owed): `useDataTable` — the table hook
-  `AppDataTable` builds on — and `RequiredMark`, a one-glyph label affordance.
+  `AppDataTable` builds on — plus two one-glyph affordances, `RequiredMark` (a required
+  field's asterisk) and `EmptyValue` (the muted em dash standing in for a value the record
+  doesn't carry; use it rather than hand-rolling the span, which had drifted to ten copies).
 
 **Modules — 97.** Each owns its list / detail / form / edit set:
 `auth` 13 · `tour-operator` 10 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·

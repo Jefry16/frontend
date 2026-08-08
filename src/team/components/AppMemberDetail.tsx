@@ -18,13 +18,12 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { roleBadgeVariant, roleLabel } from "../format";
 import { useMember } from "../hooks/use-member";
 import { useMemberActions } from "../hooks/use-member-actions";
 import type { Member, MemberRole } from "../types";
-
-const dash = () => <span className="text-muted-foreground">—</span>;
 
 // Read-only member detail (role, email, joined) plus the mutating actions —
 // change role and remove/leave — via the shared action pattern. Owns its fetch
@@ -240,7 +239,7 @@ const MemberFacts = ({
 							</AppBadge>
 						</AppDetailField>
 						<AppDetailField label={m.email()}>
-							{member.email ?? dash()}
+							{member.email ?? <EmptyValue />}
 						</AppDetailField>
 						<AppDetailField label={m.joined()}>
 							{formatDate(member.joinedAt)}

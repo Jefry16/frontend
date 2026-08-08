@@ -22,6 +22,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { formatDuration, statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
@@ -38,7 +39,7 @@ const AppList = ({ label, items }: { label: string; items: string[] }) => (
 				))}
 			</ul>
 		) : (
-			<span className="text-muted-foreground">—</span>
+			<EmptyValue />
 		)}
 	</AppDetailField>
 );
@@ -282,7 +283,7 @@ const ExperienceView = ({
 									))}
 								</div>
 							) : (
-								<span className="text-muted-foreground">—</span>
+								<EmptyValue />
 							)}
 						</AppDetailField>
 					</CardContent>
