@@ -247,7 +247,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
   `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
   `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormActions`
-- *Detail / i18n / misc:* `AppDetailField` · `AppSourceBlock` (operator-authored HTML shown
+- *Detail / i18n / misc:* `AppDetailField` (renders the `dt`/`dd` pair — **always place it
+  inside a `<dl>`**) · `AppSourceBlock` (operator-authored HTML shown
   verbatim, never rendered) · `AppConfirmDialog` · `AppLocaleTabs` ·
   `AppNameTranslations` · `AppNoTranslatableLocales` · `AppTranslationSummary` ·
   `AppImageDropzone`

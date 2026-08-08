@@ -149,23 +149,25 @@ export const AppPolicyDetail = ({
 							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
 						<Card>
-							<CardContent className="flex flex-col gap-6">
-								<AppDetailField label={m.policy_type()}>
-									<AppBadge variant="secondary">
-										{policyTypeLabel(policy.type)}
-									</AppBadge>
-								</AppDetailField>
-								<AppDetailField label={m.storefront_path()}>
-									<span className="font-mono text-sm">
-										/policies/{policySlug(policy.type)}
-									</span>
-								</AppDetailField>
-								<AppDetailField label={m.last_updated()}>
-									{formatDateTime(policy.updatedAt)}
-								</AppDetailField>
-								<AppDetailField label={m.policy_body()}>
-									<AppSourceBlock>{policy.body}</AppSourceBlock>
-								</AppDetailField>
+							<CardContent>
+								<dl className="flex flex-col gap-6">
+									<AppDetailField label={m.policy_type()}>
+										<AppBadge variant="secondary">
+											{policyTypeLabel(policy.type)}
+										</AppBadge>
+									</AppDetailField>
+									<AppDetailField label={m.storefront_path()}>
+										<span className="font-mono text-sm">
+											/policies/{policySlug(policy.type)}
+										</span>
+									</AppDetailField>
+									<AppDetailField label={m.last_updated()}>
+										{formatDateTime(policy.updatedAt)}
+									</AppDetailField>
+									<AppDetailField label={m.policy_body()}>
+										<AppSourceBlock>{policy.body}</AppSourceBlock>
+									</AppDetailField>
+								</dl>
 							</CardContent>
 						</Card>
 					</>

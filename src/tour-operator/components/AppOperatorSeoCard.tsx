@@ -184,7 +184,7 @@ const SeoSummary = ({
 	const none = <span className="text-muted-foreground">{m.not_set()}</span>;
 
 	return (
-		<div className="flex flex-col gap-6">
+		<dl className="flex flex-col gap-6">
 			<AppDetailField label={m.seo_title()}>
 				{seo.seoTitle ?? none}
 			</AppDetailField>
@@ -202,6 +202,6 @@ const SeoSummary = ({
 					none
 				)}
 			</AppDetailField>
-		</div>
+		</dl>
 	);
 };

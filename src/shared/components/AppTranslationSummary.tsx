@@ -19,14 +19,18 @@ export const AppTranslationSummary = ({
 	fields: readonly TranslatedField[];
 }) => (
 	<Card>
-		<CardContent className="flex flex-col gap-6">
-			{fields.map(([label, value]) => (
-				<AppDetailField key={label} label={label}>
-					{value ?? (
-						<span className="text-muted-foreground">{m.not_translated()}</span>
-					)}
-				</AppDetailField>
-			))}
+		<CardContent>
+			<dl className="flex flex-col gap-6">
+				{fields.map(([label, value]) => (
+					<AppDetailField key={label} label={label}>
+						{value ?? (
+							<span className="text-muted-foreground">
+								{m.not_translated()}
+							</span>
+						)}
+					</AppDetailField>
+				))}
+			</dl>
 		</CardContent>
 	</Card>
 );

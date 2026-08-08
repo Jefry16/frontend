@@ -159,13 +159,13 @@ const StoreAccessSummary = ({
 }) => {
 	const none = <span className="text-muted-foreground">{m.not_set()}</span>;
 	return (
-		<div className="flex flex-col gap-6">
+		<dl className="flex flex-col gap-6">
 			<AppDetailField label={m.store_access()}>
 				{settings.enabled ? m.store_access_on() : m.store_access_off()}
 			</AppDetailField>
 			<AppDetailField label={m.visitor_message()}>
 				{settings.message ?? none}
 			</AppDetailField>
-		</div>
+		</dl>
 	);
 };
