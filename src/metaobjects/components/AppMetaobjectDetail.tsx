@@ -201,9 +201,16 @@ const MetaobjectView = ({
 							<AppDetailField key={field.key} label={field.name}>
 								{field.value !== null ? (
 									field.type === "json" || field.type === "multi_line_text" ? (
-										<pre className="max-h-40 overflow-auto rounded-md border bg-muted/40 p-2 text-xs whitespace-pre-wrap break-words font-mono">
-											{field.value}
-										</pre>
+										<section
+											// biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable region must be keyboard-reachable
+											tabIndex={0}
+											aria-label={field.name}
+											className="max-h-40 overflow-auto rounded-md border bg-muted/40"
+										>
+											<pre className="p-2 text-xs whitespace-pre-wrap break-words font-mono">
+												{field.value}
+											</pre>
+										</section>
 									) : (
 										field.value
 									)

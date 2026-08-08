@@ -204,7 +204,9 @@ export const AppPageDetail = ({
 								<CardTitle>{m.page_body()}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<AppSourceBlock>{page.body}</AppSourceBlock>
+								<AppSourceBlock label={m.page_body()}>
+									{page.body}
+								</AppSourceBlock>
 							</CardContent>
 						</Card>
 
