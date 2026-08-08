@@ -4,10 +4,9 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { roleBadgeVariant, roleLabel } from "./format";
 import type { Member } from "./types";
-
-const dash = () => <span className="text-muted-foreground">—</span>;
 
 // The roster columns. A factory (not a static array) so it can close over the
 // operator's timezone (joinedAt cell) and its id (name/email filters fetch their
@@ -54,7 +53,7 @@ export const memberColumns = (
 						{row.original.name}
 					</AppResourceLink>
 				) : (
-					dash()
+					<EmptyValue />
 				),
 		},
 		{
@@ -71,7 +70,7 @@ export const memberColumns = (
 					labelKey="email"
 				/>
 			),
-			cell: ({ row }) => row.original.email ?? dash(),
+			cell: ({ row }) => row.original.email ?? <EmptyValue />,
 		},
 		{
 			id: "role",

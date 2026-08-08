@@ -108,15 +108,20 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
 - **API errors:** the backend returns `{ status, error, message, code?, timestamp }`.
   Use `apiErrorMessage()` for the human string and branch on `code` (never `message`) when
   a specific cause needs custom UX (`lib/api-error.ts`).
-  **Where it surfaces follows the hook's kind**, and the split is deliberate: a
-  `use-*-form.ts` hook puts `apiErrorMessage(err)` into the form's inline `AppAlert`, because
-  the operator needs the server's reason beside the field that caused it; a
-  `use-*-actions.ts` hook shows the generic `toast.error(m.error())`, because a row action
-  has no banner to own a message. Deviating is fine with a reason in a comment — the two
-  that deviate have one, and neither is a bug to "fix": `use-forgot-password-form` stays
-  generic on purpose (anti-enumeration — the endpoint 204s whether or not the address
-  exists), and `use-metafield-value-save` applies `apiErrorMessage` inside its loop so the
-  toast can name the field that failed.
+  **Where it surfaces follows the hook's kind; whether it's specific follows the failure.**
+  A `use-*-form.ts` hook puts `apiErrorMessage(err)` into the form's inline `AppAlert`, so
+  the reason sits beside the field that caused it. A `use-*-actions.ts` hook toasts, and
+  picks by what the action can fail on: the generic `toast.error(m.error())` when there is
+  nothing the operator could act on, `toast.error(apiErrorMessage(error))` when the backend
+  answers with a business rule they can fix. Five do the latter today — `use-slot-actions`
+  (*"Capacity cannot be below the seats already booked"*), `use-page-actions`,
+  `use-menu-actions`, `use-metaobject-actions`, `use-metaobject-definition-actions` — all
+  publish/rename/capacity paths that 409 or 422 with a reason. The other eight are deletes
+  and state flips that either work or fail for reasons a toast can't help with.
+  Two more deviate for their own stated reasons, and neither is a bug to "fix":
+  `use-forgot-password-form` stays generic on purpose (anti-enumeration — the endpoint 204s
+  whether or not the address exists), and `use-metafield-value-save` applies
+  `apiErrorMessage` inside its loop so the toast can name the field that failed.
 - **Query retry:** the app's `QueryClient` (`router.tsx`) defaults every query to
   `notFoundAwareRetry` (`lib/query-retry.ts`) — the library's 3-attempt backoff for
   transient failures, but **zero retries on a 404**, since a missing (or cross-tenant)

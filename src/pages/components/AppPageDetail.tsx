@@ -12,7 +12,6 @@ import {
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
@@ -22,12 +21,15 @@ import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppSourceBlock } from "#/shared/components/AppSourceBlock";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { pageStatusBadgeVariant, pageStatusLabel } from "../format";
 import { usePage } from "../hooks/use-page";
@@ -75,15 +77,7 @@ export const AppPageDetail = ({
 				<AppBreadcrumb items={[{ label: m.content() }, { label: m.pages() }]} />
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-2 gap-4">
-						{["a", "b", "c", "d"].map((k) => (
-							<Skeleton key={k} className="h-12 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={4} />}
 		>
 			{(page) => {
 				const actions: AppAction[] = [
@@ -190,19 +184,13 @@ export const AppPageDetail = ({
 										</span>
 									</AppDetailField>
 									<AppDetailField label={m.seo_title()}>
-										{page.seoTitle ?? (
-											<span className="text-muted-foreground">—</span>
-										)}
+										{page.seoTitle ?? <EmptyValue />}
 									</AppDetailField>
 									<AppDetailField label={m.template_suffix()}>
-										{page.templateSuffix ?? (
-											<span className="text-muted-foreground">—</span>
-										)}
+										{page.templateSuffix ?? <EmptyValue />}
 									</AppDetailField>
 									<AppDetailField label={m.seo_description()}>
-										{page.seoDescription ?? (
-											<span className="text-muted-foreground">—</span>
-										)}
+										{page.seoDescription ?? <EmptyValue />}
 									</AppDetailField>
 									<AppDetailField label={m.created()}>
 										{formatDate(page.createdAt)}
@@ -216,9 +204,7 @@ export const AppPageDetail = ({
 								<CardTitle>{m.page_body()}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<pre className="max-h-96 overflow-auto rounded-md border bg-muted/40 p-4 text-xs whitespace-pre-wrap break-words">
-									{page.body}
-								</pre>
+								<AppSourceBlock>{page.body}</AppSourceBlock>
 							</CardContent>
 						</Card>
 

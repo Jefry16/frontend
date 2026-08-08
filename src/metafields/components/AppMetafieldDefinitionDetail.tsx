@@ -3,7 +3,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { Database, Pencil, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
@@ -12,6 +11,7 @@ import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
@@ -43,8 +43,10 @@ export const AppMetafieldDefinitionDetail = ({
 		tourOperatorId,
 		definitionId,
 	);
-	// Names the pinned metaobject type on reference definitions (bounded
-	// catalogue, cached with the metaobjects lists).
+	// Names the pinned metaobject type on reference definitions. Drains the
+	// catalogue rather than fetching the one id: `metaobjects` imports
+	// `#/metafields`, so importing its hook back would be a cycle. Bounded, and
+	// the key is shared with AppMetafieldDefinitionForm's identical call.
 	const metaobjectTypes = useAllPages<{ id: string; name: string }>(
 		queryKeys.metaobjectDefinitions(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/metaobject-definitions`,
@@ -72,15 +74,7 @@ export const AppMetafieldDefinitionDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-2 gap-4">
-						{["a", "b", "c", "d"].map((k) => (
-							<Skeleton key={k} className="h-12 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={4} />}
 		>
 			{(definition) => {
 				const actions: AppAction[] = [

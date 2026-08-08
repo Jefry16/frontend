@@ -4,7 +4,6 @@ import { Crown, LogOut, Trash2, UserCog, Users } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { useAuth } from "#/auth";
 import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
@@ -12,19 +11,19 @@ import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { roleBadgeVariant, roleLabel } from "../format";
 import { useMember } from "../hooks/use-member";
 import { useMemberActions } from "../hooks/use-member-actions";
 import type { Member, MemberRole } from "../types";
-
-const dash = () => <span className="text-muted-foreground">—</span>;
 
 // Read-only member detail (role, email, joined) plus the mutating actions —
 // change role and remove/leave — via the shared action pattern. Owns its fetch
@@ -74,18 +73,7 @@ export const AppMemberDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-						{["a", "b", "c"].map((k) => (
-							<div key={k} className="flex flex-col gap-2">
-								<Skeleton className="h-3 w-16" />
-								<Skeleton className="h-5 w-32" />
-							</div>
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={3} variant="labelled" />}
 		>
 			{(member) => {
 				const isSelf = user?.id === member.id;
@@ -240,7 +228,7 @@ const MemberFacts = ({
 							</AppBadge>
 						</AppDetailField>
 						<AppDetailField label={m.email()}>
-							{member.email ?? dash()}
+							{member.email ?? <EmptyValue />}
 						</AppDetailField>
 						<AppDetailField label={m.joined()}>
 							{formatDate(member.joinedAt)}

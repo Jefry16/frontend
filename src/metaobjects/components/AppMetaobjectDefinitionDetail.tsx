@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { AppActivityCard } from "#/audit";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
@@ -16,6 +15,7 @@ import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import {
 	type AppAction,
@@ -63,15 +63,7 @@ export const AppMetaobjectDefinitionDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-2 gap-4">
-						{["a", "b", "c", "d"].map((k) => (
-							<Skeleton key={k} className="h-12 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={4} />}
 		>
 			{(definition) => (
 				<DefinitionView

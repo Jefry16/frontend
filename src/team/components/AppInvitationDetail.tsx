@@ -1,12 +1,12 @@
 import { Mail, Send, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
@@ -67,18 +67,7 @@ export const AppInvitationDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-						{["a", "b", "c", "d"].map((k) => (
-							<div key={k} className="flex flex-col gap-2">
-								<Skeleton className="h-3 w-16" />
-								<Skeleton className="h-5 w-32" />
-							</div>
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={4} variant="labelled" />}
 		>
 			{(invitation) => {
 				// Actions apply only while the invitation is live (stored PENDING — an

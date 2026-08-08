@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { EmptyValue } from "#/shared/components/EmptyValue";
 import {
 	ACTION_OPTIONS,
 	ENTITY_TYPE_OPTIONS,
@@ -112,7 +113,7 @@ export const activityColumns = (
 		cell: ({ row }) => {
 			const changes = row.original.changes;
 			if (!changes || changes.length === 0) {
-				return <span className="text-muted-foreground">—</span>;
+				return <EmptyValue />;
 			}
 			return (
 				<div className="flex flex-col gap-0.5 text-muted-foreground">
