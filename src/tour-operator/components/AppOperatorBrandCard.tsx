@@ -14,6 +14,7 @@ import { Skeleton } from "#/components/ui/skeleton";
 import { Spinner } from "#/components/ui/spinner";
 import { Textarea } from "#/components/ui/textarea";
 import * as m from "#/paraglide/messages";
+import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useBrand, useBrandActions } from "../hooks/use-operator-brand";
@@ -46,18 +47,23 @@ export const AppOperatorBrandCard = ({
 				<CardDescription>{m.brand_description()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{query.isPending || !query.data ? (
-					<div className="flex flex-col gap-4">
-						<Skeleton className="h-10 w-full" />
-						<Skeleton className="h-24 w-full" />
-					</div>
-				) : (
-					<BrandBody
-						tourOperatorId={tourOperatorId}
-						brand={query.data}
-						canWrite={canWrite}
-					/>
-				)}
+				<AppCardBody
+					query={query}
+					loading={
+						<div className="flex flex-col gap-4">
+							<Skeleton className="h-10 w-full" />
+							<Skeleton className="h-24 w-full" />
+						</div>
+					}
+				>
+					{(brand) => (
+						<BrandBody
+							tourOperatorId={tourOperatorId}
+							brand={brand}
+							canWrite={canWrite}
+						/>
+					)}
+				</AppCardBody>
 			</CardContent>
 		</Card>
 	);

@@ -15,6 +15,7 @@ import { Textarea } from "#/components/ui/textarea";
 import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import {
@@ -27,6 +28,14 @@ import {
 // the storefront to visitors with the shared password, plus the optional
 // message the password page shows. The password is member-visible by design —
 // it's the gate the operator hands out, not a credential.
+const CardSkeleton = () => (
+	<div className="flex flex-col gap-4">
+		{["a", "b", "c"].map((k) => (
+			<Skeleton key={k} className="h-9 w-full" />
+		))}
+	</div>
+);
+
 export const AppStorefrontPasswordCard = ({
 	tourOperatorId,
 	canWrite,
@@ -44,22 +53,18 @@ export const AppStorefrontPasswordCard = ({
 				<CardDescription>{m.store_access_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{query.isPending ? (
-					<div className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-9 w-full" />
-						))}
-					</div>
-				) : query.isError ? (
-					<AppAlert title={m.error()} description={m.error()} />
-				) : canWrite ? (
-					<StoreAccessForm
-						tourOperatorId={tourOperatorId}
-						settings={query.data}
-					/>
-				) : (
-					<StoreAccessSummary settings={query.data} />
-				)}
+				<AppCardBody query={query} loading={<CardSkeleton />}>
+					{(settings) =>
+						canWrite ? (
+							<StoreAccessForm
+								tourOperatorId={tourOperatorId}
+								settings={settings}
+							/>
+						) : (
+							<StoreAccessSummary settings={settings} />
+						)
+					}
+				</AppCardBody>
 			</CardContent>
 		</Card>
 	);

@@ -15,6 +15,7 @@ import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { EmptyValue } from "#/shared/components/EmptyValue";
@@ -43,16 +44,26 @@ export const AppOperatorDetailsCard = ({
 				<CardDescription>{m.operator_details_description()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{query.isPending || !query.data ? (
-					<div className="flex flex-col gap-4">
-						<Skeleton className="h-10 w-full" />
-						<Skeleton className="h-10 w-full" />
-					</div>
-				) : canWrite ? (
-					<DetailsForm tourOperatorId={tourOperatorId} operator={query.data} />
-				) : (
-					<DetailsSummary operator={query.data} />
-				)}
+				<AppCardBody
+					query={query}
+					loading={
+						<div className="flex flex-col gap-4">
+							<Skeleton className="h-10 w-full" />
+							<Skeleton className="h-10 w-full" />
+						</div>
+					}
+				>
+					{(operator) =>
+						canWrite ? (
+							<DetailsForm
+								tourOperatorId={tourOperatorId}
+								operator={operator}
+							/>
+						) : (
+							<DetailsSummary operator={operator} />
+						)
+					}
+				</AppCardBody>
 			</CardContent>
 		</Card>
 	);

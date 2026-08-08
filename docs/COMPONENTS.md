@@ -236,10 +236,12 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 
 ### `App*` components — 136, of which 132 ship a story
 
-**`shared/` — 41.** The cross-cutting design layer.
+**`shared/` — 42.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
-- *States:* `AppResourceView` (loading / 404 / error around a query) · `AppDetailSkeleton`
+- *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`
+  (the same for a **card's** query — pending / error-with-retry / loaded, no header and no
+  404, because a settings singleton has neither) · `AppDetailSkeleton`
   (its `loading` placeholder — pass the field count, don't hand-roll the grid) ·
   `AppNotFound` · `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` · `AppBadge`
 - *Table:* `AppDataTable` · `AppDataTableHeader` · `AppTextFilter` · `AppSetFilter` ·
