@@ -3,10 +3,11 @@
 Point-in-time diff of the **backend admin HTTP surface** vs **what the admin frontend
 consumes**. Tick an endpoint when a real frontend consumer ships.
 
-> **Snapshot basis:** backend `main` @ `3f7685e` (PR #102, storefront policies), re-diffed
-> re-diffed 2026-08-08 after backend #105. **133 admin endpoints** across the 11 contexts with an admin HTTP surface
-> (`notification` is event-driven, so it has none). The open PR #103 branch adds **no
-> endpoint** — it widens the payload of an existing one (see the gap list).
+> **Snapshot basis:** backend `main`, re-diffed **2026-08-08** by enumerating every
+> `@(Get|Post|Put|Patch|Delete)Mapping` under `presentation/controller` and matching each
+> against the frontend source. **136 admin endpoints** across the 11 contexts with an admin
+> HTTP surface (`notification` is event-driven, so it has none). The previous count of 133
+> reconciles exactly: `−2` for the logo pair #106 deleted, `+5` for #106/#108/#109.
 >
 > **Out of scope:** the `storefront` context's 8 public page routes (`/`, `/{locale}`,
 > `/experiences`, `/policies/{type}`, `/password`, + HEAD/POST). Those are unauthenticated
@@ -18,26 +19,45 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## Coverage: 133 / 133 consumed
+## Coverage: 131 / 136 consumed — and 2 dead calls
 
 | Context | Endpoints | Consumed | Open |
 |---|---:|---:|---:|
-| `identity` — `/auth/**` | 13 | 13 | — |
-| `identity` — `/ui-languages` | 1 | 1 | — |
+| `identity` — `/auth/**` + `/ui-languages` | 14 | 14 | — |
 | `reference` — timezones · currencies · languages | 3 | 3 | — |
-| `touroperator` — create · locales · logo · members · invitations · accept · menus · storefront-password | 24 | 24 | — |
-| `touroperator` — translations | 4 | 4 | — |
-| `touroperator` — SEO | 2 | 2 | — |
+| `touroperator` | 40 | 36 | **4** |
 | `audience` — CRUD + translations | 8 | 8 | — |
 | `experience` — CRUD/publish + translations + slots | 16 | 16 | — |
 | `pickup` | 5 | 5 | — |
 | `audit` | 2 | 2 | — |
-| `media` | 4 | 4 | — |
+| `media` | 5 | 4 | **1** |
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
 | `metafield` — definitions · owner values · metaobjects | 26 | 26 | — |
 | `contact` | 5 | 5 | — |
-| `touroperator` — policies + policy translations | 8 | 8 | — |
-| **Total** | **133** | **133** | **—** |
+| **Total** | **136** | **131** | **5** |
+
+### 🔴 Two calls point at endpoints that no longer exist
+
+`tour-operator/hooks/use-operator-logo.ts` still calls **`PUT`** and
+**`DELETE /tour-operators/{id}/logo`**. Backend #106 deleted both — `BrandController`'s
+javadoc says so outright: *"This replaced PUT/DELETE .../logo."* Settings → General's logo
+card therefore fails against current `main`. This is a break, not a gap, and it outranks
+everything below.
+
+The replacement is `/brand`, which is a superset rather than a rename — `BrandResponse`
+carries `slogan`, `shortDescription`, `logoMediaId`, `squareLogoMediaId`, `faviconMediaId`,
+`coverImageMediaId`, `colors` and `socialLinks`. So `AppOperatorLogoCard` cannot be
+point-patched onto it; the card is a slice's worth of work.
+
+### The 5 unconsumed
+
+| Verb | Path | Backend PR | Note |
+|---|---|---|---|
+| `GET` | `/tour-operators/{id}/brand` | #106 | replaces the logo pair; see above |
+| `PUT` | `/tour-operators/{id}/brand` | #106 | |
+| `GET` | `/tour-operators/{id}` | #108 | the app never reads the operator record — `useCurrentTourOperator` picks the summary out of the auth profile |
+| `PATCH` | `/tour-operators/{id}` | #108 | so name · address · timezone · currency cannot be edited after onboarding |
+| `PATCH` | `/media/{mediaId}` | #109 | alt text — `use-media-actions` exposes only `remove` |
 
 Owner-scoped metafield values are one generic path in
 `metafields/hooks/use-owner-metafields.ts` — both owner types (`experiences/{id}/metafields`
@@ -73,9 +93,35 @@ that merge.
 
 ---
 
-## ✅ Nothing left
+## ⚠️ One field-level gap the endpoint count can't see
 
-Every admin endpoint the backend exposes has a frontend consumer.
+The table above counts **endpoints**, not payload fields — so it reads 133/133 while a
+field on a consumed endpoint goes unused. One does.
+
+**`ExperienceRequest` accepts `seoTitle` and `seoDescription`; `ExperienceResponse` never
+returns them.** The write side exists, the read side does not, so the admin cannot show an
+experience's SEO, cannot seed a form field from it, and therefore does not send it. Worse,
+`ExperienceInputMapper` maps blank-or-absent to `null` and the update writes that, so **every
+experience edit from the admin clears both fields** — including a value set by any other
+route.
+
+This is not fixable frontend-side alone: a form field would have nothing to populate from.
+It needs `ExperienceResponse` to expose the two fields first, after which the experience
+form adds them the way the page form already does (`use-page-form` sends all five of
+`UpdatePageRequest`'s fields precisely because the page GET returns all five).
+
+Verified 2026-08-08 against backend `main`: `ExperienceRequest`, `ExperienceResponse`,
+`ExperienceInputMapper.seoTitle/seoDescription`.
+
+Everything else checked in the same pass matches exactly — `UpdatePageRequest`,
+`CreatePageRequest`, `UpdateMetafieldDefinitionRequest`, `UpdateMetaobjectDefinitionRequest`
+and `UpdateMetaobjectRequest` against their forms, and every validation bound against its
+backend value object (experience name 200, long description 10 000, page title 255, body
+262 144, SEO title 70, SEO description 320).
+
+---
+
+## Previously closed
 
 **Backend #105 added eight** (`/policies` ×5 + `/policies/{id}/translations` ×3) and they
 landed together as the `policies` module — Content → Policies. Two things about that surface
@@ -97,4 +143,7 @@ Two notes for whoever extends that card:
   therefore uses the same raw two-step the logo card does (multipart POST → `Location` → id),
   and resolves the preview with a direct `GET .../media/{id}`.
 
-When the backend adds an endpoint, re-run the diff below.
+When the backend adds an endpoint, re-run the diff. The mechanical version: enumerate
+every `@(Get|Post|Put|Patch|Delete)Mapping` under `presentation/controller`, drop
+`storefront`, and match each path against the frontend source — remembering that a call
+is often composed (`` `${base}/publish` ``), so a whole-path grep under-reports.
