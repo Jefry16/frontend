@@ -1,9 +1,16 @@
+import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { useState } from "react";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
+import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import {
+	type StorefrontPasswordFormData,
+	storefrontPasswordSchema,
+} from "../validators/storefront-password";
 
 // Storefront password protection (Shopify's Store access): the shared gate
 // the operator hands out — member-visible by design, including the password.
@@ -51,4 +58,42 @@ export const useStorefrontPasswordSave = (tourOperatorId: string) => {
 			});
 		},
 	});
+};
+
+/**
+ * The store-access form (§5). The schema owns the "enabled needs a password"
+ * rule, so the component no longer hand-checks it before submitting.
+ */
+export const useStorefrontPasswordForm = (
+	tourOperatorId: string,
+	settings: StorefrontPasswordSettings,
+) => {
+	const save = useStorefrontPasswordSave(tourOperatorId);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const form = useForm({
+		defaultValues: {
+			enabled: settings.enabled,
+			password: settings.password ?? "",
+			message: settings.message ?? "",
+		} as StorefrontPasswordFormData,
+		validators: { onSubmit: storefrontPasswordSchema },
+		onSubmit: ({ value }) => {
+			const v = storefrontPasswordSchema.parse(value);
+			save.mutate(
+				{
+					enabled: v.enabled,
+					// Blank clears — the gate keeps no stale password once it is off.
+					password: v.password || null,
+					message: v.message || null,
+				},
+				{
+					onSuccess: () => setErrorMessage(null),
+					onError: (error) => setErrorMessage(apiErrorMessage(error)),
+				},
+			);
+		},
+	});
+
+	return { form, isPending: save.isPending, errorMessage };
 };

@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -7,22 +5,23 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/components/ui/card";
-import { FieldDescription, FieldGroup } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
-import { Label } from "#/components/ui/label";
+import { FieldGroup } from "#/components/ui/field";
 import { Skeleton } from "#/components/ui/skeleton";
-import { Spinner } from "#/components/ui/spinner";
-import { Textarea } from "#/components/ui/textarea";
 import * as m from "#/paraglide/messages";
+import { AppAlert } from "#/shared/components/AppAlert";
 import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppField } from "#/shared/components/AppField";
+import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { EmptyValue } from "#/shared/components/EmptyValue";
-import { useBrand, useBrandActions } from "../hooks/use-operator-brand";
+import {
+	useBrand,
+	useBrandActions,
+	useBrandTextForm,
+} from "../hooks/use-operator-brand";
 import type { Brand, BrandImageSlot } from "../types";
 import { AppBrandImageSlot } from "./AppBrandImageSlot";
-
-const SLOGAN_MAX = 80;
-const SHORT_DESCRIPTION_MAX = 150;
 
 // The shop's brand: the four images a theme reads, plus the slogan and short
 // description the storefront shows beside them.
@@ -78,13 +77,10 @@ const BrandBody = ({
 	brand: Brand;
 	canWrite: boolean;
 }) => {
-	const { setImage, clearImage, saveText } = useBrandActions(
+	const { setImage, clearImage } = useBrandActions(tourOperatorId, brand);
+	const { form, isPending, errorMessage } = useBrandTextForm(
 		tourOperatorId,
 		brand,
-	);
-	const [slogan, setSlogan] = useState(brand.slogan ?? "");
-	const [shortDescription, setShortDescription] = useState(
-		brand.shortDescription ?? "",
 	);
 
 	const imagePending = setImage.isPending || clearImage.isPending;
@@ -114,45 +110,37 @@ const BrandBody = ({
 					className="space-y-4"
 					onSubmit={(e) => {
 						e.preventDefault();
-						// Blank collapses to null so the storefront falls back rather than
-						// rendering an empty line.
-						saveText.mutate({
-							slogan: slogan.trim() || null,
-							shortDescription: shortDescription.trim() || null,
-						});
+						form.handleSubmit();
 					}}
 				>
+					{errorMessage && (
+						<AppAlert title={m.error()} description={errorMessage} />
+					)}
 					<FieldGroup>
-						<div className="space-y-2">
-							<Label htmlFor="brand-slogan">{m.brand_slogan()}</Label>
-							<Input
-								id="brand-slogan"
-								value={slogan}
-								maxLength={SLOGAN_MAX}
-								onChange={(e) => setSlogan(e.target.value)}
-							/>
-							<FieldDescription>{m.brand_slogan_hint()}</FieldDescription>
-						</div>
-						<div className="space-y-2">
-							<Label htmlFor="brand-short-description">
-								{m.brand_short_description()}
-							</Label>
-							<Textarea
-								id="brand-short-description"
-								rows={3}
-								value={shortDescription}
-								maxLength={SHORT_DESCRIPTION_MAX}
-								onChange={(e) => setShortDescription(e.target.value)}
-							/>
-							<FieldDescription>
-								{m.brand_short_description_hint()}
-							</FieldDescription>
-						</div>
+						<form.Field name="slogan">
+							{(field) => (
+								<AppField
+									field={field}
+									label={m.brand_slogan()}
+									description={m.brand_slogan_hint()}
+								/>
+							)}
+						</form.Field>
+						<form.Field name="shortDescription">
+							{(field) => (
+								<AppTextareaField
+									field={field}
+									label={m.brand_short_description()}
+									description={m.brand_short_description_hint()}
+									rows={3}
+								/>
+							)}
+						</form.Field>
 					</FieldGroup>
-					<Button type="submit" disabled={saveText.isPending}>
-						{saveText.isPending && <Spinner />}
-						{m.save_changes()}
-					</Button>
+					<AppFormActions
+						isPending={isPending}
+						submitLabel={m.save_changes()}
+					/>
 				</form>
 			) : (
 				<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
