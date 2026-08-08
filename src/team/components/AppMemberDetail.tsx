@@ -94,8 +94,7 @@ export const AppMemberDetail = ({
 				// Actions mirror the backend guards (which are the real gate — the UI just
 				// hides what a viewer can't do). What's built here is shaped by the
 				// TARGET; the caller's tier is applied by AppPageActions:
-				// - Viewing yourself → Leave, `member` because self-removal needs only
-				//   membership backend-side (but the owner can't leave without transferring).
+				// - Viewing yourself → Leave (but the owner can't leave without transferring).
 				// - Another non-owner member → role toggle + Remove, both ADMIN+, and for
 				//   an OWNER caller also "Make owner" (transfers ownership, demoting the
 				//   caller to admin).
@@ -103,6 +102,7 @@ export const AppMemberDetail = ({
 				if (isSelf) {
 					if (member.role !== "OWNER") {
 						actions.push({
+							// RemoveTeamMemberUseCase gates self-removal on membership alone.
 							id: "leave",
 							label: m.leave_team(),
 							icon: LogOut,

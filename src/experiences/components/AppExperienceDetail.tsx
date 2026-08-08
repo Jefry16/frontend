@@ -123,6 +123,7 @@ export const AppExperienceDetail = ({
 							}),
 					},
 					{
+						// ListExperienceTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,

@@ -98,6 +98,7 @@ const MessageView = ({
 	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
+			// A mailto: — no endpoint behind it, so no check to mirror.
 			id: "reply",
 			label: m.inbox_reply(),
 			icon: Mail,
@@ -109,6 +110,7 @@ const MessageView = ({
 			},
 		},
 		{
+			// SetContactMessageReadUseCase is ensureMember ("STAFF answers inquiries").
 			id: "mark-unread",
 			label: m.inbox_mark_unread(),
 			icon: MailOpen,

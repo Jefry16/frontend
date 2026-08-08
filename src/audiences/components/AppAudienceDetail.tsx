@@ -76,6 +76,7 @@ export const AppAudienceDetail = ({
 							}),
 					},
 					{
+						// ListAudienceTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,

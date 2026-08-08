@@ -87,6 +87,7 @@ export const AppPolicyDetail = ({
 							}),
 					},
 					{
+						// ListPolicyTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,
