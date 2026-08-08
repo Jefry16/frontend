@@ -4,7 +4,7 @@ import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 import {
-	AppOperatorLogoCard,
+	AppOperatorBrandCard,
 	AppOperatorSeoCard,
 	AppStorefrontPasswordCard,
 	useCurrentTourOperator,
@@ -44,9 +44,8 @@ function GeneralSettingsPage() {
 			/>
 			{operator && (
 				<>
-					<AppOperatorLogoCard
+					<AppOperatorBrandCard
 						tourOperatorId={operator.id}
-						logoUrl={operator.logoUrl}
 						canWrite={canWrite}
 					/>
 					<AppOperatorSeoCard

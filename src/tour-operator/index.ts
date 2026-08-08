@@ -1,5 +1,5 @@
+export { AppOperatorBrandCard } from "./components/AppOperatorBrandCard";
 export { AppOperatorLanguagesForm } from "./components/AppOperatorLanguagesForm";
-export { AppOperatorLogoCard } from "./components/AppOperatorLogoCard";
 export { AppOperatorSeoCard } from "./components/AppOperatorSeoCard";
 export { AppOperatorTranslations } from "./components/AppOperatorTranslations";
 export { AppSettingsSidebar } from "./components/AppSettingsSidebar";

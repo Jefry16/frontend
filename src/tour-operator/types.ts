@@ -22,3 +22,41 @@ export interface OperatorTranslation {
 	slogan: string | null;
 	shortDescription: string | null;
 }
+
+/** One palette entry. `background` and `foreground` are operator-chosen hex. */
+export interface BrandColor {
+	background: string;
+	foreground: string;
+}
+
+export interface BrandSocialLink {
+	platform: string;
+	url: string;
+}
+
+/**
+ * The shop's brand row (GET/PUT /tour-operators/{id}/brand).
+ *
+ * The whole shape is modelled even though this release only edits the images,
+ * slogan and short description: **PUT is a full replace** — `UpdateBrandUseCase`
+ * rebuilds the row from the body and `readColors` yields an empty list when
+ * `colors` is absent — so every write has to echo `colors` and `socialLinks`
+ * back untouched or it silently wipes them.
+ */
+export interface Brand {
+	slogan: string | null;
+	shortDescription: string | null;
+	logoMediaId: string | null;
+	squareLogoMediaId: string | null;
+	faviconMediaId: string | null;
+	coverImageMediaId: string | null;
+	colors: { primary: BrandColor[]; secondary: BrandColor[] };
+	socialLinks: BrandSocialLink[];
+}
+
+/** The four image slots, and the only part of a brand this release writes. */
+export type BrandImageSlot =
+	| "logoMediaId"
+	| "squareLogoMediaId"
+	| "faviconMediaId"
+	| "coverImageMediaId";
