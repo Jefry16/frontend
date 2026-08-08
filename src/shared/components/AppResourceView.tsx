@@ -11,7 +11,12 @@ interface Props<TData> {
 	// Section title (loading/error header) AND the AppNotFound resource label,
 	// e.g. m.experience().
 	resource: string;
-	// AppNotFound icon.
+	// AppNotFound icon — the ENTITY's icon, the same one its leaf carries in
+	// `tour-operator/nav-items.ts` and its list's empty state, so a resource reads
+	// as one glyph everywhere. Not a negation icon: three pages used to send
+	// FileX/UserX/MailX, which gave media a different symbol when it was missing
+	// than when there was none yet. AppNotFound's own FileQuestion default covers
+	// a caller with no entity icon to give.
 	icon?: LucideIcon;
 	// The SECTION breadcrumb shown in the loading / 404 / error header, e.g.
 	// "Catalog / Experiences" — before the specific record resolves.

@@ -1,4 +1,4 @@
-import { MailX, Send, Trash2 } from "lucide-react";
+import { Mail, Send, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
@@ -53,7 +53,7 @@ export const AppInvitationDetail = ({
 		<AppResourceView
 			query={query}
 			resource={m.invitation()}
-			icon={MailX}
+			icon={Mail}
 			breadcrumb={
 				<AppBreadcrumb
 					items={[

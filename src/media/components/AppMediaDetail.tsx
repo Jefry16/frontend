@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { FileText, FileX, Trash2 } from "lucide-react";
+import { FileText, Images, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
@@ -80,7 +80,7 @@ export const AppMediaDetail = ({
 		<AppResourceView
 			query={query}
 			resource={m.media()}
-			icon={FileX}
+			icon={Images}
 			breadcrumb={
 				<AppBreadcrumb items={[{ label: m.content() }, { label: m.media() }]} />
 			}

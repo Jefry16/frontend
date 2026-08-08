@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Crown, LogOut, Trash2, UserCog, UserX } from "lucide-react";
+import { Crown, LogOut, Trash2, UserCog, Users } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { useAuth } from "#/auth";
 import { Card, CardContent } from "#/components/ui/card";
@@ -60,7 +60,7 @@ export const AppMemberDetail = ({
 		<AppResourceView
 			query={query}
 			resource={m.member()}
-			icon={UserX}
+			icon={Users}
 			breadcrumb={
 				<AppBreadcrumb
 					items={[
