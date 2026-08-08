@@ -84,7 +84,7 @@ export const usePageTranslationForm = ({
 			body: translation.body ?? "",
 			seoTitle: translation.seoTitle ?? "",
 			seoDescription: translation.seoDescription ?? "",
-			slug: translation.slug ?? "",
+			handle: translation.handle ?? "",
 		} as PageTranslationFormData,
 		validators: { onSubmit: pageTranslationSchema },
 		onSubmit: ({ value }) => save.mutate(pageTranslationSchema.parse(value)),

@@ -166,7 +166,7 @@ const list = (v: string[] | null): string | null =>
 
 const experienceFields = (t: ExperienceTranslation): TranslatedField[] => [
 	[m.name(), t.name],
-	[m.slug(), t.slug],
+	[m.slug(), t.handle],
 	[m.description(), t.description],
 	[m.long_description(), t.longDescription],
 	[m.highlights(), list(t.highlights)],

@@ -7,7 +7,7 @@ export interface Experience {
 	id: string;
 	context: "experiences";
 	name: string;
-	slug: string;
+	handle: string;
 	description: string;
 	longDescription: string;
 	featured: boolean;
@@ -30,7 +30,7 @@ export interface Experience {
 // One locale's translation overlay (GET/PUT/DELETE .../translations/{locale}).
 // `locale` is its identity; every content field is nullable — null means
 // untranslated, so the storefront falls back to the canonical experience field.
-// Tags aren't translated (no `tags` here); `slug` is per-locale.
+// Tags aren't translated (no `tags` here); `handle` is per-locale.
 export interface ExperienceTranslation {
 	locale: string;
 	name: string | null;
@@ -39,5 +39,5 @@ export interface ExperienceTranslation {
 	highlights: string[] | null;
 	included: string[] | null;
 	notIncluded: string[] | null;
-	slug: string | null;
+	handle: string | null;
 }

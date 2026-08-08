@@ -10,7 +10,7 @@ const OP_ID = "op-1";
 
 const base = {
 	context: "experiences" as const,
-	slug: "",
+	handle: "",
 	description: "",
 	longDescription: "",
 	featured: false,

@@ -24,7 +24,7 @@ const ES: PageTranslation = {
 	body: null,
 	seoTitle: null,
 	seoDescription: null,
-	slug: "sobre-nosotros",
+	handle: "sobre-nosotros",
 };
 
 const qc = storyQueryClient();

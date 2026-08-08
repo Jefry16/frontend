@@ -13,7 +13,7 @@ const EXPERIENCE: Experience = {
 	id: EXP_ID,
 	context: "experiences",
 	name: "Sunset Kayak Tour",
-	slug: "sunset-kayak-tour",
+	handle: "sunset-kayak-tour",
 	description: "Paddle the bay as the sun goes down, with a local guide.",
 	longDescription:
 		"A relaxed two-and-a-half hour paddle timed for golden hour. We launch from the old harbour, hug the cliffs, and pause on a quiet cove for photos before returning under the first stars.",

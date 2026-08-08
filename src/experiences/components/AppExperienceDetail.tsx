@@ -232,7 +232,7 @@ const ExperienceView = ({
 									{`${experience.bookingCutoffHours}h`}
 								</AppDetailField>
 								<AppDetailField label={m.slug()}>
-									<span className="font-mono text-sm">{experience.slug}</span>
+									<span className="font-mono text-sm">{experience.handle}</span>
 								</AppDetailField>
 								<AppDetailField label={m.created()}>{created}</AppDetailField>
 							</dl>

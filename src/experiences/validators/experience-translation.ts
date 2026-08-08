@@ -14,9 +14,9 @@ const text = (max: number) =>
 		.pipe(z.string().max(max, m.validation_max_length({ count: max })))
 		.transform((v): string | null => (v.length ? v : null));
 
-// Optional localized slug: empty → null (fall back to canonical). When present
+// Optional localized handle: empty → null (fall back to canonical). When present
 // it must be kebab-case and ≤170, mirroring the backend Slug value object.
-const slug = z
+const handle = z
 	.string()
 	.transform((v) => v.trim())
 	.pipe(
@@ -43,7 +43,7 @@ export const experienceTranslationSchema = z.object({
 	highlights: items,
 	included: items,
 	notIncluded: items,
-	slug,
+	handle,
 });
 
 export type ExperienceTranslationFormData = z.input<

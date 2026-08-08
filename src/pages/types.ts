@@ -30,12 +30,12 @@ export interface Page {
 }
 
 // One locale's overlay; every field nullable (null = untranslated, falls back
-// to canonical). `slug` = the localized handle (null = canonical serves it).
+// to canonical). `handle` = the localized handle (null = canonical serves it).
 export interface PageTranslation {
 	locale: string;
 	title: string | null;
 	body: string | null;
 	seoTitle: string | null;
 	seoDescription: string | null;
-	slug: string | null;
+	handle: string | null;
 }
