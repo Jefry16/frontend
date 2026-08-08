@@ -9,10 +9,14 @@ import { useCurrentTourOperator } from "./use-current-tour-operator";
  * discovering the limit by filling in a form and losing the input.
  *
  * Mirrors the two tiers the backend actually distinguishes: `ensureAdmin` (60
- * use cases — every write in the product) and `ensureOwner` (exactly one,
+ * use cases — nearly every write in the product) and `ensureOwner` (exactly one,
  * transferring ownership). Reads are `ensureMember`, so anything a member can
  * see stays visible: notably marking a contact message read, and the links into
  * the per-locale translation editors.
+ *
+ * "Nearly", not "every": `RemoveTeamMemberUseCase` gates self-removal on
+ * membership alone, so a STAFF member may leave the team. A write is not
+ * automatically ADMIN+ — read the use case before assuming the tier.
  *
  * Both flags are false off an operator route, or when the user is not a member
  * of the operator in the URL — the layout already blocks that case.

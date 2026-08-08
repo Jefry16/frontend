@@ -101,6 +101,7 @@ export const AppPageDetail = ({
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,
+						member: true,
 						onSelect: () =>
 							navigate({
 								to: "/tour-operators/$tourOperatorId/content/pages/$pageId/translations",
@@ -171,13 +172,7 @@ export const AppPageDetail = ({
 									]}
 								/>
 							}
-							actions={
-								<AppPageActions
-									actions={actions.filter(
-										(a) => canWrite || a.id === "translations",
-									)}
-								/>
-							}
+							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
 
 						<Card>

@@ -101,6 +101,7 @@ const MessageView = ({
 			id: "reply",
 			label: m.inbox_reply(),
 			icon: Mail,
+			member: true,
 			onSelect: () => {
 				window.location.href = `mailto:${message.email}?subject=${encodeURIComponent(
 					`Re: ${message.summary}`,
@@ -111,6 +112,7 @@ const MessageView = ({
 			id: "mark-unread",
 			label: m.inbox_mark_unread(),
 			icon: MailOpen,
+			member: true,
 			onSelect: () =>
 				setRead.mutate(
 					{ read: false },
@@ -166,11 +168,7 @@ const MessageView = ({
 						]}
 					/>
 				}
-				actions={
-					<AppPageActions
-						actions={actions.filter((a) => canWrite || a.id !== "delete")}
-					/>
-				}
+				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 
 			<Card>

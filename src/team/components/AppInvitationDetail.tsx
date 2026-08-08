@@ -85,7 +85,7 @@ export const AppInvitationDetail = ({
 				// "Expired" row is still PENDING and can be resent or revoked). Terminal
 				// states (ACCEPTED / REVOKED) offer none.
 				const actions: AppAction[] =
-					canWrite && invitation.status === "PENDING"
+					invitation.status === "PENDING"
 						? [
 								{
 									id: "resend",
@@ -114,6 +114,7 @@ export const AppInvitationDetail = ({
 						invitation={invitation}
 						tourOperatorId={tourOperatorId}
 						actions={actions}
+						canWrite={canWrite}
 					/>
 				);
 			}}
@@ -126,10 +127,12 @@ const InvitationFacts = ({
 	invitation,
 	tourOperatorId,
 	actions,
+	canWrite,
 }: {
 	invitation: Invitation;
 	tourOperatorId: string;
 	actions: AppAction[];
+	canWrite: boolean;
 }) => {
 	const { formatDateTime: format } = useOperatorDateTime();
 	const status = effectiveStatus(invitation);
@@ -156,9 +159,7 @@ const InvitationFacts = ({
 						]}
 					/>
 				}
-				actions={
-					actions.length > 0 ? <AppPageActions actions={actions} /> : undefined
-				}
+				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 			<Card>
 				<CardContent>

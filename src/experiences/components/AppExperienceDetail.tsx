@@ -126,6 +126,7 @@ export const AppExperienceDetail = ({
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,
+						member: true,
 						onSelect: () =>
 							navigate({
 								to: "/tour-operators/$tourOperatorId/experiences/$experienceId/translations",
@@ -152,7 +153,8 @@ export const AppExperienceDetail = ({
 					<ExperienceView
 						experience={experience}
 						tourOperatorId={tourOperatorId}
-						actions={actions.filter((a) => canWrite || a.id === "translations")}
+						actions={actions}
+						canWrite={canWrite}
 					/>
 				);
 			}}
@@ -164,10 +166,12 @@ const ExperienceView = ({
 	experience,
 	tourOperatorId,
 	actions,
+	canWrite,
 }: {
 	experience: Experience;
 	tourOperatorId: string;
 	actions: AppAction[];
+	canWrite: boolean;
 }) => {
 	const { formatDate } = useOperatorDateTime();
 	const created = formatDate(experience.createdAt);
@@ -190,7 +194,7 @@ const ExperienceView = ({
 						]}
 					/>
 				}
-				actions={<AppPageActions actions={actions} />}
+				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 
 			<div className="flex flex-col gap-6">

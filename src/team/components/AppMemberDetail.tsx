@@ -18,7 +18,7 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useCurrentTourOperator, useOperatorDateTime } from "#/tour-operator";
+import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { roleBadgeVariant, roleLabel } from "../format";
 import { useMember } from "../hooks/use-member";
 import { useMemberActions } from "../hooks/use-member-actions";
@@ -36,8 +36,7 @@ export const AppMemberDetail = ({
 	tourOperatorId: string;
 	userId: string;
 }) => {
-	const operator = useCurrentTourOperator();
-	const callerRole = operator?.role;
+	const { canWrite, isOwner } = usePermissions();
 	const { user } = useAuth();
 	const navigate = useNavigate();
 	const toast = useAppToast();
@@ -90,16 +89,16 @@ export const AppMemberDetail = ({
 		>
 			{(member) => {
 				const isSelf = user?.id === member.id;
-				const isAdmin = callerRole === "OWNER" || callerRole === "ADMIN";
-				const isOwnerCaller = callerRole === "OWNER";
 				const label = member.name ?? member.email ?? m.member();
 
 				// Actions mirror the backend guards (which are the real gate — the UI just
-				// hides what a viewer can't do):
-				// - Viewing yourself → Leave (but the owner can't leave without transferring).
-				// - An ADMIN+ managing another non-owner member → role toggle + Remove, and if
-				//   the caller is the OWNER, also "Make owner" (transfers ownership, demoting
-				//   the caller to admin).
+				// hides what a viewer can't do). What's built here is shaped by the
+				// TARGET; the caller's tier is applied by AppPageActions:
+				// - Viewing yourself → Leave, `member` because self-removal needs only
+				//   membership backend-side (but the owner can't leave without transferring).
+				// - Another non-owner member → role toggle + Remove, both ADMIN+, and for
+				//   an OWNER caller also "Make owner" (transfers ownership, demoting the
+				//   caller to admin).
 				const actions: AppAction[] = [];
 				if (isSelf) {
 					if (member.role !== "OWNER") {
@@ -108,6 +107,7 @@ export const AppMemberDetail = ({
 							label: m.leave_team(),
 							icon: LogOut,
 							variant: "destructive",
+							member: true,
 							pending: remove.isPending,
 							confirm: {
 								title: m.leave_team_title(),
@@ -126,7 +126,7 @@ export const AppMemberDetail = ({
 								}),
 						});
 					}
-				} else if (isAdmin && member.role !== "OWNER") {
+				} else if (member.role !== "OWNER") {
 					const target: MemberRole =
 						member.role === "STAFF" ? "ADMIN" : "STAFF";
 					actions.push({
@@ -136,7 +136,7 @@ export const AppMemberDetail = ({
 						onSelect: () => changeRole.mutate(target),
 						pending: changeRole.isPending,
 					});
-					if (isOwnerCaller) {
+					if (isOwner) {
 						actions.push({
 							id: "transfer",
 							label: m.make_owner(),
@@ -178,6 +178,7 @@ export const AppMemberDetail = ({
 						label={label}
 						tourOperatorId={tourOperatorId}
 						actions={actions}
+						canWrite={canWrite}
 					/>
 				);
 			}}
@@ -190,11 +191,13 @@ const MemberFacts = ({
 	label,
 	tourOperatorId,
 	actions,
+	canWrite,
 }: {
 	member: Member;
 	label: string;
 	tourOperatorId: string;
 	actions: AppAction[];
+	canWrite: boolean;
 }) => {
 	const { formatDate } = useOperatorDateTime();
 
@@ -220,9 +223,7 @@ const MemberFacts = ({
 						]}
 					/>
 				}
-				actions={
-					actions.length > 0 ? <AppPageActions actions={actions} /> : undefined
-				}
+				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 			<Card>
 				<CardContent>

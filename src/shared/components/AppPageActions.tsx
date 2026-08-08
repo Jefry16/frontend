@@ -31,20 +31,41 @@ export interface AppAction {
 	disabled?: boolean;
 	// The action's mutation is in flight — disables it and spins.
 	pending?: boolean;
+	// A STAFF member may run this too. Absent means ADMIN+ only, which is the
+	// right default: nearly every write in the product is behind the backend's
+	// `ensureAdmin`. Set it only where the backend's check is `ensureMember`
+	// (reading translations, the inbox read-state) or membership alone (leaving
+	// the team) — the flag is a claim about the backend, not a UI preference.
+	member?: boolean;
 }
 
 // Renders a detail view's action set: one action → a single button; several →
 // a primary button plus a "…" overflow menu holding the rest. Destructive
 // actions never take the primary slot, and any action with `confirm` opens a
 // confirmation dialog before firing. Drop into AppPageHeader's `actions` slot.
-export function AppPageActions({ actions }: { actions: AppAction[] }) {
+//
+// `canWrite` arrives as a prop because `shared/` may not import a feature module
+// and `usePermissions` lives in `tour-operator/` — the same reason every
+// translation card takes it. It is required so a new call site cannot forget the
+// gate: omitting it fails typecheck instead of quietly showing STAFF a 403.
+export function AppPageActions({
+	actions,
+	canWrite,
+}: {
+	actions: AppAction[];
+	canWrite: boolean;
+}) {
 	// The id of the action awaiting confirmation, if any. Kept by id (not the
 	// object) so `confirming` below stays live — its `pending` tracks the running
 	// mutation, and the dialog auto-closes once the action leaves the set (e.g. a
 	// revoked invitation goes terminal → no more actions).
 	const [confirmingId, setConfirmingId] = useState<string | null>(null);
+
+	// Everything below works off `visible`, never `actions` — the tier decides
+	// what exists here, including which action can be primary.
+	const visible = actions.filter((action) => canWrite || action.member);
 	const confirming = confirmingId
-		? (actions.find((a) => a.id === confirmingId) ?? null)
+		? (visible.find((a) => a.id === confirmingId) ?? null)
 		: null;
 
 	// Fire directly, or open the confirm dialog first.
@@ -53,18 +74,18 @@ export function AppPageActions({ actions }: { actions: AppAction[] }) {
 		else action.onSelect();
 	};
 
-	if (actions.length === 0) return null;
+	if (visible.length === 0) return null;
 
 	// Pick the primary: an explicit `primary`, else the first non-destructive
 	// action, else the first. Destructive actions stay in the overflow menu.
 	const primaryIndex = (() => {
-		const explicit = actions.findIndex((a) => a.primary);
+		const explicit = visible.findIndex((a) => a.primary);
 		if (explicit !== -1) return explicit;
-		const firstSafe = actions.findIndex((a) => a.variant !== "destructive");
+		const firstSafe = visible.findIndex((a) => a.variant !== "destructive");
 		return firstSafe !== -1 ? firstSafe : 0;
 	})();
-	const primary = actions[primaryIndex];
-	const overflow = actions.filter((_, i) => i !== primaryIndex);
+	const primary = visible[primaryIndex];
+	const overflow = visible.filter((_, i) => i !== primaryIndex);
 
 	return (
 		<>

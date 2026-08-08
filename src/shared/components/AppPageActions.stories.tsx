@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { Copy, Send, Trash2 } from "lucide-react";
+import { Copy, Languages, Send, Trash2 } from "lucide-react";
+import type { AppAction } from "./AppPageActions";
 import { AppPageActions } from "./AppPageActions";
 
 const meta = {
 	title: "Shared/AppPageActions",
 	component: AppPageActions,
+	args: { canWrite: true },
 } satisfies Meta<typeof AppPageActions>;
 
 export default meta;
@@ -37,4 +39,35 @@ export const PrimaryPlusOverflow: Story = {
 			},
 		],
 	},
+};
+
+// A page whose actions span both tiers: editing is ADMIN+, reading the
+// translations is not.
+const MIXED_TIERS: AppAction[] = [
+	{ id: "edit", label: "Edit", icon: Copy, onSelect: () => {} },
+	{
+		id: "translations",
+		label: "Translations",
+		icon: Languages,
+		member: true,
+		onSelect: () => {},
+	},
+	{
+		id: "delete",
+		label: "Delete",
+		icon: Trash2,
+		variant: "destructive",
+		onSelect: () => {},
+	},
+];
+
+// What an ADMIN+ sees: the whole set.
+export const MixedTiersAsAdmin: Story = {
+	args: { actions: MIXED_TIERS, canWrite: true },
+};
+
+// What a STAFF member sees: only the `member` action survives, and it takes the
+// primary slot the ADMIN+ action vacated.
+export const MixedTiersAsStaff: Story = {
+	args: { actions: MIXED_TIERS, canWrite: false },
 };

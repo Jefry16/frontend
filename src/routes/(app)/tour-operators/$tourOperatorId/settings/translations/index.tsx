@@ -3,10 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import {
-	AppOperatorTranslations,
-	useCurrentTourOperator,
-} from "#/tour-operator";
+import { AppOperatorTranslations, usePermissions } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/settings/translations/",
@@ -19,8 +16,7 @@ export const Route = createFileRoute(
 // split the Languages section makes.
 function TranslationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
-	const operator = useCurrentTourOperator();
-	const canWrite = operator?.role === "OWNER" || operator?.role === "ADMIN";
+	const { canWrite } = usePermissions();
 
 	return (
 		<AppPageShell variant="form">

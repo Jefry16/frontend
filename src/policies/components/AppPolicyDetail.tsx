@@ -90,6 +90,7 @@ export const AppPolicyDetail = ({
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,
+						member: true,
 						onSelect: () =>
 							navigate({
 								to: "/tour-operators/$tourOperatorId/content/policies/$policyId/translations",
@@ -137,13 +138,7 @@ export const AppPolicyDetail = ({
 									]}
 								/>
 							}
-							actions={
-								<AppPageActions
-									actions={actions.filter(
-										(a) => canWrite || a.id === "translations",
-									)}
-								/>
-							}
+							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
 						<Card>
 							<CardContent className="flex flex-col gap-6">

@@ -140,7 +140,7 @@ export const AppMetafieldDefinitionDetail = ({
 									]}
 								/>
 							}
-							actions={<AppPageActions actions={canWrite ? actions : []} />}
+							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
 						<Card>
 							<CardContent>

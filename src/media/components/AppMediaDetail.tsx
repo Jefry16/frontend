@@ -105,7 +105,8 @@ export const AppMediaDetail = ({
 				<MediaFacts
 					media={media}
 					tourOperatorId={tourOperatorId}
-					actions={canWrite ? actions : []}
+					actions={actions}
+					canWrite={canWrite}
 				/>
 			)}
 		</AppResourceView>
@@ -116,10 +117,12 @@ const MediaFacts = ({
 	media,
 	tourOperatorId,
 	actions,
+	canWrite,
 }: {
 	media: MediaAsset;
 	tourOperatorId: string;
 	actions: AppAction[];
+	canWrite: boolean;
 }) => {
 	const { formatDateTime } = useOperatorDateTime();
 
@@ -140,7 +143,7 @@ const MediaFacts = ({
 						]}
 					/>
 				}
-				actions={<AppPageActions actions={actions} />}
+				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 			<Card>
 				<CardContent className="flex flex-col gap-6">

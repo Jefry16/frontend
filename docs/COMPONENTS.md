@@ -309,9 +309,16 @@ STAFF member can see is a dead end. `usePermissions()` returns `{ canWrite, isOw
 gates the affordance at its call site:
 
 - **A "New X" button:** `action: canWrite && <AppNewLink …>`.
-- **A detail page's actions:** `<AppPageActions actions={canWrite ? actions : []} />` — it
-  returns `null` for an empty array. Where a page mixes tiers, filter instead of replacing:
-  `actions.filter((a) => canWrite || a.id === "translations")`.
+- **A detail page's actions:** `<AppPageActions actions={actions} canWrite={canWrite} />` —
+  always this shape, at every site. The tier is declared on the action, not at the call
+  site: an `AppAction` is ADMIN+ unless it sets `member: true`, and `AppPageActions` drops
+  what the viewer may not run (returning `null` if that leaves nothing). `canWrite` is
+  **required**, so a new call site that forgets the gate fails typecheck rather than
+  quietly showing STAFF a 403. Set `member: true` only where the backend agrees — today
+  that is the four `translations` links, the inbox's Reply + Mark-as-unread
+  (`ensureMember`), and Leave team (membership alone). Conditions that shape *which*
+  actions exist — an invitation's `PENDING`, a member's role vs the target's — stay in the
+  builder; the flag is about tier, not state.
 - **A per-locale translation editor:** `canWrite ? <Form/> : <AppTranslationSummary/>`.
   **Not** `AppNotPermitted` — reading a translation is `ensureMember`, so hiding the values
   would take away access STAFF has. All four editors take `canWrite` as a **prop** rather
@@ -332,12 +339,13 @@ are real: marking a contact message read is `ensureMember`, and so is every tran
 *read*, which is why the links into the per-locale editors stay visible for STAFF.
 
 The check lives in `tour-operator/` and not `shared/` because `shared/` may not import a
-feature module (§2) — which is also why `AppNewLink` and `AppPageActions` can't gate
-themselves, and every call site does it explicitly.
+feature module (§2) — so a `shared/` component can never *call* `usePermissions`, only
+receive its answer. `AppNewLink` therefore leaves the decision to the call site, while
+`AppPageActions` takes `canWrite` as a prop and applies it itself, the same way every
+translation card does.
 
 **Still deferred**, each re-earned with the feature that needs it: collapsible nav groups ·
-`usePermissions` role-gating (hide-don't-disable — today `AppMemberDetail` branches on the
-caller's role inline, the only site that needs it) · the ⌘K command palette · a grouped
+the ⌘K command palette · a grouped
 **settings hub** (`/settings` is a redirect to General) · a footer `AppLanguagePicker`
 (admin-UI language lives in Settings → Account as `AppLanguageCard`). There is **no desktop
 top bar** — the sidebar is always visible (toggle via its rail or Ctrl/Cmd+B); a mobile-only

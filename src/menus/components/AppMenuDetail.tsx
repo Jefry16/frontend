@@ -145,7 +145,7 @@ const MenuView = ({
 						]}
 					/>
 				}
-				actions={<AppPageActions actions={canWrite ? actions : []} />}
+				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 
 			<Card>
