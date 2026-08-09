@@ -41,7 +41,7 @@ export const AppTourOperatorSidebar = () => {
 				</SidebarMenu>
 			</SidebarHeader>
 
-			<SidebarContent>
+			<SidebarContent role="navigation" aria-label={m.main_navigation()}>
 				<SidebarGroup>
 					<SidebarMenu>
 						{items.map((item) => (
