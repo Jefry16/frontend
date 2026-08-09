@@ -35,7 +35,7 @@ function FieldDemo({
 }) {
 	const form = useForm({ defaultValues: { demo: initial } });
 	return (
-		<div className="w-[32rem]">
+		<div className="w-96">
 			<form.Field name="demo">
 				{(field) => (
 					<AppCheckboxGroupField field={field} options={options} {...props} />

@@ -110,7 +110,7 @@ export const AppImageDropzone = ({
 				onDrop={onDrop}
 				className={cn(
 					"group relative flex min-h-40 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-input bg-muted/30 text-center transition-colors motion-reduce:transition-none",
-					"hover:border-muted-foreground/40 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+					"hover:border-muted-foreground/40 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
 					isDragging && "border-primary bg-accent",
 					inert && "pointer-events-none opacity-60",
 					className,
