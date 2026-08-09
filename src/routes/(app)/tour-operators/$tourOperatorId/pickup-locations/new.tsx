@@ -2,10 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppPickupLocationForm } from "#/pickup-locations";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { usePermissions } from "#/tour-operator";
+import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/pickup-locations/new",
@@ -16,7 +15,6 @@ export const Route = createFileRoute(
 // Single-resource page → centered at max-w-3xl. Static "new" wins over the
 // dynamic $pickupLocationId sibling.
 function NewPickupLocationPage() {
-	const { canWrite } = usePermissions();
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
@@ -36,11 +34,9 @@ function NewPickupLocationPage() {
 					/>
 				}
 			/>
-			{canWrite ? (
+			<AppWriteGate>
 				<AppPickupLocationForm tourOperatorId={tourOperatorId} />
-			) : (
-				<AppNotPermitted />
-			)}
+			</AppWriteGate>
 		</AppPageShell>
 	);
 }

@@ -4,11 +4,10 @@ import { AppMetaobjectForm, useMetaobjectDefinition } from "#/metaobjects";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
-import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { usePermissions } from "#/tour-operator";
+import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metaobjects/$definitionId/entries/new",
@@ -19,12 +18,11 @@ export const Route = createFileRoute(
 // New entry OF a definition — the form is generated from the definition's
 // field set, so the route fetches it first.
 function NewMetaobjectPage() {
-	const { canWrite } = usePermissions();
 	const { tourOperatorId, definitionId } = Route.useParams();
 	const query = useMetaobjectDefinition(tourOperatorId, definitionId);
 	return (
 		<AppPageShell variant="form">
-			{canWrite ? (
+			<AppWriteGate>
 				<AppResourceView
 					query={query}
 					resource={m.metaobject_definition()}
@@ -66,9 +64,7 @@ function NewMetaobjectPage() {
 						</>
 					)}
 				</AppResourceView>
-			) : (
-				<AppNotPermitted />
-			)}
+			</AppWriteGate>
 		</AppPageShell>
 	);
 }

@@ -2,10 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppMetafieldDefinitionForm } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { usePermissions } from "#/tour-operator";
+import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metafields/new",
@@ -15,7 +14,6 @@ export const Route = createFileRoute(
 
 // Static "new" wins over the dynamic $definitionId sibling.
 function NewMetafieldDefinitionPage() {
-	const { canWrite } = usePermissions();
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
@@ -35,11 +33,9 @@ function NewMetafieldDefinitionPage() {
 					/>
 				}
 			/>
-			{canWrite ? (
+			<AppWriteGate>
 				<AppMetafieldDefinitionForm tourOperatorId={tourOperatorId} />
-			) : (
-				<AppNotPermitted />
-			)}
+			</AppWriteGate>
 		</AppPageShell>
 	);
 }

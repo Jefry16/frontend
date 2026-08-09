@@ -2,10 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import * as m from "#/paraglide/messages";
 import { AppPolicyForm } from "#/policies";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { usePermissions } from "#/tour-operator";
+import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/policies/new",
@@ -17,7 +16,6 @@ export const Route = createFileRoute(
 // $policyId sibling.
 function NewPolicyPage() {
 	const { tourOperatorId } = Route.useParams();
-	const { canWrite } = usePermissions();
 	return (
 		<AppPageShell variant="form">
 			<AppPageHeader
@@ -36,11 +34,9 @@ function NewPolicyPage() {
 					/>
 				}
 			/>
-			{canWrite ? (
+			<AppWriteGate>
 				<AppPolicyForm tourOperatorId={tourOperatorId} />
-			) : (
-				<AppNotPermitted />
-			)}
+			</AppWriteGate>
 		</AppPageShell>
 	);
 }

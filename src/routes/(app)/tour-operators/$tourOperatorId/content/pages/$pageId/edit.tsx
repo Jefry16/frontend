@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppPageEdit } from "#/pages";
-import { AppNotPermitted } from "#/shared/components/AppNotPermitted";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { usePermissions } from "#/tour-operator";
+import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/pages/$pageId/edit",
@@ -11,15 +10,12 @@ export const Route = createFileRoute(
 });
 
 function EditPagePage() {
-	const { canWrite } = usePermissions();
 	const { tourOperatorId, pageId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			{canWrite ? (
+			<AppWriteGate>
 				<AppPageEdit tourOperatorId={tourOperatorId} pageId={pageId} />
-			) : (
-				<AppNotPermitted />
-			)}
+			</AppWriteGate>
 		</AppPageShell>
 	);
 }
