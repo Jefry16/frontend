@@ -15,14 +15,12 @@ import * as m from "#/paraglide/messages";
 export const AppDialogFooter = ({
 	onConfirm,
 	confirmLabel,
-	cancelLabel,
 	disabled,
 	pending,
 	destructive,
 }: {
 	onConfirm: () => void;
 	confirmLabel?: string;
-	cancelLabel?: string;
 	/** Beyond `pending` — an invalid or unchanged form. */
 	disabled?: boolean;
 	pending?: boolean;
@@ -31,7 +29,7 @@ export const AppDialogFooter = ({
 	<DialogFooter>
 		<DialogClose asChild>
 			<Button type="button" variant="outline" disabled={pending}>
-				{cancelLabel ?? m.cancel()}
+				{m.cancel()}
 			</Button>
 		</DialogClose>
 		<Button

@@ -12,17 +12,17 @@ import { useMemo, useState } from "react";
 import { authApi } from "#/lib/api";
 
 declare module "@tanstack/react-table" {
-	// Backend field overrides — when the column id doesn't match the API's
-	// filter/sort field name.
+	// Backend field override — when the column id doesn't match the API's sort
+	// field name. Filters always send the column id; no column has needed
+	// otherwise.
 	interface ColumnMeta<TData extends RowData, TValue> {
 		sortField?: string;
-		filterField?: string;
 		// Right-align + tabular figures for numeric columns so digits line up.
 		align?: "right";
 	}
 }
 
-type FieldMap = Record<string, { sortField?: string; filterField?: string }>;
+type FieldMap = Record<string, { sortField?: string }>;
 
 // Server does the sorting/filtering/paging — the table's own filter fns are no-ops.
 const passFilterFn: FilterFn<unknown> = () => true;
@@ -63,9 +63,7 @@ export function useDataTable<TData extends { id: string }>({
 					: undefined);
 			if (!id) continue;
 			const meta = col.meta;
-			if (meta?.sortField || meta?.filterField) {
-				map[id] = { sortField: meta.sortField, filterField: meta.filterField };
-			}
+			if (meta?.sortField) map[id] = { sortField: meta.sortField };
 		}
 		return map;
 	}, [columns]);
@@ -133,7 +131,7 @@ export function useDataTable<TData extends { id: string }>({
 	};
 }
 
-function buildParams({
+export function buildParams({
 	cursor,
 	sorting,
 	filters,
@@ -163,13 +161,12 @@ function buildParams({
 			| { operator: string; values: unknown[] }
 			| undefined;
 		if (!v) continue;
-		const field = fieldMap[filter.id]?.filterField ?? filter.id;
 		if ("values" in v) {
 			if (v.values.length === 0) continue;
-			params.append(`filter[${field}][${v.operator}]`, v.values.join(","));
+			params.append(`filter[${filter.id}][${v.operator}]`, v.values.join(","));
 		} else {
 			if (v.value === "" || v.value == null) continue;
-			params.append(`filter[${field}][${v.operator}]`, String(v.value));
+			params.append(`filter[${filter.id}][${v.operator}]`, String(v.value));
 		}
 	}
 	return params;

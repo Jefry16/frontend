@@ -7,14 +7,14 @@ import * as m from "#/paraglide/messages";
 // Mirrors the backend contract (media ContentType.ALLOWED + UploadMediaUseCase
 // MAX_BYTES): 4 types, 25 MB. Rejected client-side first so a bad file never
 // round-trips to a 422.
-export const MEDIA_ALLOWED_TYPES = new Set([
+const MEDIA_ALLOWED_TYPES = new Set([
 	"image/jpeg",
 	"image/png",
 	"image/webp",
 	"application/pdf",
 ]);
 export const MEDIA_ACCEPT = [...MEDIA_ALLOWED_TYPES].join(",");
-export const MEDIA_MAX_BYTES = 25 * 1024 * 1024;
+const MEDIA_MAX_BYTES = 25 * 1024 * 1024;
 
 // Upload one or more files to the media library (POST /media, one request each).
 // The button owns file selection; this validates type + size, uploads the valid

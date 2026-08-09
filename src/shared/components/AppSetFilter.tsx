@@ -13,7 +13,7 @@ export interface SetFilterItem {
 
 // The value shape written to the column; useDataTable serializes it to
 // `filter[field][in]=a,b`.
-export interface SetFilterValue {
+interface SetFilterValue {
 	operator: "in";
 	values: string[];
 }

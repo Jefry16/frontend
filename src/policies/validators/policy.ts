@@ -38,5 +38,3 @@ export const policySchema = z.object({
 	title,
 	body,
 });
-
-export type PolicyFormData = z.input<typeof policySchema>;

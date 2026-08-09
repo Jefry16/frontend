@@ -5,10 +5,10 @@
 // JSON payloads: `details` (non-field context, per-action shape) and `changes`
 // (the field-level before→after diff).
 
-export type AuditActorType = "USER" | "SYSTEM";
+type AuditActorType = "USER" | "SYSTEM";
 
 /** One field-level change: `from → to` for a single domain field. */
-export interface AuditFieldChange {
+interface AuditFieldChange {
 	field: string;
 	from: unknown;
 	to: unknown;

@@ -23,9 +23,6 @@ export interface AppAction {
 	icon?: LucideIcon;
 	onSelect: () => void;
 	variant?: "default" | "destructive";
-	// Force this into the primary button slot. Otherwise the first
-	// non-destructive action is primary.
-	primary?: boolean;
 	// Gate the action behind AppConfirmDialog (destructive/irreversible ones).
 	confirm?: { title: string; description?: string; confirmLabel?: string };
 	disabled?: boolean;
@@ -76,14 +73,10 @@ export function AppPageActions({
 
 	if (visible.length === 0) return null;
 
-	// Pick the primary: an explicit `primary`, else the first non-destructive
-	// action, else the first. Destructive actions stay in the overflow menu.
-	const primaryIndex = (() => {
-		const explicit = visible.findIndex((a) => a.primary);
-		if (explicit !== -1) return explicit;
-		const firstSafe = visible.findIndex((a) => a.variant !== "destructive");
-		return firstSafe !== -1 ? firstSafe : 0;
-	})();
+	// The primary slot takes the first non-destructive action, else the first —
+	// a destructive one never leads. The rest go to the overflow menu.
+	const firstSafe = visible.findIndex((a) => a.variant !== "destructive");
+	const primaryIndex = firstSafe !== -1 ? firstSafe : 0;
 	const primary = visible[primaryIndex];
 	const overflow = visible.filter((_, i) => i !== primaryIndex);
 

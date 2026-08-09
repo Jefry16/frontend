@@ -22,7 +22,7 @@ export interface MenuItemFormNode {
 	children: MenuItemFormNode[];
 }
 
-export const menuItemNodeSchema: z.ZodType<MenuItemFormNode, MenuItemFormNode> =
+const menuItemNodeSchema: z.ZodType<MenuItemFormNode, MenuItemFormNode> =
 	z.lazy(() =>
 		z
 			.object({
@@ -54,7 +54,7 @@ export const menuItemNodeSchema: z.ZodType<MenuItemFormNode, MenuItemFormNode> =
 			}),
 	) as z.ZodType<MenuItemFormNode, MenuItemFormNode>;
 
-export interface MenuItemsFormData {
+interface MenuItemsFormData {
 	items: MenuItemFormNode[];
 }
 

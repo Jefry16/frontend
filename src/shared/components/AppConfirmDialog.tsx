@@ -14,7 +14,6 @@ interface Props {
 	description?: string;
 	// The affirmative button label (e.g. "Revoke"); Cancel is always offered.
 	confirmLabel: string;
-	cancelLabel?: string;
 	// Style the confirm button as destructive (irreversible actions).
 	destructive?: boolean;
 	// While the action runs: disables both buttons and spins the confirm.
@@ -31,7 +30,6 @@ export function AppConfirmDialog({
 	title,
 	description,
 	confirmLabel,
-	cancelLabel,
 	destructive,
 	pending,
 	onConfirm,
@@ -46,7 +44,6 @@ export function AppConfirmDialog({
 				<AppDialogFooter
 					onConfirm={onConfirm}
 					confirmLabel={confirmLabel}
-					cancelLabel={cancelLabel}
 					destructive={destructive}
 					pending={pending}
 				/>
