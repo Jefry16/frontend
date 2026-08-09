@@ -25,9 +25,6 @@ import { useInvitation } from "../hooks/use-invitation";
 import { useInvitationActions } from "../hooks/use-invitation-actions";
 import type { Invitation } from "../types";
 
-// Read-only invitation detail (invitee, role, status, who invited, dates). Owns
-// its fetch — skeleton while loading, empty state on a 404/error. The name
-// column of the list links here.
 export const AppInvitationDetail = ({
 	tourOperatorId,
 	invitationId,
@@ -70,9 +67,8 @@ export const AppInvitationDetail = ({
 			loading={<AppDetailSkeleton fields={4} variant="labelled" />}
 		>
 			{(invitation) => {
-				// Actions apply only while the invitation is live (stored PENDING — an
-				// "Expired" row is still PENDING and can be resent or revoked). Terminal
-				// states (ACCEPTED / REVOKED) offer none.
+				// An "Expired" row is still stored PENDING, so it can be resent or
+				// revoked; ACCEPTED and REVOKED are terminal and offer nothing.
 				const actions: AppAction[] =
 					invitation.status === "PENDING"
 						? [
@@ -111,7 +107,7 @@ export const AppInvitationDetail = ({
 	);
 };
 
-// The facts, split out so it renders once `invitation` is known (non-null).
+// Split out so it renders only once `invitation` is non-null.
 const InvitationFacts = ({
 	invitation,
 	tourOperatorId,

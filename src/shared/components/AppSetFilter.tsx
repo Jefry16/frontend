@@ -11,20 +11,17 @@ export interface SetFilterItem {
 	label: string;
 }
 
-// The value shape written to the column; useDataTable serializes it to
-// `filter[field][in]=a,b`.
+// useDataTable serializes this to `filter[field][in]=a,b`.
 interface SetFilterValue {
 	operator: "in";
 	values: string[];
 }
 
-// Above this many options, show a search box to narrow the list — small sets
-// (e.g. role) don't need one.
+// Below this, a search box is noise.
 const SEARCH_THRESHOLD = 8;
 
-// The set filter's body (rendered inside the header's popover): a multi-select
-// checkbox list, with a search field for long option lists. Reads/writes the
-// column's filter value directly — the checked set IS the filter state.
+// Reads and writes the column's filter value directly — the checked set IS the
+// filter state, with no copy to keep in sync.
 export function AppSetFilter<TData>({
 	headerContext,
 	items,

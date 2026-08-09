@@ -2,11 +2,9 @@ import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { AppWriteGate } from "./AppWriteGate";
 
-// The gate reads the role off the `$tourOperatorId` route param, and the
-// framework's memory router leaves that empty at "/", so every story here is
-// the denied case — which is the state the component exists to produce. What a
-// permitted member sees is just `children`, unchanged, and stories for those
-// forms live under their own modules.
+// Every story here is the DENIED case: the gate reads the role off the
+// `$tourOperatorId` param, which the memory router leaves empty. That is also
+// the only state worth storying — permitted renders `children` unchanged.
 const meta = {
 	title: "TourOperator/AppWriteGate",
 	component: AppWriteGate,
@@ -24,6 +22,5 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// A STAFF member who reached a create or edit URL anyway — from a bookmark, or
-// by typing it. Hiding the button that leads here does not stop either.
+// Hiding the button that leads here stops neither a bookmark nor a typed URL.
 export const Denied: Story = {};

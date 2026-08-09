@@ -12,10 +12,8 @@ import { useRecurringSlotForm } from "../hooks/use-recurring-slot-form";
 import { addMinutes } from "../validators/slot";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";
 
-// Recurring availability: a departure on every selected weekday between the two
-// dates, all at the same times and pricing. The end time follows the start +
-// the experience's advertised duration until the user edits the end themselves;
-// an explicit end is never overwritten.
+// A departure on every selected weekday between the two dates. An end the user
+// has edited themselves is never overwritten by the duration prefill.
 export const AppRecurringSlotForm = ({
 	tourOperatorId,
 	experienceId,
@@ -63,9 +61,8 @@ export const AppRecurringSlotForm = ({
 						name="startTime"
 						listeners={{
 							onChange: ({ value }) => {
-								// Keep the end synced to start + advertised duration until the
-								// user edits the end themselves (touched) — dontUpdateMeta so
-								// the prefill itself never counts as that edit.
+								// dontUpdateMeta, so the prefill never counts as the user
+								// having edited the end themselves.
 								if (!form.getFieldMeta("endTime")?.isTouched) {
 									form.setFieldValue(
 										"endTime",
