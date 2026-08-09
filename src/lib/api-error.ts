@@ -2,14 +2,14 @@ import { isAxiosError } from "axios";
 import * as m from "#/paraglide/messages";
 
 // The backend's standard error body (see API guide § "Error Responses"):
-// { status, error, message, code?, timestamp }. `code` is a stable,
-// machine-readable identifier present only on some 422/409 errors — branch on
-// it (never the human-readable `message`) when a cause needs custom handling.
+// { status, error, message, code?, timestamp }. Only what we read is typed —
+// `code` is on the wire but nothing branches on it (the twelve sites that need
+// a specific cause branch on the HTTP status), so adding it back is a
+// deliberate act rather than a field carried because the payload has one.
 interface ApiError {
 	status: number;
 	error: string;
 	message: string;
-	code?: string;
 	timestamp: string;
 }
 
@@ -30,13 +30,6 @@ export function apiErrorMessage(
 ): string {
 	const message = errorBody(err)?.message;
 	return typeof message === "string" && message.length > 0 ? message : fallback;
-}
-
-// The stable machine-readable code, when present — for branching to a localized
-// message or specific UX. Returns undefined for the common (code-less) errors.
-export function apiErrorCode(err: unknown): string | undefined {
-	const code = errorBody(err)?.code;
-	return typeof code === "string" && code.length > 0 ? code : undefined;
 }
 
 // Whether an error is a 404 — a missing (or cross-tenant, tenant-isolated)
