@@ -72,13 +72,13 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 		writeStored(t);
 	}, []);
 
+	// The write stays OUT of the updater: React may invoke an updater more than
+	// once for a single change — StrictMode does it deliberately — and it runs
+	// during the render phase, so a localStorage write in there is a side effect
+	// in render that can happen twice or for a render that is thrown away.
 	const toggle = useCallback(() => {
-		setThemeState((t) => {
-			const next = t === "dark" ? "light" : "dark";
-			writeStored(next);
-			return next;
-		});
-	}, []);
+		setTheme(theme === "dark" ? "light" : "dark");
+	}, [theme, setTheme]);
 
 	return (
 		<ThemeContext.Provider value={{ theme, setTheme, toggle }}>
