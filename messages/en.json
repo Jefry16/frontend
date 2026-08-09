@@ -656,5 +656,8 @@
 	"operator_timezone_change_confirm": "Change timezone",
 	"shop_name": "Shop name",
 	"phone": "Phone",
+	"skip_to_content": "Skip to content",
+	"main_navigation": "Main navigation",
+	"settings_navigation": "Settings navigation",
 	"filter_column": "Filter by {column}"
 }

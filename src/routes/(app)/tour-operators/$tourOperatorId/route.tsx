@@ -66,8 +66,17 @@ function TourOperatorLayout() {
 
 	return (
 		<SidebarProvider>
+			{/* Bypass blocks (WCAG 2.4.1): the sidebar is ~15 links, and a keyboard
+			    user met every one of them before reaching the page on every
+			    navigation. Hidden until focused, so it costs sighted users nothing. */}
+			<a
+				href="#main-content"
+				className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:shadow-sm focus:outline-2 focus:outline-ring"
+			>
+				{m.skip_to_content()}
+			</a>
 			<OperatorSidebar />
-			<SidebarInset>
+			<SidebarInset id="main-content">
 				<header className="flex h-14 shrink-0 items-center border-b px-4 md:hidden">
 					<SidebarTrigger className="-ml-1" />
 				</header>
