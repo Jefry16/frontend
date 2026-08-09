@@ -100,6 +100,11 @@ never hardcode a color.** Use `bg-background`, `text-foreground`, `text-muted-fo
 `bg-emerald-500`, no `bg-[#…]` in app code. Compose classes only through `cn(...)`
 (`#/lib/utils`). Swapping the palette later is then a one-file edit.
 
+**The gate.** `src/shared/token-drift.test.ts` — ported from the archive, where it burned
+its own drift to empty — fails on any raw palette class or arbitrary value in `src/`
+outside `components/ui/`. It landed with an **empty** allow-list, because the five that
+had accumulated here since July were fixed first. Never add an entry; it only shrinks.
+
 **More styling rules:**
 - **Monochrome-placeholder palette — "premium through structure, not color."** The palette
   is deliberately chroma-0 greys + a few semantic accents (`--destructive`, `--success`,
