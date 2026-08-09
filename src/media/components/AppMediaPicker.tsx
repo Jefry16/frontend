@@ -80,7 +80,7 @@ export const AppMediaPicker = ({
 						<p className="text-sm text-muted-foreground">{m.no_images()}</p>
 					</div>
 				) : (
-					<div className="max-h-[60vh] overflow-y-auto">
+					<div className="max-h-128 overflow-y-auto">
 						<div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
 							{assets.map((asset) => {
 								const isSelected = selected.has(asset.id);

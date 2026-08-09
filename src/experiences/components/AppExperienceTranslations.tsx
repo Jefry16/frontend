@@ -2,10 +2,10 @@ import { Languages } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
@@ -114,9 +114,7 @@ export const AppExperienceTranslations = ({
 					/>
 
 					{localesQuery.isPending ? (
-						<div className="flex justify-center py-10">
-							<Spinner />
-						</div>
+						<AppLoadingBlock />
 					) : translatable.length === 0 ? (
 						<AppNoTranslatableLocales
 							tourOperatorId={tourOperatorId}
@@ -147,9 +145,7 @@ export const AppExperienceTranslations = ({
 									/>
 								)
 							) : (
-								<div className="flex justify-center py-10">
-									<Spinner />
-								</div>
+								<AppLoadingBlock />
 							)}
 						</div>
 					)}

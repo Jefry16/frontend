@@ -252,7 +252,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 
 ### `App*` components — 136, of which 132 ship a story
 
-**`shared/` — 44.** The cross-cutting design layer.
+**`shared/` — 45.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`
@@ -269,6 +269,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
   `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
   `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormActions`
+- *States:* also `AppLoadingBlock` — the centred spinner for a short swap inside painted
+  chrome (a locale tab, a card body). Nine copies of it sat across the translation editors.
 - *Overlays:* `AppConfirmDialog` · `AppDialogFooter` (a dialog's Cancel + confirm pair, the
   `AppFormActions` of a dialog — Cancel is a `DialogClose`, so no caller wires it)
 - *Detail / i18n / misc:* `AppDetailField` (renders the `dt`/`dd` pair — **always place it

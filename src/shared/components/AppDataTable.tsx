@@ -90,7 +90,7 @@ export function AppDataTable<TData extends { id: string }>({
 
 	return (
 		<div className="overflow-hidden rounded-md border bg-card shadow-sm">
-			<div className="relative max-h-[600px] overflow-auto">
+			<div className="relative max-h-150 overflow-auto">
 				<table className="w-full caption-bottom border-separate border-spacing-0 text-sm">
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -137,7 +137,7 @@ export function AppDataTable<TData extends { id: string }>({
 								<TableRow key={rowKey}>
 									{visibleColumns.map((col) => (
 										<TableCell key={col.id} className="border-b">
-											<Skeleton className="h-4 w-full max-w-[180px]" />
+											<Skeleton className="h-4 w-full max-w-45" />
 										</TableCell>
 									))}
 								</TableRow>
