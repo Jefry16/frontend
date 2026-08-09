@@ -37,7 +37,6 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 					});
 					return page.id;
 				}
-				// 201 with a Location header and no body.
 				const { headers } = await authApi.post(base, {
 					title: fields.title,
 					handle: fields.handle,
@@ -62,7 +61,6 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.pages(tourOperatorId),
 				});
-				// The mutation appended an audit entry.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});

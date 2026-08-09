@@ -18,7 +18,6 @@ import type { Invitation } from "./types";
 // and id. The API default is newest-first.
 export const invitationColumns = (
 	tourOperatorId: string,
-	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<Invitation, unknown>[] => {
 	// OWNER can't be invited.

@@ -11,9 +11,7 @@ export const Route = createFileRoute(
 	component: ActivityPage,
 });
 
-// Activity: the operator's audit trail — who did what, across every entity,
-// newest first. Read-only (entries are written by the mutations themselves).
-// Table page → full width.
+// Read-only: entries are written by the mutations themselves.
 function ActivityPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

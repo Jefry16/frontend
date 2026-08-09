@@ -11,7 +11,6 @@ import type { PickupLocation } from "./types";
 // A factory so the cells close over the operator id and timezone.
 export const pickupLocationColumns = (
 	tourOperatorId: string,
-	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<PickupLocation, unknown>[] => {
 	return [

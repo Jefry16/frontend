@@ -9,7 +9,6 @@ export const Route = createFileRoute(
 	component: EditAudiencePage,
 });
 
-// Single-resource page → centered at max-w-3xl.
 function EditAudiencePage() {
 	const { tourOperatorId, audienceId } = Route.useParams();
 	return (

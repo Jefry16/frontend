@@ -14,7 +14,6 @@ export const Route = createFileRoute(
 	component: MenusPage,
 });
 
-// Content → Menus: the operator's storefront navigation menus.
 function MenusPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

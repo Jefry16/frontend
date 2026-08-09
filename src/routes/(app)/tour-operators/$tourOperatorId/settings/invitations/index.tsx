@@ -14,11 +14,9 @@ export const Route = createFileRoute(
 	component: InvitationsSettingsPage,
 });
 
-// Invitations settings: every invitation for this operator (all statuses),
-// filterable by status/role. The invite action reuses the members "new" page.
+// The invite action reuses the members "new" page.
 function InvitationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
-	// Table page → full width (no mx-auto/max-w); a list wants the room.
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader

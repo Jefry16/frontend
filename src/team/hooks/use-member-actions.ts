@@ -17,7 +17,6 @@ export const useMemberActions = (tourOperatorId: string, userId: string) => {
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.members(tourOperatorId),
 		});
-		// The write appended an audit entry.
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});

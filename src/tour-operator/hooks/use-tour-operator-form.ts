@@ -28,7 +28,6 @@ export const useTourOperatorForm = () => {
 		TourOperatorFormData
 	>({
 		mutationFn: async (data) => {
-			// 201 Created with a Location header, no body — parse the new id out.
 			const { headers } = await authApi.post("/tour-operators", data);
 			const id = (headers.location ?? "").split("/").pop();
 			if (!id) throw new Error("Missing Location header on create response");

@@ -12,8 +12,7 @@ export const Route = createFileRoute(
 	component: NewPickupLocationPage,
 });
 
-// Single-resource page → centered at max-w-3xl. Static "new" wins over the
-// dynamic $pickupLocationId sibling.
+// Static "new" wins over the dynamic $pickupLocationId sibling.
 function NewPickupLocationPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

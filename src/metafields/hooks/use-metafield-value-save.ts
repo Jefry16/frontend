@@ -58,7 +58,6 @@ export const useMetafieldValueSave = (
 						ownerId,
 					),
 				}),
-				// Each write appended an audit entry.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				}),

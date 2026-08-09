@@ -13,7 +13,6 @@ export const Route = createFileRoute(
 	component: ExperiencesPage,
 });
 
-// Experiences — the operator's sellable products. Table page → full width.
 function ExperiencesPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();

@@ -143,7 +143,6 @@ function LocaleNameForm({
 
 	const invalidate = () => {
 		queryClient.invalidateQueries({ queryKey: [...queryKeyBase] });
-		// Translation saves append audit entries.
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});

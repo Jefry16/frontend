@@ -13,7 +13,6 @@ export const Route = createFileRoute(
 	component: PickupLocationsPage,
 });
 
-// Pickup locations: the operator's meeting-point catalog. Table page → full width.
 function PickupLocationsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();

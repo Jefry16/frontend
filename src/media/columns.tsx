@@ -20,7 +20,6 @@ const typeItems = [
 // display-only. A factory so the Added cell closes over the operator timezone.
 export const mediaColumns = (
 	tourOperatorId: string,
-	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<MediaAsset, unknown>[] => {
 	return [

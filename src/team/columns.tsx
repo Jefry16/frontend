@@ -13,7 +13,6 @@ import type { Member } from "./types";
 // and id. The API default is owner-first.
 export const memberColumns = (
 	tourOperatorId: string,
-	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<Member, unknown>[] => {
 	const roleItems = [

@@ -35,7 +35,6 @@ export const useAudienceForm = (
 					await authApi.patch(`${base}/${audience.id}`, fields);
 					return audience.id;
 				}
-				// 201 Created with a Location header, no body — parse the new id out.
 				const { headers } = await authApi.post(base, fields);
 				const id = (headers.location ?? "").split("/").pop();
 				if (!id) throw new Error("Missing Location header on create response");
@@ -54,7 +53,6 @@ export const useAudienceForm = (
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.audiences(tourOperatorId),
 				});
-				// Create/update appended an audit entry — refresh the trail.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});

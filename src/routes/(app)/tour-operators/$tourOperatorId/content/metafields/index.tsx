@@ -14,8 +14,7 @@ export const Route = createFileRoute(
 	component: MetafieldsPage,
 });
 
-// Content → Metafields: the definition catalogue. Values are edited on each
-// experience/page detail.
+// The definition catalogue; values are edited on each experience/page detail.
 function MetafieldsPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

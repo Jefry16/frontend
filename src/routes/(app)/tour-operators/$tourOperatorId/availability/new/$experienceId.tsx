@@ -9,7 +9,6 @@ export const Route = createFileRoute(
 	component: NewAvailabilityPage,
 });
 
-// Form page → centered at max-w-3xl (list pages go full width).
 function NewAvailabilityPage() {
 	const { tourOperatorId, experienceId } = Route.useParams();
 	return (

@@ -37,7 +37,6 @@ export const useExperienceForm = (
 				await authApi.patch(`${base}/${experience.id}`, payload);
 				return experience.id;
 			}
-			// 201 with a Location header and no body.
 			const { headers } = await authApi.post(base, payload);
 			const id = (headers.location ?? "").split("/").pop();
 			if (!id) throw new Error("Missing Location header on create response");
@@ -53,7 +52,6 @@ export const useExperienceForm = (
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.experiences(tourOperatorId),
 				});
-				// The write appended an audit entry.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});

@@ -9,7 +9,6 @@ export const Route = createFileRoute(
 	component: ExperienceTranslationsPage,
 });
 
-// Single-resource page → centered at max-w-3xl.
 function ExperienceTranslationsPage() {
 	const { canWrite } = usePermissions();
 	const { tourOperatorId, experienceId } = Route.useParams();

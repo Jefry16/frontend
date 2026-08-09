@@ -39,7 +39,6 @@ export const usePickupLocationForm = (
 				await authApi.patch(`${base}/${pickup.id}`, fields);
 				return pickup.id;
 			}
-			// 201 Created with a Location header, no body — parse the new id out.
 			const { headers } = await authApi.post(base, fields);
 			const id = (headers.location ?? "").split("/").pop();
 			if (!id) throw new Error("Missing Location header on create response");
@@ -58,7 +57,6 @@ export const usePickupLocationForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.pickupLocations(tourOperatorId),
 			});
-			// Create/update appended an audit entry — refresh the trail.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});

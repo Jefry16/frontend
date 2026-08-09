@@ -12,8 +12,7 @@ export const Route = createFileRoute(
 	component: InviteMemberPage,
 });
 
-// Single-resource form page → centered at max-w-3xl; the route owns the page
-// chrome, the component is just the form card.
+// The route owns the page chrome; the component is just the form card.
 function InviteMemberPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

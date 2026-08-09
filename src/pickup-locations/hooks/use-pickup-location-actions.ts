@@ -24,7 +24,6 @@ export const usePickupLocationActions = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.pickupLocations(tourOperatorId),
 			});
-			// The delete appended an audit entry — refresh the trail.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});
