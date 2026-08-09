@@ -145,3 +145,14 @@ node -p "require('./node_modules/<pkg>/package.json').version"
   so ours wins. Editing the file would break the shadcn-identical rule for no gain: its
   `ThemeProvider` tree-shakes away completely (`disableTransitionOnChange` appears 0 times
   in `dist`), leaving only a context read.
+- **The prerendered SPA shell is the router's pending fallback, and it gets a
+  partial stylesheet.** In SPA mode router-core keeps SSR for the root route
+  alone and renders every other match in its *pending* state, so whatever
+  `defaultPendingComponent` returns is the entire body of `dist/client/index.html`
+  — with none configured it was empty, and a cold load was blank white until the
+  bundle booted (~2.5 s on Fast 3G, measured). `AppRoutePending` fills it. Two
+  traps for anything else put in that shell: Vite code-splits the CSS, so at boot
+  only the first chunk exists (~104 of ~200 rules — layout utilities yes,
+  `text-muted-foreground` no, so colours fall back to `--foreground`); and
+  `defaultPendingMs` is **1000**, so the same component is what an in-app
+  transition shows after a second of stalling.
