@@ -11,12 +11,12 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppAlert } from "./AppAlert";
 import { AppField } from "./AppField";
 import { AppFormActions } from "./AppFormActions";
 import { AppLoadingBlock } from "./AppLoadingBlock";
 import { AppLocaleTabs } from "./AppLocaleTabs";
 import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
+import { AppTranslationNotice } from "./AppTranslationNotice";
 import { AppTranslationSummary } from "./AppTranslationSummary";
 
 interface NameTranslation {
@@ -240,13 +240,7 @@ function NameFormBody({
 		<AppFormCard
 			onSubmit={form.handleSubmit}
 			errorMessage={errorMessage}
-			notice={
-				<AppAlert
-					variant="info"
-					title={m.translation()}
-					description={m.translation_fallback_help()}
-				/>
-			}
+			notice={<AppTranslationNotice />}
 			actions={
 				<AppFormActions
 					isPending={isSaving}

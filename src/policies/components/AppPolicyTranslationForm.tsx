@@ -2,11 +2,11 @@ import { Button } from "#/components/ui/button";
 import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
+import { AppTranslationNotice } from "#/shared/components/AppTranslationNotice";
 import { usePolicyTranslationForm } from "../hooks/use-policy-translation-form";
 import type { Policy, PolicyTranslation } from "../types";
 
@@ -40,13 +40,7 @@ export const AppPolicyTranslationForm = ({
 		<AppFormCard
 			onSubmit={form.handleSubmit}
 			errorMessage={errorMessage}
-			notice={
-				<AppAlert
-					variant="info"
-					title={m.translation()}
-					description={m.translation_fallback_help()}
-				/>
-			}
+			notice={<AppTranslationNotice />}
 			actions={
 				<AppFormActions
 					isPending={isPending}
