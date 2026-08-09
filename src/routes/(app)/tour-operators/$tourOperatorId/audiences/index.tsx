@@ -13,8 +13,7 @@ export const Route = createFileRoute(
 	component: AudiencesPage,
 });
 
-// Audiences: the operator's pax pricing tiers (Adults, Children, …), reused
-// across departures' pricing. Table page → full width.
+// Pricing tiers, reused across departures' pricing.
 function AudiencesPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();

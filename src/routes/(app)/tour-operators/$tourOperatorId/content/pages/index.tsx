@@ -13,7 +13,6 @@ export const Route = createFileRoute(
 	component: PagesPage,
 });
 
-// Pages: the operator's static storefront content (About, Contact, policies).
 function PagesPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();

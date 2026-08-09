@@ -14,9 +14,7 @@ export const Route = createFileRoute(
 	component: AvailabilityPage,
 });
 
-// Availability: the operator's departures across all experiences, soonest
-// first. Adding availability starts with an experience picker (availability is
-// per-experience), then the editor. Table page → full width.
+// Adding starts with an experience picker, because availability is per-experience.
 function AvailabilityPage() {
 	const { tourOperatorId } = Route.useParams();
 	const [addOpen, setAddOpen] = useState(false);

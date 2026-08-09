@@ -11,7 +11,6 @@ export const Route = createFileRoute(
 	component: InboxPage,
 });
 
-// Operations → Inbox: shopper contact-form messages.
 function InboxPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

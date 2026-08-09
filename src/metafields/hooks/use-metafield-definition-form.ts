@@ -43,7 +43,6 @@ export const useMetafieldDefinitionForm = (
 				});
 				return definition.id;
 			}
-			// 201 Created with a Location header, no body — parse the new id out.
 			const { headers } = await authApi.post(base, {
 				ownerType: fields.ownerType,
 				namespace: fields.namespace,
@@ -73,7 +72,6 @@ export const useMetafieldDefinitionForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metafieldDefinitions(tourOperatorId),
 			});
-			// Create/update appended an audit entry — refresh the trail.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});

@@ -23,8 +23,6 @@ export const useExperienceActions = (
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.experiences(tourOperatorId),
 		});
-		// The mutation appended an audit entry — refresh the trail (the page's
-		// Activity timeline, the Activity table, entry details).
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});

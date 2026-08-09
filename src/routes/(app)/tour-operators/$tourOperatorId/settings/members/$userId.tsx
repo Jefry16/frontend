@@ -8,7 +8,6 @@ export const Route = createFileRoute(
 	component: MemberDetailPage,
 });
 
-// Single-resource page → centered at max-w-3xl (list pages go full width).
 function MemberDetailPage() {
 	const { tourOperatorId, userId } = Route.useParams();
 	return (

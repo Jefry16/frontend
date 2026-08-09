@@ -14,8 +14,7 @@ export const Route = createFileRoute(
 	component: MetaobjectsPage,
 });
 
-// Content → Metaobjects: the definition catalogue; entries live under each
-// definition's detail.
+// The definition catalogue; entries live under each definition's detail.
 function MetaobjectsPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

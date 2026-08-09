@@ -11,7 +11,6 @@ import type { Experience } from "./types";
 // display-only: it filters by eq, which the set-filter component cannot speak.
 export const experienceColumns = (
 	tourOperatorId: string,
-	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<Experience, unknown>[] => {
 	return [

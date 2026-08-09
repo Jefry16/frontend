@@ -14,12 +14,8 @@ export const Route = createFileRoute(
 	component: MembersSettingsPage,
 });
 
-// Team members settings: the roster table. Invitations (invite/revoke) land as a
-// later slice on top of this same page.
 function MembersSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
-	// Table page → full width (no mx-auto/max-w). Single-resource pages stay
-	// centered at max-w-3xl; a list wants the room.
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader

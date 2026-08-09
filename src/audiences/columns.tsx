@@ -11,7 +11,6 @@ import type { Audience } from "./types";
 // the operator's timezone. The name cell links to the detail once it exists.
 export const audienceColumns = (
 	tourOperatorId: string,
-	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<Audience, unknown>[] => {
 	return [

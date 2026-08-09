@@ -39,7 +39,6 @@ export const useMediaActions = (tourOperatorId: string, mediaId: string) => {
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.media(tourOperatorId),
 			});
-			// The delete appended an audit entry — refresh the trail.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});

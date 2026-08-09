@@ -11,7 +11,6 @@ export const Route = createFileRoute(
 	component: MediaPage,
 });
 
-// Media library: the operator's uploaded images/files. Table page → full width.
 function MediaPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

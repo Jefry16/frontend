@@ -18,10 +18,8 @@ export const Route = createFileRoute(
 	component: GeneralSettingsPage,
 });
 
-// General operator settings: logo, store access and the shop's SEO defaults.
-// Every card here writes through an ADMIN+ endpoint while its read is
-// member-visible, so each takes `canWrite` and shows a read-only face to STAFF.
-// Single-resource page → centered at max-w-3xl.
+// Every card writes through an ADMIN+ endpoint while its read is member-visible,
+// so each takes `canWrite` and shows a read-only face to STAFF.
 function GeneralSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const operator = useCurrentTourOperator();

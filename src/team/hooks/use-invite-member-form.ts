@@ -18,7 +18,6 @@ export const useInviteMemberForm = (tourOperatorId: string) => {
 	const { mutate, isPending } = useMutation<string, AxiosError, InviteFormData>(
 		{
 			mutationFn: async (data) => {
-				// 201 Created with a Location header, no body — parse the new id out.
 				const { headers } = await authApi.post(
 					`/tour-operators/${tourOperatorId}/invitations`,
 					data,
@@ -33,7 +32,6 @@ export const useInviteMemberForm = (tourOperatorId: string) => {
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.invitations(tourOperatorId),
 				});
-				// The invite appended an audit entry — refresh the trail.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});

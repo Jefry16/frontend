@@ -9,7 +9,6 @@ export const Route = createFileRoute(
 	component: EditPickupLocationPage,
 });
 
-// Single-resource page → centered at max-w-3xl.
 function EditPickupLocationPage() {
 	const { tourOperatorId, pickupLocationId } = Route.useParams();
 	return (

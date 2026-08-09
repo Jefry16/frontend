@@ -12,8 +12,7 @@ export const Route = createFileRoute(
 	component: NewPolicyPage,
 });
 
-// Single-resource page → centered. Static "new" wins over the dynamic
-// $policyId sibling.
+// Static "new" wins over the dynamic $policyId sibling.
 function NewPolicyPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

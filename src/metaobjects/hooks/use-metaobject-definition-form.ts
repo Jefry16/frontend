@@ -67,7 +67,6 @@ export const useMetaobjectDefinitionForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjectDefinitions(tourOperatorId),
 			});
-			// The write appended an audit entry.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});

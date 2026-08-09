@@ -12,8 +12,7 @@ export const Route = createFileRoute(
 	component: NewExperiencePage,
 });
 
-// Single-resource page → centered at max-w-3xl. Static "new" wins over the
-// dynamic $experienceId sibling.
+// Static "new" wins over the dynamic $experienceId sibling.
 function NewExperiencePage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

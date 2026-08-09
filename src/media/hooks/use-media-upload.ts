@@ -40,7 +40,6 @@ export const useMediaUpload = (tourOperatorId: string) => {
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.media(tourOperatorId),
 				});
-				// Uploads append audit entries.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});

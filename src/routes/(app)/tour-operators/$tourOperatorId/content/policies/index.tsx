@@ -13,7 +13,6 @@ export const Route = createFileRoute(
 	component: PoliciesPage,
 });
 
-// Table page → full width.
 function PoliciesPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();
