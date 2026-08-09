@@ -1,8 +1,8 @@
 import * as m from "#/paraglide/messages";
 
-// Action → human label ("<actor> <label>"). Keys are the backend's
-// dot-namespaced action strings; an unknown action falls back to a humanized
-// form so a new backend action renders sensibly before this map learns it.
+// Keyed by the backend's dot-namespaced action strings. An unknown one falls
+// back to a humanized form, so a new backend action reads sensibly before this
+// map learns it.
 const ACTION_LABELS: Record<string, () => string> = {
 	"tour_operator.created": m.activity_action_tour_operator_created,
 	"tour_operator.locales_updated":
@@ -88,8 +88,8 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"contact_message.deleted": m.activity_action_contact_message_deleted,
 };
 
-// Field → label for the `{field, from, to}` diff rows. Reuses the form labels
-// where one exists; anything unmapped falls back to spaced camelCase.
+// Reuses the form labels where one exists; anything unmapped falls back to
+// spaced camelCase.
 const FIELD_LABELS: Record<string, () => string> = {
 	name: m.name,
 	description: m.description,
@@ -119,7 +119,7 @@ const FIELD_LABELS: Record<string, () => string> = {
 	value: m.value,
 };
 
-/** The actor line: the frozen display name, or the per-type generic label. */
+/** The frozen display name, or the per-type generic label. */
 export const formatAuditActor = (entry: {
 	actorType: "USER" | "SYSTEM";
 	actorName: string | null;
@@ -146,11 +146,7 @@ export const formatAuditField = (field: string): string => {
 	return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 };
 
-/**
- * A diff/details value as display text: null/undefined → an em-dash ("set from
- * nothing" / "cleared"); an ENUM_NAME → title case (SOLD_OUT → "Sold out");
- * arrays joined; anything else stringified.
- */
+/** null/undefined → em-dash; an ENUM_NAME → title case; arrays joined. */
 export const formatAuditValue = (value: unknown): string => {
 	if (value === null || value === undefined) return "—";
 	if (Array.isArray(value)) {
@@ -163,13 +159,12 @@ export const formatAuditValue = (value: unknown): string => {
 	return String(value);
 };
 
-/** Set-filter options for the action column — the known action catalog. */
+/** Set-filter options for the action column. */
 export const ACTION_OPTIONS = Object.entries(ACTION_LABELS).map(
 	([value, label]) => ({ value, label: label() }),
 );
 
-// entityType → its localized label + (where a detail page exists) the route the
-// entity cell links to. TOUR_OPERATOR points at the General settings page.
+// The route is absent where the entity has no detail page.
 interface EntityRoute {
 	to: string;
 	param?: string;
@@ -291,7 +286,7 @@ export const entityRoute = (
 	return { to: route.to, params };
 };
 
-/** Set-filter options for the entity column — the audited entity types. */
+/** Set-filter options for the entity column. */
 export const ENTITY_TYPE_OPTIONS = Object.entries(ENTITY_TYPES).map(
 	([value, type]) => ({ value, label: type.label() }),
 );

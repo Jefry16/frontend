@@ -25,15 +25,10 @@ import { AppMenuTargetSelect } from "./AppMenuTargetSelect";
 const MAX_DEPTH = 3;
 
 /**
- * TanStack types a field path as a union of the literal keys it can prove
- * exist, and computes that union by walking the value type. A menu item tree is
- * recursive, so that walk does not terminate — `mode="array"` on `items` alone
- * reports "type instantiation is excessively deep".
- *
- * So the tree is addressed through this structural view, cast once where the
- * editor mounts it. Paths stay plain strings — `items[2].children[0].title` —
- * which is what a runtime tree can actually produce. The rest of the form (
- * submit, pending, errors) keeps its real types.
+ * TanStack computes a field-path union by walking the value type, and a menu
+ * tree is recursive — `mode="array"` on `items` alone reports "type
+ * instantiation is excessively deep". So the tree is addressed through this
+ * structural view, cast once here; the rest of the form keeps its real types.
  */
 interface TreeForm {
 	Field: (props: {
@@ -47,15 +42,12 @@ interface TreeForm {
 	swapFieldValues: (path: string, from: number, to: number) => void;
 }
 
-// The navigation editor: the menu's whole item tree, edited as ONE form and
-// saved WHOLESALE via PUT /items (the backend's write model — no per-item
-// calls). Nest up to 3 levels; sibling order is position. Per-item title
-// translations appear for each supported locale beyond the primary.
+// One form for the whole tree, saved wholesale via PUT /items — the backend has
+// no per-item calls.
 //
-// The tree lives in the form, addressed by path — `items[0].children[1].title`
-// — rather than in local state keyed by a row id. That is what lets every cell
-// use a field renderer and every rule live in the schema, so a missing URL
-// reports on that URL box instead of as one banner at the top of the page.
+// The tree lives in the form, addressed by path, rather than in local state
+// keyed by row id. That is what lets every rule live in the schema, so a missing
+// URL reports on that URL box instead of as a banner at the top of the page.
 export const AppMenuItemsEditor = ({
 	tourOperatorId,
 	menu,
@@ -123,9 +115,7 @@ interface RowsProps {
 	extraLocales: string[];
 }
 
-// One level of siblings. Recurses through `children`, building the next path
-// from this one — the field paths ARE the tree, so nothing has to be kept in
-// sync with it.
+// The field paths ARE the tree, so nothing has to be kept in sync with it.
 const ItemRows = ({
 	form,
 	path,
@@ -138,9 +128,7 @@ const ItemRows = ({
 		{nodes.map((node, index) => {
 			const rowPath = `${path}[${index}]`;
 			return (
-				// Rows are appended, removed and swapped, and every value in one is
-				// editable, so the index is the only stable identity available.
-				// biome-ignore lint/suspicious/noArrayIndexKey: see above
+				// biome-ignore lint/suspicious/noArrayIndexKey: rows carry no id, so the index is the only identity available
 				<div key={index} className="flex flex-col gap-2">
 					<div className="flex items-start gap-2">
 						<div className="flex shrink-0 flex-col">

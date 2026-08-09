@@ -2,18 +2,9 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
-// The tokens-only styling ratchet: no raw Tailwind palette classes and no
-// arbitrary values in our code — every visual decision comes from the design
-// tokens in src/styles.css (or a CVA variant built on them). Always hard for
-// NEW code; the pre-existing drift lives in KNOWN_DRIFT (a per-file violation
-// count), which can only shrink — fix an instance and the count must come
-// down, so the list burns toward empty and the gate becomes fully hard.
-//
-// Sibling gate: `shared/form-pattern.test.ts` does the same job for §5 forms.
-//
-// Scanned: src/**/*.{ts,tsx}. Excluded: components/ui/ (vendored shadcn),
-// paraglide/ (generated), routeTree.gen.ts (generated), *.test.* (this file
-// would match its own patterns).
+// Every visual decision comes from the tokens in src/styles.css. KNOWN_DRIFT
+// holds the pre-existing violations and may only shrink, so the gate hardens
+// on its own. Sibling gates: form-pattern.test.ts, story-coverage.test.ts.
 const ROOT = process.cwd();
 const files: string[] = [];
 const walk = (dir: string) => {
@@ -35,20 +26,14 @@ const scannable = files
 			!/\.test\.tsx?$/.test(path),
 	);
 
-// Raw palette classes (`text-amber-700`, `dark:bg-blue-500/50`) and raw
-// white/black (`bg-white`, `ring-black/5`) — use a semantic token instead;
-// if none fits, add one to styles.css first.
+// If no semantic token fits, add one to styles.css rather than reaching for a
+// palette class.
 const RAW_PALETTE =
 	/(?:^|[\s"'`{:!])((?:[a-z-]+:)*(?:text|bg|border|ring|fill|stroke|from|via|to|outline|decoration|divide|accent|caret|shadow|placeholder)-(?:(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|[1-9]50|[1-9]00)|white|black)(?:\/\d+)?)\b/g;
 
-// Arbitrary values (`w-[347px]`, `rounded-[1.3rem]`, `h-[calc(100vh-7rem)]`).
-// NOT flagged, by design:
-//  - variant selectors (`data-[state=open]:`, `aria-[…]`, `supports-[…]`) —
-//    those are conditions, not values;
-//  - pure CSS-var references (`w-[var(--radix-popover-trigger-width)]`) —
-//    the value comes from a variable, not an ad-hoc literal;
-//  - grid track lists (`grid-cols-[max-content_1fr]`) — layout composition
-//    with no Tailwind token vocabulary to prefer.
+// Arbitrary values (`w-[347px]`). Three bracket forms are excluded by design,
+// not oversight: variant selectors are conditions, `var(--…)` is a reference,
+// and grid track lists have no token vocabulary to prefer.
 const ARBITRARY =
 	/(?:^|[\s"'`{:!])((?:[a-z-]+:)*([a-z][a-z0-9-]*)-\[([^\]]*)\])/g;
 const VARIANT_UTILITIES =
@@ -70,12 +55,7 @@ const violationsIn = (source: string): string[] => {
 	return hits;
 };
 
-// Ported from the archive (`src/dev/token-drift.test.ts`), where it burned its
-// own drift to empty in a day. This repo is the rebuild and never had the gate,
-// so five violations had accumulated since July — `max-h-[600px]`,
-// `max-w-[180px]`, `ring-[3px]`, `max-h-[60vh]` and a `w-[32rem]` in a story.
-// All five were fixed before this landed, so KNOWN_DRIFT starts EMPTY and the
-// gate is hard from the first commit. Never add an entry.
+// Starts empty, and the gate is hard from the first commit. Never add an entry.
 const KNOWN_DRIFT: Record<string, number> = {};
 
 describe("token drift ratchet", () => {

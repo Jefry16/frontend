@@ -16,23 +16,11 @@ const describeViolation = (v: Result) =>
 	].join("\n");
 
 /**
- * Assert a rendered tree has no axe violations.
- *
- * **A floor, not a substitute.** Measured against the five findings the hand
- * rounds turned up, axe catches one of them here:
- *
- * - `<dl>` of plain divs — CAUGHT (`definition-list`, serious).
- * - unreachable scroll region — MISSED. jsdom paints nothing, so
- *   `scrollHeight` and `clientHeight` are both 0 and axe marks
- *   `scrollable-region-focusable` *inapplicable*. A real browser would catch it.
- * - missing `aria-sort`, missing `aria-current`, and 47 buttons all named
- *   "Filter" — NOT AXE RULES. None is a violation; they are announcement gaps
- *   axe has no opinion about.
- *
- * So this suite covers the structural half — roles, labels, list semantics,
- * duplicate ids, form associations — and the targeted tests next to it
- * (`AppDataTable.test.tsx`, `SidebarNavLeaf.test.tsx`) cover the half about
- * whether state is announced. Both halves are needed; neither is the whole.
+ * A floor, not a substitute: measured against five hand-found issues, this
+ * caught one. It covers structure — roles, labels, list semantics, duplicate
+ * ids, form associations — and is blind to whether *state* is announced
+ * (`aria-sort`, `aria-current`, same-named buttons are not axe rules at all).
+ * The targeted tests beside it cover that half.
  */
 export const expectNoA11yViolations = async (container: Element) => {
 	const { violations } = await axe.run(container, JSDOM_BLIND);

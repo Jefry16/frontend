@@ -17,11 +17,8 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-// localStorage is OFF LIMITS for auth tokens and app state per CLAUDE.md —
-// the access token lives in memory and refresh rides an httpOnly cookie.
-// Theme is the documented exception: it's per-device by nature, not
-// security-sensitive, and the alternative (resetting on every reload) is
-// hostile UX. The inline FOUC script in __root.tsx reads the same key.
+// The one documented exception to the no-localStorage rule: per-device by
+// nature and not sensitive. The FOUC script in __root.tsx reads the same key.
 const STORAGE_KEY = "theme";
 
 const readStored = (): Theme | null => {
@@ -44,10 +41,8 @@ const writeStored = (t: Theme) => {
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 	const [theme, setThemeState] = useState<Theme>("light");
 
-	// On first client mount, prefer the persisted choice; otherwise adopt
-	// whatever the inline FOUC script wrote to <html> (which mirrors the OS
-	// preference). Lazy `useState` initializers run on the server too, so we
-	// can't read `localStorage` or `document` there.
+	// Not a lazy useState initializer: those run on the server too, where there
+	// is no localStorage and no <html> for the FOUC script to have written to.
 	useEffect(() => {
 		if (typeof document === "undefined") return;
 		const stored = readStored();
@@ -72,10 +67,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 		writeStored(t);
 	}, []);
 
-	// The write stays OUT of the updater: React may invoke an updater more than
-	// once for a single change — StrictMode does it deliberately — and it runs
-	// during the render phase, so a localStorage write in there is a side effect
-	// in render that can happen twice or for a render that is thrown away.
+	// The write stays OUT of the updater: updaters run during render and may be
+	// invoked twice, or for a render that is thrown away.
 	const toggle = useCallback(() => {
 		setTheme(theme === "dark" ? "light" : "dark");
 	}, [theme, setTheme]);

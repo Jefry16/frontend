@@ -7,7 +7,6 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { OperatorSeo } from "../types";
 
-/** The shop's own SEO defaults — the canonical text every locale falls back to. */
 export const useOperatorSeo = (tourOperatorId: string) =>
 	useQuery({
 		queryKey: queryKeys.operatorSeo(tourOperatorId),
@@ -19,12 +18,8 @@ export const useOperatorSeo = (tourOperatorId: string) =>
 		},
 	});
 
-/**
- * Resolve one media id to its asset, for the og:image preview. A local fetch
- * rather than `#/media`'s `useMediaByIds`: `media` imports `#/tour-operator`,
- * so importing it back through this module's barrel is a cycle depcheck
- * rejects. The endpoint is member-readable, same as the rest of this card.
- */
+// Fetched here rather than through `#/media`'s useMediaByIds: `media` imports
+// `#/tour-operator`, so reaching back through the barrel is a cycle.
 export const useOperatorSeoImage = (
 	tourOperatorId: string,
 	mediaId: string | null,
@@ -40,11 +35,8 @@ export const useOperatorSeoImage = (
 		},
 	});
 
-/**
- * Save the SEO settings. The PUT is a full replace — the backend rebuilds the
- * row from the body — so the card always sends all three fields, including an
- * `ogImageMediaId` the operator never touched.
- */
+// The PUT is a full replace, so the card always sends all three fields —
+// including an `ogImageMediaId` the operator never touched.
 export const useOperatorSeoSave = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -66,11 +58,7 @@ export const useOperatorSeoSave = (tourOperatorId: string) => {
 	});
 };
 
-/**
- * Upload a file to the media library and hand back its id, for the og:image
- * dropzone. Same two-step the logo card uses (multipart → 201 + Location); the
- * id is held in form state until Save, so the PUT carries it with the rest.
- */
+// The id is held in form state until Save, so the PUT carries it with the rest.
 export const useOperatorSeoImageUpload = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -79,7 +67,7 @@ export const useOperatorSeoImageUpload = (tourOperatorId: string) => {
 		mutationFn: async (file) => {
 			const fd = new FormData();
 			fd.append("file", file);
-			// Let axios set the multipart boundary from the FormData.
+			// No Content-Type header: axios derives the multipart boundary itself.
 			const { headers } = await authApi.post(
 				`/tour-operators/${tourOperatorId}/media`,
 				fd,

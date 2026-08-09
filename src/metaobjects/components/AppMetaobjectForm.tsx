@@ -12,37 +12,21 @@ import { deriveSlug } from "../validators/metaobject";
 /**
  * TanStack proves a field path against the value type, and `values` is a
  * `Record<string, string>` whose keys arrive from the definition at runtime —
- * so `values.<key>` is not in the union it can prove.
- *
- * Addressed through this structural view, cast once where the form mounts, the
- * way AppMenuItemsEditor handles its recursive tree. It was three casts at the
- * point of use before: `as "values"` on the path, which then made the field
- * look like the whole record, so the value and the setter each needed undoing
- * again (`as unknown as string`, `as never`). The runtime path was right the
- * whole time — only the compiler was being lied to, three times.
- *
- * The value is typed rather than left as `AnyFieldApi`: the record holds
- * strings and AppTypedValueInput wants a string, so saying so is what makes the
- * casts unnecessary instead of merely hidden. handle/name keep their real types.
+ * so `values.<key>` is not in the union it can prove. Cast once here, the way
+ * AppMenuItemsEditor handles its recursive tree, rather than at each use.
  */
 interface ValuesForm {
 	Field: (props: {
 		name: string;
 		children: (field: {
-			// `string | undefined`, not `string`: this is an index into a record
-			// keyed at runtime. The defaults build a key per definition field, so it
-			// should always be present — but "should" is not a thing to type, and
-			// the `?? ""` below is what the casts used to sit in front of.
+			// Undefined is reachable: this indexes a record keyed at runtime.
 			state: { value: string | undefined };
 			handleChange: (value: string) => void;
 		}) => ReactNode;
 	}) => ReactNode;
 }
 
-// The entry form, GENERATED from the definition: name + handle (a blurred
-// name prefills an empty handle) + one type-aware input per field. Create
-// (no `entry`) or edit (with one — blanked fields clear on save). Value
-// validation is the backend's (per-field 422 surfaces in the alert).
+// Value validation is the backend's — a per-field 422 surfaces in the alert.
 export const AppMetaobjectForm = ({
 	tourOperatorId,
 	definition,

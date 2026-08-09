@@ -5,26 +5,23 @@ import { cn } from "#/lib/utils";
 
 interface AppImageDropzoneProps {
 	onFile: (file: File) => void;
-	// Called with a copy-owned message when the picked file fails validation.
+	// Called with one of the two messages below.
 	onError?: (message: string) => void;
-	// A file `accept` string — "image/*", explicit types, or a comma list.
+	// "image/*", explicit types, or a comma list.
 	accept?: string;
 	maxBytes?: number;
 	pending?: boolean;
 	disabled?: boolean;
 	hint?: string;
-	// A plain URL to show as the filled preview. This component never creates
-	// object URLs — a caller that passes an object URL must revoke it itself.
+	// This component never creates object URLs — a caller passing one must revoke it.
 	previewUrl?: string | null;
-	// The two validation messages (the component stays feature/i18n-agnostic).
+	// Props, so the component stays i18n-agnostic.
 	errorMessages?: { wrongType: string; tooLarge: string };
-	// Sizes/shapes the drop target — e.g. "size-28 min-h-0" for a square tile.
-	// Defaults to a full-width box.
+	// Sizes the drop target; defaults to a full-width box.
 	className?: string;
 }
 
-// Whether a file matches an `accept` string (handles "image/*", explicit MIME
-// types, and comma-separated lists).
+// Handles "image/*", explicit MIME types, and comma-separated lists.
 const matchesAccept = (file: File, accept: string): boolean =>
 	accept
 		.split(",")
@@ -35,13 +32,8 @@ const matchesAccept = (file: File, accept: string): boolean =>
 			return file.type === token;
 		});
 
-// A generic drag-and-drop image picker: a real <button> that also opens the file
-// dialog on click or Enter/Space. When `previewUrl` is set it fills with the
-// image (a hover overlay signals it's replaceable); otherwise it's a dashed
-// placeholder. Validates type + size client-side and reports violations via
-// onError (no network call for a bad file). Sizes to its container by default;
-// pass `className` for a fixed tile. MUST NOT import any feature module, and does
-// NOT create object URLs.
+// A real <button>, so the file dialog opens on Enter/Space as well as click.
+// Validation is client-side: a bad file never reaches the network.
 export const AppImageDropzone = ({
 	onFile,
 	onError,

@@ -12,9 +12,8 @@ import { useMemo, useState } from "react";
 import { authApi } from "#/lib/api";
 
 declare module "@tanstack/react-table" {
-	// Backend field override — when the column id doesn't match the API's sort
-	// field name. Filters always send the column id; no column has needed
-	// otherwise.
+	// For when the column id is not the API's sort field name. Filters always
+	// send the column id; no column has needed otherwise.
 	interface ColumnMeta<TData extends RowData, TValue> {
 		sortField?: string;
 		// Right-align + tabular figures for numeric columns so digits line up.
@@ -40,10 +39,8 @@ interface UseDataTableProps<TData> {
 	baseParams?: Record<string, string>;
 }
 
-// Headless list engine: an infinite query over a cursor-paginated endpoint wired
-// to a TanStack table, translating the table's sort/filter state into the
-// backend's query grammar (`sort`, `filter[field][op]`, `cursor`). Consumers just
-// supply columns + endpoint + queryKey; see AppDataTable for the rendered shell.
+// Translates the table's sort/filter state into the backend's query grammar.
+// AppDataTable is the rendered shell over this.
 export function useDataTable<TData extends { id: string }>({
 	columns,
 	endpoint,
@@ -112,10 +109,9 @@ export function useDataTable<TData extends { id: string }>({
 		enableSortingRemoval: true,
 		defaultColumn: {
 			filterFn: passFilterFn as FilterFn<TData>,
-			// Sorting is opt-IN, declared per column. It used to be an `allowSorting`
-			// prop on the header, which the table never saw — so getCanSort() was
-			// true for every column, including a thumbnail, and nothing could read
-			// the real answer to build an aria-sort from.
+			// Opt-in per column, and declared HERE so the table knows: a header-only
+			// flag leaves getCanSort() true for everything, including a thumbnail,
+			// and nothing can then build a truthful aria-sort.
 			enableSorting: false,
 		},
 		getCoreRowModel: getCoreRowModel(),

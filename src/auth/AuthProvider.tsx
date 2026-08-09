@@ -29,12 +29,9 @@ interface AuthContextType {
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	login: (email: string, password: string) => Promise<AuthUser>;
-	/** Adopt a session from an already-issued access token (e.g. the accept-invitation
-	 * auto-login, whose refresh cookie the server has set) — like login, minus the
-	 * credentials post. */
+	/** Login minus the credentials post — the server has already set the refresh cookie. */
 	establishSession: (accessToken: string) => Promise<AuthUser>;
 	logout: () => Promise<void>;
-	/** Refetch the profile — e.g. after creating an operator so it appears. */
 	refreshUser: () => Promise<AuthUser | null>;
 }
 
@@ -45,8 +42,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const navigate = useNavigate();
 	const [bootstrapped, setBootstrapped] = useState(false);
 
-	// On load, try to trade the httpOnly refresh cookie for an access token.
-	// Success = a returning session; failure = simply unauthenticated.
+	// Trade the httpOnly refresh cookie for an access token; failing that, the
+	// visitor is simply unauthenticated.
 	useEffect(() => {
 		let cancelled = false;
 		(async () => {
@@ -101,15 +98,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		};
 	}, [navigate, queryClient]);
 
-	/**
-	 * Empty the whole client cache at a session boundary.
-	 *
-	 * Removing only `authProfile` — which is what logout and the expiry handler
-	 * used to do — leaves every operator query behind: lists, details, media,
-	 * the audit trail. This is an SPA, so signing out and signing in again never
-	 * reloads the page, and the next session would be served the previous one's
-	 * rows until each query happened to refetch.
-	 */
+	// The whole cache, not just `authProfile`: nothing reloads the page in an SPA,
+	// so anything left behind is served to the next session.
 	const clearSessionCache = useCallback(() => {
 		queryClient.clear();
 	}, [queryClient]);
@@ -120,7 +110,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				"/auth/login",
 				{ email, password },
 			);
-			// Start clean: a previous session's rows must not survive into this one.
 			clearSessionCache();
 			setAccessToken(tokens.accessToken);
 			const profile = await queryClient.fetchQuery({
