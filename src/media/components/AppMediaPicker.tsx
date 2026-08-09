@@ -5,13 +5,13 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
 import { Spinner } from "#/components/ui/spinner";
 import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
+import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import { useMediaLibrary } from "../hooks/use-media-library";
 import type { MediaAsset } from "../types";
 
@@ -126,18 +126,7 @@ export const AppMediaPicker = ({
 					</div>
 				)}
 
-				<DialogFooter>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => onOpenChange(false)}
-					>
-						{m.cancel()}
-					</Button>
-					<Button type="button" onClick={confirm}>
-						{m.select()}
-					</Button>
-				</DialogFooter>
+				<AppDialogFooter onConfirm={confirm} confirmLabel={m.select()} />
 			</DialogContent>
 		</Dialog>
 	);

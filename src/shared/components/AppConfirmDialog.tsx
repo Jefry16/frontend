@@ -1,15 +1,11 @@
-import { Button } from "#/components/ui/button";
 import {
 	Dialog,
-	DialogClose,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
-import { Spinner } from "#/components/ui/spinner";
-import * as m from "#/paraglide/messages";
+import { AppDialogFooter } from "./AppDialogFooter";
 
 interface Props {
 	open: boolean;
@@ -47,21 +43,13 @@ export function AppConfirmDialog({
 					<DialogTitle>{title}</DialogTitle>
 					{description && <DialogDescription>{description}</DialogDescription>}
 				</DialogHeader>
-				<DialogFooter>
-					<DialogClose asChild>
-						<Button variant="outline" disabled={pending}>
-							{cancelLabel ?? m.cancel()}
-						</Button>
-					</DialogClose>
-					<Button
-						variant={destructive ? "destructive" : "default"}
-						onClick={onConfirm}
-						disabled={pending}
-					>
-						{pending && <Spinner className="size-4" />}
-						{confirmLabel}
-					</Button>
-				</DialogFooter>
+				<AppDialogFooter
+					onConfirm={onConfirm}
+					confirmLabel={confirmLabel}
+					cancelLabel={cancelLabel}
+					destructive={destructive}
+					pending={pending}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

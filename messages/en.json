@@ -313,7 +313,6 @@
 	"load_failed": "Couldn't load this",
 	"retry": "Try again",
 	"no_results": "No results",
-	"filter_label": "Filter",
 	"search": "Search",
 	"clear": "Clear",
 	"n_selected": "{count} selected",
@@ -659,5 +658,6 @@
 	"phone": "Phone",
 	"skip_to_content": "Skip to content",
 	"main_navigation": "Main navigation",
-	"settings_navigation": "Settings navigation"
+	"settings_navigation": "Settings navigation",
+	"filter_column": "Filter by {column}"
 }

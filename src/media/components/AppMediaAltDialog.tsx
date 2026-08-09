@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
-import { Spinner } from "#/components/ui/spinner";
 import { Textarea } from "#/components/ui/textarea";
 import * as m from "#/paraglide/messages";
+import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 const MAX = 255;
 
@@ -58,23 +56,11 @@ export const AppMediaAltDialog = ({
 					placeholder={m.media_alt_placeholder()}
 					onChange={(e) => setAlt(e.target.value)}
 				/>
-				<DialogFooter>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => onOpenChange(false)}
-					>
-						{m.cancel()}
-					</Button>
-					<Button
-						type="button"
-						disabled={pending || trimmed === (currentAlt ?? "")}
-						onClick={() => onSave(trimmed)}
-					>
-						{pending && <Spinner />}
-						{m.save_changes()}
-					</Button>
-				</DialogFooter>
+				<AppDialogFooter
+					onConfirm={() => onSave(trimmed)}
+					disabled={trimmed === (currentAlt ?? "")}
+					pending={pending}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

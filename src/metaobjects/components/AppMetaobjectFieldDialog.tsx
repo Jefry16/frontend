@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
@@ -18,7 +16,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "#/components/ui/select";
-import { Spinner } from "#/components/ui/spinner";
 import {
 	METAOBJECT_FIELD_TYPE_CODES,
 	type MetafieldTypeCode,
@@ -26,6 +23,7 @@ import {
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import type { MetaobjectField } from "../types";
 import { deriveSlug, fieldSchema } from "../validators/metaobject";
 
@@ -140,23 +138,11 @@ export const AppMetaobjectFieldDialog = ({
 						</>
 					)}
 				</div>
-				<DialogFooter>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => onOpenChange(false)}
-					>
-						{m.cancel()}
-					</Button>
-					<Button
-						type="button"
-						disabled={pending || !valid}
-						onClick={() => onSubmit(draft)}
-					>
-						{pending && <Spinner className="size-4" />}
-						{isRename ? m.metaobject_rename_field() : m.metaobject_add_field()}
-					</Button>
-				</DialogFooter>
+				<AppDialogFooter
+					onConfirm={() => onSubmit(draft)}
+					disabled={!valid}
+					pending={pending}
+				/>
 			</DialogContent>
 		</Dialog>
 	);
