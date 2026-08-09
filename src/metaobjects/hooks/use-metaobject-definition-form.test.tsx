@@ -3,7 +3,7 @@ import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { server } from "#/test/server";
 import { wrapperWithProviders } from "#/test/test-utils";
-import type { MetaobjectDefinition } from "../types";
+import type { MetaobjectDefinition, MetaobjectField } from "../types";
 import { useMetaobjectDefinitionForm } from "./use-metaobject-definition-form";
 
 const { navigateMock } = vi.hoisted(() => ({ navigateMock: vi.fn() }));
@@ -19,26 +19,41 @@ const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
 const BASE = `${API}/tour-operators/${OP}/metaobject-definitions`;
 
-const EXISTING = {
+const EXISTING: MetaobjectDefinition = {
 	id: "def-1",
+	context: "metaobject-definitions",
 	type: "size-chart",
 	name: "Size chart",
 	description: "",
-} as MetaobjectDefinition;
+	fields: [],
+	createdAt: "2026-01-01T00:00:00Z",
+	updatedAt: "2026-01-01T00:00:00Z",
+};
 
 // The component used to await handleSubmit, check isValid, then mutate; that
 // decision moved into form-core, so what these pin is the half that could
 // regress silently — an invalid form must not reach the network at all. The
 // edit case asserts the PUT body, which is shaped by the mutationFn: it names
 // `name` and `description` and never forwards `fields`.
-type Form = {
-	setFieldValue: (n: string, v: unknown) => void;
-	handleSubmit: () => Promise<void>;
-};
+// Field names spelled out rather than widened to `string`: widening would still
+// compile after a rename and quietly set a field that no longer exists.
+type FieldName = "type" | "name" | "description" | "fields";
+type FieldValue = string | MetaobjectField[];
 
-const submit = (form: Form, values: Record<string, unknown>) => {
+const submit = (
+	form: {
+		setFieldValue: (n: FieldName, v: FieldValue) => void;
+		handleSubmit: () => Promise<void>;
+	},
+	values: Partial<Record<FieldName, FieldValue>>,
+) => {
 	act(() => {
-		for (const [k, v] of Object.entries(values)) form.setFieldValue(k, v);
+		// Object.keys is typed string[] whatever the record says — the one cast
+		// TypeScript actually forces here.
+		for (const key of Object.keys(values) as FieldName[]) {
+			const value = values[key];
+			if (value !== undefined) form.setFieldValue(key, value);
+		}
 	});
 	return act(async () => {
 		await form.handleSubmit();
@@ -66,7 +81,7 @@ describe("useMetaobjectDefinitionForm", () => {
 			wrapper: Wrapper,
 		});
 
-		await submit(result.current.form as Form, {
+		await submit(result.current.form, {
 			type: "size-chart",
 			name: "Size chart",
 			description: "  ",
@@ -102,7 +117,7 @@ describe("useMetaobjectDefinitionForm", () => {
 			{ wrapper: Wrapper },
 		);
 
-		await submit(result.current.form as Form, { name: "Sizing chart" });
+		await submit(result.current.form, { name: "Sizing chart" });
 
 		await waitFor(() => expect(put).toHaveBeenCalled());
 		expect(put.mock.calls[0][0]).toEqual({
@@ -125,7 +140,7 @@ describe("useMetaobjectDefinitionForm", () => {
 			wrapper: Wrapper,
 		});
 
-		await submit(result.current.form as Form, {
+		await submit(result.current.form, {
 			type: "size-chart",
 			name: "",
 			fields: [{ key: "waist", type: "single_line_text", name: "Waist" }],
