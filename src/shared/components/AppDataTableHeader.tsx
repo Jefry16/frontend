@@ -74,7 +74,10 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 							variant="ghost"
 							size="icon"
 							className="relative size-7 cursor-pointer"
-							aria-label={m.filter_label()}
+							// Named by its column: a table header row of buttons all called
+							// "Filter" tells a screen reader user nothing about which one
+							// they are on, and the label is right here.
+							aria-label={m.filter_column({ column: label })}
 						>
 							<Filter className="size-3.5" />
 							{hasActiveFilter && (

@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
 import { Label } from "#/components/ui/label";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
+import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import type { SlotAudiencePrice } from "../types";
 
@@ -94,23 +92,11 @@ export const AppEditCapacityDialog = ({
 						</p>
 					)}
 				</div>
-				<DialogFooter>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => onOpenChange(false)}
-					>
-						{m.cancel()}
-					</Button>
-					<Button
-						type="button"
-						disabled={pending || belowBooked || incomplete}
-						onClick={submit}
-					>
-						{pending && <Spinner className="size-4" />}
-						{m.save_changes()}
-					</Button>
-				</DialogFooter>
+				<AppDialogFooter
+					onConfirm={submit}
+					disabled={belowBooked || incomplete}
+					pending={pending}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

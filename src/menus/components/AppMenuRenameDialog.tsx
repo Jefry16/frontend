@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
 import { Input } from "#/components/ui/input";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
+import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 // Renames the menu's title — the internal label. The handle (what the theme
 // references) never changes, which is why this is a dialog and not an edit
@@ -52,23 +50,11 @@ export const AppMenuRenameDialog = ({
 					aria-label={m.title()}
 					onChange={(e) => setTitle(e.target.value)}
 				/>
-				<DialogFooter>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => onOpenChange(false)}
-					>
-						{m.cancel()}
-					</Button>
-					<Button
-						type="button"
-						disabled={!valid || pending}
-						onClick={() => onRename(trimmed)}
-					>
-						{pending && <Spinner />}
-						{m.save_changes()}
-					</Button>
-				</DialogFooter>
+				<AppDialogFooter
+					onConfirm={() => onRename(trimmed)}
+					disabled={!valid}
+					pending={pending}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

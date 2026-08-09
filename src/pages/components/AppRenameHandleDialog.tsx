@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "#/components/ui/dialog";
 import { Input } from "#/components/ui/input";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -62,23 +60,12 @@ export const AppRenameHandleDialog = ({
 						className="font-mono"
 					/>
 				</div>
-				<DialogFooter>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => onOpenChange(false)}
-					>
-						{m.cancel()}
-					</Button>
-					<Button
-						type="button"
-						disabled={pending || !valid || handle === currentHandle}
-						onClick={() => onRename(handle)}
-					>
-						{pending && <Spinner className="size-4" />}
-						{m.rename_handle()}
-					</Button>
-				</DialogFooter>
+				<AppDialogFooter
+					onConfirm={() => onRename(handle)}
+					confirmLabel={m.rename_handle()}
+					disabled={!valid || handle === currentHandle}
+					pending={pending}
+				/>
 			</DialogContent>
 		</Dialog>
 	);
