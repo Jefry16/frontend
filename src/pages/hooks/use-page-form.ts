@@ -28,7 +28,8 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 		{
 			mutationFn: async (fields) => {
 				const base = `/tour-operators/${tourOperatorId}/pages`;
-				// Explicit per-mode payloads rather than one shared object.
+				// Per-mode payloads, mirroring the backend: CreatePageRequest has no
+				// templateSuffix field, so sending one would be ignored, not rejected.
 				if (page) {
 					await authApi.patch(`${base}/${page.id}`, {
 						title: fields.title,
