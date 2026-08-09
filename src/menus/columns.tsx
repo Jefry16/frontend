@@ -13,11 +13,11 @@ export const menuColumns = (
 	{
 		id: "title",
 		accessorKey: "title",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.title()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -33,11 +33,11 @@ export const menuColumns = (
 	{
 		id: "handle",
 		accessorKey: "handle",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.handle()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -48,12 +48,9 @@ export const menuColumns = (
 	{
 		id: "createdAt",
 		accessorKey: "createdAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.created()}
-				headerContext={ctx}
-				allowSorting
-			/>
+			<AppDataTableHeader label={m.created()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatDate(row.original.createdAt),
 	},

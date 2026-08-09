@@ -15,11 +15,11 @@ export const metaobjectDefinitionColumns = (
 	{
 		id: "name",
 		accessorKey: "name",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.name()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -35,11 +35,11 @@ export const metaobjectDefinitionColumns = (
 	{
 		id: "type",
 		accessorKey: "type",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.metaobject_type()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -50,12 +50,9 @@ export const metaobjectDefinitionColumns = (
 	{
 		id: "createdAt",
 		accessorKey: "createdAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.created()}
-				headerContext={ctx}
-				allowSorting
-			/>
+			<AppDataTableHeader label={m.created()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatDate(row.original.createdAt),
 	},
@@ -71,11 +68,11 @@ export const metaobjectEntryColumns = (
 	{
 		id: "name",
 		accessorKey: "name",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.name()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -91,11 +88,11 @@ export const metaobjectEntryColumns = (
 	{
 		id: "handle",
 		accessorKey: "handle",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.handle()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -118,12 +115,9 @@ export const metaobjectEntryColumns = (
 	{
 		id: "createdAt",
 		accessorKey: "createdAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.created()}
-				headerContext={ctx}
-				allowSorting
-			/>
+			<AppDataTableHeader label={m.created()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatDate(row.original.createdAt),
 	},

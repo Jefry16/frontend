@@ -44,11 +44,11 @@ export const invitationColumns = (
 	return [
 		{
 			id: "name",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.invitee()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="setAsync"
 					endpoint={endpoint}
 					queryKey={optionsKey}
@@ -68,11 +68,11 @@ export const invitationColumns = (
 		},
 		{
 			id: "email",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.email()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="setAsync"
 					endpoint={endpoint}
 					queryKey={optionsKey}
@@ -86,11 +86,11 @@ export const invitationColumns = (
 		},
 		{
 			id: "role",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.role()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="set"
 					items={roleItems}
 				/>
@@ -103,11 +103,11 @@ export const invitationColumns = (
 		},
 		{
 			id: "status",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.status()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="set"
 					items={statusItems}
 				/>
@@ -123,11 +123,11 @@ export const invitationColumns = (
 		},
 		{
 			id: "invitedByName",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.invited_by()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="setAsync"
 					endpoint={endpoint}
 					queryKey={optionsKey}
@@ -139,12 +139,9 @@ export const invitationColumns = (
 		},
 		{
 			id: "createdAt",
+			enableSorting: true,
 			header: (headerContext) => (
-				<AppDataTableHeader
-					label={m.sent()}
-					headerContext={headerContext}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.sent()} headerContext={headerContext} />
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">

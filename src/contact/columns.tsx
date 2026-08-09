@@ -67,12 +67,9 @@ export const contactMessageColumns = (
 	{
 		id: "createdAt",
 		accessorKey: "createdAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.inbox_received()}
-				headerContext={ctx}
-				allowSorting
-			/>
+			<AppDataTableHeader label={m.inbox_received()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatDate(row.original.createdAt),
 	},

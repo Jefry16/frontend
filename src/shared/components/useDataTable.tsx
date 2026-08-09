@@ -112,7 +112,14 @@ export function useDataTable<TData extends { id: string }>({
 		manualPagination: true,
 		sortDescFirst: false,
 		enableSortingRemoval: true,
-		defaultColumn: { filterFn: passFilterFn as FilterFn<TData> },
+		defaultColumn: {
+			filterFn: passFilterFn as FilterFn<TData>,
+			// Sorting is opt-IN, declared per column. It used to be an `allowSorting`
+			// prop on the header, which the table never saw — so getCanSort() was
+			// true for every column, including a thumbnail, and nothing could read
+			// the real answer to build an aria-sort from.
+			enableSorting: false,
+		},
 		getCoreRowModel: getCoreRowModel(),
 	});
 

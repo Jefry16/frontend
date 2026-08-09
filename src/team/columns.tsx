@@ -31,11 +31,11 @@ export const memberColumns = (
 	return [
 		{
 			id: "name",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.name()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="setAsync"
 					endpoint={endpoint}
 					queryKey={optionsKey}
@@ -58,11 +58,11 @@ export const memberColumns = (
 		},
 		{
 			id: "email",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.email()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="setAsync"
 					endpoint={endpoint}
 					queryKey={optionsKey}
@@ -75,11 +75,11 @@ export const memberColumns = (
 		{
 			id: "role",
 			accessorKey: "role",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.role()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="set"
 					items={roleItems}
 				/>
@@ -93,12 +93,9 @@ export const memberColumns = (
 		{
 			id: "joinedAt",
 			accessorKey: "joinedAt",
+			enableSorting: true,
 			header: (headerContext) => (
-				<AppDataTableHeader
-					label={m.joined()}
-					headerContext={headerContext}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.joined()} headerContext={headerContext} />
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">

@@ -46,12 +46,9 @@ export const mediaColumns = (
 		},
 		{
 			id: "originalName",
+			enableSorting: true,
 			header: (headerContext) => (
-				<AppDataTableHeader
-					label={m.name()}
-					headerContext={headerContext}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.name()} headerContext={headerContext} />
 			),
 			cell: ({ row }) => (
 				<AppResourceLink
@@ -65,11 +62,11 @@ export const mediaColumns = (
 		},
 		{
 			id: "contentType",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.file_type()}
 					headerContext={headerContext}
-					allowSorting
 					allowFiltering="set"
 					items={typeItems}
 				/>
@@ -82,12 +79,9 @@ export const mediaColumns = (
 		},
 		{
 			id: "sizeBytes",
+			enableSorting: true,
 			header: (headerContext) => (
-				<AppDataTableHeader
-					label={m.size()}
-					headerContext={headerContext}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.size()} headerContext={headerContext} />
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground tabular-nums">
@@ -97,23 +91,20 @@ export const mediaColumns = (
 		},
 		{
 			id: "createdByName",
+			enableSorting: true,
 			header: (headerContext) => (
 				<AppDataTableHeader
 					label={m.uploaded_by()}
 					headerContext={headerContext}
-					allowSorting
 				/>
 			),
 			cell: ({ row }) => row.original.uploadedBy.name ?? <EmptyValue />,
 		},
 		{
 			id: "createdAt",
+			enableSorting: true,
 			header: (headerContext) => (
-				<AppDataTableHeader
-					label={m.added()}
-					headerContext={headerContext}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.added()} headerContext={headerContext} />
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">

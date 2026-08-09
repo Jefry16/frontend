@@ -17,11 +17,11 @@ export const audienceColumns = (
 		{
 			id: "name",
 			accessorKey: "name",
+			enableSorting: true,
 			header: (ctx) => (
 				<AppDataTableHeader
 					label={m.name()}
 					headerContext={ctx}
-					allowSorting
 					allowFiltering="text"
 				/>
 			),
@@ -37,24 +37,18 @@ export const audienceColumns = (
 		{
 			id: "paxPerUnit",
 			accessorKey: "paxPerUnit",
+			enableSorting: true,
 			meta: { align: "right" },
 			header: (ctx) => (
-				<AppDataTableHeader
-					label={m.pax_per_unit()}
-					headerContext={ctx}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.pax_per_unit()} headerContext={ctx} />
 			),
 		},
 		{
 			id: "createdAt",
 			accessorKey: "createdAt",
+			enableSorting: true,
 			header: (ctx) => (
-				<AppDataTableHeader
-					label={m.created()}
-					headerContext={ctx}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.created()} headerContext={ctx} />
 			),
 			cell: ({ row }) => formatDate(row.original.createdAt),
 		},

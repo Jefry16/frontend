@@ -36,11 +36,11 @@ export const policyColumns = (
 	{
 		id: "type",
 		accessorKey: "type",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.policy_type()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="set"
 				items={POLICY_TYPE_OPTIONS}
 			/>
@@ -64,12 +64,9 @@ export const policyColumns = (
 	{
 		id: "updatedAt",
 		accessorKey: "updatedAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.last_updated()}
-				headerContext={ctx}
-				allowSorting
-			/>
+			<AppDataTableHeader label={m.last_updated()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatDate(row.original.updatedAt),
 	},

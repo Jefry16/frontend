@@ -14,7 +14,6 @@ import { AppTextFilter } from "./AppTextFilter";
 interface BaseProps<TData> {
 	label: string;
 	headerContext: HeaderContext<TData, unknown>;
-	allowSorting?: boolean;
 }
 
 type Props<TData> =
@@ -32,14 +31,22 @@ type Props<TData> =
 	  })
 	| (BaseProps<TData> & { allowFiltering: "text" });
 
-// A column header with opt-in server-side sorting (toggles asc/desc/none) and
+// A column header with server-side sorting (toggles asc/desc/none) when the
+// column declares `enableSorting`, and
 // opt-in filters: `set` (static options) / `setAsync` (options from an endpoint)
 // → `filter[field][in]`, and `text` (operator + debounced search) →
 // `filter[field][contains]` etc. The lean cut of the archive's header;
 // number/date filters land when a list needs them.
 export function AppDataTableHeader<TData>(props: Props<TData>) {
-	const { label, headerContext, allowSorting, allowFiltering } = props;
+	const { label, headerContext, allowFiltering } = props;
 	const { column } = headerContext;
+	// Declared by the column's `enableSorting`, so the table and the header
+	// cannot disagree about it.
+	// NOT `column.getCanSort()`: that also requires an accessorFn, and these are
+	// display columns (an `id` plus a `cell` renderer, no accessorKey), so it
+	// answers false for every one of them. The server does the sorting anyway —
+	// `manualSorting` — so the column's declaration is the whole truth.
+	const canSort = column.columnDef.enableSorting === true;
 	const sorted = column.getIsSorted();
 	const SortIcon =
 		sorted === "asc" ? ArrowUp : sorted === "desc" ? ArrowDown : ArrowUpDown;
@@ -47,7 +54,7 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 
 	return (
 		<div className="flex flex-row items-center gap-1">
-			{allowSorting ? (
+			{canSort ? (
 				<Button
 					variant="link"
 					className="cursor-pointer p-0 font-semibold hover:no-underline has-[>svg]:p-0"
