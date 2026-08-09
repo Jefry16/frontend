@@ -5,6 +5,7 @@ import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppAuthShell } from "./AppAuthShell";
 
 interface AppAuthFormWrapperProps {
 	children: ReactNode;
@@ -32,14 +33,7 @@ export const AppAuthFormWrapper = ({
 	isSubmitting,
 }: AppAuthFormWrapperProps) => {
 	return (
-		<div className="w-full max-w-sm">
-			<div className="mb-6 flex flex-col items-center gap-1 text-center">
-				<img src="/vointika-logo.svg" alt="Vointika" className="mb-2 h-28" />
-				<h1 className="text-xl font-semibold tracking-tight">{title}</h1>
-				{subtitle && (
-					<p className="text-sm text-muted-foreground">{subtitle}</p>
-				)}
-			</div>
+		<AppAuthShell title={title} subtitle={subtitle}>
 			<Card>
 				<CardContent>
 					<form
@@ -65,6 +59,6 @@ export const AppAuthFormWrapper = ({
 					)}
 				</CardContent>
 			</Card>
-		</div>
+		</AppAuthShell>
 	);
 };
