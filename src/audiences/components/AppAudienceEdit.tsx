@@ -1,8 +1,7 @@
 import { UsersRound } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useAudience } from "../hooks/use-audience";
@@ -28,15 +27,7 @@ export const AppAudienceEdit = ({
 					items={[{ label: m.catalog() }, { label: m.audiences() }]}
 				/>
 			}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-9 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(audience) => (
 				<>

@@ -6,13 +6,13 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
@@ -25,14 +25,6 @@ import {
 // the storefront to visitors with the shared password, plus the optional
 // message the password page shows. The password is member-visible by design —
 // it's the gate the operator hands out, not a credential.
-const CardSkeleton = () => (
-	<div className="flex flex-col gap-4">
-		{["a", "b", "c"].map((k) => (
-			<Skeleton key={k} className="h-9 w-full" />
-		))}
-	</div>
-);
-
 export const AppStorefrontPasswordCard = ({
 	tourOperatorId,
 	canWrite,
@@ -50,7 +42,10 @@ export const AppStorefrontPasswordCard = ({
 				<CardDescription>{m.store_access_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody query={query} loading={<CardSkeleton />}>
+				<AppCardBody
+					query={query}
+					loading={<AppFormSkeleton rows={3} card={false} />}
+				>
 					{(settings) =>
 						canWrite ? (
 							<StoreAccessForm

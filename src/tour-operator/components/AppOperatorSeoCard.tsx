@@ -10,12 +10,12 @@ import {
 } from "#/components/ui/card";
 import { FieldDescription, FieldGroup } from "#/components/ui/field";
 import { Label } from "#/components/ui/label";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
@@ -35,13 +35,6 @@ const MAX_IMAGE_BYTES = 25 * 1024 * 1024;
 
 // Settings → General → Search engine listing: the shop's canonical SEO text
 // plus the og:image, which Translations then overrides per locale.
-const CardSkeleton = () => (
-	<div className="flex flex-col gap-4">
-		{["a", "b", "c"].map((k) => (
-			<Skeleton key={k} className="h-9 w-full" />
-		))}
-	</div>
-);
 
 export const AppOperatorSeoCard = ({
 	tourOperatorId,
@@ -59,7 +52,10 @@ export const AppOperatorSeoCard = ({
 				<CardDescription>{m.seo_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody query={query} loading={<CardSkeleton />}>
+				<AppCardBody
+					query={query}
+					loading={<AppFormSkeleton rows={3} card={false} />}
+				>
 					{(seo) =>
 						canWrite ? (
 							<SeoForm tourOperatorId={tourOperatorId} seo={seo} />

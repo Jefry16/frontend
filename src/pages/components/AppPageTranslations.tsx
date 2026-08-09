@@ -1,10 +1,10 @@
 import { Languages } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
@@ -70,13 +70,7 @@ export const AppPageTranslations = ({
 			loading={
 				<div className="flex flex-col gap-4">
 					<Skeleton className="h-9 w-64" />
-					<Card>
-						<CardContent className="flex flex-col gap-4">
-							{["a", "b", "c"].map((k) => (
-								<Skeleton key={k} className="h-9 w-full" />
-							))}
-						</CardContent>
-					</Card>
+					<AppFormSkeleton rows={3} />
 				</div>
 			}
 		>
