@@ -17,13 +17,10 @@ import { RequiredMark } from "#/shared/components/RequiredMark";
 import type { AudiencePriceRow } from "../validators/slot";
 import { emptyPriceRow } from "../validators/slot";
 
-// The per-audience pricing rows shared by both create forms: each row picks an
-// audience and sets its price + capacity for the departure(s). Follows the
-// AppArrayInput house pattern — the whole array lives in ONE form field
-// (`field.handleChange` replaces it), rows are gated inputs rather than nested
-// fields, and the zod schema validates the array as a unit on submit (issues
-// render below the rows). An audience already used by another row disappears
-// from that row's options, so duplicates can't be picked.
+// The AppArrayInput house pattern: the whole array is ONE form field, rows are
+// gated inputs rather than nested fields, and the schema validates the array as
+// a unit. An audience taken by another row leaves this row's options, so a
+// duplicate cannot be picked.
 export const AppAudiencePriceRows = ({
 	field,
 	audiences,

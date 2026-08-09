@@ -8,9 +8,7 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { formatBytes, isImage, mimeLabel } from "./format";
 import type { MediaAsset } from "./types";
 
-// The type filter — the raw MIME is the filter value the backend stores. Only
-// the four types the backend accepts (ContentType.ALLOWED), so every option can
-// actually match a stored asset.
+// Only the types the backend accepts, so every option can match a stored asset.
 const typeItems = [
 	{ value: "image/png", label: "PNG" },
 	{ value: "image/jpeg", label: "JPEG" },
@@ -18,13 +16,11 @@ const typeItems = [
 	{ value: "application/pdf", label: "PDF" },
 ];
 
-// The media-library columns. Preview leads (thumbnail for images, a file icon for
-// everything else). Only what the list schema supports gets affordances: type is
-// a static set filter, Added (createdAt) is sortable (API default = newest first);
-// the rest are display-only. A factory so the Added cell closes over the tz.
+// Only what the list schema supports gets an affordance; the rest are
+// display-only. A factory so the Added cell closes over the operator timezone.
 export const mediaColumns = (
 	tourOperatorId: string,
-	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<MediaAsset, unknown>[] => {
 	return [

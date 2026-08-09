@@ -19,17 +19,14 @@ export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({
 	component: TourOperatorLayout,
 });
 
-// The operator workspace shell: sidebar + the routed content. No desktop top
-// bar (the sidebar is always visible; toggle via its rail or Ctrl/Cmd+B) — only
-// a mobile strip holding the SidebarTrigger to open the sidebar sheet.
-// Guards membership — the operator must be one the signed-in user belongs to
-// (its summary rides the profile); non-members get a "no access" fallback.
+// Guards membership: the operator must be one the signed-in user belongs to,
+// and its summary rides the profile. The mobile strip exists only to hold the
+// SidebarTrigger — on desktop the sidebar is always visible.
 function TourOperatorLayout() {
 	const { isLoading } = useAuth();
 	const operator = useCurrentTourOperator();
 	const matchRoute = useMatchRoute();
-	// Settings is its own space (Shopify's model): everything under /settings
-	// swaps the operator sidebar for the settings rail.
+	// Everything under /settings swaps the operator sidebar for the settings rail.
 	const inSettings = !!matchRoute({
 		to: "/tour-operators/$tourOperatorId/settings",
 		fuzzy: true,

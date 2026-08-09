@@ -7,15 +7,11 @@ import { AppLink } from "#/shared/components/AppLink";
 import { useResendVerification } from "../hooks/use-resend-verification";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
 
-// A short cooldown after a resend so the button can't be hammered (the backend
-// also throttles). Purely UX — the countdown re-enables it.
+// Purely UX — the backend throttles too.
 const COOLDOWN_SECONDS = 30;
 
-// The post-registration "check your email" screen: confirms where the link was
-// sent and offers a resend. Shown after register, and reachable from the login
-// "email not verified" path. Anti-enumeration means a resend never confirms the
-// address exists — it just re-requests. Falls back to a generic message if the
-// email wasn't passed (e.g. deep-linked here).
+// Anti-enumeration: a resend never confirms the address exists, it just
+// re-requests. Falls back to a generic message when deep-linked without an email.
 export const AppVerifyEmailNotice = ({ email }: { email?: string }) => {
 	const resend = useResendVerification();
 	const [cooldown, setCooldown] = useState(0);
