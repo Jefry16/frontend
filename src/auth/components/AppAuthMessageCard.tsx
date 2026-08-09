@@ -2,6 +2,7 @@ import { CircleCheck, CircleX, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Card, CardContent } from "#/components/ui/card";
 import { cn } from "#/lib/utils";
+import { AppAuthShell } from "./AppAuthShell";
 
 type AppAuthMessageTone = "success" | "destructive";
 
@@ -38,10 +39,7 @@ export const AppAuthMessageCard = ({
 }: AppAuthMessageCardProps) => {
 	const ToneIcon = tone ? ICONS[tone] : null;
 	return (
-		<div className="w-full max-w-sm">
-			<div className="mb-6 flex flex-col items-center gap-1 text-center">
-				<img src="/vointika-logo.svg" alt="Vointika" className="mb-2 h-28" />
-			</div>
+		<AppAuthShell>
 			<Card>
 				<CardContent className="flex flex-col items-center gap-4 text-center">
 					{tone && ToneIcon ? (
@@ -56,6 +54,6 @@ export const AppAuthMessageCard = ({
 					{children}
 				</CardContent>
 			</Card>
-		</div>
+		</AppAuthShell>
 	);
 };

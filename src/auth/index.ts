@@ -1,6 +1,7 @@
 export { AuthProvider, useAuth } from "./AuthProvider";
 export { AppAcceptInvitation } from "./components/AppAcceptInvitation";
 export { AppAccountSettings } from "./components/AppAccountSettings";
+export { AppAuthShell } from "./components/AppAuthShell";
 export { AppForgotPasswordForm } from "./components/AppForgotPasswordForm";
 export { AppLoginForm } from "./components/AppLoginForm";
 export { AppRegisterForm } from "./components/AppRegisterForm";

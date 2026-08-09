@@ -176,12 +176,21 @@ second shape:
   the translation editors use — via `AppTranslationNotice`.
 - `AppFormActions` — the footer: right-aligned submit with the pending spinner, plus an
   optional `secondary` slot (Cancel link, Clear-translation button).
-- `AppAuthFormWrapper` — the auth-page shell (logo, card, inline error banner, **full-width**
-  submit). Auth and onboarding are a different layout and skip `AppFormActions`. It and
-  `AppTourOperatorForm` keep their own shell rather than `AppFormCard`, because both put a
-  footer *inside the card but outside the form* — which is not a slot `AppFormCard` has.
-  (Those two are now near-identical to each other apart from the card width; that is a
-  live R2 candidate, not a settled decision.)
+- `AppAuthShell` — the **frame** every signed-out and onboarding screen sits in: centred
+  column, logo, optional heading. `width="lg"` is onboarding, whose four fields need the
+  room. `AppAuthFormWrapper`, `AppAuthMessageCard` and `AppTourOperatorForm` all render
+  through it, so "the static and form screens look identical" is a component rather than a
+  rule three files had to remember.
+- `AppAuthFormWrapper` — inside that frame, the auth **form**: card, inline error banner,
+  **full-width** submit, and a `footer` for links. Auth and onboarding are a different
+  layout and skip `AppFormActions`. It and `AppTourOperatorForm` keep their own card rather
+  than `AppFormCard`, because both put a footer *inside the card but outside the form* —
+  not a slot `AppFormCard` has.
+  **The two stop sharing at the card, deliberately.** Folding onboarding's card into
+  `AppAuthFormWrapper` would need a width prop and a below-the-card slot, and its Cancel
+  button would land in `footer`, whose `text-muted-foreground` a `ghost` Button inherits —
+  it sets no colour of its own. That greys out a live control to save ~18 lines. The frame
+  was the part that had to stay identical; the card was not.
 - `use-<x>-form.ts` — the hook: `useForm` + a `useMutation`, mapping server errors to an
   inline `errorMessage` and navigating on success. **Wire `useForm`'s `onSubmit` to the
   mutation** — `validators.onSubmit` alone only validates, and a hook that stops there
@@ -314,8 +323,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   field's asterisk) and `EmptyValue` (the muted em dash standing in for a value the record
   doesn't carry; use it rather than hand-rolling the span, which had drifted to ten copies).
 
-**Modules — 101.** Each owns its list / detail / form / edit set:
-`auth` 13 · `tour-operator` 13 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
+**Modules — 102.** Each owns its list / detail / form / edit set:
+`auth` 14 · `tour-operator` 13 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
 `metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 ·
 `pickup-locations` 4 · `contact` 2 · `media` 5.
 

@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { getPostLoginPath, useAuth } from "#/auth";
+import { AppAuthShell, getPostLoginPath, useAuth } from "#/auth";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
@@ -34,16 +34,11 @@ export const AppTourOperatorForm = () => {
 	const isOnboarding = !!user && user.tourOperators.length === 0;
 
 	return (
-		<div className="w-full max-w-lg">
-			<div className="mb-6 flex flex-col items-center gap-1 text-center">
-				<img src="/vointika-logo.svg" alt="Vointika" className="mb-2 h-28" />
-				<h1 className="text-xl font-semibold tracking-tight">
-					{m.create_tour_operator()}
-				</h1>
-				<p className="text-sm text-muted-foreground">
-					{m.create_tour_operator_subtitle()}
-				</p>
-			</div>
+		<AppAuthShell
+			width="lg"
+			title={m.create_tour_operator()}
+			subtitle={m.create_tour_operator_subtitle()}
+		>
 			<Card>
 				<CardContent>
 					<form
@@ -136,6 +131,6 @@ export const AppTourOperatorForm = () => {
 					</div>
 				</>
 			)}
-		</div>
+		</AppAuthShell>
 	);
 };
