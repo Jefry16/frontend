@@ -12,8 +12,8 @@ import {
 	storefrontPasswordSchema,
 } from "../validators/storefront-password";
 
-// Storefront password protection (Shopify's Store access): the shared gate
-// the operator hands out — member-visible by design, including the password.
+// Member-visible by design, password included: it is a shared gate the operator
+// hands out, not a credential.
 export interface StorefrontPasswordSettings {
 	enabled: boolean;
 	password: string | null;
@@ -31,9 +31,8 @@ export const useStorefrontPassword = (tourOperatorId: string) =>
 		},
 	});
 
-// The save (ADMIN+): a full replace, except a null/blank password keeps the
-// stored one (so toggling or editing the message never re-sends it). Error
-// display is the caller's (inline alert, not a toast).
+// A full replace, except that a blank password keeps the stored one — which is
+// what lets the toggle and the message save without re-sending it.
 const useStorefrontPasswordSave = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -60,10 +59,7 @@ const useStorefrontPasswordSave = (tourOperatorId: string) => {
 	});
 };
 
-/**
- * The store-access form (§5). The schema owns the "enabled needs a password"
- * rule, so the component no longer hand-checks it before submitting.
- */
+// The schema owns the "enabled needs a password" rule.
 export const useStorefrontPasswordForm = (
 	tourOperatorId: string,
 	settings: StorefrontPasswordSettings,
@@ -83,7 +79,7 @@ export const useStorefrontPasswordForm = (
 			save.mutate(
 				{
 					enabled: v.enabled,
-					// Blank clears — the gate keeps no stale password once it is off.
+					// The gate keeps no stale password once it is off.
 					password: v.password || null,
 					message: v.message || null,
 				},

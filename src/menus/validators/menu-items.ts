@@ -3,15 +3,11 @@ import * as m from "#/paraglide/messages";
 import { MENU_LINK_TYPES } from "../format";
 
 /**
- * One editable node of the item tree. Recursive, so `z.lazy` — the depth cap is
- * enforced by the editor (it stops offering "add child"), not here, because a
- * tree that is too deep cannot be typed into existence.
+ * Recursive, so `z.lazy`. The depth cap lives in the editor — it stops offering
+ * "add child" — because a tree that is too deep cannot be typed into existence.
  *
- * The conditional rules mirror what the backend rejects, and they report on the
- * field that is actually wrong: a resource link needs a target, an external link
- * needs a URL. This used to be a recursive `validate()` that returned one string
- * for the whole tree, so the third item's missing URL raised a banner at the top
- * of the page with nothing to point at.
+ * The conditional rules report on the field that is actually wrong, so a
+ * missing URL marks that URL box rather than raising a page-level banner.
  */
 export interface MenuItemFormNode {
 	title: string;

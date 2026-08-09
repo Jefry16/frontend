@@ -14,14 +14,8 @@ import {
 	operatorTranslationSchema,
 } from "../validators/operator-translation";
 
-// One locale's shop-text editor: PUT upserts the overlay, DELETE clears it
-// (every field falls back to canonical). Both refresh the switcher dots, this
-// locale's row, and the audit trail.
-//
-// The PUT is a full replace, not a patch — the backend rebuilds the row from
-// the body, so an omitted field is a cleared field. That is why the form always
-// posts all five: seeding `defaultValues` from the fetched overlay and
-// submitting the whole schema is what keeps an untouched field intact.
+// The PUT is a full replace, so an OMITTED field is a CLEARED field. That is
+// why the form seeds from the fetched overlay and always posts all five.
 export const useOperatorTranslationForm = ({
 	tourOperatorId,
 	locale,
@@ -74,8 +68,7 @@ export const useOperatorTranslationForm = ({
 	});
 
 	const form = useForm({
-		// null (untranslated) → empty inputs; the schema collapses empties back
-		// to null on submit so they fall back to the canonical shop text.
+		// The schema collapses empties back to null on submit.
 		defaultValues: {
 			slogan: translation.slogan ?? "",
 			shortDescription: translation.shortDescription ?? "",

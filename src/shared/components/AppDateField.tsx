@@ -24,29 +24,23 @@ interface AppDateFieldProps {
 	description?: string;
 	placeholder?: string;
 	required?: boolean;
-	/**
-	 * react-day-picker Matcher forwarded to the calendar — e.g.
-	 * `{ before: operatorToday }` to block past dates (see useOperatorToday).
-	 */
+	/** A react-day-picker Matcher, e.g. `{ before: operatorToday }`. */
 	disabledDates?: ComponentProps<typeof Calendar>["disabled"];
 }
 
-/** "2026-08-01" → local Date; undefined when absent/malformed. */
+/** Undefined when absent or malformed. */
 const parseIso = (value: string): Date | undefined => {
 	const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
 	if (!match) return undefined;
 	return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
 };
 
-/** Local Date → "2026-08-01". */
 const toIso = (date: Date): string =>
 	`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
-// The date field: a calendar-button popover bound to a TanStack Form field
-// holding an ISO "YYYY-MM-DD" string (what the backend parses). The trigger
-// shows the viewer's locale format; selection closes the popover and blurs the
-// field so touched-state validation fires. No date library — ISO round-trips by
-// hand, display via Intl.
+// The field value is an ISO "YYYY-MM-DD" string, which is what the backend
+// parses; the trigger shows the viewer's locale format. Selecting blurs the
+// field, so touched-state validation fires. No date library.
 export const AppDateField = ({
 	field,
 	label,
@@ -97,8 +91,7 @@ export const AppDateField = ({
 					<Calendar
 						mode="single"
 						selected={date}
-						// Open on the stored date's month — DayPicker defaults to
-						// today's month otherwise, even with a selection.
+						// DayPicker opens on today's month otherwise, even with a selection.
 						defaultMonth={date}
 						disabled={disabledDates}
 						onSelect={(d) => {

@@ -1,8 +1,7 @@
-// Store policies: the operator's legal documents (cancellation, privacy, terms,
-// legal notice), rendered by the storefront at /policies/{slug}. One per type —
-// the type is the address, so it is chosen at create and immutable after.
+// One policy per type: the type IS the storefront address, so it is chosen at
+// create and immutable after.
 
-/** The closed set the backend's PolicyType enum carries. The body sends the enum name. */
+/** The enum name goes on the wire verbatim. */
 export const POLICY_TYPES = [
 	"CANCELLATION",
 	"PRIVACY",
@@ -12,11 +11,8 @@ export const POLICY_TYPES = [
 
 export type PolicyTypeCode = (typeof POLICY_TYPES)[number];
 
-/**
- * One policy. List and detail return the SAME shape — the backend maps both
- * through PolicyResponse — so there is no thinner list row to model. Verified
- * against the running API rather than assumed from the two endpoints existing.
- */
+// List and detail return the SAME shape, verified against the running API — so
+// there is no thinner list row to model.
 export interface Policy {
 	id: string;
 	context: "policies";

@@ -17,17 +17,11 @@ import { localeLabel } from "../locales";
 import type { OperatorTranslation } from "../types";
 import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
 
-// Settings → Translations: the shop's own text per locale — the page-level
-// translation editor's shell (a locale switcher over a per-locale overlay form,
-// keyed by locale so it reseeds on switch), but for the operator itself rather
-// than one resource.
-//
 // The primary locale is absent from the strip on purpose: it IS the canonical
 // text, so there is nothing to overlay onto it.
 //
-// Reads are member-visible while writes are ADMIN+, so `canWrite` decides
-// between the form and a read-only summary — a staff member gets the content
-// rather than a form that 403s on save, the same split the Languages section makes.
+// Reads are member-visible and writes are ADMIN+, so a staff member gets the
+// content read-only rather than a form that 403s on save.
 export const AppOperatorTranslations = ({
 	tourOperatorId,
 	canWrite,
@@ -89,8 +83,7 @@ export const AppOperatorTranslations = ({
 	);
 };
 
-// This resource's rows for AppTranslationSummary — the same five fields the
-// form edits, in the same order.
+// The same five fields the form edits, in the same order.
 const operatorFields = (t: OperatorTranslation): TranslatedField[] => [
 	[m.slogan(), t.slogan],
 	[m.short_description(), t.shortDescription],

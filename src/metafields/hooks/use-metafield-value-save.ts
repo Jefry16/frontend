@@ -12,15 +12,13 @@ import { ownerMetafieldsEndpoint } from "./use-owner-metafields";
 interface MetafieldValueChange {
 	namespace: string;
 	key: string;
-	/** The definition's display name — prefixes a per-field 422 message. */
+	/** Prefixes a per-field 422 message. */
 	name: string;
 	value: string;
 }
 
-// Applies the editor's dirty fields sequentially (each write audits on the
-// owner's timeline). Stops at the first rejection and surfaces it as
-// "<field name>: <backend message>"; whatever landed before it stays saved,
-// so the caches refresh either way.
+// Sequential, and stops at the first rejection — whatever landed before it
+// stays saved, which is why the caches refresh either way.
 export const useMetafieldValueSave = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
@@ -48,9 +46,9 @@ export const useMetafieldValueSave = (
 				}
 			}
 		},
-		// Returned so the mutation stays pending until the values refetch lands —
-		// the editor clears its drafts in ITS onSettled (which runs after this
-		// resolves) against the fresh cache, never flashing pre-save values.
+		// Returned so the mutation stays pending until the refetch lands: the
+		// editor clears its drafts after this resolves, and would otherwise flash
+		// the pre-save values.
 		onSettled: () =>
 			Promise.all([
 				queryClient.invalidateQueries({
@@ -60,7 +58,7 @@ export const useMetafieldValueSave = (
 						ownerId,
 					),
 				}),
-				// Each write appended an audit entry on the owner's timeline.
+				// Each write appended an audit entry.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				}),

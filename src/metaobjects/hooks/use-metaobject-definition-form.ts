@@ -15,11 +15,8 @@ import {
 	definitionEditSchema,
 } from "../validators/metaobject";
 
-// Create (no `definition`, POSTs type + name + description + the initial
-// fields the component collects) or edit (with one — PUTs name/description
-// only; the type is immutable and the field set is managed on the detail).
-// On success navigates to the detail (create-navigates-to-detail rule).
-// A 409 is a duplicate type.
+// Edit PUTs name and description only: the type is immutable, and the field set
+// is managed on the detail page. A 409 is a duplicate type.
 export const useMetaobjectDefinitionForm = (
 	tourOperatorId: string,
 	definition?: MetaobjectDefinition,
@@ -70,7 +67,7 @@ export const useMetaobjectDefinitionForm = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjectDefinitions(tourOperatorId),
 			});
-			// Create/update appended an audit entry — refresh the trail.
+			// The write appended an audit entry.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});
@@ -87,9 +84,8 @@ export const useMetaobjectDefinitionForm = (
 			),
 	});
 
-	// Create also defines the initial field set; edit does not (the type is
-	// immutable and the fields are managed on the detail page), so the schema
-	// differs by mode and `fields` rides along empty on an edit.
+	// The schema differs by mode: only create defines the initial field set, so
+	// `fields` rides along empty on an edit.
 	const isEdit = !!definition;
 	const form = useForm({
 		defaultValues: {
@@ -101,10 +97,6 @@ export const useMetaobjectDefinitionForm = (
 		validators: {
 			onSubmit: isEdit ? definitionEditSchema : definitionCreateSchema,
 		},
-		// The component used to re-empty `fields` here when isEdit. It could not
-		// fire: on edit the default is already `[]` and the only UI that writes
-		// the array is behind `{!isEdit && …}` — and the PUT above sends name and
-		// description regardless. Deleting it changed no test.
 		onSubmit: ({ value }) =>
 			mutate({ ...value, fields: value.fields as MetaobjectField[] }),
 	});

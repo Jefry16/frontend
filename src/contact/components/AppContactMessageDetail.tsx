@@ -21,16 +21,9 @@ import { useContactMessage } from "../hooks/use-contact-message";
 import { useContactMessageActions } from "../hooks/use-contact-message-actions";
 import type { ContactMessage } from "../types";
 
-// One inbox message: sender facts + the verbatim body. Opening an unread
-// message auto-marks it read (silently — the inbox badge just clears);
-// actions are Reply by email (mailto), Mark as unread, Delete (ADMIN+,
-// confirmed — audited backend-side).
-//
-// No activity card, though CONTACT_MESSAGE is an audited entity: delete is the
-// context's ONLY audited action (read-state is unaudited by design), so the
-// only entry a message can ever have is the one that removed it — by which
-// point this page 404s. The timeline would be empty on every message that can
-// reach it. The deletions show up in Operations -> Activity.
+// No activity card, though CONTACT_MESSAGE is audited: delete is the context's
+// only audited action, so the one entry a message can have is the one that
+// removed it — by which point this page 404s. Deletions show in Activity.
 export const AppContactMessageDetail = ({
 	tourOperatorId,
 	messageId,
@@ -85,7 +78,6 @@ const MessageView = ({
 		message.id,
 	);
 
-	// Opening an unread message reads it — silently, like any inbox.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: react to read-state only — the mutation's identity churns every render
 	useEffect(() => {
 		if (!message.read && !setRead.isPending) {
@@ -96,7 +88,7 @@ const MessageView = ({
 	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
-			// A mailto: — no endpoint behind it, so no check to mirror.
+			// A mailto:, so there is no backend check to mirror.
 			id: "reply",
 			label: m.inbox_reply(),
 			icon: Mail,

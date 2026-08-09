@@ -17,14 +17,9 @@ interface PolicyFormFields {
 	body: string;
 }
 
-/**
- * Create (no `policy`) or edit (with one).
- *
- * The type is only ever sent on create: it is the storefront address, so the
- * backend's update input has no field for it and an edit that sent one would be
- * silently ignored rather than rejected. Keeping it out of the PUT makes the
- * immutability visible here rather than only in the API guide.
- */
+// The type is sent on create only. The backend's update input has no field for
+// it, so an edit that sent one would be silently ignored rather than rejected —
+// keeping it out of the PUT is what makes that visible.
 export const usePolicyForm = (tourOperatorId: string, policy?: Policy) => {
 	const navigate = useNavigate();
 	const toast = useAppToast();
@@ -45,7 +40,7 @@ export const usePolicyForm = (tourOperatorId: string, policy?: Policy) => {
 				});
 				return policy.id;
 			}
-			// 201 Created with a Location header, no body — parse the new id out.
+			// 201 with a Location header and no body.
 			const { headers } = await authApi.post(base, {
 				type: fields.type,
 				title: fields.title,
@@ -68,7 +63,7 @@ export const usePolicyForm = (tourOperatorId: string, policy?: Policy) => {
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.policies(tourOperatorId),
 			});
-			// The mutation appended an audit entry — refresh the trail.
+			// The mutation appended an audit entry.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});
@@ -77,8 +72,7 @@ export const usePolicyForm = (tourOperatorId: string, policy?: Policy) => {
 				params: { tourOperatorId, policyId },
 			});
 		},
-		// 409 is specifically "this operator already wrote that type" — one policy
-		// per type is the model, so the way out is editing the existing one.
+		// 409 means the type is already written; the way out is editing that one.
 		onError: (error) =>
 			setErrorMessage(
 				error.response?.status === 409

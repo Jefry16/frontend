@@ -8,14 +8,9 @@ import { cn } from "#/lib/utils";
 import { AppMediaPicker, type MediaAsset, useMediaByIds } from "#/media";
 import * as m from "#/paraglide/messages";
 
-// The experience media editor: one set of photos (mediaIds), with one marked as
-// the cover (thumbnailMediaId). The backend requires the cover to be one of the
-// media items, so the cover is picked FROM the set (never independently) and the
-// set always keeps a valid cover — added photos default the cover, removing the
-// cover re-defaults it. Photos are chosen from the library via AppMediaPicker;
-// this resolves ids to previews (useMediaByIds) and seeds the per-id cache with
-// what the picker returns. A referenced-but-deleted id shows a removable
-// "missing" tile.
+// The backend requires the cover to be one of the media items, so it is picked
+// FROM the set and never independently — which is why adding photos defaults the
+// cover and removing the cover re-defaults it.
 export const AppExperienceMediaSection = ({
 	tourOperatorId,
 	thumbnailMediaId,
@@ -34,7 +29,7 @@ export const AppExperienceMediaSection = ({
 
 	const { byId, isLoading } = useMediaByIds(tourOperatorId, mediaIds);
 
-	// Cache what the picker hands back so useMediaByIds resolves it without a GET.
+	// Seeded so useMediaByIds resolves the new ids without a GET.
 	const seed = (assets: MediaAsset[]) => {
 		for (const asset of assets) {
 			queryClient.setQueryData(
@@ -44,8 +39,7 @@ export const AppExperienceMediaSection = ({
 		}
 	};
 
-	// Keep the cover valid against a new set: default to the first item when the
-	// current cover is gone (or unset), null when the set is empty.
+	// Keeps the cover valid against a new set.
 	const applySet = (ids: string[]) => {
 		onGalleryChange(ids);
 		if (!thumbnailMediaId || !ids.includes(thumbnailMediaId)) {

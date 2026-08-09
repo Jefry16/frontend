@@ -14,7 +14,6 @@ import {
 	operatorDetailsSchema,
 } from "../validators/operator-details";
 
-/** The operator's own record — the only read of it in the app. */
 export const useOperatorDetails = (tourOperatorId: string) =>
 	useQuery({
 		queryKey: queryKeys.operatorDetails(tourOperatorId),
@@ -27,12 +26,9 @@ export const useOperatorDetails = (tourOperatorId: string) =>
 	});
 
 /**
- * Saves the details. A genuine PATCH, unlike most writes here: the backend
- * leaves an absent field unchanged and clears an optional one on a BLANK
- * string. So the form submits all six every time — an untouched value re-sends
- * itself and changes nothing, and a cleared phone arrives as "" and clears.
- * Nothing is written when nothing changed, so a no-op save records no audit
- * entry either.
+ * A genuine PATCH, unlike most writes here: an absent field is left unchanged
+ * and a BLANK string clears an optional one. The form submits all six anyway,
+ * so an untouched value re-sends itself and a cleared phone arrives as "".
  */
 export const useOperatorDetailsForm = (
 	tourOperatorId: string,
@@ -53,8 +49,7 @@ export const useOperatorDetailsForm = (
 		},
 		onSuccess: async () => {
 			setErrorMessage(null);
-			// name and timezone both live on the auth profile's operator summary —
-			// the switcher label and every operator-timezone formatter read it there.
+			// name and timezone are also on the auth profile's operator summary.
 			await refreshUser();
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.operatorDetails(tourOperatorId),
@@ -71,8 +66,7 @@ export const useOperatorDetailsForm = (
 		defaultValues: {
 			name: operator.name,
 			address: operator.address,
-			// Optional columns: the backend clears one with "" rather than an absent
-			// field, so empty stays empty instead of collapsing to null.
+			// "" clears; null would leave the column unchanged.
 			phone: operator.phone ?? "",
 			email: operator.email ?? "",
 			timezoneId: operator.timezoneId,

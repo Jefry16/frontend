@@ -1,11 +1,8 @@
-// The metafield context: operator-defined custom-data fields on experiences
-// and pages. Definitions (the catalogue, managed in Content → Metafields)
-// carry the identity + type; values live on the owning resource.
+// A definition carries the identity and type; values live on the owning resource.
 
-/** Wire code for the owning resource kind (payloads/responses). */
+/** Wire code, verbatim in payloads and responses. */
 export type MetafieldOwnerTypeCode = "experience" | "page";
 
-/** The v1 type catalogue's wire codes. */
 export type MetafieldTypeCode =
 	| "single_line_text"
 	| "multi_line_text"
@@ -17,7 +14,7 @@ export type MetafieldTypeCode =
 	| "json"
 	| "metaobject_reference";
 
-/** A list row (no description — that lives on the detail). */
+/** A list row; the description lives on the detail. */
 export interface MetafieldDefinitionListItem {
 	id: string;
 	context: "metafield-definitions";
@@ -47,7 +44,6 @@ export interface MetafieldDefinition {
 	updatedAt: string;
 }
 
-/** One stored value + its definition's identity (per-resource read). */
 export interface MetafieldValue {
 	namespace: string;
 	key: string;

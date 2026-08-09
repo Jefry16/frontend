@@ -19,21 +19,16 @@ import type { AuditLogEntry } from "./types";
 
 const SHOWN_CHANGES = 2;
 
-// The Activity table: when (sortable — descending id is the server default,
-// createdAt matches it), who (actorType set filter + actorName text filter),
-// what (action set filter, linking to the entry detail), on which entity (set
-// filter + a link to the entity's page), and a short field-diff preview.
-// createdAt has no date-range filter yet — the table framework's date variant
-// lands when a list needs it badly enough (backend already supports it).
+// createdAt sorts by descending id, which is the server default. It has no
+// date-range filter yet: the backend supports one, the table framework does not.
 export const activityColumns = (
 	tourOperatorId: string,
 	formatDateTime: (iso: string) => string,
 ): ColumnDef<AuditLogEntry, unknown>[] => [
 	timestampColumn<AuditLogEntry>("createdAt", m.date(), formatDateTime),
 	{
-		// Filters on the FROZEN actor name (the server-side text filter this
-		// column exists for); an actorType set filter earns its place when
-		// SYSTEM emitters exist — today every writer is a USER.
+		// Filters on the FROZEN actor name. An actorType filter earns its place
+		// when SYSTEM emitters exist; today every writer is a USER.
 		id: "actorName",
 		accessorKey: "actorName",
 		header: (ctx) => (
@@ -109,9 +104,7 @@ export const activityColumns = (
 				<div className="flex flex-col gap-0.5 text-muted-foreground">
 					{changes.slice(0, SHOWN_CHANGES).map((change, index) => (
 						<span
-							// A field can repeat (one capacity diff per tier) — the
-							// position identifies the row in this static list.
-							// biome-ignore lint/suspicious/noArrayIndexKey: static per-entry diff list
+							// biome-ignore lint/suspicious/noArrayIndexKey: a field can repeat (one capacity diff per tier), so position is the identity
 							key={index}
 							className="truncate"
 						>

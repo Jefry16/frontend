@@ -16,7 +16,7 @@ import * as m from "#/paraglide/messages";
 import { AppEmptyState } from "./AppEmptyState";
 import { useDataTable } from "./useDataTable";
 
-// Stable keys for the loading skeleton rows (avoid array-index keys).
+// Stable keys, so the skeleton rows need no array-index key.
 const SKELETON_ROW_KEYS = ["s0", "s1", "s2", "s3", "s4", "s5"];
 
 /** First-run empty state for a genuinely empty (unfiltered) list. */
@@ -32,16 +32,12 @@ interface Props<TData extends { id: string }> {
 	endpoint: string;
 	queryKey: readonly unknown[];
 	baseParams?: Record<string, string>;
-	// Shown when the list is genuinely empty (no rows AND no active filter). A
-	// filtered-to-nothing list keeps the terse "No results" row.
+	// For a genuinely empty list; filtered-to-nothing keeps the terse row.
 	emptyState?: EmptyStateConfig;
 }
 
-// The rendered list shell over useDataTable: sticky header, skeleton loading,
-// error row, empty state (first-run CTA vs filtered "No results"), and infinite
-// scroll via an IntersectionObserver sentinel. Server-driven sort/filter come
-// from the column headers (see AppDataTableHeader).
-// getIsSorted() answers "asc" | "desc" | false; aria-sort wants the words.
+// The rendered shell over useDataTable. getIsSorted() answers
+// "asc" | "desc" | false, and aria-sort wants words for all three.
 const SORT_STATE = {
 	asc: "ascending",
 	desc: "descending",
@@ -84,7 +80,7 @@ export function AppDataTable<TData extends { id: string }>({
 	const rows = table.getRowModel().rows;
 	const visibleColumns = table.getVisibleFlatColumns();
 	const colSpan = visibleColumns.length;
-	// First-run (show the CTA) vs filtered-to-nothing (show "No results").
+	// First-run vs filtered-to-nothing.
 	const filtersActive = table.getState().columnFilters.length > 0;
 	const showEmptyState = Boolean(emptyState) && !filtersActive;
 
@@ -98,10 +94,9 @@ export function AppDataTable<TData extends { id: string }>({
 								{headerGroup.headers.map((header) => (
 									<TableHead
 										key={header.id}
-										// The sort state reaches assistive tech here, not from the
-										// header's arrow icon — that is decoration. `none` on a
-										// sortable-but-unsorted column is what tells a screen
-										// reader the column CAN be sorted at all.
+										// The arrow icon is decoration; this is the only thing that
+										// announces sort state. `none` is load-bearing — it is what
+										// says the column can be sorted at all.
 										aria-sort={
 											header.column.columnDef.enableSorting === true
 												? // getIsSorted() answers `false` when unsorted, not "".
