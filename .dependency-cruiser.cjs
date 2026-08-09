@@ -59,6 +59,8 @@ module.exports = {
 					"^src/styles\\.css$",
 					"\\.d\\.ts$",
 					"^src/paraglide/",
+					// Imported only by *.test.* files, which are outside the graph.
+					"^src/test/",
 				],
 			},
 			to: {},
