@@ -4,6 +4,7 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import {
 	effectiveStatus,
 	roleBadgeVariant,
@@ -137,17 +138,6 @@ export const invitationColumns = (
 			),
 			cell: ({ row }) => row.original.invitedBy.name,
 		},
-		{
-			id: "createdAt",
-			enableSorting: true,
-			header: (headerContext) => (
-				<AppDataTableHeader label={m.sent()} headerContext={headerContext} />
-			),
-			cell: ({ row }) => (
-				<span className="text-muted-foreground">
-					{formatDate(row.original.createdAt)}
-				</span>
-			),
-		},
+		timestampColumn<Invitation>("createdAt", m.sent(), formatDate),
 	];
 };

@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import { POLICY_TYPE_OPTIONS, policySlug, policyTypeLabel } from "./format";
 import type { Policy } from "./types";
 
@@ -61,13 +62,5 @@ export const policyColumns = (
 			</span>
 		),
 	},
-	{
-		id: "updatedAt",
-		accessorKey: "updatedAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.last_updated()} headerContext={ctx} />
-		),
-		cell: ({ row }) => formatDate(row.original.updatedAt),
-	},
+	timestampColumn<Policy>("updatedAt", m.last_updated(), formatDate),
 ];

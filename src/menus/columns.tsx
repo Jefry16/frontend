@@ -2,6 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import type { MenuListItem } from "./types";
 
 // The menus columns: title (links to the detail), handle (mono — what the
@@ -45,13 +46,5 @@ export const menuColumns = (
 			<span className="font-mono text-xs">{row.original.handle}</span>
 		),
 	},
-	{
-		id: "createdAt",
-		accessorKey: "createdAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.created()} headerContext={ctx} />
-		),
-		cell: ({ row }) => formatDate(row.original.createdAt),
-	},
+	timestampColumn<MenuListItem>("createdAt", m.created(), formatDate),
 ];

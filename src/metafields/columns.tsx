@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import {
 	OWNER_TYPE_FILTER_OPTIONS,
 	ownerTypeLabel,
@@ -86,13 +87,5 @@ export const metafieldDefinitionColumns = (
 		),
 		cell: ({ row }) => typeLabel(row.original.type),
 	},
-	{
-		id: "createdAt",
-		accessorKey: "createdAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.created()} headerContext={ctx} />
-		),
-		cell: ({ row }) => formatDate(row.original.createdAt),
-	},
+	timestampColumn("createdAt", m.created(), formatDate),
 ];

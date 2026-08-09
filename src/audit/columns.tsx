@@ -4,6 +4,7 @@ import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { EmptyValue } from "#/shared/components/EmptyValue";
+import { timestampColumn } from "#/shared/components/table-columns";
 import {
 	ACTION_OPTIONS,
 	ENTITY_TYPE_OPTIONS,
@@ -28,19 +29,7 @@ export const activityColumns = (
 	tourOperatorId: string,
 	formatDateTime: (iso: string) => string,
 ): ColumnDef<AuditLogEntry, unknown>[] => [
-	{
-		id: "createdAt",
-		accessorKey: "createdAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.date()} headerContext={ctx} />
-		),
-		cell: ({ row }) => (
-			<span className="whitespace-nowrap">
-				{formatDateTime(row.original.createdAt)}
-			</span>
-		),
-	},
+	timestampColumn<AuditLogEntry>("createdAt", m.date(), formatDateTime),
 	{
 		// Filters on the FROZEN actor name (the server-side text filter this
 		// column exists for); an actorType set filter earns its place when

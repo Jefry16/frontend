@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import type { ContactMessageListItem } from "./types";
 
 // The inbox columns: unread badge, subject (links to the message; bold while
@@ -64,13 +65,9 @@ export const contactMessageColumns = (
 			</div>
 		),
 	},
-	{
-		id: "createdAt",
-		accessorKey: "createdAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.inbox_received()} headerContext={ctx} />
-		),
-		cell: ({ row }) => formatDate(row.original.createdAt),
-	},
+	timestampColumn<ContactMessageListItem>(
+		"createdAt",
+		m.inbox_received(),
+		formatDate,
+	),
 ];

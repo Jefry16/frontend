@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import {
 	PAGE_STATUS_OPTIONS,
 	pageStatusBadgeVariant,
@@ -69,13 +70,5 @@ export const pageColumns = (
 			</AppBadge>
 		),
 	},
-	{
-		id: "createdAt",
-		accessorKey: "createdAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.created()} headerContext={ctx} />
-		),
-		cell: ({ row }) => formatDate(row.original.createdAt),
-	},
+	timestampColumn<PageListItem>("createdAt", m.created(), formatDate),
 ];
