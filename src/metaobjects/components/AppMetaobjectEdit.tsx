@@ -1,8 +1,7 @@
 import { Shapes } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useMetaobject } from "../hooks/use-metaobject";
@@ -31,22 +30,12 @@ export const AppMetaobjectEdit = ({
 					items={[{ label: m.content() }, { label: m.metaobjects() }]}
 				/>
 			}
-			loading={<EditSkeleton />}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(entry) => <EditView tourOperatorId={tourOperatorId} entry={entry} />}
 		</AppResourceView>
 	);
 };
-
-const EditSkeleton = () => (
-	<Card>
-		<CardContent className="flex flex-col gap-4">
-			{["a", "b", "c"].map((k) => (
-				<Skeleton key={k} className="h-9 w-full" />
-			))}
-		</CardContent>
-	</Card>
-);
 
 const EditView = ({
 	tourOperatorId,
@@ -70,7 +59,7 @@ const EditView = ({
 					items={[{ label: m.content() }, { label: m.metaobjects() }]}
 				/>
 			}
-			loading={<EditSkeleton />}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(def) => (
 				<>

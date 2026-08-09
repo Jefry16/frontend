@@ -3,13 +3,13 @@ import { useNavigate } from "@tanstack/react-router";
 import { Inbox, Mail, MailOpen, Trash2 } from "lucide-react";
 import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
@@ -60,15 +60,7 @@ export const AppContactMessageDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-9 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(message) => (
 				<MessageView tourOperatorId={tourOperatorId} message={message} />

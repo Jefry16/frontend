@@ -2,7 +2,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Languages, Pencil, Scale, Trash2 } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
@@ -10,6 +9,7 @@ import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import {
 	type AppAction,
 	AppPageActions,
@@ -68,15 +68,7 @@ export const AppPolicyDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-10 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(policy) => {
 				const actions: AppAction[] = [

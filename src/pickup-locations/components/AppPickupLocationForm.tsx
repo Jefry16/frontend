@@ -1,9 +1,8 @@
-import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppTimeField } from "#/shared/components/AppTimeField";
 import { usePickupLocationForm } from "../hooks/use-pickup-location-form";
 import type { PickupLocation } from "../types";
@@ -23,39 +22,31 @@ export const AppPickupLocationForm = ({
 	);
 
 	return (
-		<Card>
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						form.handleSubmit();
-					}}
-					className="space-y-4"
-				>
-					{errorMessage && (
-						<AppAlert title={m.error()} description={errorMessage} />
+		<AppFormCard
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions
+					isPending={isPending}
+					submitLabel={isEdit ? m.save_changes() : m.create()}
+				/>
+			}
+		>
+			<FieldGroup>
+				<form.Field name="name">
+					{(field) => <AppField field={field} label={m.name()} required />}
+				</form.Field>
+				<form.Field name="time">
+					{(field) => (
+						<AppTimeField
+							field={field}
+							label={m.time()}
+							description={m.pickup_time_hint()}
+							required
+						/>
 					)}
-					<FieldGroup>
-						<form.Field name="name">
-							{(field) => <AppField field={field} label={m.name()} required />}
-						</form.Field>
-						<form.Field name="time">
-							{(field) => (
-								<AppTimeField
-									field={field}
-									label={m.time()}
-									description={m.pickup_time_hint()}
-									required
-								/>
-							)}
-						</form.Field>
-					</FieldGroup>
-					<AppFormActions
-						isPending={isPending}
-						submitLabel={isEdit ? m.save_changes() : m.create()}
-					/>
-				</form>
-			</CardContent>
-		</Card>
+				</form.Field>
+			</FieldGroup>
+		</AppFormCard>
 	);
 };

@@ -20,6 +20,12 @@ import { describe, expect, it } from "vitest";
 const RAW_CONTROLS =
 	/<(Input|Textarea|Checkbox|Select|select|input|textarea|RadioGroup|Switch)[\s/>]/;
 
+// A form is either a literal <form> or an AppFormCard, which renders one. This
+// has to name both: when the nineteen hand-rolled card shells collapsed into
+// AppFormCard, matching only "<form" would have made this gate stop looking at
+// precisely the files it was written for — and it would still have been green.
+const RENDERS_A_FORM = /<(form|AppFormCard)[\s>]/;
+
 // Nothing is frozen. Every form in the app renders its fields through a
 // renderer — the three row builders that used to sit here were converted once
 // their rows moved into TanStack array fields.
@@ -41,7 +47,7 @@ describe("COMPONENTS.md §5 — forms use the field renderers", () => {
 	it("no form renders a raw control instead of a field renderer", () => {
 		const offenders = walk("src")
 			.map((path) => ({ path, src: readFileSync(path, "utf8") }))
-			.filter(({ src }) => src.includes("<form") && RAW_CONTROLS.test(src))
+			.filter(({ src }) => RENDERS_A_FORM.test(src) && RAW_CONTROLS.test(src))
 			.map(({ path }) => path.replace(/^src\//, ""))
 			.filter((path) => !FROZEN.has(path));
 

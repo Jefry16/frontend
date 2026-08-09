@@ -9,12 +9,11 @@ import {
 import type { ReactNode } from "react";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
 import { SelectItem } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useOperatorLocales } from "#/tour-operator";
 import { isResourceLink, MENU_LINK_TYPES, menuLinkTypeLabel } from "../format";
@@ -76,54 +75,41 @@ export const AppMenuItemsEditor = ({
 		) ?? [];
 
 	return (
-		<Card>
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						form.handleSubmit();
-					}}
-					className="space-y-4"
+		<AppFormCard
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
+			}
+		>
+			<tree.Field name="items" mode="array">
+				{(items) =>
+					items.state.value.length === 0 ? (
+						<p className="text-sm text-muted-foreground">{m.no_menu_items()}</p>
+					) : (
+						<ItemRows
+							form={tree}
+							path="items"
+							nodes={items.state.value}
+							depth={1}
+							tourOperatorId={tourOperatorId}
+							extraLocales={extraLocales}
+						/>
+					)
+				}
+			</tree.Field>
+			<div>
+				<Button
+					type="button"
+					variant="outline"
+					size="sm"
+					onClick={() => tree.pushFieldValue("items", emptyMenuItem())}
 				>
-					{errorMessage && (
-						<AppAlert title={m.error()} description={errorMessage} />
-					)}
-					<tree.Field name="items" mode="array">
-						{(items) =>
-							items.state.value.length === 0 ? (
-								<p className="text-sm text-muted-foreground">
-									{m.no_menu_items()}
-								</p>
-							) : (
-								<ItemRows
-									form={tree}
-									path="items"
-									nodes={items.state.value}
-									depth={1}
-									tourOperatorId={tourOperatorId}
-									extraLocales={extraLocales}
-								/>
-							)
-						}
-					</tree.Field>
-					<div>
-						<Button
-							type="button"
-							variant="outline"
-							size="sm"
-							onClick={() => tree.pushFieldValue("items", emptyMenuItem())}
-						>
-							<Plus />
-							{m.add_menu_item()}
-						</Button>
-					</div>
-					<AppFormActions
-						isPending={isPending}
-						submitLabel={m.save_changes()}
-					/>
-				</form>
-			</CardContent>
-		</Card>
+					<Plus />
+					{m.add_menu_item()}
+				</Button>
+			</div>
+		</AppFormCard>
 	);
 };
 

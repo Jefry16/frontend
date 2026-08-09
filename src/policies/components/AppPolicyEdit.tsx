@@ -1,9 +1,8 @@
 import { Scale } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { usePolicy } from "../hooks/use-policy";
@@ -40,15 +39,7 @@ export const AppPolicyEdit = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-10 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(policy) => (
 				<>
