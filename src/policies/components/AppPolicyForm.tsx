@@ -1,10 +1,9 @@
-import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { POLICY_TYPE_OPTIONS } from "../format";
@@ -27,57 +26,49 @@ export const AppPolicyForm = ({
 	);
 
 	return (
-		<Card>
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						form.handleSubmit();
-					}}
-					className="space-y-4"
-				>
-					{errorMessage && (
-						<AppAlert title={m.error()} description={errorMessage} />
-					)}
-					<FieldGroup>
-						{isEdit ? null : (
-							<form.Field name="type">
-								{(field) => (
-									<AppSelectField
-										field={field}
-										label={m.policy_type()}
-										description={m.policy_type_hint()}
-									>
-										{POLICY_TYPE_OPTIONS.map((option) => (
-											<SelectItem key={option.value} value={option.value}>
-												{option.label}
-											</SelectItem>
-										))}
-									</AppSelectField>
-								)}
-							</form.Field>
+		<AppFormCard
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions
+					isPending={isPending}
+					submitLabel={isEdit ? m.save_changes() : m.create()}
+				/>
+			}
+		>
+			<FieldGroup>
+				{isEdit ? null : (
+					<form.Field name="type">
+						{(field) => (
+							<AppSelectField
+								field={field}
+								label={m.policy_type()}
+								description={m.policy_type_hint()}
+							>
+								{POLICY_TYPE_OPTIONS.map((option) => (
+									<SelectItem key={option.value} value={option.value}>
+										{option.label}
+									</SelectItem>
+								))}
+							</AppSelectField>
 						)}
-						<form.Field name="title">
-							{(field) => <AppField field={field} label={m.title()} required />}
-						</form.Field>
-						<form.Field name="body">
-							{(field) => (
-								<AppTextareaField
-									field={field}
-									label={m.policy_body()}
-									description={m.policy_body_hint()}
-									rows={14}
-									required
-								/>
-							)}
-						</form.Field>
-					</FieldGroup>
-					<AppFormActions
-						isPending={isPending}
-						submitLabel={isEdit ? m.save_changes() : m.create()}
-					/>
-				</form>
-			</CardContent>
-		</Card>
+					</form.Field>
+				)}
+				<form.Field name="title">
+					{(field) => <AppField field={field} label={m.title()} required />}
+				</form.Field>
+				<form.Field name="body">
+					{(field) => (
+						<AppTextareaField
+							field={field}
+							label={m.policy_body()}
+							description={m.policy_body_hint()}
+							rows={14}
+							required
+						/>
+					)}
+				</form.Field>
+			</FieldGroup>
+		</AppFormCard>
 	);
 };

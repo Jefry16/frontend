@@ -145,15 +145,15 @@ Built on the **base `@tanstack/react-form` `useForm`** + `zod` validators + shad
 second shape:
 
 ```tsx
-<Card><CardContent>
-  <form onSubmit={…} className="space-y-4">
-    {errorMessage && <AppAlert title={m.error()} description={errorMessage} />}
-    <FieldGroup>
-      <form.Field name="…">{(field) => <AppField field={field} label={…} required />}</form.Field>
-    </FieldGroup>
-    <AppFormActions isPending={…} submitLabel={…} />
-  </form>
-</CardContent></Card>
+<AppFormCard
+  onSubmit={form.handleSubmit}
+  errorMessage={errorMessage}
+  actions={<AppFormActions isPending={…} submitLabel={…} />}
+>
+  <FieldGroup>
+    <form.Field name="…">{(field) => <AppField field={field} label={…} required />}</form.Field>
+  </FieldGroup>
+</AppFormCard>
 ```
 
 - **Field renderers live in `shared/components/`**, one per input kind, each taking a
@@ -163,10 +163,22 @@ second shape:
   supported languages, recurring weekdays) · `AppDateField` · `AppTimeField` ·
   `AppNumberField` · `AppPasswordField` · `AppArrayInput`. (`AppNumericInput` is the bare numeric control the
   number/price fields build on — not a form field itself.)
+- `AppFormCard` — the card + `<form>` + banners + footer above. **`onSubmit` takes
+  `form.handleSubmit` by reference** (form-core binds it in the `FormApi` constructor);
+  the two forms whose hook leaves `useForm`'s `onSubmit` unwired — `AppMenuForm`,
+  `AppMetaobjectDefinitionForm` — pass their own validate-then-mutate function instead.
+  It deliberately does **not** wrap children in `FieldGroup`: callers keep their own, so a
+  form is free to group its fields (or not, as the single-field `AppNameTranslations`
+  doesn't). `notice` is the slot above the error banner, which only the translation
+  editors use.
 - `AppFormActions` — the footer: right-aligned submit with the pending spinner, plus an
   optional `secondary` slot (Cancel link, Clear-translation button).
 - `AppAuthFormWrapper` — the auth-page shell (logo, card, inline error banner, **full-width**
-  submit). Auth and onboarding are a different layout and skip `AppFormActions`.
+  submit). Auth and onboarding are a different layout and skip `AppFormActions`. It and
+  `AppTourOperatorForm` keep their own shell rather than `AppFormCard`, because both put a
+  footer *inside the card but outside the form* — which is not a slot `AppFormCard` has.
+  (Those two are now near-identical to each other apart from the card width; that is a
+  live R2 candidate, not a settled decision.)
 - `use-<x>-form.ts` — the hook: `useForm` + a `useMutation`, mapping server errors to an
   inline `errorMessage` and navigating on success.
 - `validators/<x>.ts` — a zod schema that **mirrors the backend value objects** (so a bad
@@ -185,8 +197,11 @@ error alert** — not as a raw `<p>`, which is for per-field hints — a module-
 `AppFormActions` with Clear in its `secondary` slot. **The `PUT` is a full replace
 everywhere**, so the form always submits every field.
 
-**The gate.** `src/shared/form-pattern.test.ts` fails when a component renders a `<form>`
-containing **any** raw control (`Input` / `Textarea` / `Checkbox` / `Select` / `select` / …).
+**The gate.** `src/shared/form-pattern.test.ts` fails when a component renders a form —
+a literal `<form>` **or** an `AppFormCard`, which renders one — containing **any** raw
+control (`Input` / `Textarea` / `Checkbox` / `Select` / `select` / …). It has to name both:
+when the hand-rolled card shells collapsed into `AppFormCard`, matching only `<form` would
+have made this gate stop looking at precisely the files it was written for, and stay green.
 Every field goes through a renderer, with no exception for "it's a dynamic control" — if
 none fits, **write the renderer**. That is exactly how `AppCheckboxGroupField` came to
 exist: two forms were hand-rolling a checkbox-per-option group, which is R2's second real
@@ -257,7 +272,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 
 ### `App*` components — 136, of which 132 ship a story
 
-**`shared/` — 46.** The cross-cutting design layer.
+**`shared/` — 47.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`
@@ -275,7 +290,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   `AppAsyncSetFilter` · `AppFilterInput`
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
   `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
-  `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormActions`
+  `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormCard` (the shell) ·
+  `AppFormActions` (the footer)
 - *States:* also `AppLoadingBlock` — the centred spinner for a short swap inside painted
   chrome (a locale tab, a card body). Nine copies of it sat across the translation editors.
 - *Overlays:* `AppConfirmDialog` · `AppDialogFooter` (a dialog's Cancel + confirm pair, the

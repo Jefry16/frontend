@@ -1,11 +1,11 @@
 import { Button } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { usePolicyTranslationForm } from "../hooks/use-policy-translation-form";
 import type { Policy, PolicyTranslation } from "../types";
@@ -37,64 +37,58 @@ export const AppPolicyTranslationForm = ({
 		});
 
 	return (
-		<Card>
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						form.handleSubmit();
-					}}
-					className="space-y-4"
-				>
-					<AppAlert
-						variant="info"
-						title={m.translation()}
-						description={m.translation_fallback_help()}
-					/>
-					{errorMessage && (
-						<AppAlert title={m.error()} description={errorMessage} />
+		<AppFormCard
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			notice={
+				<AppAlert
+					variant="info"
+					title={m.translation()}
+					description={m.translation_fallback_help()}
+				/>
+			}
+			actions={
+				<AppFormActions
+					isPending={isPending}
+					disabled={isClearing}
+					submitLabel={m.save_translation()}
+					secondary={
+						hasTranslation(translation) && (
+							<Button
+								type="button"
+								variant="outline"
+								disabled={isPending || isClearing}
+								onClick={() => clear()}
+							>
+								{isClearing && <Spinner className="size-4" />}
+								{m.clear_translation()}
+							</Button>
+						)
+					}
+				/>
+			}
+		>
+			<FieldGroup>
+				<form.Field name="title">
+					{(field) => (
+						<AppField
+							field={field}
+							label={m.title()}
+							placeholder={canonical.title}
+						/>
 					)}
-					<FieldGroup>
-						<form.Field name="title">
-							{(field) => (
-								<AppField
-									field={field}
-									label={m.title()}
-									placeholder={canonical.title}
-								/>
-							)}
-						</form.Field>
-						<form.Field name="body">
-							{(field) => (
-								<AppTextareaField
-									field={field}
-									label={m.policy_body()}
-									description={m.policy_body_hint()}
-									rows={14}
-								/>
-							)}
-						</form.Field>
-					</FieldGroup>
-					<AppFormActions
-						isPending={isPending}
-						disabled={isClearing}
-						submitLabel={m.save_translation()}
-						secondary={
-							hasTranslation(translation) && (
-								<Button
-									type="button"
-									variant="outline"
-									disabled={isPending || isClearing}
-									onClick={() => clear()}
-								>
-									{isClearing && <Spinner className="size-4" />}
-									{m.clear_translation()}
-								</Button>
-							)
-						}
-					/>
-				</form>
-			</CardContent>
-		</Card>
+				</form.Field>
+				<form.Field name="body">
+					{(field) => (
+						<AppTextareaField
+							field={field}
+							label={m.policy_body()}
+							description={m.policy_body_hint()}
+							rows={14}
+						/>
+					)}
+				</form.Field>
+			</FieldGroup>
+		</AppFormCard>
 	);
 };

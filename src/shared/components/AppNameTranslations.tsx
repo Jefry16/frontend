@@ -4,13 +4,13 @@ import type { AxiosError } from "axios";
 import { useState } from "react";
 import { z } from "zod";
 import { Button } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
 import { Spinner } from "#/components/ui/spinner";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppAlert } from "./AppAlert";
 import { AppField } from "./AppField";
 import { AppFormActions } from "./AppFormActions";
@@ -237,53 +237,47 @@ function NameFormBody({
 	});
 
 	return (
-		<Card>
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						form.handleSubmit();
-					}}
-					className="space-y-4"
-				>
-					<AppAlert
-						variant="info"
-						title={m.translation()}
-						description={m.translation_fallback_help()}
+		<AppFormCard
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			notice={
+				<AppAlert
+					variant="info"
+					title={m.translation()}
+					description={m.translation_fallback_help()}
+				/>
+			}
+			actions={
+				<AppFormActions
+					isPending={isSaving}
+					disabled={isClearing}
+					submitLabel={m.save_translation()}
+					secondary={
+						hasTranslation && (
+							<Button
+								type="button"
+								variant="outline"
+								disabled={isSaving || isClearing}
+								onClick={onClear}
+							>
+								{isClearing && <Spinner className="size-4" />}
+								{m.clear_translation()}
+							</Button>
+						)
+					}
+				/>
+			}
+		>
+			<form.Field name="name">
+				{(field) => (
+					<AppField
+						field={field}
+						label={m.name()}
+						placeholder={canonicalName}
+						description={m.translation_canonical({ value: canonicalName })}
 					/>
-					{errorMessage && (
-						<AppAlert title={m.error()} description={errorMessage} />
-					)}
-					<form.Field name="name">
-						{(field) => (
-							<AppField
-								field={field}
-								label={m.name()}
-								placeholder={canonicalName}
-								description={m.translation_canonical({ value: canonicalName })}
-							/>
-						)}
-					</form.Field>
-					<AppFormActions
-						isPending={isSaving}
-						disabled={isClearing}
-						submitLabel={m.save_translation()}
-						secondary={
-							hasTranslation && (
-								<Button
-									type="button"
-									variant="outline"
-									disabled={isSaving || isClearing}
-									onClick={onClear}
-								>
-									{isClearing && <Spinner className="size-4" />}
-									{m.clear_translation()}
-								</Button>
-							)
-						}
-					/>
-				</form>
-			</CardContent>
-		</Card>
+				)}
+			</form.Field>
+		</AppFormCard>
 	);
 }
