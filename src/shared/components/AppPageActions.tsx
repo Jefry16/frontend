@@ -13,38 +13,23 @@ import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
 import { AppConfirmDialog } from "./AppConfirmDialog";
 
-// One action a detail view can offer. The view builds an `AppAction[]` from the
-// resource's state (e.g. a PENDING invitation → Resend + Revoke) and hands it to
-// AppPageActions, which decides the layout.
 export interface AppAction {
-	// Stable key (also the React key).
 	id: string;
 	label: string;
 	icon?: LucideIcon;
 	onSelect: () => void;
 	variant?: "default" | "destructive";
-	// Gate the action behind AppConfirmDialog (destructive/irreversible ones).
 	confirm?: { title: string; description?: string; confirmLabel?: string };
 	disabled?: boolean;
-	// The action's mutation is in flight — disables it and spins.
 	pending?: boolean;
-	// A STAFF member may run this too. Absent means ADMIN+ only, which is the
-	// right default: nearly every write in the product is behind the backend's
-	// `ensureAdmin`. Set it only where the backend's check is `ensureMember`
-	// (reading translations, the inbox read-state) or membership alone (leaving
-	// the team) — the flag is a claim about the backend, not a UI preference.
+	// A claim about the backend, not a UI preference: set it only where the check
+	// is `ensureMember` or membership alone. Absent means ADMIN+.
 	member?: boolean;
 }
 
-// Renders a detail view's action set: one action → a single button; several →
-// a primary button plus a "…" overflow menu holding the rest. Destructive
-// actions never take the primary slot, and any action with `confirm` opens a
-// confirmation dialog before firing. Drop into AppPageHeader's `actions` slot.
-//
-// `canWrite` arrives as a prop because `shared/` may not import a feature module
-// and `usePermissions` lives in `tour-operator/` — the same reason every
-// translation card takes it. It is required so a new call site cannot forget the
-// gate: omitting it fails typecheck instead of quietly showing STAFF a 403.
+// `canWrite` is a required prop, not a hook call, because `shared/` may not
+// import `tour-operator/`. Required so a new call site fails typecheck rather
+// than quietly showing STAFF a button the backend will 403.
 export function AppPageActions({
 	actions,
 	canWrite,
@@ -52,20 +37,17 @@ export function AppPageActions({
 	actions: AppAction[];
 	canWrite: boolean;
 }) {
-	// The id of the action awaiting confirmation, if any. Kept by id (not the
-	// object) so `confirming` below stays live — its `pending` tracks the running
-	// mutation, and the dialog auto-closes once the action leaves the set (e.g. a
-	// revoked invitation goes terminal → no more actions).
+	// By id, not the object, so `confirming` re-reads from the live set: its
+	// `pending` tracks the mutation, and the dialog closes itself when the action
+	// leaves the set.
 	const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
-	// Everything below works off `visible`, never `actions` — the tier decides
-	// what exists here, including which action can be primary.
+	// Everything below derives from `visible`, never `actions`.
 	const visible = actions.filter((action) => canWrite || action.member);
 	const confirming = confirmingId
 		? (visible.find((a) => a.id === confirmingId) ?? null)
 		: null;
 
-	// Fire directly, or open the confirm dialog first.
 	const trigger = (action: AppAction) => {
 		if (action.confirm) setConfirmingId(action.id);
 		else action.onSelect();
@@ -73,8 +55,7 @@ export function AppPageActions({
 
 	if (visible.length === 0) return null;
 
-	// The primary slot takes the first non-destructive action, else the first —
-	// a destructive one never leads. The rest go to the overflow menu.
+	// A destructive action never leads; if they all are, the first still has to.
 	const firstSafe = visible.findIndex((a) => a.variant !== "destructive");
 	const primaryIndex = firstSafe !== -1 ? firstSafe : 0;
 	const primary = visible[primaryIndex];
@@ -102,15 +83,14 @@ export function AppPageActions({
 							variant="outline"
 							size="icon"
 							aria-label={m.more_actions()}
-							// outline's bg-background is a hair off-white and reads grey on a
-							// white card — pin the trigger to the pure-white card surface.
+							// outline's bg-background reads grey on a white card.
 							className="bg-card dark:bg-card"
 						>
 							<MoreHorizontal />
 						</Button>
 					</DropdownMenuTrigger>
-					{/* The vendored content pins itself to the trigger's width — here that's
-					    the tiny "…" button, clipping labels. Size to the content instead. */}
+					{/* The vendored content pins itself to the trigger's width — here the
+					    tiny "…" button, which clips labels. Size to the content instead. */}
 					<DropdownMenuContent align="end" className="w-auto min-w-40">
 						{overflow.map((action) => (
 							<DropdownMenuItem
@@ -118,7 +98,6 @@ export function AppPageActions({
 								disabled={action.disabled || action.pending}
 								onSelect={() => trigger(action)}
 								className={cn(
-									// Labels stay on one line — the menu grows instead of wrapping.
 									"cursor-pointer whitespace-nowrap",
 									action.variant === "destructive" &&
 										"text-destructive focus:text-destructive",

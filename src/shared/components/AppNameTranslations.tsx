@@ -33,25 +33,20 @@ interface Props {
 	/** Shown as the placeholder — what an empty translation falls back to. */
 	canonicalName: string;
 	maxLength: number;
-	/** Supported locales minus the primary (the wrapper owns the operator-locales fetch). */
+	/** Supported locales minus the primary. */
 	translatable: string[];
 	localesPending: boolean;
 	/** Code → display label (the wrapper passes its localeLabel). */
 	localeLabel: (code: string) => string;
 	/**
-	 * ADMIN+ (the wrapper reads usePermissions — shared/ may not). False shows
-	 * the stored translation read-only: reads are member-level, so a STAFF
-	 * member keeps them and only loses the form that would 403.
+	 * A prop because shared/ may not read usePermissions. False still shows the
+	 * stored translation — reads are member-level; only the form goes away.
 	 */
 	canWrite: boolean;
 }
 
-// The shared single-name translation editor (resources whose only translatable
-// field is a name: audiences, pickup locations): a locale switcher (supported
-// minus primary) over a one-field per-locale form. Save PUTs the trimmed name;
-// blank saves as untranslated; Clear DELETEs the overlay. The canonical name
-// shows as the placeholder so the fallback is visible. Parameterized by
-// endpoint + query keys so each resource stays a thin wrapper.
+// For resources whose only translatable field is a name. Parameterized by
+// endpoint and query keys so each resource stays a thin wrapper.
 export const AppNameTranslations = ({
 	tourOperatorId,
 	endpointBase,
@@ -119,8 +114,8 @@ export const AppNameTranslations = ({
 	);
 };
 
-// One locale's form. Mounts once the overlay is loaded so the input seeds from
-// the stored value (keyed by locale in the parent to reseed on switch).
+// Mounts once the overlay is loaded so the input seeds from the stored value;
+// the parent keys it by locale to reseed on switch.
 function LocaleNameForm({
 	locale,
 	tourOperatorId,
@@ -148,7 +143,7 @@ function LocaleNameForm({
 
 	const invalidate = () => {
 		queryClient.invalidateQueries({ queryKey: [...queryKeyBase] });
-		// Translation saves append audit entries — refresh the trail too.
+		// Translation saves append audit entries.
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});
@@ -197,9 +192,7 @@ function LocaleNameForm({
 	);
 }
 
-// The max length is a prop (each resource's name column differs), so the schema
-// is built per mount rather than living in a module's validators/ — the same
-// reason `pageFormSchema(isEdit)` is a factory.
+// A factory, not a module-level schema: the max length differs per resource.
 const nameSchema = (maxLength: number) =>
 	z.object({
 		name: z

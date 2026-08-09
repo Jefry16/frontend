@@ -31,21 +31,13 @@ type Props<TData> =
 	  })
 	| (BaseProps<TData> & { allowFiltering: "text" });
 
-// A column header with server-side sorting (toggles asc/desc/none) when the
-// column declares `enableSorting`, and
-// opt-in filters: `set` (static options) / `setAsync` (options from an endpoint)
-// → `filter[field][in]`, and `text` (operator + debounced search) →
-// `filter[field][contains]` etc. The lean cut of the archive's header;
-// number/date filters land when a list needs them.
+// Sorting and filtering are both server-side; number/date filters land when a
+// list needs them.
 export function AppDataTableHeader<TData>(props: Props<TData>) {
 	const { label, headerContext, allowFiltering } = props;
 	const { column } = headerContext;
-	// Declared by the column's `enableSorting`, so the table and the header
-	// cannot disagree about it.
-	// NOT `column.getCanSort()`: that also requires an accessorFn, and these are
-	// display columns (an `id` plus a `cell` renderer, no accessorKey), so it
-	// answers false for every one of them. The server does the sorting anyway —
-	// `manualSorting` — so the column's declaration is the whole truth.
+	// NOT `column.getCanSort()`: it also requires an accessorFn, and these are
+	// display columns, so it answers false for every one of them.
 	const canSort = column.columnDef.enableSorting === true;
 	const sorted = column.getIsSorted();
 	const SortIcon =
@@ -74,9 +66,8 @@ export function AppDataTableHeader<TData>(props: Props<TData>) {
 							variant="ghost"
 							size="icon"
 							className="relative size-7 cursor-pointer"
-							// Named by its column: a table header row of buttons all called
-							// "Filter" tells a screen reader user nothing about which one
-							// they are on, and the label is right here.
+							// Named by its column: a header row of buttons all called "Filter"
+							// tells a screen reader user nothing about which one they are on.
 							aria-label={m.filter_column({ column: label })}
 						>
 							<Filter className="size-3.5" />

@@ -11,7 +11,6 @@ import * as m from "#/paraglide/messages";
 import type { Brand, BrandImageSlot } from "../types";
 import { type BrandTextFormData, brandTextSchema } from "../validators/brand";
 
-/** The shop's brand row — images, slogan, palette, social links. */
 export const useBrand = (tourOperatorId: string) =>
 	useQuery({
 		queryKey: queryKeys.brand(tourOperatorId),
@@ -23,12 +22,8 @@ export const useBrand = (tourOperatorId: string) =>
 		},
 	});
 
-/**
- * Resolve one media id to its asset, for a slot's preview. A local fetch rather
- * than `#/media`'s `useMediaByIds`: `media` imports `#/tour-operator`, so
- * importing it back through the barrel is a cycle. Same reason the SEO card
- * resolves its og:image by hand.
- */
+// Fetched here rather than through `#/media`'s useMediaByIds: `media` imports
+// `#/tour-operator`, so reaching back through the barrel is a cycle.
 export const useBrandImage = (tourOperatorId: string, mediaId: string | null) =>
 	useQuery({
 		queryKey: queryKeys.mediaAsset(tourOperatorId, mediaId ?? ""),
@@ -42,17 +37,11 @@ export const useBrandImage = (tourOperatorId: string, mediaId: string | null) =>
 	});
 
 /**
- * The brand writes. Every one sends the WHOLE row: `PUT /brand` is a full
- * replace (`UpdateBrandUseCase` rebuilds from the body, and `readColors`
- * returns an empty list for an absent `colors`), so a patch-shaped body would
- * wipe the palette and the social links this release does not yet edit. The
- * caller passes the brand it read; these helpers change one part of it.
+ * Every write sends the WHOLE row: `PUT /brand` is a full replace, so a
+ * patch-shaped body silently wipes the palette and social links.
  *
- * Setting an image is the same two-step the logo used to be: upload to the
- * media library (multipart → 201 + Location), then point the slot at that id.
- * If the upload lands and the PUT fails, the asset stays unreferenced — the
- * contract has no client media-delete, so a retry re-uploads rather than
- * compensating.
+ * If an image upload lands and the PUT then fails, the asset stays
+ * unreferenced — there is no client media-delete to compensate with.
  */
 export const useBrandActions = (tourOperatorId: string, brand?: Brand) => {
 	const { refreshUser } = useAuth();
@@ -87,8 +76,7 @@ export const useBrandActions = (tourOperatorId: string, brand?: Brand) => {
 			if (!brand) throw new Error("Brand not loaded");
 			const fd = new FormData();
 			fd.append("file", file);
-			// Let axios set the multipart boundary from the FormData — never
-			// hand-set Content-Type. 201 + Location: .../media/{mediaId}.
+			// No Content-Type header: axios derives the multipart boundary itself.
 			const { headers } = await authApi.post(`${base}/media`, fd);
 			const mediaId = (headers.location ?? "").split("/").pop();
 			if (!mediaId) throw new Error("Missing Location header on media upload");
@@ -116,14 +104,8 @@ export const useBrandActions = (tourOperatorId: string, brand?: Brand) => {
 	return { setImage, clearImage };
 };
 
-/**
- * The slogan + short-description form (§5). Split from `useBrandActions`
- * because the images are not form fields — they upload on drop — while these
- * two submit together.
- *
- * The mutation still spreads over the loaded brand: `PUT /brand` is a full
- * replace, so the images, palette and social links have to ride along.
- */
+// Separate from useBrandActions because the images are not form fields — they
+// upload on drop, while these two submit together.
 export const useBrandTextForm = (tourOperatorId: string, brand: Brand) => {
 	const { refreshUser } = useAuth();
 	const toast = useAppToast();
