@@ -16,6 +16,12 @@ interface AppFieldProps {
 	placeholder?: string;
 	autoComplete?: string;
 	required?: boolean;
+	/**
+	 * Render the label for assistive tech only. For a cell in a repeating row,
+	 * where a visible label on every row would be noise but the control still
+	 * needs a programmatic name — an `aria-label` or a placeholder is not one.
+	 */
+	hideLabel?: boolean;
 }
 
 // The form-field renderer: a shadcn Field wrapping an Input bound to a TanStack
@@ -29,12 +35,16 @@ export const AppField = ({
 	placeholder,
 	autoComplete,
 	required,
+	hideLabel,
 }: AppFieldProps) => {
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
 	return (
 		<Field data-invalid={isInvalid || undefined}>
-			<FieldLabel htmlFor={field.name}>
+			<FieldLabel
+				htmlFor={field.name}
+				className={hideLabel ? "sr-only" : undefined}
+			>
 				{label}
 				{required && <RequiredMark />}
 			</FieldLabel>

@@ -1,3 +1,4 @@
+import { FieldError } from "#/components/ui/field";
 import {
 	Select,
 	SelectContent,
@@ -31,12 +32,15 @@ export const AppMenuTargetSelect = ({
 	value,
 	onValueChange,
 	ariaLabel,
+	errors,
 }: {
 	kind: "EXPERIENCE" | "PAGE";
 	tourOperatorId: string;
 	value: string;
 	onValueChange: (value: string) => void;
 	ariaLabel: string;
+	/** The bound field's errors — shown below, the way a renderer would. */
+	errors?: { message?: string }[];
 }) => {
 	const experiences = useAllPages<ExperienceRow>(
 		queryKeys.experiences(tourOperatorId),
@@ -62,24 +66,33 @@ export const AppMenuTargetSelect = ({
 			? experiences.rows.map((row) => ({ id: row.id, label: row.name }))
 			: pages.rows.map((row) => ({ id: row.id, label: row.title }));
 
+	const invalid = (errors?.length ?? 0) > 0;
+
 	return (
-		<Select value={value || undefined} onValueChange={onValueChange}>
-			<SelectTrigger className="w-full" aria-label={ariaLabel}>
-				<SelectValue
-					placeholder={
-						kind === "EXPERIENCE" ? m.select_experience() : m.select_page()
-					}
-				/>
-			</SelectTrigger>
-			<SelectContent>
-				<SelectGroup>
-					{options.map((option) => (
-						<SelectItem key={option.id} value={option.id}>
-							{option.label}
-						</SelectItem>
-					))}
-				</SelectGroup>
-			</SelectContent>
-		</Select>
+		<div className="flex flex-col gap-1">
+			<Select value={value || undefined} onValueChange={onValueChange}>
+				<SelectTrigger
+					className="w-full"
+					aria-label={ariaLabel}
+					aria-invalid={invalid || undefined}
+				>
+					<SelectValue
+						placeholder={
+							kind === "EXPERIENCE" ? m.select_experience() : m.select_page()
+						}
+					/>
+				</SelectTrigger>
+				<SelectContent>
+					<SelectGroup>
+						{options.map((option) => (
+							<SelectItem key={option.id} value={option.id}>
+								{option.label}
+							</SelectItem>
+						))}
+					</SelectGroup>
+				</SelectContent>
+			</Select>
+			{invalid && <FieldError errors={errors} />}
+		</div>
 	);
 };

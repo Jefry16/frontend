@@ -1,20 +1,12 @@
 import { Card, CardContent } from "#/components/ui/card";
-import { Checkbox } from "#/components/ui/checkbox";
-import {
-	FieldDescription,
-	FieldError,
-	FieldGroup,
-	FieldLegend,
-	FieldSet,
-} from "#/components/ui/field";
-import { Label } from "#/components/ui/label";
+import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
 import { useLanguages } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppCheckboxGroupField } from "#/shared/components/AppCheckboxGroupField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppSelectField } from "#/shared/components/AppSelectField";
-import { RequiredMark } from "#/shared/components/RequiredMark";
 import { useOperatorLanguagesForm } from "../hooks/use-operator-languages-form";
 import type { OperatorLocales } from "../locales";
 import { localeLabel } from "../locales";
@@ -66,63 +58,29 @@ export const AppOperatorLanguagesForm = ({
 					<FieldGroup>
 						<form.Field name="supportedLocales">
 							{(field) => {
-								const isInvalid =
-									field.state.meta.isTouched &&
-									field.state.meta.errors.length > 0;
-								const selected = field.state.value;
+								const selected = field.state.value as string[];
 								return (
-									// A checkbox GROUP: fieldset/legend for the group label (a
-									// bare <label> with no control fails a11y), and per-row
-									// htmlFor association — the Radix Checkbox is a <button>, so
-									// wrapping it in a <label> never links it to the control.
-									<FieldSet>
-										<FieldLegend variant="label">
-											{m.supported_languages()}
-											<RequiredMark />
-										</FieldLegend>
-										<FieldDescription>
-											{m.supported_languages_help()}
-										</FieldDescription>
-										<div className="grid grid-cols-2 gap-2 pt-1 sm:grid-cols-3">
-											{options.map((locale) => {
-												const inputId = `supported-locale-${locale.code}`;
-												return (
-													<div
-														key={locale.code}
-														className="flex items-center gap-2"
-													>
-														<Checkbox
-															id={inputId}
-															checked={selected.includes(locale.code)}
-															onCheckedChange={(next) => {
-																field.handleChange(
-																	next === true
-																		? [...selected, locale.code]
-																		: selected.filter((c) => c !== locale.code),
-																);
-																// Unchecking the current primary leaves it
-																// unsupported — clear it so the select isn't
-																// stuck on a now-hidden value.
-																if (
-																	next !== true &&
-																	form.state.values.primaryLocale ===
-																		locale.code
-																) {
-																	form.setFieldValue("primaryLocale", "");
-																}
-															}}
-														/>
-														<Label htmlFor={inputId} className="font-normal">
-															{locale.label}
-														</Label>
-													</div>
-												);
-											})}
-										</div>
-										{isInvalid && (
-											<FieldError errors={field.state.meta.errors} />
-										)}
-									</FieldSet>
+									<AppCheckboxGroupField
+										field={field}
+										label={m.supported_languages()}
+										description={m.supported_languages_help()}
+										required
+										layout="grid"
+										options={options.map((locale) => ({
+											value: locale.code,
+											label: locale.label,
+										}))}
+										onChanged={(next) => {
+											// Unchecking the current primary leaves it unsupported —
+											// clear it so the select isn't stuck on a hidden value.
+											if (
+												!next.includes(form.state.values.primaryLocale) &&
+												selected.includes(form.state.values.primaryLocale)
+											) {
+												form.setFieldValue("primaryLocale", "");
+											}
+										}}
+									/>
 								);
 							}}
 						</form.Field>
