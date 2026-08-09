@@ -1,10 +1,10 @@
+import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
+import { z } from "zod";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
-import { Field, FieldDescription, FieldLabel } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
 import { Spinner } from "#/components/ui/spinner";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
@@ -12,6 +12,7 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "./AppAlert";
+import { AppField } from "./AppField";
 import { AppFormActions } from "./AppFormActions";
 import { AppLocaleTabs } from "./AppLocaleTabs";
 import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
@@ -203,6 +204,17 @@ function LocaleNameForm({
 	);
 }
 
+// The max length is a prop (each resource's name column differs), so the schema
+// is built per mount rather than living in a module's validators/ — the same
+// reason `pageFormSchema(isEdit)` is a factory.
+const nameSchema = (maxLength: number) =>
+	z.object({
+		name: z
+			.string()
+			.trim()
+			.max(maxLength, m.validation_max_length({ count: maxLength })),
+	});
+
 function NameFormBody({
 	initialName,
 	hasTranslation,
@@ -224,21 +236,12 @@ function NameFormBody({
 	onSave: (name: string | null) => void;
 	onClear: () => void;
 }) {
-	const [name, setName] = useState(initialName);
-	const [localError, setLocalError] = useState<string | null>(null);
-
-	const submit = () => {
-		const trimmed = name.trim();
-		if (trimmed.length > maxLength) {
-			setLocalError(m.validation_max_length({ count: maxLength }));
-			return;
-		}
-		setLocalError(null);
-		// Blank → untranslated (falls back to the canonical name).
-		onSave(trimmed.length ? trimmed : null);
-	};
-
-	const error = localError ?? errorMessage;
+	const form = useForm({
+		defaultValues: { name: initialName },
+		validators: { onSubmit: nameSchema(maxLength) },
+		// Blank → untranslated, so the storefront falls back to the canonical name.
+		onSubmit: ({ value }) => onSave(value.name.trim() || null),
+	});
 
 	return (
 		<Card>
@@ -246,7 +249,7 @@ function NameFormBody({
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
-						submit();
+						form.handleSubmit();
 					}}
 					className="space-y-4"
 				>
@@ -255,19 +258,19 @@ function NameFormBody({
 						title={m.translation()}
 						description={m.translation_fallback_help()}
 					/>
-					{error && <AppAlert title={m.error()} description={error} />}
-					<Field>
-						<FieldLabel htmlFor="translated-name">{m.name()}</FieldLabel>
-						<Input
-							id="translated-name"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							placeholder={canonicalName}
-						/>
-						<FieldDescription>
-							{m.translation_canonical({ value: canonicalName })}
-						</FieldDescription>
-					</Field>
+					{errorMessage && (
+						<AppAlert title={m.error()} description={errorMessage} />
+					)}
+					<form.Field name="name">
+						{(field) => (
+							<AppField
+								field={field}
+								label={m.name()}
+								placeholder={canonicalName}
+								description={m.translation_canonical({ value: canonicalName })}
+							/>
+						)}
+					</form.Field>
 					<AppFormActions
 						isPending={isSaving}
 						disabled={isClearing}
