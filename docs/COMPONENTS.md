@@ -191,10 +191,11 @@ empty values collapse to `null` so the storefront falls back to canonical. An op
 one configured language gets `AppNoTranslatableLocales` instead — there is no locale to
 overlay onto — and a member without write access gets `AppTranslationSummary`, the
 read-only face of the same fields. Inside the form:
-the fallback rule renders as **`<AppAlert variant="info" title={m.translation()}>` above the
-error alert** — not as a raw `<p>`, which is for per-field hints — a module-local
-`hasTranslation(t)` decides whether *Clear translation* shows, and the footer is
-`AppFormActions` with Clear in its `secondary` slot. **The `PUT` is a full replace
+the fallback rule is **`AppTranslationNotice` in `AppFormCard`'s `notice` slot**, which puts
+it above the error banner — not a raw `<p>`, which is for per-field hints. It takes no
+props: the rule is the same on all five editors, and it was the same five copies of one
+`AppAlert` before. A module-local `hasTranslation(t)` decides whether *Clear translation*
+shows, and the footer is `AppFormActions` with Clear in its `secondary` slot. **The `PUT` is a full replace
 everywhere**, so the form always submits every field.
 
 **The gate.** `src/shared/form-pattern.test.ts` fails when a component renders a form —
@@ -272,7 +273,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 
 ### `App*` components — 136, of which 132 ship a story
 
-**`shared/` — 47.** The cross-cutting design layer.
+**`shared/` — 48.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`
@@ -281,7 +282,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   (its `loading` placeholder — pass the field count, don't hand-roll the grid) ·
   `AppFormSkeleton` (the same for a form waiting on the record it edits — pass the row
   count, and `card={false}` inside a card that already has a header) ·
-  `AppNotFound` · `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` · `AppBadge`
+  `AppNotFound` · `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` ·
+  `AppTranslationNotice` (the per-locale fallback rule — fixed content, no props) · `AppBadge`
 - *Table:* `AppDataTable` · `AppDataTableHeader` · `timestampColumn` (the created /
   updated / joined column every list has — declare it, don't hand-roll it) (sorting is
   opt-in per column via

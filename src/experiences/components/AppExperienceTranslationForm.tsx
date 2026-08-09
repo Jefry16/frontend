@@ -2,12 +2,12 @@ import { Button } from "#/components/ui/button";
 import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
 import { AppArrayInput } from "#/shared/components/AppArrayInput";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
+import { AppTranslationNotice } from "#/shared/components/AppTranslationNotice";
 import { useExperienceTranslationForm } from "../hooks/use-experience-translation-form";
 import type { Experience, ExperienceTranslation } from "../types";
 
@@ -58,13 +58,7 @@ export const AppExperienceTranslationForm = ({
 		<AppFormCard
 			onSubmit={form.handleSubmit}
 			errorMessage={errorMessage}
-			notice={
-				<AppAlert
-					variant="info"
-					title={m.translation()}
-					description={m.translation_fallback_help()}
-				/>
-			}
+			notice={<AppTranslationNotice />}
 			actions={
 				<AppFormActions
 					isPending={isPending}
