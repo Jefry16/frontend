@@ -306,10 +306,10 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   field's asterisk) and `EmptyValue` (the muted em dash standing in for a value the record
   doesn't carry; use it rather than hand-rolling the span, which had drifted to ten copies).
 
-**Modules — 97.** Each owns its list / detail / form / edit set:
-`auth` 13 · `tour-operator` 10 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
-`metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 · `media` 4 ·
-`pickup-locations` 4 · `contact` 2.
+**Modules — 101.** Each owns its list / detail / form / edit set:
+`auth` 13 · `tour-operator` 13 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
+`metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 ·
+`pickup-locations` 4 · `contact` 2 · `media` 5.
 
 **Every `App*` component ships a story — 145 of 145 — and `src/shared/story-coverage.test.ts`
 fails the build if one does not.** The four data-table internals that carried this debt since
@@ -387,9 +387,13 @@ gates the affordance at its call site:
 - **A settings form:** render a read-only summary instead — Settings → General's three
   cards and Languages all do this, since each writes through an ADMIN+ endpoint whose read
   is member-visible.
-- **A `/new` or `/edit` page:** `canWrite ? <AppXForm …/> : <AppNotPermitted />`, keeping the
-  page header so the visitor knows where they are and can navigate away. Hiding the button
-  that leads somewhere never stopped a bookmark or a typed URL.
+- **A `/new` or `/edit` page:** wrap the body in **`<AppWriteGate>`** (from `#/tour-operator`),
+  keeping the page header outside it so the visitor knows where they are and can navigate
+  away. Hiding the button that leads somewhere never stopped a bookmark or a typed URL.
+  This is the one gate that calls `usePermissions` *for* you — twenty routes wrote the hook
+  plus a `canWrite ? … : <AppNotPermitted />` ternary, two imports to say one thing. Note
+  it renders `AppNotPermitted` with no `action`; a route needing a way out passes it
+  itself, and none does today.
 
 Two rules keep it honest. **It is cosmetic** — the backend re-checks every write, so a
 hidden button is a courtesy, never a permission; don't let a reviewer read it as the
@@ -401,7 +405,8 @@ The check lives in `tour-operator/` and not `shared/` because `shared/` may not 
 feature module (§2) — so a `shared/` component can never *call* `usePermissions`, only
 receive its answer. `AppNewLink` therefore leaves the decision to the call site, while
 `AppPageActions` takes `canWrite` as a prop and applies it itself, the same way every
-translation card does.
+translation card does. `AppWriteGate` is the exception that proves it: it calls the hook,
+which is exactly why it sits in `tour-operator/components/` and ships through that barrel.
 
 **Still deferred**, each re-earned with the feature that needs it: collapsible nav groups ·
 the ⌘K command palette · a grouped
