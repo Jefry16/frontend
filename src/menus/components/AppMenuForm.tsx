@@ -10,18 +10,11 @@ import { deriveHandle } from "../validators/menu";
 // handle). Create-only — the handle is immutable and the title is renamed via
 // the detail's dialog; items are added in the editor afterwards.
 export const AppMenuForm = ({ tourOperatorId }: { tourOperatorId: string }) => {
-	const { form, mutate, isPending, errorMessage } = useMenuForm(tourOperatorId);
-
-	// useMenuForm leaves useForm's onSubmit unwired, so validation and the POST
-	// are two steps here rather than one.
-	const submit = async () => {
-		await form.handleSubmit();
-		if (form.state.isValid) mutate(form.state.values);
-	};
+	const { form, isPending, errorMessage } = useMenuForm(tourOperatorId);
 
 	return (
 		<AppFormCard
-			onSubmit={submit}
+			onSubmit={form.handleSubmit}
 			errorMessage={errorMessage}
 			actions={
 				<AppFormActions isPending={isPending} submitLabel={m.create()} />

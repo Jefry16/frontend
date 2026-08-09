@@ -9,7 +9,7 @@ import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useMetaobjectDefinitionForm } from "../hooks/use-metaobject-definition-form";
-import type { MetaobjectDefinition, MetaobjectField } from "../types";
+import type { MetaobjectDefinition } from "../types";
 import { deriveSlug } from "../validators/metaobject";
 
 // The definition form — create (no `definition`: type + name + description +
@@ -23,24 +23,14 @@ export const AppMetaobjectDefinitionForm = ({
 	tourOperatorId: string;
 	definition?: MetaobjectDefinition;
 }) => {
-	const { form, mutate, isPending, errorMessage, isEdit } =
-		useMetaobjectDefinitionForm(tourOperatorId, definition);
-
-	const submit = async () => {
-		await form.handleSubmit();
-		if (!form.state.isValid) return;
-		const { fields, ...rest } = form.state.values;
-		// Edit never sends fields — the type is immutable and the field set is
-		// managed on the detail page.
-		mutate({
-			...rest,
-			fields: isEdit ? [] : (fields as MetaobjectField[]),
-		});
-	};
+	const { form, isPending, errorMessage, isEdit } = useMetaobjectDefinitionForm(
+		tourOperatorId,
+		definition,
+	);
 
 	return (
 		<AppFormCard
-			onSubmit={submit}
+			onSubmit={form.handleSubmit}
 			errorMessage={errorMessage}
 			actions={
 				<AppFormActions

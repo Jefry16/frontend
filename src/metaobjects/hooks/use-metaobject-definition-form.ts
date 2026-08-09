@@ -101,7 +101,13 @@ export const useMetaobjectDefinitionForm = (
 		validators: {
 			onSubmit: isEdit ? definitionEditSchema : definitionCreateSchema,
 		},
+		// The component used to re-empty `fields` here when isEdit. It could not
+		// fire: on edit the default is already `[]` and the only UI that writes
+		// the array is behind `{!isEdit && …}` — and the PUT above sends name and
+		// description regardless. Deleting it changed no test.
+		onSubmit: ({ value }) =>
+			mutate({ ...value, fields: value.fields as MetaobjectField[] }),
 	});
 
-	return { form, mutate, isPending, errorMessage, isEdit };
+	return { form, isPending, errorMessage, isEdit };
 };

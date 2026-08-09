@@ -164,13 +164,16 @@ second shape:
   `AppNumberField` · `AppPasswordField` · `AppArrayInput`. (`AppNumericInput` is the bare numeric control the
   number/price fields build on — not a form field itself.)
 - `AppFormCard` — the card + `<form>` + banners + footer above. **`onSubmit` takes
-  `form.handleSubmit` by reference** (form-core binds it in the `FormApi` constructor);
-  the two forms whose hook leaves `useForm`'s `onSubmit` unwired — `AppMenuForm`,
-  `AppMetaobjectDefinitionForm` — pass their own validate-then-mutate function instead.
-  It deliberately does **not** wrap children in `FieldGroup`: callers keep their own, so a
-  form is free to group its fields (or not, as the single-field `AppNameTranslations`
-  doesn't). `notice` is the slot above the error banner, which only the translation
-  editors use.
+  `form.handleSubmit` by reference** (form-core binds it in the `FormApi` constructor), at
+  every one of the eighteen call sites — **no form validates and then mutates by hand.**
+  That is the hook's job: `useForm`'s own `onSubmit` fires only after validation passes, so
+  a component never reads `form.state.isValid`. Two hooks used to leave it unwired and
+  their components compensated; both are wired now, and a form that reaches for
+  `form.state` on submit is the sign one drifted back.
+  `AppFormCard` deliberately does **not** wrap children in `FieldGroup`: callers keep their
+  own, so a form is free to group its fields (or not, as the single-field
+  `AppNameTranslations` doesn't). `notice` is the slot above the error banner, which only
+  the translation editors use — via `AppTranslationNotice`.
 - `AppFormActions` — the footer: right-aligned submit with the pending spinner, plus an
   optional `secondary` slot (Cancel link, Clear-translation button).
 - `AppAuthFormWrapper` — the auth-page shell (logo, card, inline error banner, **full-width**
@@ -180,7 +183,10 @@ second shape:
   (Those two are now near-identical to each other apart from the card width; that is a
   live R2 candidate, not a settled decision.)
 - `use-<x>-form.ts` — the hook: `useForm` + a `useMutation`, mapping server errors to an
-  inline `errorMessage` and navigating on success.
+  inline `errorMessage` and navigating on success. **Wire `useForm`'s `onSubmit` to the
+  mutation** — `validators.onSubmit` alone only validates, and a hook that stops there
+  pushes the "did it pass?" check back into the component, which is where the two that did
+  it grew their own bespoke submit function. Return `form`, not `mutate`.
 - `validators/<x>.ts` — a zod schema that **mirrors the backend value objects** (so a bad
   field fails client-side with a precise message instead of an opaque 422).
 

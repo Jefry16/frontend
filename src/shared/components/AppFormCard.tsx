@@ -5,9 +5,10 @@ import { AppAlert } from "./AppAlert";
 
 interface AppFormCardProps {
 	/**
-	 * Runs after `preventDefault` — normally `form.handleSubmit`. form-core binds
-	 * it in the FormApi constructor, so passing the bare reference is safe; the
-	 * two forms that validate and then mutate by hand pass their own function.
+	 * Runs after `preventDefault` — `form.handleSubmit` at every call site.
+	 * form-core binds it in the FormApi constructor, so the bare reference is
+	 * safe. Every hook wires `useForm`'s own `onSubmit` to its mutation, so no
+	 * form validates and then mutates by hand.
 	 */
 	onSubmit: () => void | Promise<void>;
 	/** Server-error banner, rendered above the fields (inline, never a toast). */
