@@ -45,7 +45,7 @@ export const AppSettingsSidebar = () => {
 				</SidebarMenu>
 			</SidebarHeader>
 
-			<SidebarContent>
+			<SidebarContent role="navigation" aria-label={m.settings_navigation()}>
 				<SidebarGroup>
 					<SidebarMenu>
 						{sections.map((item) => (

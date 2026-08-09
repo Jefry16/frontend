@@ -656,5 +656,8 @@
 	"operator_timezone_change_body": "Departures already scheduled keep their clock time, so a 10:00 sailing stays 10:00 — but in the new timezone that is a different moment. Nothing reschedules them for you. Check your availability after saving.",
 	"operator_timezone_change_confirm": "Change timezone",
 	"shop_name": "Shop name",
-	"phone": "Phone"
+	"phone": "Phone",
+	"skip_to_content": "Skip to content",
+	"main_navigation": "Main navigation",
+	"settings_navigation": "Settings navigation"
 }
