@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	// profile and bounce to login.
 	useEffect(() => {
 		setOnAuthExpired(() => {
-			queryClient.removeQueries({ queryKey: queryKeys.authProfile });
+			queryClient.clear();
 			navigate({ to: "/auth/login" });
 		});
 		return () => {
@@ -101,12 +101,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		};
 	}, [navigate, queryClient]);
 
+	/**
+	 * Empty the whole client cache at a session boundary.
+	 *
+	 * Removing only `authProfile` — which is what logout and the expiry handler
+	 * used to do — leaves every operator query behind: lists, details, media,
+	 * the audit trail. This is an SPA, so signing out and signing in again never
+	 * reloads the page, and the next session would be served the previous one's
+	 * rows until each query happened to refetch.
+	 */
+	const clearSessionCache = useCallback(() => {
+		queryClient.clear();
+	}, [queryClient]);
+
 	const login = useCallback(
 		async (email: string, password: string) => {
 			const { data: tokens } = await authApi.post<{ accessToken: string }>(
 				"/auth/login",
 				{ email, password },
 			);
+			// Start clean: a previous session's rows must not survive into this one.
+			clearSessionCache();
 			setAccessToken(tokens.accessToken);
 			const profile = await queryClient.fetchQuery({
 				queryKey: queryKeys.authProfile,
@@ -115,11 +130,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			});
 			return profile;
 		},
-		[queryClient],
+		[clearSessionCache, queryClient],
 	);
 
 	const establishSession = useCallback(
 		async (accessToken: string) => {
+			clearSessionCache();
 			setAccessToken(accessToken);
 			return queryClient.fetchQuery({
 				queryKey: queryKeys.authProfile,
@@ -127,7 +143,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				staleTime: Number.POSITIVE_INFINITY,
 			});
 		},
-		[queryClient],
+		[clearSessionCache, queryClient],
 	);
 
 	const logout = useCallback(async () => {
@@ -137,8 +153,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			// best-effort; clear local state regardless
 		}
 		clearAccessToken();
-		queryClient.removeQueries({ queryKey: queryKeys.authProfile });
-	}, [queryClient]);
+		clearSessionCache();
+	}, [clearSessionCache]);
 
 	const refreshUser = useCallback(async () => {
 		await queryClient.refetchQueries({ queryKey: queryKeys.authProfile });

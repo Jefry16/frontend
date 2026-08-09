@@ -17,7 +17,8 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-// localStorage is reserved for auth tokens and app state per CLAUDE.md.
+// localStorage is OFF LIMITS for auth tokens and app state per CLAUDE.md —
+// the access token lives in memory and refresh rides an httpOnly cookie.
 // Theme is the documented exception: it's per-device by nature, not
 // security-sensitive, and the alternative (resetting on every reload) is
 // hostile UX. The inline FOUC script in __root.tsx reads the same key.
