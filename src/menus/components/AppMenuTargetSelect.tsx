@@ -12,8 +12,7 @@ import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The row shapes we need from the catalogue endpoints — declared locally so
-// the menus module doesn't import experiences/pages just for two fields.
+// Declared locally so menus does not import experiences/pages for two fields.
 interface ExperienceRow {
 	id: string;
 	name: string;
@@ -24,8 +23,6 @@ interface PageRow {
 	handle: string;
 }
 
-// The EXPERIENCE/PAGE target picker of a menu item: the operator's bounded
-// catalogue of the picked kind. The stored value is the target's id.
 export const AppMenuTargetSelect = ({
 	kind,
 	tourOperatorId,
@@ -39,7 +36,7 @@ export const AppMenuTargetSelect = ({
 	value: string;
 	onValueChange: (value: string) => void;
 	ariaLabel: string;
-	/** The bound field's errors — shown below, the way a renderer would. */
+	/** Shown below, the way a renderer would. */
 	errors?: { message?: string }[];
 }) => {
 	const experiences = useAllPages<ExperienceRow>(
@@ -55,8 +52,8 @@ export const AppMenuTargetSelect = ({
 	if (catalogue.isPending) {
 		return <Skeleton className="h-9 w-full" />;
 	}
-	// Without this, a failed fetch renders as an empty "Not set" select — a
-	// lie about the stored target.
+	// Without this a failed fetch renders as "Not set", which lies about the
+	// stored target.
 	if (catalogue.isError) {
 		return <p className="text-sm text-destructive">{m.error()}</p>;
 	}

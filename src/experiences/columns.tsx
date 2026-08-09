@@ -7,15 +7,11 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { formatDuration, statusBadgeVariant, statusLabel } from "./format";
 import type { Experience } from "./types";
 
-// The experience-list columns. Thumbnail leads, then name (sortable), publish
-// status (badge), duration, created. What the list schema supports drives the
-// affordances: name + createdAt are sortable (API default = newest first);
-// status/duration/thumbnail are display-only for now (the `published` boolean
-// filters by eq, which the set-filter component doesn't speak yet). A factory so
-// the Created cell closes over the operator tz.
+// What the list schema supports drives the affordances. `published` stays
+// display-only: it filters by eq, which the set-filter component cannot speak.
 export const experienceColumns = (
 	tourOperatorId: string,
-	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<Experience, unknown>[] => {
 	return [

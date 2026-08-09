@@ -3,9 +3,8 @@ import * as m from "#/paraglide/messages";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-// Mirrors the backend value objects: title 1–255, handle Slug-shaped ≤170,
-// body ≤256 KiB raw HTML (sent verbatim), SEO title ≤70 / description ≤320
-// (empty collapses to null so the backend stores absence, not a blank).
+// Mirrors the backend value objects. An empty optional collapses to null, so
+// the backend stores absence rather than a blank.
 const optionalText = (max: number) =>
 	z
 		.string()
@@ -20,11 +19,8 @@ const requiredHandle = z
 	.max(170, m.validation_max_length({ count: 170 }))
 	.refine((v) => SLUG_RE.test(v), m.validation_slug());
 
-/**
- * One schema for both modes, so the form's data type stays single. The handle
- * is validated only on CREATE (edit never sends it — renames are a separate
- * deliberate action); the hook picks the mode's fields for the payload.
- */
+// One schema for both modes, so the form's data type stays single. The handle is
+// validated on CREATE only — renaming is a separate deliberate action.
 export const pageFormSchema = (isEdit: boolean) =>
 	z.object({
 		title: z

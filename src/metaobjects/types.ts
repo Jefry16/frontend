@@ -1,11 +1,8 @@
 import type { MetafieldTypeCode } from "#/metafields";
 
-// Metaobjects: free-standing custom content types (size guides, FAQs, guide
-// profiles). A DEFINITION is the blueprint (type slug + ordered fields from
-// the metafield type catalogue); an ENTRY is one piece of content of that
-// type. Managed under Content → Metaobjects.
+// A DEFINITION is the blueprint; an ENTRY is one piece of content of that type.
 
-/** One field of a definition, in position order. key/type are immutable. */
+/** Position-ordered. key and type are immutable. */
 export interface MetaobjectField {
 	key: string;
 	type: MetafieldTypeCode;
@@ -23,7 +20,7 @@ export interface MetaobjectDefinitionListItem {
 export interface MetaobjectDefinition {
 	id: string;
 	context: "metaobject-definitions";
-	/** The slug identifier — immutable after create, unique per operator. */
+	/** Immutable after create, unique per operator. */
 	type: string;
 	name: string;
 	description: string | null;
@@ -42,7 +39,7 @@ export interface MetaobjectListItem {
 	createdAt: string;
 }
 
-/** The detail read: every definition field, value null when unset. */
+/** Every definition field; value is null when unset. */
 export interface Metaobject {
 	id: string;
 	context: "metaobjects";

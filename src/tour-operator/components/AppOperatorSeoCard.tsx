@@ -33,9 +33,6 @@ import {
 // The backend's OperatorSeoTitle / OperatorSeoDescription value objects.
 const MAX_IMAGE_BYTES = 25 * 1024 * 1024;
 
-// Settings → General → Search engine listing: the shop's canonical SEO text
-// plus the og:image, which Translations then overrides per locale.
-
 export const AppOperatorSeoCard = ({
 	tourOperatorId,
 	canWrite,
@@ -89,9 +86,8 @@ const SeoForm = ({
 			seoDescription: seo.seoDescription ?? "",
 		} as OperatorSeoFormData,
 		validators: { onSubmit: operatorSeoSchema },
-		// A full replace: blank collapses to null so the field falls back, and the
-		// image id — which is not a form field, the dropzone uploads on drop —
-		// rides along rather than being cleared.
+		// A full replace, so the image id has to ride along: it is not a form field,
+		// the dropzone uploads on drop.
 		onSubmit: ({ value }) => {
 			const v = operatorSeoSchema.parse(value);
 			save.mutate({
@@ -146,7 +142,7 @@ const SeoForm = ({
 							}}
 							onFile={(file) => {
 								setImageError(null);
-								// Upload now to mint the id; Save is what persists it.
+								// Uploading mints the id; Save is what persists it.
 								upload.mutate(file, { onSuccess: setImageId });
 							}}
 							onError={setImageError}

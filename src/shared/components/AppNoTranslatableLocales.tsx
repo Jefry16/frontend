@@ -3,14 +3,9 @@ import { Card, CardContent } from "#/components/ui/card";
 import * as m from "#/paraglide/messages";
 import { AppLink } from "./AppLink";
 
-// Every translation editor's "nothing to translate into" state: the primary
-// locale IS the canonical text, so an operator with one configured language has
-// nothing to overlay. Deliberately not AppEmptyState — that one requires a
-// title, renders its icon in a muted disc, and is scoped to a genuinely empty
-// resource list. This is an unmet prerequisite with a way out.
-//
-// `message` is the caller's because the copy names what would be translated
-// ("…to translate this experience"); the generic sentence is the default.
+// Not AppEmptyState: this is an unmet prerequisite with a way out, not an empty
+// resource list. `message` is the caller's so the copy can name what would be
+// translated ("…to translate this experience").
 export const AppNoTranslatableLocales = ({
 	tourOperatorId,
 	message = m.translations_no_languages_generic(),

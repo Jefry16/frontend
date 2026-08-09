@@ -5,10 +5,9 @@ import { AppAlert } from "./AppAlert";
 import { AppFormActions } from "./AppFormActions";
 import { AppFormCard } from "./AppFormCard";
 
-// The fields are raw here on purpose: a story has no TanStack form to hand the
-// renderers, and what this component owns is the card, the banners and the
-// footer — not how a field renders. src/shared/form-pattern.test.ts skips
-// .stories.tsx, so this does not weaken §5's gate.
+// Raw fields on purpose: a story has no TanStack form to hand the renderers, and
+// this component owns the card and banners, not how a field renders. The §5 gate
+// skips .stories.tsx, so this does not weaken it.
 const fields = (
 	<FieldGroup>
 		<Field>
@@ -35,11 +34,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// The shape of every create and edit form in the app.
 export const Default: Story = {};
 
-// A rejected save: the reason sits above the fields that caused it, never in a
-// toast, so the operator can read it and the field together.
+// A rejected save reads above the fields, never in a toast.
 export const WithError: Story = {
 	args: { errorMessage: "Handle is already taken." },
 };
