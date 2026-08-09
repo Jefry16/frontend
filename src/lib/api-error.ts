@@ -5,7 +5,7 @@ import * as m from "#/paraglide/messages";
 // { status, error, message, code?, timestamp }. `code` is a stable,
 // machine-readable identifier present only on some 422/409 errors — branch on
 // it (never the human-readable `message`) when a cause needs custom handling.
-export interface ApiError {
+interface ApiError {
 	status: number;
 	error: string;
 	message: string;

@@ -24,12 +24,12 @@ export interface OperatorTranslation {
 }
 
 /** One palette entry. `background` and `foreground` are operator-chosen hex. */
-export interface BrandColor {
+interface BrandColor {
 	background: string;
 	foreground: string;
 }
 
-export interface BrandSocialLink {
+interface BrandSocialLink {
 	platform: string;
 	url: string;
 }

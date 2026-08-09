@@ -34,7 +34,7 @@ export const useStorefrontPassword = (tourOperatorId: string) =>
 // The save (ADMIN+): a full replace, except a null/blank password keeps the
 // stored one (so toggling or editing the message never re-sends it). Error
 // display is the caller's (inline alert, not a toast).
-export const useStorefrontPasswordSave = (tourOperatorId: string) => {
+const useStorefrontPasswordSave = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
 

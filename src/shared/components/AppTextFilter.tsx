@@ -11,7 +11,7 @@ import {
 import * as m from "#/paraglide/messages";
 import { AppFilterInput } from "./AppFilterInput";
 
-export type TextOperator =
+type TextOperator =
 	| "eq"
 	| "neq"
 	| "contains"
@@ -19,7 +19,7 @@ export type TextOperator =
 	| "starts_with"
 	| "ends_with";
 
-export interface TextFilterValue {
+interface TextFilterValue {
 	operator: TextOperator;
 	value: string;
 }

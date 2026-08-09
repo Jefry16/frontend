@@ -12,7 +12,7 @@ import { AppLink } from "./AppLink";
 
 // One crumb: a label, plus optionally a typed route to link to. A crumb without
 // `to` is a non-navigable label — e.g. a nav *section* like "Content".
-export type BreadcrumbCrumb = {
+type BreadcrumbCrumb = {
 	label: ReactNode;
 } & (Pick<LinkProps, "to" | "params"> | { to?: undefined; params?: undefined });
 
