@@ -293,9 +293,14 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 · `media` 4 ·
 `pickup-locations` 4 · `contact` 2.
 
-**The four without a story**, all data-table internals in `shared/`: `AppDataTable` ·
-`AppDataTableHeader` · `AppAsyncSetFilter` · `AppFilterInput`. They are the §6 debt the
-planned story-per-`App*` ratchet would catch — write the story when you next touch one.
+**Every `App*` component ships a story — 145 of 145 — and `src/shared/story-coverage.test.ts`
+fails the build if one does not.** The four data-table internals that carried this debt since
+July (`AppDataTable` · `AppDataTableHeader` · `AppAsyncSetFilter` · `AppFilterInput`) were
+written before the gate landed, so its allow-list is **empty**. The two that need a real
+`HeaderContext` are storied *through* a table, which is the only place they exist.
+
+Add an entry to `EXEMPT` only for something that genuinely cannot be storied, with a
+one-line reason; it is empty today.
 
 ### Providers — 2
 

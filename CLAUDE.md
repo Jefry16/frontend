@@ -133,6 +133,9 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
   `messages/en.json`. Add a locale by adding it to `project.inlang/settings.json` + a
   `messages/<locale>.json` catalog. Distinguish **admin-UI language** (this) from
   **content language** (operator's storefront locales — a backend concept).
+- **Every `App*` component ships a story**, and `src/shared/story-coverage.test.ts` fails
+  the build if one does not. Its allow-list is empty; add to `EXEMPT` only for something
+  that genuinely cannot be storied, with a reason.
 - **Styling is gated.** `src/shared/token-drift.test.ts` fails on a raw palette class
   (`bg-blue-500`, `bg-white`) or an arbitrary value (`w-[347px]`) anywhere in `src/`
   outside vendored `components/ui/`. Its allow-list is **empty and only shrinks**.
