@@ -31,8 +31,9 @@ export const activityColumns = (
 	{
 		id: "createdAt",
 		accessorKey: "createdAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader label={m.date()} headerContext={ctx} allowSorting />
+			<AppDataTableHeader label={m.date()} headerContext={ctx} />
 		),
 		cell: ({ row }) => (
 			<span className="whitespace-nowrap">

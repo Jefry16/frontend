@@ -260,7 +260,9 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   404, because a settings singleton has neither) · `AppDetailSkeleton`
   (its `loading` placeholder — pass the field count, don't hand-roll the grid) ·
   `AppNotFound` · `AppError` · `AppEmptyState` · `AppNotPermitted` · `AppAlert` · `AppBadge`
-- *Table:* `AppDataTable` · `AppDataTableHeader` · `AppTextFilter` · `AppSetFilter` ·
+- *Table:* `AppDataTable` · `AppDataTableHeader` (sorting is opt-in per column via
+  `enableSorting: true` — the header reads it, and the `<th>` turns it into `aria-sort`) ·
+  `AppTextFilter` · `AppSetFilter` ·
   `AppAsyncSetFilter` · `AppFilterInput`
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
   `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·

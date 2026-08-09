@@ -17,11 +17,11 @@ export const pickupLocationColumns = (
 		{
 			id: "name",
 			accessorKey: "name",
+			enableSorting: true,
 			header: (ctx) => (
 				<AppDataTableHeader
 					label={m.name()}
 					headerContext={ctx}
-					allowSorting
 					allowFiltering="text"
 				/>
 			),
@@ -37,20 +37,18 @@ export const pickupLocationColumns = (
 		{
 			id: "time",
 			accessorKey: "time",
+			enableSorting: true,
 			header: (ctx) => (
-				<AppDataTableHeader label={m.time()} headerContext={ctx} allowSorting />
+				<AppDataTableHeader label={m.time()} headerContext={ctx} />
 			),
 			cell: ({ row }) => formatTime(row.original.time),
 		},
 		{
 			id: "createdAt",
 			accessorKey: "createdAt",
+			enableSorting: true,
 			header: (ctx) => (
-				<AppDataTableHeader
-					label={m.created()}
-					headerContext={ctx}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.created()} headerContext={ctx} />
 			),
 			cell: ({ row }) => formatDate(row.original.createdAt),
 		},

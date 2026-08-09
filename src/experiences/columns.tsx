@@ -35,12 +35,9 @@ export const experienceColumns = (
 		},
 		{
 			id: "name",
+			enableSorting: true,
 			header: (headerContext) => (
-				<AppDataTableHeader
-					label={m.name()}
-					headerContext={headerContext}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.name()} headerContext={headerContext} />
 			),
 			cell: ({ row }) => (
 				<AppResourceLink
@@ -72,12 +69,9 @@ export const experienceColumns = (
 		},
 		{
 			id: "createdAt",
+			enableSorting: true,
 			header: (headerContext) => (
-				<AppDataTableHeader
-					label={m.created()}
-					headerContext={headerContext}
-					allowSorting
-				/>
+				<AppDataTableHeader label={m.created()} headerContext={headerContext} />
 			),
 			cell: ({ row }) => (
 				<span className="text-muted-foreground">

@@ -41,6 +41,13 @@ interface Props<TData extends { id: string }> {
 // error row, empty state (first-run CTA vs filtered "No results"), and infinite
 // scroll via an IntersectionObserver sentinel. Server-driven sort/filter come
 // from the column headers (see AppDataTableHeader).
+// getIsSorted() answers "asc" | "desc" | false; aria-sort wants the words.
+const SORT_STATE = {
+	asc: "ascending",
+	desc: "descending",
+	none: "none",
+} as const;
+
 export function AppDataTable<TData extends { id: string }>({
 	columns,
 	endpoint,
@@ -91,6 +98,16 @@ export function AppDataTable<TData extends { id: string }>({
 								{headerGroup.headers.map((header) => (
 									<TableHead
 										key={header.id}
+										// The sort state reaches assistive tech here, not from the
+										// header's arrow icon — that is decoration. `none` on a
+										// sortable-but-unsorted column is what tells a screen
+										// reader the column CAN be sorted at all.
+										aria-sort={
+											header.column.columnDef.enableSorting === true
+												? // getIsSorted() answers `false` when unsorted, not "".
+													SORT_STATE[header.column.getIsSorted() || "none"]
+												: undefined
+										}
 										className={cn(
 											"sticky top-0 z-10 border-b bg-card px-3 py-3 font-semibold",
 											header.column.columnDef.meta?.align === "right" &&

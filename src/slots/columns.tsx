@@ -25,12 +25,12 @@ export const slotColumns = (
 	{
 		id: "experienceId",
 		accessorKey: "experienceName",
+		enableSorting: true,
 		meta: { sortField: "experienceName" },
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.experience()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="setAsync"
 				endpoint={`/tour-operators/${tourOperatorId}/experiences`}
 				queryKey={queryKeys.experiences(tourOperatorId)}
@@ -48,19 +48,20 @@ export const slotColumns = (
 	{
 		id: "startAt",
 		accessorKey: "startAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader label={m.starts()} headerContext={ctx} allowSorting />
+			<AppDataTableHeader label={m.starts()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatSlotDateTime(row.original.startAt),
 	},
 	{
 		id: "day",
 		accessorKey: "day",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.day()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="set"
 				items={DAY_OPTIONS}
 			/>
@@ -70,11 +71,11 @@ export const slotColumns = (
 	{
 		id: "status",
 		accessorKey: "status",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.status()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="set"
 				items={STATUS_OPTIONS}
 			/>

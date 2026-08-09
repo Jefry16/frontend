@@ -19,11 +19,11 @@ export const pageColumns = (
 	{
 		id: "title",
 		accessorKey: "title",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.title()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -39,11 +39,11 @@ export const pageColumns = (
 	{
 		id: "handle",
 		accessorKey: "handle",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.handle()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -54,11 +54,11 @@ export const pageColumns = (
 	{
 		id: "status",
 		accessorKey: "status",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.status()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="set"
 				items={PAGE_STATUS_OPTIONS}
 			/>
@@ -72,12 +72,9 @@ export const pageColumns = (
 	{
 		id: "createdAt",
 		accessorKey: "createdAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.created()}
-				headerContext={ctx}
-				allowSorting
-			/>
+			<AppDataTableHeader label={m.created()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatDate(row.original.createdAt),
 	},

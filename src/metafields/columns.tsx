@@ -22,11 +22,11 @@ export const metafieldDefinitionColumns = (
 	{
 		id: "name",
 		accessorKey: "name",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.name()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -42,11 +42,11 @@ export const metafieldDefinitionColumns = (
 	{
 		id: "namespace",
 		accessorKey: "namespace",
+		enableSorting: true,
 		header: (ctx) => (
 			<AppDataTableHeader
 				label={m.metafield_identifier()}
 				headerContext={ctx}
-				allowSorting
 				allowFiltering="text"
 			/>
 		),
@@ -89,12 +89,9 @@ export const metafieldDefinitionColumns = (
 	{
 		id: "createdAt",
 		accessorKey: "createdAt",
+		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.created()}
-				headerContext={ctx}
-				allowSorting
-			/>
+			<AppDataTableHeader label={m.created()} headerContext={ctx} />
 		),
 		cell: ({ row }) => formatDate(row.original.createdAt),
 	},
