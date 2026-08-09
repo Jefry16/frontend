@@ -133,6 +133,11 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
   `messages/en.json`. Add a locale by adding it to `project.inlang/settings.json` + a
   `messages/<locale>.json` catalog. Distinguish **admin-UI language** (this) from
   **content language** (operator's storefront locales — a backend concept).
+- **Styling is gated.** `src/shared/token-drift.test.ts` fails on a raw palette class
+  (`bg-blue-500`, `bg-white`) or an arbitrary value (`w-[347px]`) anywhere in `src/`
+  outside vendored `components/ui/`. Its allow-list is **empty and only shrinks**.
+  Variant selectors (`data-[state=open]:`), `var(--…)` references and grid track lists
+  are allowed by design — they are conditions and references, not ad-hoc values.
 - **Styling:** use the design tokens (`bg-background`, `text-foreground`, `border-border`,
   `--success`/`--warning`/`--info` semantic colors). Both light and dark themes are defined
   in `styles.css`; the FOUC guard in `__root.tsx` applies the resolved theme pre-paint.
