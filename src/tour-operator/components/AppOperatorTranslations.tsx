@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import {
@@ -49,11 +49,7 @@ export const AppOperatorTranslations = ({
 	const translated = new Set((listQuery.data ?? []).map((t) => t.locale));
 
 	if (localesQuery.isPending) {
-		return (
-			<div className="flex justify-center py-10">
-				<Spinner />
-			</div>
-		);
+		return <AppLoadingBlock />;
 	}
 
 	if (localesQuery.isError) {
@@ -87,9 +83,7 @@ export const AppOperatorTranslations = ({
 					/>
 				)
 			) : (
-				<div className="flex justify-center py-10">
-					<Spinner />
-				</div>
+				<AppLoadingBlock />
 			)}
 		</div>
 	);

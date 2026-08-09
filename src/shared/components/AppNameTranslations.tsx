@@ -14,6 +14,7 @@ import * as m from "#/paraglide/messages";
 import { AppAlert } from "./AppAlert";
 import { AppField } from "./AppField";
 import { AppFormActions } from "./AppFormActions";
+import { AppLoadingBlock } from "./AppLoadingBlock";
 import { AppLocaleTabs } from "./AppLocaleTabs";
 import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
 import { AppTranslationSummary } from "./AppTranslationSummary";
@@ -75,11 +76,7 @@ export const AppNameTranslations = ({
 	);
 
 	if (localesPending) {
-		return (
-			<div className="flex justify-center py-10">
-				<Spinner />
-			</div>
-		);
+		return <AppLoadingBlock />;
 	}
 
 	if (translatable.length === 0) {
@@ -182,11 +179,7 @@ function LocaleNameForm({
 	});
 
 	if (!overlayQuery.data) {
-		return (
-			<div className="flex justify-center py-10">
-				<Spinner />
-			</div>
-		);
+		return <AppLoadingBlock />;
 	}
 
 	return (
