@@ -77,6 +77,7 @@ node -p "require('./node_modules/<pkg>/package.json').version"
 | `@testing-library/react` | 16.3.2 | component/hook rendering in tests | https://testing-library.com/docs/react-testing-library/intro/ |
 | `@testing-library/user-event` | 14.6.1 | user-interaction simulation | https://testing-library.com/docs/user-event/intro/ |
 | `@testing-library/jest-dom` | 6.10.0 | DOM matchers | https://github.com/testing-library/jest-dom |
+| `axe-core` | 4.13.0 | accessibility rules in tests (`src/test/a11y.ts`) — engine only, no wrapper | https://github.com/dequelabs/axe-core/blob/develop/doc/API.md |
 | `msw` | 2.15.0 | network mocking (`src/test/handlers.ts`) | https://mswjs.io/docs |
 | `jsdom` | 28.1.0 | the test DOM environment | https://github.com/jsdom/jsdom |
 | `@tanstack/react-devtools` + `react-router-devtools` + `devtools-vite` | 0.10.8 / 1.167.0 / 0.8.1 | the dev-only devtools panel mounted in `__root.tsx` | https://tanstack.com/devtools/latest/docs |
@@ -116,3 +117,10 @@ node -p "require('./node_modules/<pkg>/package.json').version"
   or a deliberate, noted patch; never hand-fork silently.
 - **`@storybook/tanstack-react`** wraps every story in a memory-backed TanStack Router,
   so stories get router context without booting the app shell.
+- **axe in jsdom is a floor, not a verdict.** Rules needing layout cannot run: jsdom
+  reports `scrollHeight`/`clientHeight` as 0, so `scrollable-region-focusable` comes back
+  *inapplicable* rather than failing, and `color-contrast` is disabled outright in
+  `src/test/a11y.ts`. axe also has no rule for a missing `aria-sort` or `aria-current`,
+  or for many controls sharing one name — those are announcement gaps, not violations.
+  Measured against the five a11y bugs found by hand, axe catches one. Keep the targeted
+  tests (`AppDataTable.test.tsx`, `SidebarNavLeaf.test.tsx`) for the other half.
