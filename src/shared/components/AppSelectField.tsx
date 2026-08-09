@@ -21,6 +21,12 @@ interface AppSelectFieldProps {
 	children: ReactNode;
 	placeholder?: string;
 	description?: string;
+	/**
+	 * Render the label for assistive tech only. For a cell in a repeating row,
+	 * where a visible label on every row would be noise but the control still
+	 * needs a programmatic name — an `aria-label` or a placeholder is not one.
+	 */
+	hideLabel?: boolean;
 }
 
 // The select counterpart to AppField: a shadcn Select bound to a TanStack Form
@@ -31,12 +37,18 @@ export const AppSelectField = ({
 	children,
 	placeholder,
 	description,
+	hideLabel,
 }: AppSelectFieldProps) => {
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
 	return (
 		<Field data-invalid={isInvalid || undefined}>
-			<FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+			<FieldLabel
+				htmlFor={field.name}
+				className={hideLabel ? "sr-only" : undefined}
+			>
+				{label}
+			</FieldLabel>
 			<Select
 				value={field.state.value || undefined}
 				onValueChange={(v) => field.handleChange(v)}

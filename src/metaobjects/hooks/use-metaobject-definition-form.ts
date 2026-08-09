@@ -10,8 +10,9 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { MetaobjectDefinition, MetaobjectField } from "../types";
 import {
-	type DefinitionFormData,
-	definitionSchema,
+	type DefinitionCreateFormData,
+	definitionCreateSchema,
+	definitionEditSchema,
 } from "../validators/metaobject";
 
 // Create (no `definition`, POSTs type + name + description + the initial
@@ -31,7 +32,7 @@ export const useMetaobjectDefinitionForm = (
 	const { mutate, isPending } = useMutation<
 		string,
 		AxiosError,
-		DefinitionFormData & { fields: MetaobjectField[] }
+		DefinitionCreateFormData & { fields: MetaobjectField[] }
 	>({
 		mutationFn: async (payload) => {
 			const base = `/tour-operators/${tourOperatorId}/metaobject-definitions`;
@@ -86,14 +87,21 @@ export const useMetaobjectDefinitionForm = (
 			),
 	});
 
+	// Create also defines the initial field set; edit does not (the type is
+	// immutable and the fields are managed on the detail page), so the schema
+	// differs by mode and `fields` rides along empty on an edit.
+	const isEdit = !!definition;
 	const form = useForm({
 		defaultValues: {
 			type: definition?.type ?? "",
 			name: definition?.name ?? "",
 			description: definition?.description ?? "",
-		} as DefinitionFormData,
-		validators: { onSubmit: definitionSchema },
+			fields: isEdit ? [] : [{ key: "", type: "single_line_text", name: "" }],
+		} as DefinitionCreateFormData,
+		validators: {
+			onSubmit: isEdit ? definitionEditSchema : definitionCreateSchema,
+		},
 	});
 
-	return { form, mutate, isPending, errorMessage, isEdit: !!definition };
+	return { form, mutate, isPending, errorMessage, isEdit };
 };

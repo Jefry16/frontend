@@ -185,9 +185,12 @@ containing **any** raw control (`Input` / `Textarea` / `Checkbox` / `Select` / `
 Every field goes through a renderer, with no exception for "it's a dynamic control" — if
 none fits, **write the renderer**. That is exactly how `AppCheckboxGroupField` came to
 exist: two forms were hand-rolling a checkbox-per-option group, which is R2's second real
-use. Three **row builders** are frozen in an allowlist with reasons — their cells hold
-`useState` rows rather than TanStack fields, so converting them means moving that state
-into form array fields first. This gate exists because §5 was the one prescriptive rule
+use. One **row builder** is frozen in an allowlist with its reason — `AppMenuItemsEditor`'s
+nested tree holds `useState` rows rather than TanStack fields, so converting it means
+moving that state into form array fields first. Two others already made that move: a
+repeating row uses `mode="array"` plus `hideLabel` on the cell renderers, which keeps the
+row compact while giving every control a real programmatic label (a placeholder is not
+one). This gate exists because §5 was the one prescriptive rule
 here with nothing enforcing it, and four settings cards drifted — two written by copying a
 third.
 
