@@ -15,10 +15,8 @@ import {
 	pageFormSchema,
 } from "../validators/page";
 
-// Create (no `page`) or edit (with one). Create sends the operator-chosen
-// handle (409 = taken); edit sends the content + template suffix (the handle
-// changes only through the rename action). On success navigates to the detail
-// (create-navigates-to-detail rule).
+// On create a 409 means the handle is taken. An edit never sends the handle:
+// renaming is a separate action.
 export const usePageForm = (tourOperatorId: string, page?: Page) => {
 	const navigate = useNavigate();
 	const toast = useAppToast();
@@ -30,9 +28,7 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 		{
 			mutationFn: async (fields) => {
 				const base = `/tour-operators/${tourOperatorId}/pages`;
-				// Explicit per-mode payloads: edit never sends the handle (renames
-				// are a separate action), create never sends the template suffix
-				// (backend parity).
+				// Explicit per-mode payloads rather than one shared object.
 				if (page) {
 					await authApi.patch(`${base}/${page.id}`, {
 						title: fields.title,
@@ -43,7 +39,7 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 					});
 					return page.id;
 				}
-				// 201 Created with a Location header, no body — parse the new id out.
+				// 201 with a Location header and no body.
 				const { headers } = await authApi.post(base, {
 					title: fields.title,
 					handle: fields.handle,
@@ -68,7 +64,7 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.pages(tourOperatorId),
 				});
-				// The mutation appended an audit entry — refresh the trail.
+				// The mutation appended an audit entry.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});
@@ -87,8 +83,7 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 	);
 
 	const form = useForm({
-		// All fields present in both modes (zod strips what each schema doesn't
-		// declare): create ignores templateSuffix, edit ignores handle.
+		// Both modes seed every field; zod strips what each schema omits.
 		defaultValues: {
 			title: page?.title ?? "",
 			handle: page?.handle ?? "",

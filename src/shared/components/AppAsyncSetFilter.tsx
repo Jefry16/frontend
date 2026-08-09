@@ -7,7 +7,7 @@ import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 type AsyncRow = Record<string, unknown>;
 
-// Read a (possibly nested) field off a row by dot-path, e.g. "invitedBy.name".
+// Dot-path read, e.g. "invitedBy.name".
 const readPath = (row: AsyncRow, path: string): unknown =>
 	path
 		.split(".")
@@ -21,21 +21,16 @@ const readPath = (row: AsyncRow, path: string): unknown =>
 
 interface Props<TData> {
 	headerContext: HeaderContext<TData, unknown>;
-	// Cursor-paginated endpoint returning { data, nextCursor } — the options are
-	// derived from its rows.
+	// Cursor-paginated; the options are derived from its rows.
 	endpoint: string;
 	queryKey: readonly unknown[];
-	// Which field on each row is the option's value (sent as filter[field][in])
-	// and its display label. Dot-paths reach nested fields ("invitedBy.name").
+	// Dot-paths reach nested fields ("invitedBy.name").
 	valueKey?: string;
 	labelKey?: string;
 }
 
-// The set filter with a *fetched* option list: it loads the options from an
-// endpoint, then hands the deduped list to AppSetFilter (search + multi-select +
-// clear/count). Loads every page so the client-side search/pick covers the whole
-// set — safe for a bounded list (a roster); an unbounded list would need a
-// server-searched, paginated variant instead.
+// Loads EVERY page, so the client-side search covers the whole set. Safe for a
+// bounded list like a roster; an unbounded one needs a server-searched variant.
 export function AppAsyncSetFilter<TData>({
 	headerContext,
 	endpoint,
@@ -72,7 +67,7 @@ export function AppAsyncSetFilter<TData>({
 		);
 	}
 
-	// Distinct options by value — a name/email can repeat across members.
+	// A name or email can repeat across members.
 	const seen = new Set<string>();
 	const items: SetFilterItem[] = [];
 	for (const row of data?.pages.flatMap((p) => p.data) ?? []) {

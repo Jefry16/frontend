@@ -11,9 +11,8 @@ import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The row shape we need from GET /metaobjects — declared locally: importing
-// the metaobjects module here would close a cycle (it already imports this
-// module's barrel for the typed inputs).
+// Declared locally: importing the metaobjects module would close a cycle, since
+// it already imports this module's barrel.
 interface EntryRow {
 	id: string;
 	definitionId: string;
@@ -21,10 +20,7 @@ interface EntryRow {
 	name: string;
 }
 
-// The metaobject_reference value picker: the entries of the definition's
-// PINNED metaobject type, by display name (handle as the hint). "Not set"
-// clears. The bounded whole-catalogue fetch is shared with the entries
-// tables via the query key.
+// Fetches the whole catalogue, sharing the query key with the entries tables.
 export const AppMetaobjectEntrySelect = ({
 	inputId,
 	tourOperatorId,
@@ -47,8 +43,8 @@ export const AppMetaobjectEntrySelect = ({
 	if (catalogue.isPending) {
 		return <Skeleton className="h-9 w-full" />;
 	}
-	// Without this, a failed fetch renders an empty select that reads as
-	// "Not set" — a lie about the stored value.
+	// Without this a failed fetch renders as "Not set", which lies about the
+	// stored value.
 	if (catalogue.isError) {
 		return <p className="text-sm text-destructive">{m.error()}</p>;
 	}

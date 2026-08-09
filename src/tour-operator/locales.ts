@@ -1,19 +1,15 @@
 import { getLocale } from "#/paraglide/runtime";
 
-// The operator's content-language settings (`GET/PATCH /locales`): the
-// default/primary locale plus the full supported set, as bare locale codes.
+// Content languages — the operator's storefront locales, not the admin UI's.
 export interface OperatorLocales {
 	primaryLocale: string;
 	supportedLocales: string[];
 }
 
 /**
- * A locale code's language name IN THE CURRENT UI LANGUAGE — "es" reads as
- * "Spanish" in an English admin, "español" in a Spanish one. The names come from
- * the browser's Unicode CLDR data via Intl.DisplayNames, so there's no static
- * list to maintain: WHICH languages are offerable is the backend allowlist's job
- * (`useLanguages`), and this only labels them. `fallback` (the allowlist's own
- * `name`) covers a code CLDR doesn't know; failing that, the raw code shows.
+ * Names a locale in the CURRENT UI language — "es" reads as "Spanish" in an
+ * English admin, "español" in a Spanish one. Labelling only: WHICH languages
+ * are offerable is the backend allowlist's job (`useLanguages`).
  */
 export const localeLabel = (code: string, fallback?: string): string => {
 	try {
@@ -21,11 +17,10 @@ export const localeLabel = (code: string, fallback?: string): string => {
 			type: "language",
 			fallback: "none",
 		}).of(code);
-		// CLDR lowercases some endonyms (e.g. "español"); title-case the first
-		// letter so options read as labels regardless of the UI language.
+		// CLDR lowercases some endonyms ("español"), which reads wrong as an option.
 		if (name) return name.charAt(0).toUpperCase() + name.slice(1);
 	} catch {
-		// Malformed code or an environment without full ICU — fall through.
+		// Malformed code, or an environment without full ICU.
 	}
 	return fallback ?? code;
 };

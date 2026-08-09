@@ -25,9 +25,6 @@ import { useMember } from "../hooks/use-member";
 import { useMemberActions } from "../hooks/use-member-actions";
 import type { Member, MemberRole } from "../types";
 
-// Read-only member detail (role, email, joined) plus the mutating actions —
-// change role and remove/leave — via the shared action pattern. Owns its fetch
-// (skeleton / 404 empty state). The roster's name column links here.
 export const AppMemberDetail = ({
 	tourOperatorId,
 	userId,
@@ -79,13 +76,8 @@ export const AppMemberDetail = ({
 				const isSelf = user?.id === member.id;
 				const label = member.name ?? member.email ?? m.member();
 
-				// Actions mirror the backend guards (which are the real gate — the UI just
-				// hides what a viewer can't do). What's built here is shaped by the
-				// TARGET; the caller's tier is applied by AppPageActions:
-				// - Viewing yourself → Leave (but the owner can't leave without transferring).
-				// - Another non-owner member → role toggle + Remove, both ADMIN+, and for
-				//   an OWNER caller also "Make owner" (transfers ownership, demoting the
-				//   caller to admin).
+				// What is built here is shaped by the TARGET; the CALLER's tier is
+				// applied by AppPageActions. An owner cannot leave without transferring.
 				const actions: AppAction[] = [];
 				if (isSelf) {
 					if (member.role !== "OWNER") {
@@ -108,7 +100,7 @@ export const AppMemberDetail = ({
 										queryClient.removeQueries({
 											queryKey: queryKeys.member(tourOperatorId, userId),
 										});
-										// Their memberships changed — refresh the profile, then leave.
+										// Their memberships changed.
 										queryClient.invalidateQueries({
 											queryKey: queryKeys.authProfile,
 										});

@@ -1,8 +1,5 @@
-// Navigation menus: the operator's storefront navigation (main-menu, footer,
-// …). A menu is a handle (what the theme references) + a title + an item TREE
-// (max 3 levels) written wholesale via PUT /items. Managed under
-// Content → Menus. Every operator starts with main-menu + footer — ordinary,
-// renameable, deletable menus.
+// The item tree is written wholesale via PUT /items, max 3 levels. Every
+// operator starts with main-menu and footer, both ordinary and deletable.
 
 /** Backend enum names, verbatim on the wire (requests AND responses). */
 export type MenuLinkType =
@@ -20,7 +17,7 @@ export interface MenuListItem {
 	createdAt: string;
 }
 
-/** One node of the item tree; children are position-ordered. */
+/** Children are position-ordered. */
 export interface MenuItemNode {
 	id: string;
 	title: string;
@@ -29,7 +26,7 @@ export interface MenuItemNode {
 	resourceId: string | null;
 	/** The verbatim URL for EXTERNAL_URL links; null otherwise. */
 	url: string | null;
-	/** locale → translated title (only the operator's supported locales). */
+	/** locale → translated title. */
 	titleTranslations: Record<string, string>;
 	children: MenuItemNode[];
 }
@@ -45,7 +42,6 @@ export interface Menu {
 	updatedAt: string;
 }
 
-/** One submitted node of the wholesale items-replace payload. */
 export interface MenuItemInput {
 	title: string;
 	linkType: MenuLinkType;

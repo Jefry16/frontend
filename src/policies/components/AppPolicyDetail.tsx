@@ -22,17 +22,12 @@ import { policySlug, policyTypeLabel } from "../format";
 import { usePolicy } from "../hooks/use-policy";
 import { usePolicyActions } from "../hooks/use-policy-actions";
 
-// One policy: its type, the storefront path it renders at, and the raw body.
+// No activity card: the backend hangs policy entries off the OPERATOR, so a
+// policy-scoped timeline would query an entity with no entries. The writes show
+// in Operations → Activity.
 //
-// No activity card: the backend hangs policy entries off the OPERATOR
-// (entityType TOUR_OPERATOR, entityId the operator's) like locales and SEO, so a
-// policy-scoped timeline would query an entity that has no entries and render
-// empty. The writes show up in Operations -> Activity.
-//
-// The body is shown as SOURCE, not rendered. It is operator-authored HTML that
-// the storefront deliberately renders unescaped; echoing it into the admin as
-// markup would run their script in the operator's own session, and the admin has
-// no reason to preview what the storefront already shows.
+// The body is shown as SOURCE, never rendered: it is operator-authored HTML, so
+// echoing it as markup would run their script in the operator's own session.
 export const AppPolicyDetail = ({
 	tourOperatorId,
 	policyId,

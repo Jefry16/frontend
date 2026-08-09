@@ -1,18 +1,9 @@
 import type { ReactNode } from "react";
 import { cn } from "#/lib/utils";
 
-// The frame every signed-out and onboarding screen sits in: a centered column,
-// the logo, and an optional heading over whatever the screen puts below.
-//
-// Three copies of this existed — AppAuthFormWrapper, AppAuthMessageCard and
-// AppTourOperatorForm — and AppAuthMessageCard's own comment said it "mirrors
-// AppAuthFormWrapper's frame so the static and form screens look identical",
-// which is a rule with nothing holding it. Now there is one frame to change.
-//
-// It stops at the card on purpose. The three screens below it genuinely differ:
-// one is a form, one is a message, and the onboarding page puts an alert and a
-// sign-out *outside* the card. Folding those together would need slots for each,
-// and the card body is not the part that has to stay identical — the frame is.
+// Stops above the card on purpose: the screens below it genuinely differ (a
+// form, a message, and onboarding's alert and sign-out that sit OUTSIDE the
+// card). The frame is the part that has to stay identical, not the body.
 export const AppAuthShell = ({
 	width = "sm",
 	title,

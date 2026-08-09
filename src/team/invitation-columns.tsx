@@ -14,31 +14,26 @@ import {
 } from "./format";
 import type { Invitation } from "./types";
 
-// The invitations columns. A factory (not a static array) so it can close over
-// the operator's timezone (Sent cell) and its id (invitee name/email filters
-// fetch their option lists from the invitations endpoint). Every column is
-// sortable; status/role are static set filters and invitee name/email are async
-// set filters (`filter[field][in]`) — all served off the invitation's own row.
-// API default is newest-first (-createdAt).
+// A factory, not a static array, so it can close over the operator's timezone
+// and id. The API default is newest-first.
 export const invitationColumns = (
 	tourOperatorId: string,
-	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<Invitation, unknown>[] => {
-	// Invitations are only ever ADMIN or STAFF (OWNER can't be invited).
+	// OWNER can't be invited.
 	const roleItems = [
 		{ value: "ADMIN", label: roleLabel("ADMIN") },
 		{ value: "STAFF", label: roleLabel("STAFF") },
 	];
-	// EXPIRED is a display-only state (stored PENDING + past its window), so it is
-	// not an offered filter value — the backend keeps such rows as PENDING.
+	// EXPIRED is display-only — the backend stores such rows as PENDING — so it
+	// cannot be offered as a filter value.
 	const statusItems = [
 		{ value: "PENDING", label: statusLabel("PENDING") },
 		{ value: "ACCEPTED", label: statusLabel("ACCEPTED") },
 		{ value: "REVOKED", label: statusLabel("REVOKED") },
 	];
-	// name/email filter options are the invitees' own values, fetched from the
-	// invitations endpoint (deduped in AppAsyncSetFilter).
+	// Options are the invitees' own values; AppAsyncSetFilter dedupes them.
 	const endpoint = `/tour-operators/${tourOperatorId}/invitations`;
 	const optionsKey = queryKeys.invitations(tourOperatorId);
 
