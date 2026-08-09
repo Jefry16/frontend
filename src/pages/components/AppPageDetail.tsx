@@ -186,9 +186,6 @@ export const AppPageDetail = ({
 									<AppDetailField label={m.seo_title()}>
 										{page.seoTitle ?? <EmptyValue />}
 									</AppDetailField>
-									<AppDetailField label={m.template_suffix()}>
-										{page.templateSuffix ?? <EmptyValue />}
-									</AppDetailField>
 									<AppDetailField label={m.seo_description()}>
 										{page.seoDescription ?? <EmptyValue />}
 									</AppDetailField>

@@ -24,7 +24,6 @@ export interface Page {
 	seoTitle: string | null;
 	seoDescription: string | null;
 	status: PageStatus;
-	templateSuffix: string | null;
 	createdAt: string;
 	updatedAt: string;
 }

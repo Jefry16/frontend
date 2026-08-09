@@ -28,15 +28,12 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 		{
 			mutationFn: async (fields) => {
 				const base = `/tour-operators/${tourOperatorId}/pages`;
-				// Per-mode payloads, mirroring the backend: CreatePageRequest has no
-				// templateSuffix field, so sending one would be ignored, not rejected.
 				if (page) {
 					await authApi.patch(`${base}/${page.id}`, {
 						title: fields.title,
 						body: fields.body,
 						seoTitle: fields.seoTitle,
 						seoDescription: fields.seoDescription,
-						templateSuffix: fields.templateSuffix,
 					});
 					return page.id;
 				}
@@ -91,7 +88,6 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 			body: page?.body ?? "",
 			seoTitle: page?.seoTitle ?? "",
 			seoDescription: page?.seoDescription ?? "",
-			templateSuffix: page?.templateSuffix ?? "",
 		} as PageFormData,
 		validators: { onSubmit: schema },
 		onSubmit: ({ value }) => mutate(schema.parse(value)),

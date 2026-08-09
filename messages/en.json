@@ -394,8 +394,6 @@
 	"seo_title_hint": "Overrides the browser/search title (max 70). Empty uses the page title.",
 	"seo_description": "SEO description",
 	"seo_description_hint": "The search-result snippet (max 320). Empty means none.",
-	"template_suffix": "Template",
-	"template_suffix_hint": "Alternate page template (used once themes exist). Empty uses the base template.",
 	"rename_handle": "Rename handle",
 	"rename_handle_hint": "The old URL will stop working — redirects come with the storefront.",
 	"handle_renamed": "Handle renamed",
