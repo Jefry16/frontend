@@ -20,14 +20,10 @@ import { describe, expect, it } from "vitest";
 const RAW_CONTROLS =
 	/<(Input|Textarea|Checkbox|Select|select|input|textarea|RadioGroup|Switch)[\s/>]/;
 
-// Frozen, not endorsed. One ROW BUILDER left: a nested tree of menu items with
-// add / remove / reorder, whose rows live in plain `useState` rather than in a
-// TanStack field. The renderers all take a `field`
-// and draw a label + description + error block, so none of them fits a compact
-// cell. Converting these means first moving their row state into form array
-// fields — a real refactor per component, not a substitution, and worth doing
-// deliberately rather than as the price of closing the door on new drift.
-const FROZEN = new Set(["menus/components/AppMenuItemsEditor.tsx"]);
+// Nothing is frozen. Every form in the app renders its fields through a
+// renderer — the three row builders that used to sit here were converted once
+// their rows moved into TanStack array fields.
+const FROZEN = new Set<string>();
 
 const walk = (dir: string): string[] =>
 	readdirSync(dir).flatMap((entry) => {

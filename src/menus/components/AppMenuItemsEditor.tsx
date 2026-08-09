@@ -1,4 +1,4 @@
-import { useNavigate } from "@tanstack/react-router";
+import type { AnyFieldApi } from "@tanstack/react-form";
 import {
 	ArrowDown,
 	ArrowUp,
@@ -6,47 +6,57 @@ import {
 	Plus,
 	Trash2,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
-import { Input } from "#/components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "#/components/ui/select";
-import { apiErrorMessage } from "#/lib/api-error";
+import { SelectItem } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useOperatorLocales } from "#/tour-operator";
 import { isResourceLink, MENU_LINK_TYPES, menuLinkTypeLabel } from "../format";
-import { useMenuActions } from "../hooks/use-menu-actions";
-import type { Menu, MenuItemInput, MenuItemNode, MenuLinkType } from "../types";
+import { emptyMenuItem, useMenuItemsForm } from "../hooks/use-menu-items-form";
+import type { Menu, MenuLinkType } from "../types";
+import type { MenuItemFormNode } from "../validators/menu-items";
 import { AppMenuTargetSelect } from "./AppMenuTargetSelect";
 
 const MAX_DEPTH = 3;
 
-// One editable node. rowId is local identity (items get fresh backend ids on
-// every save, so server ids can't key the rows across edits).
-interface EditorRow {
-	rowId: number;
-	title: string;
-	linkType: MenuLinkType;
-	resourceId: string;
-	url: string;
-	translations: Record<string, string>;
-	children: EditorRow[];
+/**
+ * TanStack types a field path as a union of the literal keys it can prove
+ * exist, and computes that union by walking the value type. A menu item tree is
+ * recursive, so that walk does not terminate — `mode="array"` on `items` alone
+ * reports "type instantiation is excessively deep".
+ *
+ * So the tree is addressed through this structural view, cast once where the
+ * editor mounts it. Paths stay plain strings — `items[2].children[0].title` —
+ * which is what a runtime tree can actually produce. The rest of the form (
+ * submit, pending, errors) keeps its real types.
+ */
+interface TreeForm {
+	Field: (props: {
+		name: string;
+		mode?: "array";
+		children: (field: AnyFieldApi) => ReactNode;
+	}) => ReactNode;
+	setFieldValue: (path: string, value: unknown) => void;
+	pushFieldValue: (path: string, value: unknown) => void;
+	removeFieldValue: (path: string, index: number) => void;
+	swapFieldValues: (path: string, from: number, to: number) => void;
 }
 
-// The navigation editor: the menu's whole item tree, edited locally and saved
-// WHOLESALE via PUT /items (the backend's write model — no per-item calls).
-// Nest up to 3 levels; sibling order is position. Per-item title translations
-// appear for each supported locale beyond the primary.
+// The navigation editor: the menu's whole item tree, edited as ONE form and
+// saved WHOLESALE via PUT /items (the backend's write model — no per-item
+// calls). Nest up to 3 levels; sibling order is position. Per-item title
+// translations appear for each supported locale beyond the primary.
+//
+// The tree lives in the form, addressed by path — `items[0].children[1].title`
+// — rather than in local state keyed by a row id. That is what lets every cell
+// use a field renderer and every rule live in the schema, so a missing URL
+// reports on that URL box instead of as one banner at the top of the page.
 export const AppMenuItemsEditor = ({
 	tourOperatorId,
 	menu,
@@ -54,137 +64,98 @@ export const AppMenuItemsEditor = ({
 	tourOperatorId: string;
 	menu: Menu;
 }) => {
-	const navigate = useNavigate();
-	const { replaceItems } = useMenuActions(tourOperatorId, menu.id);
+	const { form, isPending, errorMessage } = useMenuItemsForm(
+		tourOperatorId,
+		menu,
+	);
+	const tree = form as unknown as TreeForm;
 	const locales = useOperatorLocales(tourOperatorId);
 	const extraLocales =
 		locales.data?.supportedLocales.filter(
 			(locale) => locale !== locales.data?.primaryLocale,
 		) ?? [];
 
-	const nextRowId = useRef(1);
-	const toRows = (nodes: MenuItemNode[]): EditorRow[] =>
-		nodes.map((node) => ({
-			rowId: nextRowId.current++,
-			title: node.title,
-			linkType: node.linkType,
-			resourceId: node.resourceId ?? "",
-			url: node.url ?? "",
-			translations: { ...node.titleTranslations },
-			children: toRows(node.children),
-		}));
-	const [rows, setRows] = useState<EditorRow[]>(() => toRows(menu.items));
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	return (
+		<Card>
+			<CardContent>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						form.handleSubmit();
+					}}
+					className="space-y-4"
+				>
+					{errorMessage && (
+						<AppAlert title={m.error()} description={errorMessage} />
+					)}
+					<tree.Field name="items" mode="array">
+						{(items) =>
+							items.state.value.length === 0 ? (
+								<p className="text-sm text-muted-foreground">
+									{m.no_menu_items()}
+								</p>
+							) : (
+								<ItemRows
+									form={tree}
+									path="items"
+									nodes={items.state.value}
+									depth={1}
+									tourOperatorId={tourOperatorId}
+									extraLocales={extraLocales}
+								/>
+							)
+						}
+					</tree.Field>
+					<div>
+						<Button
+							type="button"
+							variant="outline"
+							size="sm"
+							onClick={() => tree.pushFieldValue("items", emptyMenuItem())}
+						>
+							<Plus />
+							{m.add_menu_item()}
+						</Button>
+					</div>
+					<AppFormActions
+						isPending={isPending}
+						submitLabel={m.save_changes()}
+					/>
+				</form>
+			</CardContent>
+		</Card>
+	);
+};
 
-	// Immutable tree ops, addressed by rowId.
-	const mapTree = (
-		nodes: EditorRow[],
-		fn: (siblings: EditorRow[]) => EditorRow[],
-	): EditorRow[] =>
-		fn(nodes).map((node) => ({
-			...node,
-			children: mapTree(node.children, fn),
-		}));
+interface RowsProps {
+	form: TreeForm;
+	/** The array's path, e.g. `items` or `items[0].children`. */
+	path: string;
+	nodes: MenuItemFormNode[];
+	depth: number;
+	tourOperatorId: string;
+	extraLocales: string[];
+}
 
-	const updateRow = (rowId: number, patch: Partial<EditorRow>) =>
-		setRows((prev) =>
-			mapTree(prev, (siblings) =>
-				siblings.map((r) => (r.rowId === rowId ? { ...r, ...patch } : r)),
-			),
-		);
-
-	const removeRow = (rowId: number) =>
-		setRows((prev) =>
-			mapTree(prev, (siblings) => siblings.filter((r) => r.rowId !== rowId)),
-		);
-
-	const moveRow = (rowId: number, delta: -1 | 1) =>
-		setRows((prev) =>
-			mapTree(prev, (siblings) => {
-				const index = siblings.findIndex((r) => r.rowId === rowId);
-				const target = index + delta;
-				if (index < 0 || target < 0 || target >= siblings.length) {
-					return siblings;
-				}
-				const next = [...siblings];
-				[next[index], next[target]] = [next[target], next[index]];
-				return next;
-			}),
-		);
-
-	const newRow = (): EditorRow => ({
-		rowId: nextRowId.current++,
-		title: "",
-		linkType: "HOME",
-		resourceId: "",
-		url: "",
-		translations: {},
-		children: [],
-	});
-
-	const addChild = (rowId: number) =>
-		setRows((prev) =>
-			mapTree(prev, (siblings) =>
-				siblings.map((r) =>
-					r.rowId === rowId ? { ...r, children: [...r.children, newRow()] } : r,
-				),
-			),
-		);
-
-	// Pre-flight what the backend enforces so a bad tree never leaves the page.
-	const validate = (nodes: EditorRow[]): string | null => {
-		for (const node of nodes) {
-			if (!node.title.trim()) return m.menu_items_title_required();
-			if (isResourceLink(node.linkType) && !node.resourceId) {
-				return m.menu_items_target_required();
-			}
-			if (node.linkType === "EXTERNAL_URL" && !node.url.trim()) {
-				return m.menu_items_url_required();
-			}
-			const nested = validate(node.children);
-			if (nested) return nested;
-		}
-		return null;
-	};
-
-	const toPayload = (nodes: EditorRow[]): MenuItemInput[] =>
-		nodes.map((node) => {
-			const translations = Object.fromEntries(
-				Object.entries(node.translations).filter(([, value]) => value.trim()),
-			);
-			return {
-				title: node.title.trim(),
-				linkType: node.linkType,
-				...(isResourceLink(node.linkType) && { resourceId: node.resourceId }),
-				...(node.linkType === "EXTERNAL_URL" && { url: node.url.trim() }),
-				...(Object.keys(translations).length > 0 && {
-					titleTranslations: translations,
-				}),
-				...(node.children.length > 0 && { children: toPayload(node.children) }),
-			};
-		});
-
-	const save = () => {
-		const invalid = validate(rows);
-		if (invalid) {
-			setErrorMessage(invalid);
-			return;
-		}
-		setErrorMessage(null);
-		replaceItems.mutate(toPayload(rows), {
-			onSuccess: () =>
-				navigate({
-					to: "/tour-operators/$tourOperatorId/content/menus/$menuId",
-					params: { tourOperatorId, menuId: menu.id },
-				}),
-			onError: (error) => setErrorMessage(apiErrorMessage(error)),
-		});
-	};
-
-	const renderRows = (nodes: EditorRow[], depth: number) => (
-		<div className="flex flex-col gap-3">
-			{nodes.map((row, index) => (
-				<div key={row.rowId} className="flex flex-col gap-2">
+// One level of siblings. Recurses through `children`, building the next path
+// from this one — the field paths ARE the tree, so nothing has to be kept in
+// sync with it.
+const ItemRows = ({
+	form,
+	path,
+	nodes,
+	depth,
+	tourOperatorId,
+	extraLocales,
+}: RowsProps) => (
+	<div className="flex flex-col gap-3">
+		{nodes.map((node, index) => {
+			const rowPath = `${path}[${index}]`;
+			return (
+				// Rows are appended, removed and swapped, and every value in one is
+				// editable, so the index is the only stable identity available.
+				// biome-ignore lint/suspicious/noArrayIndexKey: see above
+				<div key={index} className="flex flex-col gap-2">
 					<div className="flex items-start gap-2">
 						<div className="flex shrink-0 flex-col">
 							<Button
@@ -193,7 +164,7 @@ export const AppMenuItemsEditor = ({
 								size="icon-sm"
 								aria-label={m.move_up()}
 								disabled={index === 0}
-								onClick={() => moveRow(row.rowId, -1)}
+								onClick={() => form.swapFieldValues(path, index, index - 1)}
 							>
 								<ArrowUp />
 							</Button>
@@ -203,67 +174,71 @@ export const AppMenuItemsEditor = ({
 								size="icon-sm"
 								aria-label={m.move_down()}
 								disabled={index === nodes.length - 1}
-								onClick={() => moveRow(row.rowId, 1)}
+								onClick={() => form.swapFieldValues(path, index, index + 1)}
 							>
 								<ArrowDown />
 							</Button>
 						</div>
 						<div className="flex min-w-0 grow flex-col gap-2">
 							<div className="flex items-start gap-2">
-								<Input
-									aria-label={m.title()}
-									placeholder={m.title()}
-									value={row.title}
-									onChange={(e) =>
-										updateRow(row.rowId, { title: e.target.value })
-									}
-								/>
-								<Select
-									value={row.linkType}
-									onValueChange={(v) =>
-										// A changed kind invalidates the old payload.
-										updateRow(row.rowId, {
-											linkType: v as MenuLinkType,
-											resourceId: "",
-											url: "",
-										})
-									}
-								>
-									<SelectTrigger
-										className="w-44 shrink-0"
-										aria-label={m.menu_link_type()}
-									>
-										<SelectValue />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectGroup>
-											{MENU_LINK_TYPES.map((type) => (
-												<SelectItem key={type} value={type}>
-													{menuLinkTypeLabel(type)}
-												</SelectItem>
-											))}
-										</SelectGroup>
-									</SelectContent>
-								</Select>
+								<form.Field name={`${rowPath}.title`}>
+									{(field) => (
+										<AppField
+											field={field}
+											label={m.title()}
+											hideLabel
+											placeholder={m.title()}
+										/>
+									)}
+								</form.Field>
+								<div className="w-44 shrink-0">
+									<form.Field name={`${rowPath}.linkType`}>
+										{(field) => (
+											<AppSelectField
+												field={field}
+												label={m.menu_link_type()}
+												hideLabel
+												onValueChange={() => {
+													// A changed kind invalidates the old payload.
+													form.setFieldValue(`${rowPath}.resourceId`, "");
+													form.setFieldValue(`${rowPath}.url`, "");
+												}}
+											>
+												{MENU_LINK_TYPES.map((type) => (
+													<SelectItem key={type} value={type}>
+														{menuLinkTypeLabel(type)}
+													</SelectItem>
+												))}
+											</AppSelectField>
+										)}
+									</form.Field>
+								</div>
 							</div>
-							{isResourceLink(row.linkType) && (
-								<AppMenuTargetSelect
-									kind={row.linkType as "EXPERIENCE" | "PAGE"}
-									tourOperatorId={tourOperatorId}
-									value={row.resourceId}
-									onValueChange={(v) => updateRow(row.rowId, { resourceId: v })}
-									ariaLabel={m.menu_link_target()}
-								/>
+							{isResourceLink(node.linkType as MenuLinkType) && (
+								<form.Field name={`${rowPath}.resourceId`}>
+									{(field) => (
+										<AppMenuTargetSelect
+											kind={node.linkType as "EXPERIENCE" | "PAGE"}
+											tourOperatorId={tourOperatorId}
+											value={field.state.value as string}
+											onValueChange={(v) => field.handleChange(v)}
+											ariaLabel={m.menu_link_target()}
+											errors={field.state.meta.errors}
+										/>
+									)}
+								</form.Field>
 							)}
-							{row.linkType === "EXTERNAL_URL" && (
-								<Input
-									aria-label={m.url()}
-									placeholder="https://"
-									value={row.url}
-									onChange={(e) =>
-										updateRow(row.rowId, { url: e.target.value })
-									}
-								/>
+							{node.linkType === "EXTERNAL_URL" && (
+								<form.Field name={`${rowPath}.url`}>
+									{(field) => (
+										<AppField
+											field={field}
+											label={m.url()}
+											hideLabel
+											placeholder="https://"
+										/>
+									)}
+								</form.Field>
 							)}
 							{extraLocales.length > 0 && (
 								<div className="flex flex-col gap-1.5">
@@ -275,19 +250,18 @@ export const AppMenuItemsEditor = ({
 											>
 												{locale}
 											</Badge>
-											<Input
-												aria-label={`${m.title()} (${locale})`}
-												placeholder={row.title || m.title()}
-												value={row.translations[locale] ?? ""}
-												onChange={(e) =>
-													updateRow(row.rowId, {
-														translations: {
-															...row.translations,
-															[locale]: e.target.value,
-														},
-													})
-												}
-											/>
+											<div className="grow">
+												<form.Field name={`${rowPath}.translations.${locale}`}>
+													{(field) => (
+														<AppField
+															field={field}
+															label={`${m.title()} (${locale})`}
+															hideLabel
+															placeholder={node.title || m.title()}
+														/>
+													)}
+												</form.Field>
+											</div>
 										</div>
 									))}
 								</div>
@@ -300,7 +274,9 @@ export const AppMenuItemsEditor = ({
 									variant="ghost"
 									size="icon"
 									aria-label={m.add_sub_item()}
-									onClick={() => addChild(row.rowId)}
+									onClick={() =>
+										form.pushFieldValue(`${rowPath}.children`, emptyMenuItem())
+									}
 								>
 									<CornerDownRight />
 								</Button>
@@ -310,57 +286,26 @@ export const AppMenuItemsEditor = ({
 								variant="ghost"
 								size="icon"
 								aria-label={m.remove()}
-								onClick={() => removeRow(row.rowId)}
+								onClick={() => form.removeFieldValue(path, index)}
 							>
 								<Trash2 />
 							</Button>
 						</div>
 					</div>
-					{row.children.length > 0 && (
+					{node.children.length > 0 && (
 						<div className="ml-8 border-l pl-4">
-							{renderRows(row.children, depth + 1)}
+							<ItemRows
+								form={form}
+								path={`${rowPath}.children`}
+								nodes={node.children}
+								depth={depth + 1}
+								tourOperatorId={tourOperatorId}
+								extraLocales={extraLocales}
+							/>
 						</div>
 					)}
 				</div>
-			))}
-		</div>
-	);
-
-	return (
-		<Card>
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						save();
-					}}
-					className="space-y-4"
-				>
-					{errorMessage && (
-						<AppAlert title={m.error()} description={errorMessage} />
-					)}
-					{rows.length === 0 ? (
-						<p className="text-sm text-muted-foreground">{m.no_menu_items()}</p>
-					) : (
-						renderRows(rows, 1)
-					)}
-					<div>
-						<Button
-							type="button"
-							variant="outline"
-							size="sm"
-							onClick={() => setRows((prev) => [...prev, newRow()])}
-						>
-							<Plus />
-							{m.add_menu_item()}
-						</Button>
-					</div>
-					<AppFormActions
-						isPending={replaceItems.isPending}
-						submitLabel={m.save_changes()}
-					/>
-				</form>
-			</CardContent>
-		</Card>
-	);
-};
+			);
+		})}
+	</div>
+);

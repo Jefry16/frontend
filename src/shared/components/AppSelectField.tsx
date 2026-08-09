@@ -27,6 +27,8 @@ interface AppSelectFieldProps {
 	 * needs a programmatic name — an `aria-label` or a placeholder is not one.
 	 */
 	hideLabel?: boolean;
+	/** Runs after the field changes — for a pick that invalidates sibling fields. */
+	onValueChange?: (value: string) => void;
 }
 
 // The select counterpart to AppField: a shadcn Select bound to a TanStack Form
@@ -38,6 +40,7 @@ export const AppSelectField = ({
 	placeholder,
 	description,
 	hideLabel,
+	onValueChange,
 }: AppSelectFieldProps) => {
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
@@ -51,7 +54,10 @@ export const AppSelectField = ({
 			</FieldLabel>
 			<Select
 				value={field.state.value || undefined}
-				onValueChange={(v) => field.handleChange(v)}
+				onValueChange={(v) => {
+					field.handleChange(v);
+					onValueChange?.(v);
+				}}
 			>
 				<SelectTrigger
 					id={field.name}
