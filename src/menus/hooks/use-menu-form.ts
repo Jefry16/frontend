@@ -54,7 +54,8 @@ export const useMenuForm = (tourOperatorId: string) => {
 	const form = useForm({
 		defaultValues: { handle: "", title: "" } as MenuFormData,
 		validators: { onSubmit: menuSchema },
+		onSubmit: ({ value }) => mutate(value),
 	});
 
-	return { form, mutate, isPending, errorMessage };
+	return { form, isPending, errorMessage };
 };
