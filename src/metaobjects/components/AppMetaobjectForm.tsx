@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
 import { AppTypedValueInput, metafieldTypeLabel } from "#/metafields";
 import * as m from "#/paraglide/messages";
@@ -7,6 +8,36 @@ import { AppFormCard } from "#/shared/components/AppFormCard";
 import { useMetaobjectForm } from "../hooks/use-metaobject-form";
 import type { Metaobject, MetaobjectDefinition } from "../types";
 import { deriveSlug } from "../validators/metaobject";
+
+/**
+ * TanStack proves a field path against the value type, and `values` is a
+ * `Record<string, string>` whose keys arrive from the definition at runtime —
+ * so `values.<key>` is not in the union it can prove.
+ *
+ * Addressed through this structural view, cast once where the form mounts, the
+ * way AppMenuItemsEditor handles its recursive tree. It was three casts at the
+ * point of use before: `as "values"` on the path, which then made the field
+ * look like the whole record, so the value and the setter each needed undoing
+ * again (`as unknown as string`, `as never`). The runtime path was right the
+ * whole time — only the compiler was being lied to, three times.
+ *
+ * The value is typed rather than left as `AnyFieldApi`: the record holds
+ * strings and AppTypedValueInput wants a string, so saying so is what makes the
+ * casts unnecessary instead of merely hidden. handle/name keep their real types.
+ */
+interface ValuesForm {
+	Field: (props: {
+		name: string;
+		children: (field: {
+			// `string | undefined`, not `string`: this is an index into a record
+			// keyed at runtime. The defaults build a key per definition field, so it
+			// should always be present — but "should" is not a thing to type, and
+			// the `?? ""` below is what the casts used to sit in front of.
+			state: { value: string | undefined };
+			handleChange: (value: string) => void;
+		}) => ReactNode;
+	}) => ReactNode;
+}
 
 // The entry form, GENERATED from the definition: name + handle (a blurred
 // name prefills an empty handle) + one type-aware input per field. Create
@@ -26,6 +57,7 @@ export const AppMetaobjectForm = ({
 		definition,
 		entry,
 	);
+	const values = form as unknown as ValuesForm;
 
 	return (
 		<AppFormCard
@@ -65,10 +97,7 @@ export const AppMetaobjectForm = ({
 					)}
 				</form.Field>
 				{definition.fields.map((defField) => (
-					<form.Field
-						key={defField.key}
-						name={`values.${defField.key}` as "values"}
-					>
+					<values.Field key={defField.key} name={`values.${defField.key}`}>
 						{(field) => (
 							<Field>
 								<FieldLabel htmlFor={`metaobject-${defField.key}`}>
@@ -80,12 +109,12 @@ export const AppMetaobjectForm = ({
 								<AppTypedValueInput
 									inputId={`metaobject-${defField.key}`}
 									type={defField.type}
-									value={(field.state.value as unknown as string) ?? ""}
-									onValueChange={(v) => field.handleChange(v as never)}
+									value={field.state.value ?? ""}
+									onValueChange={field.handleChange}
 								/>
 							</Field>
 						)}
-					</form.Field>
+					</values.Field>
 				))}
 			</FieldGroup>
 		</AppFormCard>
