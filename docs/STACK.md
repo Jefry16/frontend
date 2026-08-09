@@ -124,3 +124,24 @@ node -p "require('./node_modules/<pkg>/package.json').version"
   or for many controls sharing one name — those are announcement gaps, not violations.
   Measured against the five a11y bugs found by hand, axe catches one. Keep the targeted
   tests (`AppDataTable.test.tsx`, `SidebarNavLeaf.test.tsx`) for the other half.
+- **"Can't perform a React state update on a component that hasn't mounted yet" is
+  dev-only, and it is not `theme.tsx`.** The string lives solely in react-dom's
+  `.development.js` (`warnAboutUpdateOnNotYetMountedFiberInDEV`), so it cannot reach a
+  production build, and React dedupes it to **once per component name per page load**.
+  It was reported once against `theme.tsx:94` — which is the file's closing `};`, an
+  end-of-module sourcemap artifact, not a statement that can set state — with the frame
+  above it in React DevTools' `installHook.js`, which only patches `console.error`.
+  Chased to a conclusion on 2026-08-09 and **not reproducible**: 20 loads of the reported
+  URL under a real login — clean, 8× CPU throttle, 400 ms/200 kbps network, dark preset,
+  SPA navigation, and with the same React DevTools 7.0.1 extension loaded and verified
+  attached (`renderers=1`, `console.error` patched). Zero occurrences, and no non-network
+  console output at all. `next-themes`' `useTheme` is `useContext(x) ?? default` — no
+  state, ruled out — and `src/` has no render-phase `setState` and no promise started in
+  render. If it resurfaces, capture React's **component stack** (the name React puts in
+  the warning), not the JS frame; the JS frame is the console interceptor.
+- **`next-themes` is a phantom dependency, and that is fine.** Vendored
+  `components/ui/sonner.tsx` imports `useTheme` from it, and no `next-themes` provider is
+  mounted — `__root.tsx`'s `ThemedToaster` passes `theme` explicitly *after* `{...props}`,
+  so ours wins. Editing the file would break the shadcn-identical rule for no gain: its
+  `ThemeProvider` tree-shakes away completely (`disableTransitionOnChange` appears 0 times
+  in `dist`), leaving only a context read.
