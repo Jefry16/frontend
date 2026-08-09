@@ -4,6 +4,7 @@ import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { EmptyValue } from "#/shared/components/EmptyValue";
+import { timestampColumn } from "#/shared/components/table-columns";
 import { formatBytes, isImage, mimeLabel } from "./format";
 import type { MediaAsset } from "./types";
 
@@ -100,17 +101,6 @@ export const mediaColumns = (
 			),
 			cell: ({ row }) => row.original.uploadedBy.name ?? <EmptyValue />,
 		},
-		{
-			id: "createdAt",
-			enableSorting: true,
-			header: (headerContext) => (
-				<AppDataTableHeader label={m.added()} headerContext={headerContext} />
-			),
-			cell: ({ row }) => (
-				<span className="text-muted-foreground">
-					{formatDate(row.original.createdAt)}
-				</span>
-			),
-		},
+		timestampColumn<MediaAsset>("createdAt", m.added(), formatDate),
 	];
 };

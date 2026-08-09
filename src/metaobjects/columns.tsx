@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import { metaobjectStatusBadgeVariant, metaobjectStatusLabel } from "./format";
 import type { MetaobjectDefinitionListItem, MetaobjectListItem } from "./types";
 
@@ -47,15 +48,11 @@ export const metaobjectDefinitionColumns = (
 			<span className="font-mono text-xs">{row.original.type}</span>
 		),
 	},
-	{
-		id: "createdAt",
-		accessorKey: "createdAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.created()} headerContext={ctx} />
-		),
-		cell: ({ row }) => formatDate(row.original.createdAt),
-	},
+	timestampColumn<MetaobjectDefinitionListItem>(
+		"createdAt",
+		m.created(),
+		formatDate,
+	),
 ];
 
 // One definition's entries (the definition detail's table): name (links to
@@ -112,13 +109,5 @@ export const metaobjectEntryColumns = (
 			</AppBadge>
 		),
 	},
-	{
-		id: "createdAt",
-		accessorKey: "createdAt",
-		enableSorting: true,
-		header: (ctx) => (
-			<AppDataTableHeader label={m.created()} headerContext={ctx} />
-		),
-		cell: ({ row }) => formatDate(row.original.createdAt),
-	},
+	timestampColumn<MetaobjectListItem>("createdAt", m.created(), formatDate),
 ];

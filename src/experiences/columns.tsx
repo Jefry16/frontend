@@ -3,6 +3,7 @@ import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import { formatDuration, statusBadgeVariant, statusLabel } from "./format";
 import type { Experience } from "./types";
 
@@ -67,17 +68,6 @@ export const experienceColumns = (
 				</span>
 			),
 		},
-		{
-			id: "createdAt",
-			enableSorting: true,
-			header: (headerContext) => (
-				<AppDataTableHeader label={m.created()} headerContext={headerContext} />
-			),
-			cell: ({ row }) => (
-				<span className="text-muted-foreground">
-					{formatDate(row.original.createdAt)}
-				</span>
-			),
-		},
+		timestampColumn<Experience>("createdAt", m.created(), formatDate),
 	];
 };

@@ -2,6 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { timestampColumn } from "#/shared/components/table-columns";
 import type { Audience } from "./types";
 
 // The audiences columns. Everything the list schema supports gets affordances:
@@ -43,14 +44,6 @@ export const audienceColumns = (
 				<AppDataTableHeader label={m.pax_per_unit()} headerContext={ctx} />
 			),
 		},
-		{
-			id: "createdAt",
-			accessorKey: "createdAt",
-			enableSorting: true,
-			header: (ctx) => (
-				<AppDataTableHeader label={m.created()} headerContext={ctx} />
-			),
-			cell: ({ row }) => formatDate(row.original.createdAt),
-		},
+		timestampColumn<Audience>("createdAt", m.created(), formatDate),
 	];
 };

@@ -5,6 +5,7 @@ import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { EmptyValue } from "#/shared/components/EmptyValue";
+import { timestampColumn } from "#/shared/components/table-columns";
 import { roleBadgeVariant, roleLabel } from "./format";
 import type { Member } from "./types";
 
@@ -90,18 +91,6 @@ export const memberColumns = (
 				</AppBadge>
 			),
 		},
-		{
-			id: "joinedAt",
-			accessorKey: "joinedAt",
-			enableSorting: true,
-			header: (headerContext) => (
-				<AppDataTableHeader label={m.joined()} headerContext={headerContext} />
-			),
-			cell: ({ row }) => (
-				<span className="text-muted-foreground">
-					{formatDate(row.original.joinedAt)}
-				</span>
-			),
-		},
+		timestampColumn<Member>("joinedAt", m.joined(), formatDate),
 	];
 };
