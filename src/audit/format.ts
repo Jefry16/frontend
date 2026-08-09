@@ -113,7 +113,6 @@ const FIELD_LABELS: Record<string, () => string> = {
 	handle: m.handle,
 	seoTitle: m.seo_title,
 	seoDescription: m.seo_description,
-	templateSuffix: m.template_suffix,
 	primaryLocale: m.primary_language,
 	supportedLocales: m.supported_languages,
 	value: m.value,

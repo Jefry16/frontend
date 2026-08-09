@@ -13,7 +13,6 @@ const PAGE: Page = {
 	seoTitle: null,
 	seoDescription: null,
 	status: "PUBLISHED",
-	templateSuffix: null,
 	createdAt: "2026-07-20T10:00:00Z",
 	updatedAt: "2026-07-20T10:00:00Z",
 };

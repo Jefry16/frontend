@@ -79,17 +79,6 @@ export const AppPageForm = ({
 						/>
 					)}
 				</form.Field>
-				{isEdit && (
-					<form.Field name="templateSuffix">
-						{(field) => (
-							<AppField
-								field={field}
-								label={m.template_suffix()}
-								description={m.template_suffix_hint()}
-							/>
-						)}
-					</form.Field>
-				)}
 			</FieldGroup>
 		</AppFormCard>
 	);
