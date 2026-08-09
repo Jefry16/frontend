@@ -1,8 +1,5 @@
-// One experience (GET /tour-operators/{id}/experiences[/{id}]). `id` +
-// `context:"experiences"` per the house convention. Media is resolved to URLs at
-// read time (thumbnailUrl + galleryUrls), never stored. `published`/`featured`
-// are booleans (there is no DRAFT/PUBLISHED enum). List rows and the detail share
-// this shape.
+// Media is resolved to URLs at read time, never stored. List rows and the detail
+// share this shape.
 export interface Experience {
 	id: string;
 	context: "experiences";
@@ -15,7 +12,7 @@ export interface Experience {
 	included: string[];
 	notIncluded: string[];
 	highlights: string[];
-	// Raw media references (for editing) alongside the resolved URLs (for display).
+	// The raw references, for editing; the URLs above are for display.
 	thumbnailMediaId: string | null;
 	thumbnailUrl: string | null;
 	mediaIds: string[];
@@ -27,10 +24,8 @@ export interface Experience {
 	createdAt: string;
 }
 
-// One locale's translation overlay (GET/PUT/DELETE .../translations/{locale}).
-// `locale` is its identity; every content field is nullable — null means
-// untranslated, so the storefront falls back to the canonical experience field.
-// Tags aren't translated (no `tags` here); `handle` is per-locale.
+// null means untranslated, so the storefront falls back to the canonical field.
+// Tags are deliberately absent — they are not translated. `handle` is per-locale.
 export interface ExperienceTranslation {
 	locale: string;
 	name: string | null;

@@ -3,15 +3,8 @@ import { DialogClose, DialogFooter } from "#/components/ui/dialog";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 
-/**
- * A dialog's Cancel + confirm pair. What `AppFormActions` is to a form.
- *
- * Seven dialogs wrote this out with the same shape and small disagreements:
- * one spelled the spinner `size-4` while others took the default, and only
- * `AppConfirmDialog` used `DialogClose` for Cancel — which is the right answer,
- * so it is the one here. Radix closes the dialog itself, meaning no caller can
- * forget to wire cancel, and Cancel disables mid-save like the confirm does.
- */
+// What AppFormActions is to a form. Cancel is a `DialogClose`, so Radix closes
+// the dialog itself and no caller can forget to wire it.
 export const AppDialogFooter = ({
 	onConfirm,
 	confirmLabel,
@@ -21,7 +14,7 @@ export const AppDialogFooter = ({
 }: {
 	onConfirm: () => void;
 	confirmLabel?: string;
-	/** Beyond `pending` — an invalid or unchanged form. */
+	/** Beyond `pending`: an invalid or unchanged form. */
 	disabled?: boolean;
 	pending?: boolean;
 	destructive?: boolean;

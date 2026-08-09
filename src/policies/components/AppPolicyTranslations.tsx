@@ -20,13 +20,9 @@ import { usePolicyTranslations } from "../hooks/use-policy-translations";
 import type { PolicyTranslation } from "../types";
 import { AppPolicyTranslationForm } from "./AppPolicyTranslationForm";
 
-// The policy translations editor — the page-translations shell: a locale
-// switcher (supported minus the primary, which IS the canonical content) over a
-// per-locale overlay form, keyed by locale so it reseeds on switch.
-//
-// Unlike the page and experience editors this reads ONE query, not two: the
-// resource has no per-locale GET, so the active locale's row comes out of the
-// list the switcher already needs.
+// Reads ONE query, unlike the page and experience editors: there is no
+// per-locale GET, so the active row comes out of the list the switcher needs
+// anyway.
 export const AppPolicyTranslations = ({
 	tourOperatorId,
 	policyId,
@@ -48,8 +44,7 @@ export const AppPolicyTranslations = ({
 	const active = picked ?? translatable[0];
 	const translated = new Set((listQuery.data ?? []).map((t) => t.locale));
 
-	// An untranslated locale has no row at all — the empty overlay is ours to
-	// make, since there is no per-locale GET to return one.
+	// An untranslated locale has no row at all, so the empty overlay is ours.
 	const overlay: PolicyTranslation = (active &&
 		listQuery.data?.find((t) => t.locale === active)) || {
 		locale: active ?? "",
@@ -143,7 +138,7 @@ export const AppPolicyTranslations = ({
 	);
 };
 
-// This resource's rows for AppTranslationSummary — the two fields the form edits.
+// The two fields the form edits.
 const policyFields = (t: PolicyTranslation): TranslatedField[] => [
 	[m.title(), t.title],
 	[m.policy_body(), t.body],

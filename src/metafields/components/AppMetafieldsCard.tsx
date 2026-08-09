@@ -20,10 +20,7 @@ import type {
 import { AppMetaobjectEntrySelect } from "./AppMetaobjectEntrySelect";
 import { AppTypedValueInput } from "./AppTypedValueInput";
 
-// The per-resource metafields editor: one input per definition for this owner
-// type (unset fields render empty), dirty fields saved together — a non-empty
-// value PUTs, an emptied one clears. Renders nothing while the operator has no
-// definitions for the kind; the catalogue is managed in Content → Metafields.
+// Renders nothing while the operator has no definitions for the owner kind.
 export const AppMetafieldsCard = ({
 	tourOperatorId,
 	ownerType,
@@ -67,7 +64,7 @@ export const AppMetafieldsCard = ({
 	const setDraft = (id: string, value: string) =>
 		setDrafts((prev) => ({ ...prev, [id]: value }));
 
-	// A whitespace-only draft means "clear" — the backend 422s a blank PUT.
+	// A whitespace-only draft clears: the backend 422s a blank PUT.
 	const effective = (raw: string) => (raw.trim() === "" ? "" : raw);
 	const changes = definitions
 		.filter((d) => {
@@ -92,9 +89,8 @@ export const AppMetafieldsCard = ({
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
-						// Clear drafts in onSettled — it runs AFTER the hook's
-						// invalidation resolves, so the inputs land on the fresh
-						// cache. On error the drafts stay (the failed edit survives).
+						// onSettled runs AFTER the hook's invalidation resolves, so the
+						// inputs land on the fresh cache. On error the drafts survive.
 						save.mutate(changes, {
 							onSettled: (_data, error) => {
 								if (!error) setDrafts({});
@@ -128,8 +124,7 @@ export const AppMetafieldsCard = ({
 	);
 };
 
-// One definition's labelled, type-aware input. Values are strings on the wire
-// for every type; the backend validates + normalizes against the definition.
+// Values are strings on the wire for every type; the backend normalizes them.
 const MetafieldInput = ({
 	tourOperatorId,
 	definition,

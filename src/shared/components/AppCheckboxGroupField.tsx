@@ -23,17 +23,14 @@ interface Props<T extends string | number> {
 	required?: boolean;
 	/** `grid` for a long catalogue (locales); `wrap` for a short row (weekdays). */
 	layout?: "wrap" | "grid";
-	/** Run after the value changes — e.g. clearing a primary that just went away. */
+	/** e.g. clearing a primary that just went away. */
 	onChanged?: (next: T[]) => void;
 }
 
-// The multi-select field: one checkbox per option, toggling membership of the
-// field's array. Sibling of AppCheckboxField, which is the single boolean.
-//
-// A checkbox GROUP is a fieldset with a legend, not a labelled control: a bare
-// <label> with no single control to point at fails a11y. Each row associates by
-// `htmlFor`, because the Radix Checkbox renders a <button> — wrapping it in a
-// <label> does not link the two on its own.
+// A checkbox GROUP is a fieldset with a legend, not a labelled control — a bare
+// <label> has no single control to point at. Each row associates by `htmlFor`,
+// because the Radix Checkbox renders a <button>, and wrapping that in a <label>
+// does not link the two.
 export function AppCheckboxGroupField<T extends string | number>({
 	field,
 	label,
