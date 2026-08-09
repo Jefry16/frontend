@@ -17,22 +17,19 @@ import {
 interface AppSelectFieldProps {
 	field: AnyFieldApi;
 	label: string;
-	/** `SelectItem` children — the options. */
+	/** `SelectItem` children. */
 	children: ReactNode;
 	placeholder?: string;
 	description?: string;
 	/**
-	 * Render the label for assistive tech only. For a cell in a repeating row,
-	 * where a visible label on every row would be noise but the control still
-	 * needs a programmatic name — an `aria-label` or a placeholder is not one.
+	 * For a cell in a repeating row: a visible label on every row is noise, but
+	 * the control still needs a programmatic name — a placeholder is not one.
 	 */
 	hideLabel?: boolean;
-	/** Runs after the field changes — for a pick that invalidates sibling fields. */
+	/** For a pick that invalidates sibling fields. */
 	onValueChange?: (value: string) => void;
 }
 
-// The select counterpart to AppField: a shadcn Select bound to a TanStack Form
-// field, with validation errors below. Callers pass `SelectItem`s as children.
 export const AppSelectField = ({
 	field,
 	label,

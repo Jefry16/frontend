@@ -1,12 +1,9 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend guards: price ≥ 0 (server rounds to 2 decimals HALF_UP),
-// capacity 1–100000, days 0–6 Sunday-first, times "HH:mm", dates "YYYY-MM-DD".
-// Pricing rows carry a client-only `_key` for React list identity; the rows are
-// plain strings edited by AppAudiencePriceRows, validated together here (issues
-// attach to the array field — the rows' own inputs are gated, not field-bound),
-// and transformed into the exact request payload.
+// Mirrors the backend guards; days are 0–6 Sunday-first. Pricing rows carry a
+// client-only `_key` for React list identity, and validate as a group — issues
+// attach to the array field, not to the rows' own inputs.
 
 const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -94,7 +91,7 @@ export type RecurringSlotFields = z.output<typeof recurringSlotSchema>;
 export type SingleSlotFormData = z.input<typeof singleSlotSchema>;
 export type SingleSlotFields = z.output<typeof singleSlotSchema>;
 
-/** "18:00" + 150 min → "20:30" (wraps past midnight). */
+/** "18:00" + 150 min → "20:30", wrapping past midnight. */
 export const addMinutes = (time: string, minutes: number): string => {
 	if (!TIME.test(time)) return "";
 	const [h = 0, mn = 0] = time.split(":").map(Number);
@@ -102,18 +99,18 @@ export const addMinutes = (time: string, minutes: number): string => {
 	return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
 };
 
-/** True when the end time-of-day lands at/before the start → the departure ends the NEXT day. */
+/** End at or before start means the departure ends the NEXT day. */
 export const rollsToNextDay = (startTime: string, endTime: string): boolean =>
 	TIME.test(startTime) && TIME.test(endTime) && endTime <= startTime;
 
-/** "2026-08-31" + 1 day → "2026-09-01" (calendar-correct via Date). */
+/** Calendar-correct via Date, so month ends roll properly. */
 const nextDay = (isoDate: string): string => {
 	const [y = 1970, mo = 1, d = 1] = isoDate.split("-").map(Number);
 	const date = new Date(y, mo - 1, d + 1);
 	return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 };
 
-/** Compose the single-create payload's LocalDateTimes, rolling the end date across midnight when needed. */
+/** Rolls the end date across midnight when needed. */
 export const composeStartEnd = (
 	fields: SingleSlotFields,
 ): { startAt: string; endAt: string } => ({

@@ -17,15 +17,10 @@ const hasTranslation = (t: OperatorTranslation) =>
 	t.seoDescription !== null ||
 	t.passwordMessage !== null;
 
-// One locale's shop-text overlay: every field optional, an empty one falling
-// back to the canonical text. Clear removes the whole overlay for this locale.
-//
-// Unlike the experience and page translation forms, no field shows its
-// canonical value as a hint. The canonical slogan and short description live on
-// the brand row, which is read-path-only — the storefront renders it and no
-// admin endpoint exposes it — and the canonical SEO pair would need
-// `GET …/seo`, which nothing consumes yet. Rather than show the hint for one
-// field out of five, the shared fallback note above the fields carries the rule.
+// No field shows its canonical value as a hint, unlike the experience and page
+// translation forms: the slogan and short description live on the read-path-only
+// brand row, and the SEO pair would need a second fetch. Showing the hint for
+// one field in five is worse than the shared fallback note above them.
 export const AppOperatorTranslationForm = ({
 	tourOperatorId,
 	locale,

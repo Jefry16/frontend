@@ -10,11 +10,9 @@ import { useOperatorLanguagesForm } from "../hooks/use-operator-languages-form";
 import type { OperatorLocales } from "../locales";
 import { localeLabel } from "../locales";
 
-// The Languages settings form (ADMIN+): pick the supported content languages,
-// then the primary one among them. The offerable set comes from the backend
-// allowlist (reference.languages) unioned with the operator's already-supported
-// locales, so a language later dropped from the allowlist stays visible (and
-// removable) rather than silently vanishing from an operator still using it.
+// The offerable set is the backend allowlist UNIONED with what the operator
+// already supports, so a language later dropped from the allowlist stays visible
+// and removable rather than vanishing from an operator still using it.
 export const AppOperatorLanguagesForm = ({
 	tourOperatorId,
 	locales,
@@ -28,9 +26,7 @@ export const AppOperatorLanguagesForm = ({
 	);
 	const { data: allowlist = [] } = useLanguages();
 
-	// Labels in the current UI language (Intl.DisplayNames), with the allowlist's
-	// own name as the fallback. The union keeps a locale the operator already
-	// supports selectable even if it's since been dropped from the allowlist.
+	// The allowlist's own name is the fallback when CLDR does not know the code.
 	const options = [
 		...allowlist.map((l) => ({
 			code: l.code,
@@ -65,8 +61,7 @@ export const AppOperatorLanguagesForm = ({
 									label: locale.label,
 								}))}
 								onChanged={(next) => {
-									// Unchecking the current primary leaves it unsupported —
-									// clear it so the select isn't stuck on a hidden value.
+									// Otherwise the select stays stuck on a now-hidden value.
 									if (
 										!next.includes(form.state.values.primaryLocale) &&
 										selected.includes(form.state.values.primaryLocale)

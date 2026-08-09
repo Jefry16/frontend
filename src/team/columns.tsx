@@ -9,14 +9,11 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { roleBadgeVariant, roleLabel } from "./format";
 import type { Member } from "./types";
 
-// The roster columns. A factory (not a static array) so it can close over the
-// operator's timezone (joinedAt cell) and its id (name/email filters fetch their
-// option lists from the members endpoint). All columns sortable; role is a static
-// set filter, name/email are async set filters (`filter[field][in]`). API default
-// is owner-first (joinedAt asc).
+// A factory, not a static array, so it can close over the operator's timezone
+// and id. The API default is owner-first.
 export const memberColumns = (
 	tourOperatorId: string,
-	// From useOperatorDateTime — instants render in the OPERATOR's timezone.
+	// Instants render in the OPERATOR's timezone.
 	formatDate: (iso: string) => string,
 ): ColumnDef<Member, unknown>[] => {
 	const roleItems = [
@@ -24,8 +21,7 @@ export const memberColumns = (
 		{ value: "ADMIN", label: roleLabel("ADMIN") },
 		{ value: "STAFF", label: roleLabel("STAFF") },
 	];
-	// name/email filter options are the members' own values, fetched from the
-	// roster endpoint (deduped in AppAsyncSetFilter).
+	// Options are the members' own values; AppAsyncSetFilter dedupes them.
 	const endpoint = `/tour-operators/${tourOperatorId}/members`;
 	const optionsKey = queryKeys.members(tourOperatorId);
 

@@ -6,11 +6,8 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { MemberRole } from "../types";
 
-// The mutating actions on a single member: change role (PATCH) and remove/leave
-// (DELETE). changeRole toasts + invalidates here; remove leaves its success
-// handling (toast copy + navigation differ for leave vs remove) to the caller's
-// per-call onSuccess, and only invalidates the roster. Both are ADMIN+ on the
-// backend (self-leave excepted); the guards (owner, last-owner, self) 4xx there.
+// `remove` leaves success handling to the caller: the toast copy and navigation
+// differ for leave vs remove. The backend guards (owner, last-owner, self) 4xx.
 export const useMemberActions = (tourOperatorId: string, userId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -20,7 +17,7 @@ export const useMemberActions = (tourOperatorId: string, userId: string) => {
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.members(tourOperatorId),
 		});
-		// Role changes / removals append audit entries — refresh the trail.
+		// The write appended an audit entry.
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});
@@ -41,8 +38,8 @@ export const useMemberActions = (tourOperatorId: string, userId: string) => {
 		onError: () => toast.error(m.error()),
 	});
 
-	// Ownership transfer (PATCH role=OWNER) is its own action: it also demotes the
-	// caller to ADMIN, so the caller's own profile/role must refresh too.
+	// Its own action because it also demotes the CALLER to ADMIN, so the caller's
+	// own profile has to refresh too.
 	const transferOwnership = useMutation<unknown, AxiosError>({
 		mutationFn: () => authApi.patch(base, { role: "OWNER" }),
 		onSuccess: () => {

@@ -15,10 +15,6 @@ import {
 	experienceSchema,
 } from "../validators/experience";
 
-// Create (no `experience`) or edit (with one). Edits every field: scalars, the
-// content lists (tags / highlights / inclusions, via AppArrayInput), and the
-// media refs (thumbnail + gallery, via the media picker) — all flow through the
-// form, so the whole parsed value is the PATCH/POST payload.
 export const useExperienceForm = (
 	tourOperatorId: string,
 	experience?: Experience,
@@ -34,15 +30,14 @@ export const useExperienceForm = (
 		ExperienceFields
 	>({
 		mutationFn: async (fields) => {
-			// Every field — scalars, content lists, and media refs — comes from the
-			// form now, so the parsed value is the payload as-is.
+			// Every field comes from the form, so the parsed value IS the payload.
 			const payload = fields;
 			const base = `/tour-operators/${tourOperatorId}/experiences`;
 			if (experience) {
 				await authApi.patch(`${base}/${experience.id}`, payload);
 				return experience.id;
 			}
-			// 201 Created with a Location header, no body — parse the new id out.
+			// 201 with a Location header and no body.
 			const { headers } = await authApi.post(base, payload);
 			const id = (headers.location ?? "").split("/").pop();
 			if (!id) throw new Error("Missing Location header on create response");
@@ -58,7 +53,7 @@ export const useExperienceForm = (
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.experiences(tourOperatorId),
 				});
-				// Create/update appended an audit entry — refresh the trail.
+				// The write appended an audit entry.
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});

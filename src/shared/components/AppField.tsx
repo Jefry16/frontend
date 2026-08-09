@@ -17,16 +17,12 @@ interface AppFieldProps {
 	autoComplete?: string;
 	required?: boolean;
 	/**
-	 * Render the label for assistive tech only. For a cell in a repeating row,
-	 * where a visible label on every row would be noise but the control still
-	 * needs a programmatic name — an `aria-label` or a placeholder is not one.
+	 * For a cell in a repeating row: a visible label on every row is noise, but
+	 * the control still needs a programmatic name — a placeholder is not one.
 	 */
 	hideLabel?: boolean;
 }
 
-// The form-field renderer: a shadcn Field wrapping an Input bound to a TanStack
-// Form field, with the field's validation errors below. Shared across features
-// (auth + tour-operator forms). The paired select renderer is AppSelectField.
 export const AppField = ({
 	field,
 	label,

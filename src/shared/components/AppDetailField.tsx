@@ -8,14 +8,9 @@ interface AppDetailFieldProps {
 	className?: string;
 }
 
-// A labelled read-only fact: an uppercase muted label over its value.
-//
-// **Must sit inside a `<dl>`.** It renders the `<div>`-wrapped `<dt>`/`<dd>`
-// pair a description list is made of, which is what makes a screen reader
-// announce "Handle, /pages/about" rather than two unrelated runs of text. A
-// `<dl>` whose children are plain divs — which this used to render — claims
-// that structure without delivering it. Tailwind's preflight zeroes the `<dd>`
-// indent, so the pair costs nothing visually.
+// **Must sit inside a `<dl>`.** It renders the `<dt>`/`<dd>` pair, which is what
+// makes a screen reader announce "Handle, /pages/about" instead of two unrelated
+// runs of text. Preflight zeroes the `<dd>` indent, so it costs nothing visually.
 export function AppDetailField({
 	label,
 	children,

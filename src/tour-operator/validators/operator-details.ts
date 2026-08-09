@@ -1,15 +1,12 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend value objects (touroperator/domain/valueobject):
-// TourOperatorName 2–150, TourOperatorAddress 1–500, TourOperatorPhone ≤30 with
-// no format imposed (it is printed in a storefront footer, not dialled), and
-// TourOperatorEmail ≤320 checked loosely — one @, a dot in the domain, no
-// whitespace. A stricter grammar would reject addresses that work.
+// Mirrors the backend value objects. Phone imposes no format (it is printed in a
+// footer, not dialled) and email is checked loosely — a stricter grammar would
+// reject addresses that work.
 //
-// Phone and email are OPTIONAL columns, and the backend clears one with a blank
-// string rather than an absent field, so empty stays "" here instead of
-// collapsing to null.
+// Empty stays "" rather than collapsing to null: the backend clears an optional
+// column with a blank string, not an absent field.
 export const operatorDetailsSchema = z.object({
 	name: z
 		.string()

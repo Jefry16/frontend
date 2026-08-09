@@ -12,10 +12,8 @@ import {
 } from "../format";
 import { useActivityLog } from "../hooks/use-activity-log";
 
-// One entity's audit timeline (the Jira-style History) as a detail-page
-// section: who did what, which fields changed from → to, when (operator tz),
-// newest first with load-more. Actor names arrive ON each entry (frozen at
-// write) — no roster fetch, no client-side join.
+// Actor names arrive ON each entry, frozen at write time — no roster fetch and
+// no client-side join.
 export const AppActivityLog = ({
 	tourOperatorId,
 	entityType,
@@ -44,9 +42,8 @@ export const AppActivityLog = ({
 
 	const entries = log.data.pages.flatMap((page) => page.data);
 	if (entries.length === 0) {
-		// A quiet empty line, not a full AppEmptyState — the timeline is a
-		// section inside a detail page, and "no activity" isn't a first-run
-		// state to fix with a CTA.
+		// Not a full AppEmptyState: "no activity" is not a first-run state a CTA
+		// could fix.
 		return (
 			<p className="text-sm text-muted-foreground">{m.activity_empty()}</p>
 		);
@@ -67,9 +64,7 @@ export const AppActivityLog = ({
 						</div>
 						{entry.changes?.map((change, index) => (
 							<div
-								// A field can repeat (one capacity diff per tier) — the
-								// position identifies the row in this static list.
-								// biome-ignore lint/suspicious/noArrayIndexKey: static per-entry diff list
+								// biome-ignore lint/suspicious/noArrayIndexKey: a field can repeat (one capacity diff per tier), so position is the identity
 								key={index}
 								className="text-sm text-muted-foreground"
 							>

@@ -18,9 +18,7 @@ export const useRegisterForm = () => {
 	>({
 		mutationFn: ({ confirmPassword: _confirm, ...data }) =>
 			authApi.post("/auth/register", data),
-		// Registration sends a verification email; land on the "check your email"
-		// screen (which can resend) rather than login, where an unverified account
-		// would just 403.
+		// Not login: an unverified account would just 403 there.
 		onSuccess: (_data, variables) => {
 			setErrorMessage(null);
 			navigate({
@@ -29,11 +27,9 @@ export const useRegisterForm = () => {
 			});
 		},
 		onError: () => {
-			// The backend never reveals whether an email is already registered:
-			// a duplicate signup returns the same 201 as a fresh one (anti-
-			// enumeration), and the existing owner is notified by email. So there
-			// is no "email already exists" response to branch on — any error here
-			// is an unexpected failure (network, 429, 5xx).
+			// Anti-enumeration: a duplicate signup returns the same 201 as a fresh
+			// one, so there is no "already registered" response to branch on. Any
+			// error reaching here is an unexpected one.
 			setErrorMessage(m.error());
 		},
 	});
@@ -47,8 +43,7 @@ export const useRegisterForm = () => {
 		} as RegisterFormData,
 		validators: { onSubmit: registerSchema },
 		onSubmit: ({ value }) => {
-			// Re-parse so the schema's transforms apply (name is trimmed; the form
-			// state keeps the raw input).
+			// Re-parse so the schema's transforms apply — form state holds raw input.
 			mutate(registerSchema.parse(value));
 		},
 	});

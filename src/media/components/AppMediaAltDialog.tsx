@@ -12,12 +12,9 @@ import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 const MAX = 255;
 
-// Describes what the image shows. A dialog rather than an edit page: alt is the
-// only writable field on a media row, so a page would hold one input.
-//
-// Submitting empty clears it — the backend treats blank as "no description",
-// which is the right answer for a decorative image and wrong for every other
-// one, so the copy says so rather than blocking the save.
+// A dialog rather than an edit page: alt is the only writable field on a media
+// row. Submitting empty CLEARS it, which is right for a decorative image and
+// wrong for every other one — so the copy warns rather than blocking the save.
 export const AppMediaAltDialog = ({
 	open,
 	onOpenChange,
@@ -34,8 +31,8 @@ export const AppMediaAltDialog = ({
 	const [alt, setAlt] = useState(currentAlt ?? "");
 	const trimmed = alt.trim();
 
-	// Opens programmatically, so onOpenChange never fires with `true` — without
-	// this a cancelled edit leaks into the next open.
+	// Opens programmatically, so onOpenChange never fires with `true`, and a
+	// cancelled edit would otherwise leak into the next open.
 	useEffect(() => {
 		if (open) setAlt(currentAlt ?? "");
 	}, [open, currentAlt]);

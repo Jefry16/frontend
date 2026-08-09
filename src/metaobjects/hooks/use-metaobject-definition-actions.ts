@@ -7,11 +7,8 @@ import { queryKeys } from "#/lib/query-keys";
 import type { MetafieldTypeCode } from "#/metafields";
 import * as m from "#/paraglide/messages";
 
-// The definition's mutating actions (all ADMIN+): delete (CASCADES entries +
-// values — the caller's confirm carries the warning; success copy/navigation
-// left to the caller) and the field set (add appends at the end; rename
-// changes the display name; remove cascades that field's stored values, and
-// removing the last field is a 409 surfaced as a toast).
+// Delete CASCADES entries and values — the caller's confirm carries that
+// warning. Removing a field cascades its stored values the same way.
 export const useMetaobjectDefinitionActions = (
 	tourOperatorId: string,
 	definitionId: string,
@@ -38,7 +35,7 @@ export const useMetaobjectDefinitionActions = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjectDefinitions(tourOperatorId),
 			});
-			// Cascaded entries are gone too.
+			// The cascade took the entries too.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjects(tourOperatorId),
 			});
@@ -79,13 +76,13 @@ export const useMetaobjectDefinitionActions = (
 		mutationFn: ({ key }) => authApi.delete(`${base}/fields/${key}`),
 		onSuccess: () => {
 			toast.success(m.metaobject_field_removed());
-			// Removed values disappear from every entry's detail read.
+			// Every entry's detail read loses those values.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjects(tourOperatorId),
 			});
 			invalidate();
 		},
-		// The last field can't be removed (409) — surface the backend message.
+		// Removing the last field 409s, and the reason is worth showing.
 		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 

@@ -1,12 +1,9 @@
-// Operator-authored source shown verbatim — a page's or policy's raw HTML body.
-// Monospace and scroll-capped, never rendered as markup: the storefront renders
-// it unescaped on purpose, so echoing it here as HTML would run the operator's
-// own script in their admin session.
+// Never rendered as markup: this is operator-authored HTML, so echoing it would
+// run their own script in their admin session.
 //
-// The scroll box holds only text, so there is nothing inside for a keyboard to
-// land on and reach the part below the fold (WCAG 2.1.1). A named <section>
-// takes the tab stop and gives it an identity — a screen reader announces
-// "Page body, region" rather than an unexplained focus ring.
+// The scroll box holds only text, so nothing inside can take focus and reach the
+// part below the fold (WCAG 2.1.1). The named <section> takes the tab stop and
+// gives it an identity to announce.
 export const AppSourceBlock = ({
 	label,
 	children,

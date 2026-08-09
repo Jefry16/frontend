@@ -11,10 +11,8 @@ import { useSingleSlotForm } from "../hooks/use-single-slot-form";
 import { addMinutes, rollsToNextDay } from "../validators/slot";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";
 
-// One-time availability: a single departure on a chosen date. The end time
-// follows the start + the experience's advertised duration until the user edits
-// the end themselves. An end at or before the start means the departure runs
-// past midnight — flagged inline, and the payload rolls the end date forward.
+// An end at or before the start means the departure runs past midnight: it is
+// flagged inline, and the payload rolls the end date forward.
 export const AppSingleSlotForm = ({
 	tourOperatorId,
 	experienceId,
@@ -31,8 +29,8 @@ export const AppSingleSlotForm = ({
 		tourOperatorId,
 		experienceId,
 	);
-	// Two primitive selectors, NOT one returning a tuple — a fresh array every
-	// snapshot never compares equal and re-renders forever.
+	// Two primitive selectors, NOT one returning a tuple: a fresh array never
+	// compares equal, and the component would re-render forever.
 	const startTime = useStore(form.store, (s) => s.values.startTime);
 	const endTime = useStore(form.store, (s) => s.values.endTime);
 
@@ -65,9 +63,8 @@ export const AppSingleSlotForm = ({
 						name="startTime"
 						listeners={{
 							onChange: ({ value }) => {
-								// Keep the end synced to start + advertised duration until the
-								// user edits the end themselves (touched) — dontUpdateMeta so
-								// the prefill itself never counts as that edit.
+								// dontUpdateMeta, so the prefill never counts as the user
+								// having edited the end themselves.
 								if (!form.getFieldMeta("endTime")?.isTouched) {
 									form.setFieldValue(
 										"endTime",
