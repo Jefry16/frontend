@@ -4,6 +4,7 @@ import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
+import { AppNumberField } from "#/shared/components/AppNumberField";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { useExperienceForm } from "../hooks/use-experience-form";
 import type { Experience } from "../types";
@@ -75,17 +76,18 @@ export const AppExperienceForm = ({
 				<div className="grid gap-4 sm:grid-cols-2">
 					<form.Field name="startingPrice">
 						{(field) => (
-							<AppField
+							<AppNumberField
 								field={field}
 								label={m.starting_price()}
 								description={m.starting_price_hint()}
+								decimal
 								required
 							/>
 						)}
 					</form.Field>
 					<form.Field name="bookingCutoffHours">
 						{(field) => (
-							<AppField
+							<AppNumberField
 								field={field}
 								label={m.booking_cutoff_hours()}
 								required
