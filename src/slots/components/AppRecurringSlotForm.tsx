@@ -9,20 +9,16 @@ import { AppTimeField } from "#/shared/components/AppTimeField";
 import { useOperatorToday } from "#/tour-operator";
 import { DAY_OPTIONS } from "../format";
 import { useRecurringSlotForm } from "../hooks/use-recurring-slot-form";
-import { addMinutes } from "../validators/slot";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";
 
-// A departure on every selected weekday between the two dates. An end the user
-// has edited themselves is never overwritten by the duration prefill.
+// A departure on every selected weekday between the two dates.
 export const AppRecurringSlotForm = ({
 	tourOperatorId,
 	experienceId,
-	durationMinutes,
 	audiences,
 }: {
 	tourOperatorId: string;
 	experienceId: string;
-	durationMinutes: number;
 	audiences: Audience[];
 }) => {
 	const operatorToday = useOperatorToday();
@@ -57,22 +53,7 @@ export const AppRecurringSlotForm = ({
 					)}
 				</form.Field>
 				<div className="grid gap-4 sm:grid-cols-2">
-					<form.Field
-						name="startTime"
-						listeners={{
-							onChange: ({ value }) => {
-								// dontUpdateMeta, so the prefill never counts as the user
-								// having edited the end themselves.
-								if (!form.getFieldMeta("endTime")?.isTouched) {
-									form.setFieldValue(
-										"endTime",
-										addMinutes(value as string, durationMinutes),
-										{ dontUpdateMeta: true },
-									);
-								}
-							},
-						}}
-					>
+					<form.Field name="startTime">
 						{(field) => (
 							<AppTimeField field={field} label={m.start_time()} required />
 						)}

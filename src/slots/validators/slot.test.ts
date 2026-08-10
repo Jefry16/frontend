@@ -1,39 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { addMinutes, composeStartEnd, rollsToNextDay } from "./slot";
+import { composeStartEnd, rollsToNextDay } from "./slot";
 
 // The only hand-rolled date arithmetic in the app. There is no date library
 // behind it, and an off-by-one-day is invisible until someone reads a booking.
-
-describe("addMinutes", () => {
-	it.each([
-		["18:00", 150, "20:30"],
-		["09:00", 30, "09:30"],
-		["00:00", 1, "00:01"],
-		["10:00", 0, "10:00"],
-	])("%s + %i min → %s", (time, minutes, expected) => {
-		expect(addMinutes(time, minutes)).toBe(expected);
-	});
-
-	it.each([
-		["23:30", 60, "00:30"],
-		["23:59", 1, "00:00"],
-		["22:00", 240, "02:00"],
-	])("wraps past midnight: %s + %i → %s", (time, minutes, expected) => {
-		expect(addMinutes(time, minutes)).toBe(expected);
-	});
-
-	// Guarded rather than throwing, because the field is a free-text time input
-	// and this runs on every keystroke while the operator is still typing.
-	it.each([
-		"",
-		"9:00",
-		"24:00",
-		"10",
-		"abc",
-	])("returns empty for the malformed input %s", (time) => {
-		expect(addMinutes(time, 60)).toBe("");
-	});
-});
 
 describe("rollsToNextDay", () => {
 	// Equal is not "zero length" — a departure whose end time matches its start
@@ -95,11 +64,9 @@ describe("composeStartEnd", () => {
 		for (let duration = 1; duration <= 1440; duration++) {
 			for (let startMinute = 0; startMinute < 1440; startMinute += 13) {
 				const startTime = `${String(Math.floor(startMinute / 60)).padStart(2, "0")}:${String(startMinute % 60).padStart(2, "0")}`;
-				const { startAt, endAt } = compose(
-					"2026-06-01",
-					startTime,
-					addMinutes(startTime, duration),
-				);
+				const endMinute = (startMinute + duration) % 1440;
+				const endTime = `${String(Math.floor(endMinute / 60)).padStart(2, "0")}:${String(endMinute % 60).padStart(2, "0")}`;
+				const { startAt, endAt } = compose("2026-06-01", startTime, endTime);
 				const span =
 					(Date.parse(`${endAt}Z`) - Date.parse(`${startAt}Z`)) / 60000;
 				if (span !== duration) wrong.push(`${startTime}+${duration}=${span}`);

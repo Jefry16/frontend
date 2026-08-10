@@ -23,7 +23,7 @@ import {
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
-import { formatDuration, statusBadgeVariant, statusLabel } from "../format";
+import { statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";
 import type { Experience } from "../types";
@@ -208,9 +208,6 @@ const ExperienceView = ({
 								)}
 							</div>
 							<dl className="grid grid-cols-2 gap-4">
-								<AppDetailField label={m.duration()}>
-									{formatDuration(experience.durationMinutes)}
-								</AppDetailField>
 								<AppDetailField label={m.booking_cutoff()}>
 									{`${experience.bookingCutoffHours}h`}
 								</AppDetailField>

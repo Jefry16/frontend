@@ -71,7 +71,6 @@ export const useExperienceForm = (
 			name: experience?.name ?? "",
 			description: experience?.description ?? "",
 			longDescription: experience?.longDescription ?? "",
-			durationMinutes: experience ? String(experience.durationMinutes) : "",
 			bookingCutoffHours: experience
 				? String(experience.bookingCutoffHours)
 				: "24",

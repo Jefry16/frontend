@@ -21,7 +21,7 @@ const ENTRIES: AuditLogEntry[] = [
 		details: null,
 		changes: [
 			{ field: "name", from: "Sunset Sail", to: "Sunset Sailing Tour" },
-			{ field: "durationMinutes", from: 120, to: 150 },
+			{ field: "bookingCutoffHours", from: 24, to: 48 },
 		],
 		requestId: "req-1",
 		createdAt: "2026-07-25T18:30:00Z",

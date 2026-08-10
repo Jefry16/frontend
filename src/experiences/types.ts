@@ -13,7 +13,6 @@ export interface Experience {
 	thumbnailUrl: string | null;
 	mediaIds: string[];
 	galleryUrls: string[];
-	durationMinutes: number;
 	bookingCutoffHours: number;
 	published: boolean;
 	createdBy: string;

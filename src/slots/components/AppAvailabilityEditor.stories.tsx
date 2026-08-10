@@ -14,7 +14,6 @@ const EXPERIENCE = {
 	id: EXPERIENCE_ID,
 	context: "experiences",
 	name: "Sunset Sailing Tour",
-	durationMinutes: 150,
 };
 
 const AUDIENCES: Audience[] = [
