@@ -20,10 +20,7 @@ interface AppArrayInputProps {
 	required?: boolean;
 }
 
-// The list-of-strings field: type an entry, press Enter to add it as a removable
-// chip. Sibling of AppField/AppTextareaField (field-as-prop, shadcn Field shell,
-// validation errors below) for string[] values — tags, highlights, inclusions.
-// Trims and de-dupes on add; Backspace on an empty input removes the last chip.
+// Trims and de-dupes on add. Backspace on an empty input removes the last chip.
 export const AppArrayInput = ({
 	field,
 	label,

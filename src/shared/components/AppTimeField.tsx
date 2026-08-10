@@ -38,7 +38,7 @@ const GRID_MINUTES = Array.from({ length: 12 }, (_, i) =>
 	String(i * 5).padStart(2, "0"),
 );
 
-/** "14:30" → locale display ("2:30 PM" / "14:30"); null when not a valid time. */
+/** null when not a valid time. */
 const displayTime = (time: string): string | null => {
 	if (!time) return null;
 	const [h, mn] = time.split(":").map(Number);
@@ -49,12 +49,9 @@ const displayTime = (time: string): string | null => {
 	}).format(new Date(2024, 0, 1, h ?? 0, mn ?? 0));
 };
 
-// The time-of-day field: a Clock button opening an hour + minute picker, bound
-// to a TanStack Form field holding "HH:mm". Minutes offer 5-minute steps, but an
-// existing off-grid value (e.g. "09:37") is kept in the list so editing never
-// silently misrepresents it. The trigger shows the locale's own time format;
-// the stored value stays 24h "HH:mm" (what the backend parses). Closing the
-// popover blurs the field so touched-state validation fires.
+// Minutes offer 5-minute steps, but an existing off-grid value ("09:37") stays
+// in the list so editing never silently rounds it. The stored value is 24h
+// "HH:mm" whatever the trigger displays. Closing blurs, so validation fires.
 export const AppTimeField = ({
 	field,
 	label,

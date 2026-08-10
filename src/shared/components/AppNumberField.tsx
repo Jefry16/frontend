@@ -14,13 +14,11 @@ interface AppNumberFieldProps {
 	description?: string;
 	placeholder?: string;
 	required?: boolean;
-	/** Allow a decimal point (prices); default integers only (counts). */
+	/** Prices need one; counts do not. */
 	decimal?: boolean;
 }
 
-// The numeric sibling of AppField: AppNumericInput's gated input bound to a
-// TanStack Form field holding the raw string — the zod schema does the Number
-// transform + bounds.
+// The field holds the RAW STRING; the zod schema does the Number transform.
 export const AppNumberField = ({
 	field,
 	label,

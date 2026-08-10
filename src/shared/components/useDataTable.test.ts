@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { buildParams } from "./useDataTable";
 
-// The query string every list page sends. It had no test, which is how a
-// `filterField` override survived unused: nothing pinned that a filter sends
-// the column id, so removing the indirection looked risky when it was not.
+// Pins that a filter sends the column id, and a sort sends the field-map
+// override when one exists.
 const params = (over: Partial<Parameters<typeof buildParams>[0]> = {}) =>
 	buildParams({
 		cursor: null,

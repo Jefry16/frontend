@@ -5,14 +5,12 @@ interface AppEmptyStateProps {
 	icon?: LucideIcon;
 	title: string;
 	description?: string;
-	// The call-to-action, passed as a node (e.g. the "New X" button) so this
-	// shared component never imports a route/module. Omitted → header only.
+	// A node, so this shared component never imports a route or module.
 	action?: ReactNode;
 }
 
-// First-run / empty state: icon + copy + an optional CTA, centered. Shown for a
-// genuinely empty resource list; a filtered-to-nothing list shows the terse
-// "No results" row instead (see AppDataTable).
+// For a genuinely empty list. Filtered-to-nothing shows AppDataTable's terse
+// "No results" row instead.
 export function AppEmptyState({
 	icon: Icon,
 	title,

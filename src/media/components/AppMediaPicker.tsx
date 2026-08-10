@@ -15,10 +15,8 @@ import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import { useMediaLibrary } from "../hooks/use-media-library";
 import type { MediaAsset } from "../types";
 
-// Pick images from the library. `single` replaces the selection on each click
-// (thumbnail); `multi` toggles (gallery). Seeds from the current selection when
-// opened, and returns the chosen assets (id + url) so the caller can preview
-// without re-fetching.
+// Returns the chosen assets as id + url, so the caller can preview without
+// re-fetching.
 export const AppMediaPicker = ({
 	tourOperatorId,
 	open,

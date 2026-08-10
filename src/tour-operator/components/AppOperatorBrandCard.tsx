@@ -23,13 +23,9 @@ import {
 import type { Brand, BrandImageSlot } from "../types";
 import { AppBrandImageSlot } from "./AppBrandImageSlot";
 
-// The shop's brand: the four images a theme reads, plus the slogan and short
-// description the storefront shows beside them.
-//
-// This release does NOT edit the palette or the social links, but every write
-// still sends them — `PUT /brand` is a full replace, so a body without them
-// clears them. `useBrandActions` takes the loaded brand and spreads over it for
-// exactly that reason.
+// This card does not edit the palette or social links, but every write still
+// sends them: `PUT /brand` is a full replace, so a body without them clears
+// them. That is why useBrandActions spreads over the loaded brand.
 export const AppOperatorBrandCard = ({
 	tourOperatorId,
 	canWrite,
