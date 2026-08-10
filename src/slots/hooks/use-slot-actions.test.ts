@@ -39,19 +39,15 @@ describe("useSlotActions", () => {
 		]);
 	});
 
-	it("patches the status", async () => {
-		const body = vi.fn();
-		server.use(
-			http.patch(BASE, async ({ request }) => {
-				body(await request.json());
-				return HttpResponse.json(REFRESHED);
-			}),
-		);
+	// SOLD_OUT is derived at checkout, so the operator has no status toggle —
+	// the PATCH this hook sends carries capacities and nothing else.
+	it("offers no status setter", () => {
 		const { result } = renderActions(() => useSlotActions(OP, ID));
 
-		await fire(() => result.current.setStatus.mutateAsync("SOLD_OUT" as never));
-
-		expect(body).toHaveBeenCalledWith({ status: "SOLD_OUT" });
+		expect(Object.keys(result.current).sort()).toEqual([
+			"cancel",
+			"setCapacities",
+		]);
 	});
 
 	// Capacity below the seats already booked is a 422 the operator can act on,
