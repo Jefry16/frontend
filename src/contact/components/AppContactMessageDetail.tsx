@@ -1,7 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Inbox, Mail, MailOpen, Trash2 } from "lucide-react";
-import { useEffect } from "react";
+import { Inbox, Mail, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
@@ -73,17 +72,7 @@ const MessageView = ({
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
-	const { setRead, remove } = useContactMessageActions(
-		tourOperatorId,
-		message.id,
-	);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: react to read-state only — the mutation's identity churns every render
-	useEffect(() => {
-		if (!message.read && !setRead.isPending) {
-			setRead.mutate({ read: true });
-		}
-	}, [message.read]);
+	const { remove } = useContactMessageActions(tourOperatorId, message.id);
 
 	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
@@ -98,24 +87,6 @@ const MessageView = ({
 					`Re: ${message.summary}`,
 				)}`;
 			},
-		},
-		{
-			// SetContactMessageReadUseCase is ensureMember ("STAFF answers inquiries").
-			id: "mark-unread",
-			label: m.inbox_mark_unread(),
-			icon: MailOpen,
-			member: true,
-			onSelect: () =>
-				setRead.mutate(
-					{ read: false },
-					{
-						onSuccess: () =>
-							navigate({
-								to: "/tour-operators/$tourOperatorId/inbox",
-								params: { tourOperatorId },
-							}),
-					},
-				),
 		},
 		{
 			id: "delete",

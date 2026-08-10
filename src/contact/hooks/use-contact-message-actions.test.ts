@@ -14,33 +14,17 @@ const OP = "op-1";
 const ID = "msg-1";
 const BASE = `${API}/tour-operators/${OP}/contact-messages/${ID}`;
 
-const DETAIL = ["contact-messages", OP, ID];
 const LIST = ["contact-messages", OP];
 const TRAIL = ["activity", OP];
 
 describe("useContactMessageActions", () => {
-	// Read and unread are separate endpoints, not one flag — the read state is
-	// the only member-writable thing on a message.
-	it.each([
-		[true, "read"],
-		[false, "unread"],
-	])("posts to /%s for read=%s", async (read, segment) => {
-		const hit = vi.fn();
-		server.use(
-			http.post(`${BASE}/${segment}`, () => {
-				hit();
-				return new HttpResponse(null, { status: 204 });
-			}),
-		);
-		const { result, invalidated } = renderActions(() =>
-			useContactMessageActions(OP, ID),
-		);
+	// The read-state flip is gone with its endpoints — the message is opened,
+	// answered by email and deleted. A `setRead` reappearing here would mean
+	// the admin is calling something the backend no longer serves.
+	it("offers delete and nothing else", () => {
+		const { result } = renderActions(() => useContactMessageActions(OP, ID));
 
-		await fire(() => result.current.setRead.mutateAsync({ read }));
-
-		expect(hit).toHaveBeenCalled();
-		// No trail: the read flip is unaudited by design.
-		expect(invalidated()).toEqual([DETAIL, LIST]);
+		expect(Object.keys(result.current)).toEqual(["remove"]);
 	});
 
 	it("refreshes the list and the trail on delete, never the deleted detail", async () => {

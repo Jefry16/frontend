@@ -18,8 +18,6 @@ const MESSAGE: ContactMessage = {
 	summary: "Do you have child seats on the sunset tour?",
 	content:
 		"Hi!\n\nWe are a family of four (kids are 4 and 7). Do you provide child-size life vests and seats on the Sunset Sailing Tour?\n\nThanks!",
-	read: true,
-	readAt: "2026-07-28T11:00:00Z",
 	createdAt: "2026-07-28T10:00:00Z",
 };
 
