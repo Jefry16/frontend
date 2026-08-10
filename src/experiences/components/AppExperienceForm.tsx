@@ -10,7 +10,6 @@ import type { Experience } from "../types";
 import { AppExperienceMediaSection } from "./AppExperienceMediaSection";
 
 // The experience content form — create (no `experience`) or edit (with one):
-// name, copy, media (thumbnail + gallery via the picker), duration, cutoff,
 export const AppExperienceForm = ({
 	tourOperatorId,
 	experience,
@@ -74,11 +73,6 @@ export const AppExperienceForm = ({
 					)}
 				</form.Field>
 				<div className="grid gap-4 sm:grid-cols-2">
-					<form.Field name="durationMinutes">
-						{(field) => (
-							<AppField field={field} label={m.duration_minutes()} required />
-						)}
-					</form.Field>
 					<form.Field name="bookingCutoffHours">
 						{(field) => (
 							<AppField

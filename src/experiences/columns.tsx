@@ -4,7 +4,7 @@ import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
-import { formatDuration, statusBadgeVariant, statusLabel } from "./format";
+import { statusBadgeVariant, statusLabel } from "./format";
 import type { Experience } from "./types";
 
 // What the list schema supports drives the affordances. `published` stays
@@ -52,15 +52,6 @@ export const experienceColumns = (
 				<AppBadge variant={statusBadgeVariant(row.original.published)}>
 					{statusLabel(row.original.published)}
 				</AppBadge>
-			),
-		},
-		{
-			id: "duration",
-			header: () => <span className="font-semibold">{m.duration()}</span>,
-			cell: ({ row }) => (
-				<span className="text-muted-foreground tabular-nums">
-					{formatDuration(row.original.durationMinutes)}
-				</span>
 			),
 		},
 		timestampColumn<Experience>("createdAt", m.created(), formatDate),

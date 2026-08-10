@@ -20,17 +20,6 @@ export const experienceSchema = z.object({
 		.trim()
 		.min(1, m.validation_required())
 		.max(10000, m.validation_max_length({ count: 10000 })),
-	durationMinutes: z
-		.string()
-		.min(1, m.validation_required())
-		.transform(Number)
-		.pipe(
-			z
-				.number()
-				.int()
-				.min(1, m.validation_min_value({ count: 1 }))
-				.max(14400, m.validation_max_value({ count: 14400 })),
-		),
 	bookingCutoffHours: z
 		.string()
 		.min(1, m.validation_required())

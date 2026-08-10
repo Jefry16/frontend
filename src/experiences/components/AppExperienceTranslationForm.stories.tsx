@@ -17,7 +17,6 @@ const CANONICAL: Experience = {
 	thumbnailUrl: null,
 	mediaIds: [],
 	galleryUrls: [],
-	durationMinutes: 150,
 	bookingCutoffHours: 24,
 	published: true,
 	createdBy: "u-1",

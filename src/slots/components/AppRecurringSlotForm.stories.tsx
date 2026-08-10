@@ -29,7 +29,6 @@ const meta = {
 	args: {
 		tourOperatorId: "op-1",
 		experienceId: "e-1",
-		durationMinutes: 150,
 		audiences: AUDIENCES,
 	},
 	decorators: [

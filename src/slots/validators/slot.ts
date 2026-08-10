@@ -91,14 +91,6 @@ export type RecurringSlotFields = z.output<typeof recurringSlotSchema>;
 export type SingleSlotFormData = z.input<typeof singleSlotSchema>;
 export type SingleSlotFields = z.output<typeof singleSlotSchema>;
 
-/** "18:00" + 150 min → "20:30", wrapping past midnight. */
-export const addMinutes = (time: string, minutes: number): string => {
-	if (!TIME.test(time)) return "";
-	const [h = 0, mn = 0] = time.split(":").map(Number);
-	const total = (h * 60 + mn + minutes) % (24 * 60);
-	return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
-};
-
 /** End at or before start means the departure ends the NEXT day. */
 export const rollsToNextDay = (startTime: string, endTime: string): boolean =>
 	TIME.test(startTime) && TIME.test(endTime) && endTime <= startTime;

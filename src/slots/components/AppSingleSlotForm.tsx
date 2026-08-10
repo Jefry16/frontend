@@ -8,20 +8,19 @@ import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppTimeField } from "#/shared/components/AppTimeField";
 import { useOperatorToday } from "#/tour-operator";
 import { useSingleSlotForm } from "../hooks/use-single-slot-form";
-import { addMinutes, rollsToNextDay } from "../validators/slot";
+import { rollsToNextDay } from "../validators/slot";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";
 
-// An end at or before the start means the departure runs past midnight: it is
-// flagged inline, and the payload rolls the end date forward.
+// The operator sets both times. An end at or before the start means the
+// departure runs past midnight: flagged inline, and the payload rolls the end
+// date forward.
 export const AppSingleSlotForm = ({
 	tourOperatorId,
 	experienceId,
-	durationMinutes,
 	audiences,
 }: {
 	tourOperatorId: string;
 	experienceId: string;
-	durationMinutes: number;
 	audiences: Audience[];
 }) => {
 	const operatorToday = useOperatorToday();
@@ -59,22 +58,7 @@ export const AppSingleSlotForm = ({
 							)}
 						</form.Field>
 					</div>
-					<form.Field
-						name="startTime"
-						listeners={{
-							onChange: ({ value }) => {
-								// dontUpdateMeta, so the prefill never counts as the user
-								// having edited the end themselves.
-								if (!form.getFieldMeta("endTime")?.isTouched) {
-									form.setFieldValue(
-										"endTime",
-										addMinutes(value as string, durationMinutes),
-										{ dontUpdateMeta: true },
-									);
-								}
-							},
-						}}
-					>
+					<form.Field name="startTime">
 						{(field) => (
 							<AppTimeField field={field} label={m.start_time()} required />
 						)}

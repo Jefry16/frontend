@@ -97,7 +97,6 @@ const FIELD_LABELS: Record<string, () => string> = {
 	featured: m.featured,
 	mediaIds: m.media,
 	thumbnailMediaId: m.thumbnail,
-	durationMinutes: m.duration_minutes,
 	bookingCutoffHours: m.booking_cutoff_hours,
 	published: m.published,
 	status: m.status,

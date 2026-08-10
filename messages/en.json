@@ -105,7 +105,6 @@
 	"back_to_experiences": "Back to experiences",
 	"description": "Description",
 	"long_description": "Full description",
-	"duration_minutes": "Duration (minutes)",
 	"booking_cutoff_hours": "Booking cutoff (hours)",
 	"experience_description_hint": "A short summary shown on cards and in search.",
 	"translation": "Translation",

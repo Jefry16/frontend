@@ -136,14 +136,12 @@ export const AppAvailabilityEditor = ({
 									<AppRecurringSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										durationMinutes={experience.durationMinutes}
 										audiences={audiences.rows}
 									/>
 								) : (
 									<AppSingleSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										durationMinutes={experience.durationMinutes}
 										audiences={audiences.rows}
 									/>
 								)}

@@ -22,7 +22,6 @@ type FieldName =
 	| "name"
 	| "description"
 	| "longDescription"
-	| "durationMinutes"
 	| "bookingCutoffHours"
 	| "featured"
 	| "thumbnailMediaId"
@@ -32,7 +31,6 @@ const VALID: Partial<Record<FieldName, unknown>> = {
 	name: "Sunset Sailing",
 	description: "An evening on the water",
 	longDescription: "<p>Longer</p>",
-	durationMinutes: "150",
 	bookingCutoffHours: "24",
 };
 
@@ -70,19 +68,16 @@ const created = (body: ReturnType<typeof vi.fn>) =>
 describe("useExperienceForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// Both come from text inputs and both are integer columns; the schema's
-	// transform is the only thing converting them.
-	it("converts the duration and cutoff from strings to numbers", async () => {
+	// The cutoff comes from a text input and the column is an integer; the
+	// schema's transform is the only thing converting it.
+	it("converts the cutoff from a string to a number", async () => {
 		const body = vi.fn();
 		server.use(created(body));
 		const { result } = render();
 
 		await submit(result.current.form, VALID);
 
-		expect(body.mock.calls[0][0]).toMatchObject({
-			durationMinutes: 150,
-			bookingCutoffHours: 24,
-		});
+		expect(body.mock.calls[0][0]).toMatchObject({ bookingCutoffHours: 24 });
 	});
 
 	// The media refs live in the form like any other field, so they must reach
@@ -104,18 +99,16 @@ describe("useExperienceForm", () => {
 		});
 	});
 
-	// The backend rejects a duration of 0, so the form does too — an opaque 422
-	// is worse than a message beside the field.
+	// An opaque 422 is worse than a message beside the field.
 	it.each([
-		"0",
 		"-5",
 		"abc",
-	])("rejects the duration %s before the network", async (durationMinutes) => {
+	])("rejects the cutoff %s before the network", async (bookingCutoffHours) => {
 		const body = vi.fn();
 		server.use(created(body));
 		const { result } = render();
 
-		await submit(result.current.form, { ...VALID, durationMinutes });
+		await submit(result.current.form, { ...VALID, bookingCutoffHours });
 
 		expect(body).not.toHaveBeenCalled();
 	});
