@@ -52,7 +52,7 @@ for this repo lives here.
 ## Stack
 
 - **React 19** + **TanStack Start** (SPA mode — static prerendered shell + client bundle,
-  hosted on Cloudflare Pages; no SSR server) + **TanStack Router** (file-based routing).
+  no SSR server) + **TanStack Router** (file-based routing).
 - **TanStack Query** for server state. **Vite 7** build.
 - **Tailwind CSS 4** (`@tailwindcss/vite`) + **shadcn/ui** primitives (`components/ui/`,
   style `radix-nova`, `radix-ui` + `lucide-react`). Design tokens live in `src/styles.css`.
@@ -156,8 +156,9 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
 - **Tests** fail on any unhandled request (`onUnhandledRequest: "error"`); register MSW
   handlers in `src/test/handlers.ts`. Render with `renderWithProviders` from `test/test-utils`.
 
-## Deploy
+## CI
 
-CI (`.github/workflows/deploy.yml`): PRs/pushes to `staging` run typecheck · depcheck ·
-tests; a green push to `staging` deploys to the `vointika-admin-staging` Cloudflare Pages
-project. Production is tag-gated and disabled until the prod project exists.
+`.github/workflows/ci.yml` runs the full gate set — typecheck · check · depcheck ·
+tests · build — on every push and PR to `staging`. **There is no deploy step**: the
+hosting target is undecided. `build:staging` / `build:production` still produce the
+mode-specific bundles, so whatever host is chosen has something to upload.

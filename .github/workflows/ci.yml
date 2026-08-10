@@ -1,0 +1,44 @@
+name: CI
+
+# Every push & PR to staging runs the full gate set. There is no deploy step —
+# the hosting target is undecided, and a workflow that half-ships is worse than
+# one that only verifies.
+#
+# No secrets are needed: VITE_* values are public and baked in at build time.
+
+on:
+  push:
+    branches: [staging]
+  pull_request:
+    branches: [staging]
+
+# A newer push to the same branch cancels the in-flight run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify (typecheck · check · depcheck · tests · build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # paraglide/ is generated (not committed) — compile it so the i18n imports
+      # (`#/paraglide/messages`) resolve for tsc, depcheck and vitest.
+      - run: pnpm paraglide:compile
+
+      - run: pnpm typecheck
+      - run: pnpm check
+      - run: pnpm depcheck
+      - run: pnpm test
+      - run: pnpm build

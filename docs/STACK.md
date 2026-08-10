@@ -23,9 +23,9 @@ node -p "require('./node_modules/<pkg>/package.json').version"
 | `@tanstack/react-router` | 1.170.18 | file-based routing, the app's navigation spine | https://tanstack.com/router/latest/docs/framework/react/overview |
 | `@tanstack/router-plugin` | 1.168.23 | Vite plugin that generates `routeTree.gen.ts` | https://tanstack.com/router/latest/docs/framework/react/routing/file-based-routing |
 | `@tanstack/react-start` | 1.168.32 | app shell / build; we run **SPA mode** (prerendered shell, no SSR server) | https://tanstack.com/start/latest/docs/framework/react/overview |
-| ↳ SPA mode | — | our hosting model (static shell on Cloudflare Pages) | https://tanstack.com/start/latest/docs/framework/react/guide/spa-mode |
+| ↳ SPA mode | — | our hosting model (static shell, no SSR server) | https://tanstack.com/start/latest/docs/framework/react/guide/spa-mode |
 | ↳ Static prerendering | — | the prerender options passed in `vite.config.ts` | https://tanstack.com/start/latest/docs/framework/react/guide/static-prerendering |
-| ↳ Hosting | — | Cloudflare Pages deploy target | https://tanstack.com/start/latest/docs/framework/react/guide/hosting |
+| ↳ Hosting | — | what a static host has to serve | https://tanstack.com/start/latest/docs/framework/react/guide/hosting |
 
 ## Data · Forms · Validation
 
