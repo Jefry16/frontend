@@ -23,5 +23,22 @@ export default defineConfig({
 			VITE_API_URL: "http://localhost:8080/api",
 			VITE_STOREFRONT_BASE_DOMAIN: "localhost:5173",
 		},
+		// A map of what is untested, never a score — nothing gates on it, because
+		// a covered line and a checked line are different things. docs/TESTING.md
+		// has the three tests that proved that here.
+		coverage: {
+			provider: "v8",
+			reporter: ["text-summary", "html"],
+			include: ["src/**/*.ts", "src/**/*.tsx"],
+			exclude: [
+				"src/components/ui/**",
+				"src/paraglide/**",
+				"src/dev/**",
+				"src/test/**",
+				"src/routeTree.gen.ts",
+				"**/*.stories.tsx",
+				"**/*.test.*",
+			],
+		},
 	},
 });

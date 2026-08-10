@@ -20,6 +20,7 @@
     "deploy:production": "pnpm build:production && wrangler pages deploy dist/client --project-name vointika-admin",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
