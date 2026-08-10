@@ -7,14 +7,6 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { Slot } from "../types";
 
-// The mutating actions on a single slot (all ADMIN+): cancel (terminal, 409 if
-// already) and edit per-tier capacity (below booked → 422). Each returns the
-// refreshed slot — written straight into the detail cache — and invalidates the
-// list.
-//
-// No status toggle: SOLD_OUT is derived from bookings at checkout, so a
-// hand-set flag would disagree with the derived one the first time a
-// cancellation frees a seat.
 export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -25,8 +17,6 @@ export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.slots(tourOperatorId),
 		});
-		// Cancel / status / capacity all append audit entries — refresh the
-		// trail (this page's own Activity timeline included).
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});
