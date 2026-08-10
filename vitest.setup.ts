@@ -39,6 +39,15 @@ class NoopIntersectionObserver implements IntersectionObserver {
 }
 vi.stubGlobal("IntersectionObserver", NoopIntersectionObserver);
 
+// jsdom implements no Pointer Capture and no scrollIntoView, and Radix Select
+// calls both while opening. Without these a click on any select trigger throws
+// `target.hasPointerCapture is not a function` and the listbox never mounts —
+// which makes every select in the app untestable, not just one.
+Element.prototype.hasPointerCapture ??= () => false;
+Element.prototype.setPointerCapture ??= () => undefined;
+Element.prototype.releasePointerCapture ??= () => undefined;
+Element.prototype.scrollIntoView ??= () => undefined;
+
 beforeAll(() => {
 	server.listen({ onUnhandledRequest: "error" });
 });
