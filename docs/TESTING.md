@@ -72,7 +72,34 @@ No Stryker. `sed` and a restore have caught everything so far, and a mutation
 harness is a dependency to keep true (LAW §2.4). Add one when something manual
 cannot reach.
 
-## 4. Coverage
+## 4. The smoke run — what the suite cannot see
+
+```bash
+pnpm smoke                # every flow
+pnpm smoke experiences    # only flows whose name matches
+```
+
+Drives the real admin in a real browser against a running backend, and fails on
+any 4xx, any thrown error, any console error. **Not in CI** — it needs the
+backend, Postgres and the dev seed.
+
+It exists because of a defect the 304-test suite could not have caught. Every
+experience save was returning 422 for a missing `startingPrice`, and the suite
+was green throughout: it asserts the payload the form *builds*, and the form was
+perfectly self-consistent while disagreeing with the API. Both sides coherent,
+both sides wrong about each other. Nothing that stubs the network can see that.
+
+**Opening a page proves it renders; submitting proves the payload is one the API
+accepts.** The second is the half that broke, so every edit flow saves.
+
+**Run it after any change to a request or response shape** — on either side of
+the repo boundary. That is the moment the two can drift, and drift is the only
+thing this catches that the suite does not.
+
+Verified against the real defect: removing `startingPrice` from the payload
+again turns `experience edit` red with the 422, and the run exits non-zero.
+
+## 5. Coverage
 
 ```bash
 pnpm test:coverage      # text summary + coverage/index.html
@@ -96,7 +123,7 @@ points — hooks, validators, the interceptor — while the untested bulk is JSX
 single number would read as alarming and mean nothing. If branches ever fall
 *below* statements, the suite has started testing rendering instead of logic.
 
-## 5. Mechanics
+## 6. Mechanics
 
 - `renderWithProviders` / `wrapperWithProviders` from `#/test/test-utils`.
 - `renderActions` from `#/test/actions` for a `use-*-actions` hook — it records
