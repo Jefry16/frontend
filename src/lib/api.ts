@@ -16,6 +16,11 @@ const SKIP_AUTH_URLS = new Set([
 	"/auth/resend-verification",
 	"/auth/request-password-reset",
 	"/auth/reset-password",
+	// A 401 here means the CURRENT password was wrong, not that the session
+	// expired — the caller is signed in. Without this the interceptor refreshes
+	// and retries, sending the attempt twice and rotating the refresh token to
+	// no purpose.
+	"/auth/change-password",
 ]);
 
 let onAuthExpired: (() => void) | null = null;
