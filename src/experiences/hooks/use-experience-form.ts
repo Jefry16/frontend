@@ -76,10 +76,6 @@ export const useExperienceForm = (
 				? String(experience.bookingCutoffHours)
 				: "24",
 			featured: experience?.featured ?? false,
-			highlights: experience?.highlights ?? [],
-			included: experience?.included ?? [],
-			notIncluded: experience?.notIncluded ?? [],
-			tags: experience?.tags ?? [],
 			thumbnailMediaId: experience?.thumbnailMediaId ?? null,
 			mediaIds: experience?.mediaIds ?? [],
 		} as ExperienceFormData,

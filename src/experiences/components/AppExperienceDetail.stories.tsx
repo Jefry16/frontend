@@ -18,10 +18,6 @@ const EXPERIENCE: Experience = {
 	longDescription:
 		"A relaxed two-and-a-half hour paddle timed for golden hour. We launch from the old harbour, hug the cliffs, and pause on a quiet cove for photos before returning under the first stars.",
 	featured: true,
-	tags: ["water", "sunset", "nature"],
-	included: ["Kayak & paddle", "Life jacket", "Local guide"],
-	notIncluded: ["Hotel pickup", "Food"],
-	highlights: ["Golden-hour light", "Small groups (max 8)", "Hidden cove stop"],
 	thumbnailMediaId: null,
 	thumbnailUrl: null,
 	mediaIds: [],

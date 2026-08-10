@@ -17,10 +17,6 @@ const EXPERIENCE: Experience = {
 	longDescription:
 		"A relaxed two-and-a-half hour paddle timed for golden hour.",
 	featured: true,
-	tags: ["water", "sunset"],
-	included: ["Kayak & paddle", "Life jacket"],
-	notIncluded: ["Hotel pickup"],
-	highlights: ["Golden-hour light", "Small groups"],
 	thumbnailMediaId: null,
 	thumbnailUrl: null,
 	mediaIds: [],

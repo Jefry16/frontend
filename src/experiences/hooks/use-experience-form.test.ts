@@ -25,10 +25,6 @@ type FieldName =
 	| "durationMinutes"
 	| "bookingCutoffHours"
 	| "featured"
-	| "highlights"
-	| "included"
-	| "notIncluded"
-	| "tags"
 	| "thumbnailMediaId"
 	| "mediaIds";
 
@@ -91,22 +87,18 @@ describe("useExperienceForm", () => {
 
 	// The media refs live in the form like any other field, so they must reach
 	// the payload — the picker writes them, nothing else does.
-	it("carries the media refs and content lists through", async () => {
+	it("carries the media refs through", async () => {
 		const body = vi.fn();
 		server.use(created(body));
 		const { result } = render();
 
 		await submit(result.current.form, {
 			...VALID,
-			highlights: ["Sunset", "Small group"],
-			tags: ["sailing"],
 			thumbnailMediaId: "m-1",
 			mediaIds: ["m-1", "m-2"],
 		});
 
 		expect(body.mock.calls[0][0]).toMatchObject({
-			highlights: ["Sunset", "Small group"],
-			tags: ["sailing"],
 			thumbnailMediaId: "m-1",
 			mediaIds: ["m-1", "m-2"],
 		});
