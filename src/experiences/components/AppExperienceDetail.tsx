@@ -208,6 +208,9 @@ const ExperienceView = ({
 								)}
 							</div>
 							<dl className="grid grid-cols-2 gap-4">
+								<AppDetailField label={m.starting_price()}>
+									{experience.startingPrice}
+								</AppDetailField>
 								<AppDetailField label={m.booking_cutoff()}>
 									{`${experience.bookingCutoffHours}h`}
 								</AppDetailField>

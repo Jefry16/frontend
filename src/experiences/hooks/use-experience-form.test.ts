@@ -23,6 +23,7 @@ type FieldName =
 	| "description"
 	| "longDescription"
 	| "bookingCutoffHours"
+	| "startingPrice"
 	| "featured"
 	| "thumbnailMediaId"
 	| "mediaIds";
@@ -32,6 +33,7 @@ const VALID: Partial<Record<FieldName, unknown>> = {
 	description: "An evening on the water",
 	longDescription: "<p>Longer</p>",
 	bookingCutoffHours: "24",
+	startingPrice: "95",
 };
 
 const render = () => {
@@ -68,16 +70,19 @@ const created = (body: ReturnType<typeof vi.fn>) =>
 describe("useExperienceForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// The cutoff comes from a text input and the column is an integer; the
-	// schema's transform is the only thing converting it.
-	it("converts the cutoff from a string to a number", async () => {
+	// Both come from text inputs; the columns are numeric. The schema's
+	// transform is the only thing converting them.
+	it("converts the cutoff and price from strings to numbers", async () => {
 		const body = vi.fn();
 		server.use(created(body));
 		const { result } = render();
 
 		await submit(result.current.form, VALID);
 
-		expect(body.mock.calls[0][0]).toMatchObject({ bookingCutoffHours: 24 });
+		expect(body.mock.calls[0][0]).toMatchObject({
+			bookingCutoffHours: 24,
+			startingPrice: 95,
+		});
 	});
 
 	// The media refs live in the form like any other field, so they must reach
@@ -97,6 +102,24 @@ describe("useExperienceForm", () => {
 			thumbnailMediaId: "m-1",
 			mediaIds: ["m-1", "m-2"],
 		});
+	});
+
+	// The column's own check is `starting_price > 0`, so a zero is refused by
+	// the database itself. Catching it here beats an opaque 422 on save — which
+	// is what an operator got for every edit until this field existed.
+	it.each([
+		"0",
+		"-1",
+		"abc",
+		"",
+	])("rejects the starting price %s before the network", async (startingPrice) => {
+		const body = vi.fn();
+		server.use(created(body));
+		const { result } = render();
+
+		await submit(result.current.form, { ...VALID, startingPrice });
+
+		expect(body).not.toHaveBeenCalled();
 	});
 
 	// An opaque 422 is worse than a message beside the field.

@@ -73,6 +73,16 @@ export const AppExperienceForm = ({
 					)}
 				</form.Field>
 				<div className="grid gap-4 sm:grid-cols-2">
+					<form.Field name="startingPrice">
+						{(field) => (
+							<AppField
+								field={field}
+								label={m.starting_price()}
+								description={m.starting_price_hint()}
+								required
+							/>
+						)}
+					</form.Field>
 					<form.Field name="bookingCutoffHours">
 						{(field) => (
 							<AppField
