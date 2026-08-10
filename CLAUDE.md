@@ -116,7 +116,7 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
 - **API errors:** the backend returns `{ status, error, message, code?, timestamp }`.
   Use `apiErrorMessage()` for the human string, and **never branch on `message`** — it is
   prose and it changes. A specific cause branches on the HTTP status, which is what all
-  twelve sites that need one do (`error.response?.status === 409` → "that handle is
+  sixteen sites that need one do (`error.response?.status === 409` → "that handle is
   taken"). `code` is on the wire but nothing reads it, so there is no helper and the type
   in `lib/api-error.ts` omits it; add both together the first time a cause needs it.
   **Where it surfaces follows the hook's kind; whether it's specific follows the failure.**

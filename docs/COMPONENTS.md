@@ -161,8 +161,8 @@ second shape:
   below: `AppField` (text/email/password) · `AppTextareaField` · `AppSelectField` ·
   `AppCheckboxField` (one boolean) · `AppCheckboxGroupField` (membership of an array —
   supported languages, recurring weekdays) · `AppDateField` · `AppTimeField` ·
-  `AppNumberField` · `AppPasswordField` · `AppArrayInput`. (`AppNumericInput` is the bare numeric control the
-  number/price fields build on — not a form field itself.)
+  `AppPasswordField`. (`AppNumericInput` is the bare gated numeric control the price and
+  capacity inputs build on — not a form field itself.)
 - `AppFormCard` — the card + `<form>` + banners + footer above. **`onSubmit` takes
   `form.handleSubmit` by reference** (form-core binds it in the `FormApi` constructor), at
   every one of the eighteen call sites — **no form validates and then mutates by hand.**
@@ -306,8 +306,8 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   `AppTextFilter` · `AppSetFilter` ·
   `AppAsyncSetFilter` · `AppFilterInput`
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
-  `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppNumberField` ·
-  `AppPasswordField` · `AppArrayInput` · `AppNumericInput` · `AppFormCard` (the shell) ·
+  `AppCheckboxField` · `AppDateField` · `AppTimeField` ·
+  `AppPasswordField` · `AppNumericInput` · `AppFormCard` (the shell) ·
   `AppFormActions` (the footer)
 - *States:* also `AppLoadingBlock` — the centred spinner for a short swap inside painted
   chrome (a locale tab, a card body). Nine copies of it sat across the translation editors.
@@ -328,7 +328,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 ·
 `pickup-locations` 4 · `contact` 2 · `media` 5.
 
-**Every `App*` component ships a story — 145 of 145 — and `src/shared/story-coverage.test.ts`
+**Every `App*` component ships a story — 149 of 149 — and `src/shared/story-coverage.test.ts`
 fails the build if one does not.** The four data-table internals that carried this debt since
 July (`AppDataTable` · `AppDataTableHeader` · `AppAsyncSetFilter` · `AppFilterInput`) were
 written before the gate landed, so its allow-list is **empty**. The two that need a real
