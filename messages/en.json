@@ -347,8 +347,6 @@
 	"status_available": "Available",
 	"status_sold_out": "Sold out",
 	"status_cancelled": "Cancelled",
-	"mark_sold_out": "Mark sold out",
-	"mark_available": "Mark available",
 	"cancel_slot": "Cancel slot",
 	"cancel_slot_title": "Cancel this slot?",
 	"cancel_slot_body": "The departure is cancelled permanently and can no longer be booked. This cannot be undone.",

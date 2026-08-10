@@ -1,4 +1,4 @@
-import { Ban, CalendarDays, Eye, EyeOff, Pencil } from "lucide-react";
+import { Ban, CalendarDays, Pencil } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
@@ -38,7 +38,7 @@ import { useSlotActions } from "../hooks/use-slot-actions";
 import { AppEditCapacityDialog } from "./AppEditCapacityDialog";
 
 // The departure detail: schedule facts + the per-tier pricing table, with the
-// slot actions — edit capacity (dialog), mark sold out / available, and cancel
+// slot actions — edit capacity (dialog) and cancel
 // (terminal, destructive confirm). A cancelled slot offers no actions.
 export const AppSlotDetail = ({
 	tourOperatorId,
@@ -48,10 +48,7 @@ export const AppSlotDetail = ({
 	slotId: string;
 }) => {
 	const query = useSlot(tourOperatorId, slotId);
-	const { cancel, setStatus, setCapacities } = useSlotActions(
-		tourOperatorId,
-		slotId,
-	);
+	const { cancel, setCapacities } = useSlotActions(tourOperatorId, slotId);
 	const [capacityOpen, setCapacityOpen] = useState(false);
 
 	const backLink = (
@@ -89,21 +86,6 @@ export const AppSlotDetail = ({
 								icon: Pencil,
 								onSelect: () => setCapacityOpen(true),
 							},
-							slot.status === "AVAILABLE"
-								? {
-										id: "sold-out",
-										label: m.mark_sold_out(),
-										icon: EyeOff,
-										pending: setStatus.isPending,
-										onSelect: () => setStatus.mutate("SOLD_OUT"),
-									}
-								: {
-										id: "available",
-										label: m.mark_available(),
-										icon: Eye,
-										pending: setStatus.isPending,
-										onSelect: () => setStatus.mutate("AVAILABLE"),
-									},
 							{
 								id: "cancel",
 								label: m.cancel_slot(),

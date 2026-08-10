@@ -5,12 +5,16 @@ import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import type { Slot, SlotStatus } from "../types";
+import type { Slot } from "../types";
 
 // The mutating actions on a single slot (all ADMIN+): cancel (terminal, 409 if
-// already), set status (AVAILABLE ⇄ SOLD_OUT), edit per-tier capacity (below
-// booked → 422). Each returns the refreshed slot — written straight into the
-// detail cache — and invalidates the list.
+// already) and edit per-tier capacity (below booked → 422). Each returns the
+// refreshed slot — written straight into the detail cache — and invalidates the
+// list.
+//
+// No status toggle: SOLD_OUT is derived from bookings at checkout, so a
+// hand-set flag would disagree with the derived one the first time a
+// cancellation frees a seat.
 export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -37,16 +41,6 @@ export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 
-	const setStatus = useMutation<Slot, AxiosError, SlotStatus>({
-		mutationFn: async (status) =>
-			(await authApi.patch<Slot>(base, { status })).data,
-		onSuccess: (slot) => {
-			applyRefreshed(slot);
-			toast.updated(m.availability());
-		},
-		onError: (error) => toast.error(apiErrorMessage(error)),
-	});
-
 	const setCapacities = useMutation<
 		Slot,
 		AxiosError,
@@ -61,5 +55,5 @@ export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 
-	return { cancel, setStatus, setCapacities };
+	return { cancel, setCapacities };
 };
