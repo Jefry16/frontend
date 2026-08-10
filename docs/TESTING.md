@@ -76,6 +76,7 @@ cannot reach.
 
 ```bash
 pnpm test:coverage      # text summary + coverage/index.html
+pnpm test:ui            # browsable run report, watch mode
 ```
 
 Configured in `vitest.config.ts`, excluding vendored `ui/`, generated output,
