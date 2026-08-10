@@ -33,9 +33,16 @@ export const useAllPages = <T>(
 		getNextPageParam: (last) => last.nextCursor,
 	});
 
+	// Driven by the cursor rather than by `hasNextPage`, because a boolean that
+	// returns to a value it already held is not a change React can see: between
+	// page two and page three both flags read exactly as they did before page
+	// two, the effect never re-runs, and the list stalls at two pages with
+	// `isPending` stuck true. Each page carries a distinct cursor, so this fires
+	// once per page — and a server that repeats one stops rather than spinning.
+	const nextCursor = data?.pages.at(-1)?.nextCursor;
 	useEffect(() => {
-		if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-	}, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+		if (nextCursor && !isFetchingNextPage) fetchNextPage();
+	}, [nextCursor, isFetchingNextPage, fetchNextPage]);
 
 	return {
 		rows: data?.pages.flatMap((p) => p.data) ?? [],
