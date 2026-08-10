@@ -108,3 +108,11 @@ single number would read as alarming and mean nothing. If branches ever fall
   unauthenticated.
 - `src/test/a11y.ts` is a floor, not a substitute — it covers structure and is
   blind to whether state is announced.
+- **A multipart request never resolves under MSW + jsdom.** The handler runs and
+  the request arrives, but the response never reaches axios and the mutation
+  stays pending forever. Measured against one client: JSON resolves in ~20ms, the
+  identical call with `FormData` times out. So an upload hook's `onSuccess` — its
+  invalidations, its toasts, its partial-failure handling — cannot be tested here.
+  What a file causes to be *sent* still can, because the request does arrive, and
+  that is where `use-media-upload.test.ts` stops. Affects every multipart hook:
+  media upload, user avatar, brand images, the SEO og:image.
