@@ -112,17 +112,18 @@ describe("useChangePasswordForm", () => {
 	// A wrong current password is something the operator can act on, so the
 	// reason belongs inline beside the field rather than in a toast.
 	//
-	// The refresh handler is not decoration. `/auth/change-password` is absent
-	// from SKIP_AUTH_URLS, so its 401 — which means "wrong password", not
-	// "expired session" — sends the interceptor off to refresh and retry before
-	// the message can surface. Without a session here the test would assert on
-	// the refresh's failure instead of the backend's reason.
-	it("puts a rejected current password inline", async () => {
+	// The attempt count is the point: /auth/change-password is in SKIP_AUTH_URLS,
+	// so its 401 — which means "wrong password", not "expired session" — is passed
+	// straight through. Without that entry the interceptor refreshes and retries,
+	// sending the attempt twice and rotating the refresh token for nothing.
+	it("puts a rejected current password inline, without retrying", async () => {
 		let attempts = 0;
+		const refreshed = vi.fn();
 		server.use(
-			http.post(`${API}/auth/refresh`, () =>
-				HttpResponse.json({ accessToken: "fresh" }),
-			),
+			http.post(`${API}/auth/refresh`, () => {
+				refreshed();
+				return HttpResponse.json({ accessToken: "fresh" });
+			}),
 			http.post(URL, () => {
 				attempts += 1;
 				return HttpResponse.json(
@@ -140,7 +141,7 @@ describe("useChangePasswordForm", () => {
 		await submit(result.current.form, VALID);
 
 		expect(result.current.errorMessage).toBe("Current password is incorrect");
-		// Twice, not once: the pointless refresh-and-retry described above.
-		expect(attempts).toBe(2);
+		expect(attempts).toBe(1);
+		expect(refreshed).not.toHaveBeenCalled();
 	});
 });
