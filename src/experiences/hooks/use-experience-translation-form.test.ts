@@ -20,23 +20,13 @@ const EXP = "exp-1";
 const LOCALE = "es";
 const URL = `${API}/tour-operators/${OP}/experiences/${EXP}/translations/${LOCALE}`;
 
-type FieldName =
-	| "name"
-	| "description"
-	| "longDescription"
-	| "highlights"
-	| "included"
-	| "notIncluded"
-	| "handle";
+type FieldName = "name" | "description" | "longDescription" | "handle";
 
 const UNTRANSLATED: Record<string, unknown> = {
 	locale: LOCALE,
 	name: null,
 	description: null,
 	longDescription: null,
-	highlights: null,
-	included: null,
-	notIncluded: null,
 	handle: null,
 };
 
@@ -96,23 +86,6 @@ describe("useExperienceTranslationForm", () => {
 			description: null,
 			handle: null,
 		});
-	});
-
-	// An empty ARRAY is not an empty string — it goes as-is, and the backend
-	// stores null so the canonical list serves the locale.
-	it("sends an empty list as an array, not as null", async () => {
-		const body = vi.fn();
-		server.use(put(body));
-		const { result } = render();
-
-		await submit(result.current.form, {
-			name: "Paseo",
-			highlights: [],
-			included: ["Bebidas"],
-		});
-
-		expect(body.mock.calls[0][0].highlights).toEqual([]);
-		expect(body.mock.calls[0][0].included).toEqual(["Bebidas"]);
 	});
 
 	it("rejects a localized handle that is not slug-shaped", async () => {

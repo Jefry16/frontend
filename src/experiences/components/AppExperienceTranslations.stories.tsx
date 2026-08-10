@@ -17,10 +17,6 @@ const EXPERIENCE: Experience = {
 	longDescription:
 		"A relaxed two-and-a-half hour paddle timed for golden hour.",
 	featured: true,
-	tags: ["water"],
-	included: ["Kayak & paddle"],
-	notIncluded: ["Hotel pickup"],
-	highlights: ["Golden-hour light"],
 	thumbnailMediaId: null,
 	thumbnailUrl: null,
 	mediaIds: [],
@@ -37,9 +33,6 @@ const ES: ExperienceTranslation = {
 	name: "Tour en kayak al atardecer",
 	description: null,
 	longDescription: null,
-	highlights: null,
-	included: null,
-	notIncluded: null,
 	handle: null,
 };
 

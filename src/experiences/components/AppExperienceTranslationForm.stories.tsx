@@ -13,10 +13,6 @@ const CANONICAL: Experience = {
 	longDescription:
 		"A relaxed two-and-a-half hour paddle timed for golden hour.",
 	featured: true,
-	tags: ["water", "sunset"],
-	included: ["Kayak & paddle", "Life jacket"],
-	notIncluded: ["Hotel pickup"],
-	highlights: ["Golden-hour light", "Small groups"],
 	thumbnailMediaId: null,
 	thumbnailUrl: null,
 	mediaIds: [],
@@ -33,9 +29,6 @@ const EMPTY: ExperienceTranslation = {
 	name: null,
 	description: null,
 	longDescription: null,
-	highlights: null,
-	included: null,
-	notIncluded: null,
 	handle: null,
 };
 
@@ -44,9 +37,6 @@ const TRANSLATED: ExperienceTranslation = {
 	name: "Tour en kayak al atardecer",
 	description: "Rema por la bahía al caer el sol, con un guía local.",
 	longDescription: null,
-	highlights: ["Luz dorada", "Grupos pequeños"],
-	included: null,
-	notIncluded: null,
 	handle: "tour-kayak-atardecer",
 };
 

@@ -22,30 +22,13 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { EmptyValue } from "#/shared/components/EmptyValue";
 import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { formatDuration, statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";
 import type { Experience } from "../types";
 
-// A labelled bulleted list, or a dash when empty.
-const AppList = ({ label, items }: { label: string; items: string[] }) => (
-	<AppDetailField label={label}>
-		{items.length > 0 ? (
-			<ul className="list-disc space-y-1 pl-4 text-sm font-normal">
-				{items.map((item) => (
-					<li key={item}>{item}</li>
-				))}
-			</ul>
-		) : (
-			<EmptyValue />
-		)}
-	</AppDetailField>
-);
-
-// Read-only experience detail (media, publish state, facts, copy, inclusions)
-// plus a Publish/Unpublish toggle via the shared action pattern. Owns its fetch
+// Read-only experience detail plus a Publish/Unpublish toggle via the shared action pattern. Owns its fetch
 // (skeleton / 404 empty state). The list's name column links here.
 export const AppExperienceDetail = ({
 	tourOperatorId,
@@ -267,27 +250,6 @@ const ExperienceView = ({
 						</CardContent>
 					</Card>
 				)}
-
-				<Card>
-					<CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-						<AppList label={m.highlights()} items={experience.highlights} />
-						<AppList label={m.whats_included()} items={experience.included} />
-						<AppList label={m.not_included()} items={experience.notIncluded} />
-						<AppDetailField label={m.tags()}>
-							{experience.tags.length > 0 ? (
-								<div className="flex flex-wrap gap-1.5">
-									{experience.tags.map((tag) => (
-										<AppBadge key={tag} variant="outline">
-											{tag}
-										</AppBadge>
-									))}
-								</div>
-							) : (
-								<EmptyValue />
-							)}
-						</AppDetailField>
-					</CardContent>
-				</Card>
 			</div>
 			<AppMetafieldsCard
 				tourOperatorId={tourOperatorId}

@@ -24,20 +24,11 @@ const handle = z
 	)
 	.transform((v): string | null => (v.length ? v : null));
 
-// AppArrayInput already trims and drops empties, so only the per-item length
-// bound is left to enforce.
-const items = z.array(
-	z.string().max(200, m.validation_max_length({ count: 200 })),
-);
-
 // All optional: a translation may localize some fields and not others.
 export const experienceTranslationSchema = z.object({
 	name: text(200),
 	description: text(500),
 	longDescription: text(10000),
-	highlights: items,
-	included: items,
-	notIncluded: items,
 	handle,
 });
 

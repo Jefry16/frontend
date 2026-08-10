@@ -149,17 +149,10 @@ export const AppExperienceTranslations = ({
 	);
 };
 
-// This resource's rows for AppTranslationSummary. The list fields flatten to a
-// single line — the summary reads, it does not re-render the array editor.
-const list = (v: string[] | null): string | null =>
-	v?.length ? v.join(", ") : null;
-
+// This resource's rows for AppTranslationSummary.
 const experienceFields = (t: ExperienceTranslation): TranslatedField[] => [
 	[m.name(), t.name],
 	[m.slug(), t.handle],
 	[m.description(), t.description],
 	[m.long_description(), t.longDescription],
-	[m.highlights(), list(t.highlights)],
-	[m.whats_included(), list(t.included)],
-	[m.not_included(), list(t.notIncluded)],
 ];

@@ -1,6 +1,5 @@
 import { FieldGroup } from "#/components/ui/field";
 import * as m from "#/paraglide/messages";
-import { AppArrayInput } from "#/shared/components/AppArrayInput";
 import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
@@ -12,7 +11,6 @@ import { AppExperienceMediaSection } from "./AppExperienceMediaSection";
 
 // The experience content form — create (no `experience`) or edit (with one):
 // name, copy, media (thumbnail + gallery via the picker), duration, cutoff,
-// highlights/inclusions/tags (AppArrayInput), and featured.
 export const AppExperienceForm = ({
 	tourOperatorId,
 	experience,
@@ -91,24 +89,6 @@ export const AppExperienceForm = ({
 						)}
 					</form.Field>
 				</div>
-				<form.Field name="highlights">
-					{(field) => <AppArrayInput field={field} label={m.highlights()} />}
-				</form.Field>
-				<div className="grid gap-4 sm:grid-cols-2">
-					<form.Field name="included">
-						{(field) => (
-							<AppArrayInput field={field} label={m.whats_included()} />
-						)}
-					</form.Field>
-					<form.Field name="notIncluded">
-						{(field) => (
-							<AppArrayInput field={field} label={m.not_included()} />
-						)}
-					</form.Field>
-				</div>
-				<form.Field name="tags">
-					{(field) => <AppArrayInput field={field} label={m.tags()} />}
-				</form.Field>
 				<form.Field name="featured">
 					{(field) => (
 						<AppCheckboxField

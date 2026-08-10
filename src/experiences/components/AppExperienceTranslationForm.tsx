@@ -2,7 +2,6 @@ import { Button } from "#/components/ui/button";
 import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
-import { AppArrayInput } from "#/shared/components/AppArrayInput";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
@@ -13,19 +12,10 @@ import type { Experience, ExperienceTranslation } from "../types";
 
 // Whether an overlay localizes anything — decides if "Clear translation" shows.
 const hasTranslation = (t: ExperienceTranslation): boolean =>
-	Boolean(
-		t.name ||
-			t.description ||
-			t.longDescription ||
-			t.handle ||
-			t.highlights?.length ||
-			t.included?.length ||
-			t.notIncluded?.length,
-	);
+	Boolean(t.name || t.description || t.longDescription || t.handle);
 
 // One locale's translation editor. Every field is optional: left blank, the
-// storefront falls back to the canonical experience — shown as the input
-// placeholder (text) or a helper line (lists) so the operator sees the fallback.
+// storefront falls back to the canonical experience, shown as the placeholder.
 export const AppExperienceTranslationForm = ({
 	tourOperatorId,
 	experienceId,
@@ -46,13 +36,6 @@ export const AppExperienceTranslationForm = ({
 			locale,
 			translation,
 		});
-
-	// The canonical list shown under array fields so the operator knows the
-	// fallback when a field is left empty.
-	const canonicalList = (value: string[]): string | undefined =>
-		value.length
-			? m.translation_canonical({ value: value.join(", ") })
-			: undefined;
 
 	return (
 		<AppFormCard
@@ -119,35 +102,6 @@ export const AppExperienceTranslationForm = ({
 						/>
 					)}
 				</form.Field>
-				<form.Field name="highlights">
-					{(field) => (
-						<AppArrayInput
-							field={field}
-							label={m.highlights()}
-							description={canonicalList(canonical.highlights)}
-						/>
-					)}
-				</form.Field>
-				<div className="grid gap-4 sm:grid-cols-2">
-					<form.Field name="included">
-						{(field) => (
-							<AppArrayInput
-								field={field}
-								label={m.whats_included()}
-								description={canonicalList(canonical.included)}
-							/>
-						)}
-					</form.Field>
-					<form.Field name="notIncluded">
-						{(field) => (
-							<AppArrayInput
-								field={field}
-								label={m.not_included()}
-								description={canonicalList(canonical.notIncluded)}
-							/>
-						)}
-					</form.Field>
-				</div>
 			</FieldGroup>
 		</AppFormCard>
 	);

@@ -1,12 +1,8 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// The editable fields of the create/edit form. Bounds mirror the backend value
-// objects: name ≤200, description ≤500, longDescription ≤10000, duration
-// 1–14400 min, cutoff 0–8760 h. Content lists (tags / highlights / inclusions)
-// are edited via AppArrayInput; media refs (thumbnailMediaId + mediaIds) via the
-// media picker — both flow through the form, so the hook no longer carries them.
-const stringList = z.array(z.string().trim().min(1)).default([]);
+// Bounds mirror the backend value objects. Media refs go through the picker but
+// still live in the form, so the parsed value is the whole payload.
 
 export const experienceSchema = z.object({
 	name: z
@@ -47,10 +43,6 @@ export const experienceSchema = z.object({
 				.max(8760, m.validation_max_value({ count: 8760 })),
 		),
 	featured: z.boolean(),
-	highlights: stringList,
-	included: stringList,
-	notIncluded: stringList,
-	tags: stringList,
 	thumbnailMediaId: z.string().nullable(),
 	mediaIds: z.array(z.string()),
 });
