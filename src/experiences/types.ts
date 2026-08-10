@@ -14,6 +14,7 @@ export interface Experience {
 	mediaIds: string[];
 	galleryUrls: string[];
 	bookingCutoffHours: number;
+	startingPrice: number;
 	published: boolean;
 	createdBy: string;
 	createdAt: string;

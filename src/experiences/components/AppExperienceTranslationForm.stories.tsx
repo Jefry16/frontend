@@ -18,6 +18,7 @@ const CANONICAL: Experience = {
 	mediaIds: [],
 	galleryUrls: [],
 	bookingCutoffHours: 24,
+	startingPrice: 95,
 	published: true,
 	createdBy: "u-1",
 	createdAt: "2026-03-01T10:00:00Z",

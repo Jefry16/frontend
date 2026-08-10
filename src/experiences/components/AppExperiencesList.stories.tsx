@@ -18,6 +18,7 @@ const base = {
 	mediaIds: [],
 	galleryUrls: [],
 	bookingCutoffHours: 24,
+	startingPrice: 95,
 	createdBy: "u-1",
 };
 

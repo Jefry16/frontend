@@ -74,6 +74,7 @@ export const useExperienceForm = (
 			bookingCutoffHours: experience
 				? String(experience.bookingCutoffHours)
 				: "24",
+			startingPrice: experience ? String(experience.startingPrice) : "",
 			featured: experience?.featured ?? false,
 			thumbnailMediaId: experience?.thumbnailMediaId ?? null,
 			mediaIds: experience?.mediaIds ?? [],

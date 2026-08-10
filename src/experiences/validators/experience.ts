@@ -31,6 +31,18 @@ export const experienceSchema = z.object({
 				.min(0, m.validation_min_value({ count: 0 }))
 				.max(8760, m.validation_max_value({ count: 8760 })),
 		),
+	// Required, and STRICTLY positive — the column's own check is
+	// `starting_price > 0`, so 0 is rejected by the database, not just disliked.
+	startingPrice: z
+		.string()
+		.min(1, m.validation_required())
+		.transform(Number)
+		.pipe(
+			z
+				.number()
+				.positive(m.validation_min_value({ count: 0 }))
+				.lt(10_000_000_000, m.validation_max_value({ count: 10_000_000_000 })),
+		),
 	featured: z.boolean(),
 	thumbnailMediaId: z.string().nullable(),
 	mediaIds: z.array(z.string()),
