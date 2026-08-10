@@ -1,6 +1,6 @@
 // The contact inbox: shopper-submitted contact-form messages (Operations →
 // Inbox). Read-only content — the write path is the storefront arc's intake
-// endpoint; the admin reads, triages read-state, and deletes.
+// endpoint; the admin reads and deletes.
 
 export interface ContactMessageListItem {
 	id: string;
@@ -9,13 +9,10 @@ export interface ContactMessageListItem {
 	name: string | null;
 	email: string;
 	summary: string;
-	read: boolean;
 	createdAt: string;
 }
 
-// The detail read: the list row plus the verbatim body and when it was read.
+// The detail read: the list row plus the verbatim body.
 export interface ContactMessage extends ContactMessageListItem {
 	content: string;
-	/** When `read` flipped true; null while unread. */
-	readAt: string | null;
 }

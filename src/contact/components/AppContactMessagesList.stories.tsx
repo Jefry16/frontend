@@ -15,7 +15,6 @@ const MESSAGES: ContactMessageListItem[] = [
 		name: "Laura Pérez",
 		email: "laura@example.com",
 		summary: "Do you have child seats on the sunset tour?",
-		read: false,
 		createdAt: "2026-07-28T10:00:00Z",
 	},
 	{
@@ -24,7 +23,6 @@ const MESSAGES: ContactMessageListItem[] = [
 		name: "Tom Baker",
 		email: "tom@example.org",
 		summary: "Group booking for 15 people",
-		read: false,
 		createdAt: "2026-07-27T15:00:00Z",
 	},
 	{
@@ -33,7 +31,6 @@ const MESSAGES: ContactMessageListItem[] = [
 		name: null,
 		email: "ana@example.net",
 		summary: "Gift voucher?",
-		read: true,
 		createdAt: "2026-07-25T09:00:00Z",
 	},
 ];

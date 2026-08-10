@@ -17,22 +17,6 @@ export const useContactMessageActions = (
 	const toast = useAppToast();
 	const base = `/tour-operators/${tourOperatorId}/contact-messages/${messageId}`;
 
-	const invalidate = () => {
-		queryClient.invalidateQueries({
-			queryKey: queryKeys.contactMessage(tourOperatorId, messageId),
-		});
-		queryClient.invalidateQueries({
-			queryKey: queryKeys.contactMessages(tourOperatorId),
-		});
-	};
-
-	const setRead = useMutation<unknown, AxiosError, { read: boolean }>({
-		mutationFn: ({ read }) =>
-			authApi.post(`${base}/${read ? "read" : "unread"}`),
-		onSuccess: invalidate,
-		onError: () => toast.error(m.error()),
-	});
-
 	const remove = useMutation<unknown, AxiosError>({
 		mutationFn: () => authApi.delete(base),
 		onSuccess: () => {
@@ -46,5 +30,5 @@ export const useContactMessageActions = (
 		onError: () => toast.error(m.error()),
 	});
 
-	return { setRead, remove };
+	return { remove };
 };
