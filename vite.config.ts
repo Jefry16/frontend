@@ -16,8 +16,8 @@ const config = defineConfig({
 		tsconfigPaths({ projects: ["./tsconfig.json"] }),
 		tailwindcss(),
 		// SPA mode: the admin is client-only (auth-gated, no server functions), so
-		// build a static shell + client bundle (prerendered index.html) for static
-		// hosting on Cloudflare Pages — no SSR server to run.
+		// build a static shell + client bundle (prerendered index.html) — any
+		// static host will serve it, and there is no SSR server to run.
 		tanstackStart({
 			spa: { enabled: true, prerender: { outputPath: "/index.html" } },
 		}),

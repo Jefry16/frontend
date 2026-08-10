@@ -8,7 +8,8 @@ Cross-repo law and state live one level up, in their own git repo:
 architecture). LAW arrives automatically; **load MAP yourself**.
 
 In this repo: this file is the *context and local calibration*, `docs/COMPONENTS.md`
-the *recipes*, `docs/STACK.md` the *versions and their gotchas*.
+the *recipes*, `docs/STACK.md` the *versions and their gotchas*, `docs/TESTING.md`
+*what earns a test and how we know it works*.
 
 The foundation phase is over — which feature modules exist is answered by `MODULES` in
 `.dependency-cruiser.cjs`, and that list is the source of truth, because a module missing
@@ -23,6 +24,11 @@ from it has no enforced boundaries.
 > the layered architecture, R1 (ui/ is vendored shadcn, never hand-edit) / R2
 > (componentize on the 2nd real use), `App*` naming, styling rules, the forms pattern, and
 > the rule that **every `App*` component ships a `.stories.tsx`** (Storybook is the living inventory).
+>
+> **What earns a test lives in [`docs/TESTING.md`](./docs/TESTING.md)** — the rule
+> (*write a test when the gate can't see it and the screen won't show it*), the tiers,
+> and the reason a test is not real until you have watched it fail against broken source.
+> Coverage is a map, never a score; nothing gates on it.
 
 ## Gates
 
@@ -46,7 +52,7 @@ for this repo lives here.
 ## Stack
 
 - **React 19** + **TanStack Start** (SPA mode — static prerendered shell + client bundle,
-  hosted on Cloudflare Pages; no SSR server) + **TanStack Router** (file-based routing).
+  no SSR server) + **TanStack Router** (file-based routing).
 - **TanStack Query** for server state. **Vite 7** build.
 - **Tailwind CSS 4** (`@tailwindcss/vite`) + **shadcn/ui** primitives (`components/ui/`,
   style `radix-nova`, `radix-ui` + `lucide-react`). Design tokens live in `src/styles.css`.
@@ -150,8 +156,9 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
 - **Tests** fail on any unhandled request (`onUnhandledRequest: "error"`); register MSW
   handlers in `src/test/handlers.ts`. Render with `renderWithProviders` from `test/test-utils`.
 
-## Deploy
+## CI
 
-CI (`.github/workflows/deploy.yml`): PRs/pushes to `staging` run typecheck · depcheck ·
-tests; a green push to `staging` deploys to the `vointika-admin-staging` Cloudflare Pages
-project. Production is tag-gated and disabled until the prod project exists.
+`.github/workflows/ci.yml` runs the full gate set — typecheck · check · depcheck ·
+tests · build — on every push and PR to `staging`. **There is no deploy step**: the
+hosting target is undecided. `build:staging` / `build:production` still produce the
+mode-specific bundles, so whatever host is chosen has something to upload.
