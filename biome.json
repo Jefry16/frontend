@@ -11,6 +11,7 @@
 			"**/src/**/*",
 			"**/.vscode/**/*",
 			"**/vite.config.ts",
+			"**/smoke/**/*",
 			"!**/dist",
 			"!**/coverage",
 			"!**/src/routeTree.gen.ts",
