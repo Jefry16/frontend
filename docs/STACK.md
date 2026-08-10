@@ -73,7 +73,8 @@ node -p "require('./node_modules/<pkg>/package.json').version"
 | `vite-tsconfig-paths` | 5.1.4 | resolves the `#/*` path alias | https://github.com/aleclarson/vite-tsconfig-paths |
 | `typescript` | 5.9.3 | types | https://www.typescriptlang.org/docs/ |
 | `vitest` | 3.2.7 | test runner (jsdom) | https://vitest.dev |
-| `@vitest/coverage-v8` | 3.2.7 | coverage provider (`vitest run --coverage`) | https://vitest.dev/guide/coverage |
+| `@vitest/coverage-v8` | 3.2.7 | coverage provider (`pnpm test:coverage`) | https://vitest.dev/guide/coverage |
+| `@vitest/ui` | 3.2.7 | browsable run report (`pnpm test:ui`) | https://vitest.dev/guide/ui |
 | `@testing-library/react` | 16.3.2 | component/hook rendering in tests | https://testing-library.com/docs/react-testing-library/intro/ |
 | `@testing-library/user-event` | 14.6.1 | user-interaction simulation | https://testing-library.com/docs/user-event/intro/ |
 | `@testing-library/jest-dom` | 6.10.0 | DOM matchers | https://github.com/testing-library/jest-dom |
@@ -117,6 +118,10 @@ node -p "require('./node_modules/<pkg>/package.json').version"
   or a deliberate, noted patch; never hand-fork silently.
 - **`@storybook/tanstack-react`** wraps every story in a memory-backed TanStack Router,
   so stories get router context without booting the app shell.
+- **`@vitest/ui` must track `vitest`'s major.** `pnpm add -D @vitest/ui` resolves to
+  **4.x** while the runner here is **3.2.7**, and pnpm reports it only as an unmet peer
+  — an install that looks like it worked. Pin the range (`@vitest/ui@^3.2.4`) whenever
+  either is touched, and bump the two together.
 - **axe in jsdom is a floor, not a verdict.** Rules needing layout cannot run: jsdom
   reports `scrollHeight`/`clientHeight` as 0, so `scrollable-region-focusable` comes back
   *inapplicable* rather than failing, and `color-contrast` is disabled outright in

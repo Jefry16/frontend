@@ -71,6 +71,8 @@ pnpm typecheck           # tsc --noEmit
 pnpm check               # biome (lint + format)
 pnpm depcheck            # dependency-cruiser boundary rules
 pnpm test                # vitest run
+pnpm test:ui             # browsable run report (watch)
+pnpm test:coverage       # coverage/index.html — a map, not a score
 ```
 
 The backend must be running on `:8080` (see `VITE_API_URL` in `.env`).
