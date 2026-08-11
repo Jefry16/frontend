@@ -1,4 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import { formatMoney } from "#/lib/money";
 import * as m from "#/paraglide/messages";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
@@ -12,6 +13,7 @@ import type { Experience } from "./types";
 export const experienceColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,
+	currency: string | null,
 ): ColumnDef<Experience, unknown>[] => {
 	return [
 		{
@@ -43,6 +45,22 @@ export const experienceColumns = (
 				>
 					{row.original.name}
 				</AppResourceLink>
+			),
+		},
+		{
+			// Right-aligned with tabular figures so the decimal points line up —
+			// a price column read down a list is compared, not just read.
+			id: "startingPrice",
+			accessorKey: "startingPrice",
+			header: () => (
+				<span className="block text-right font-semibold">
+					{m.starting_price()}
+				</span>
+			),
+			cell: ({ row }) => (
+				<span className="block text-right tabular-nums">
+					{formatMoney(row.original.startingPrice, currency)}
+				</span>
 			),
 		},
 		{

@@ -10,6 +10,7 @@ import {
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
+import { formatMoney } from "#/lib/money";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
@@ -22,7 +23,11 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
+import {
+	useOperatorCurrency,
+	useOperatorDateTime,
+	usePermissions,
+} from "#/tour-operator";
 import { statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";
@@ -159,6 +164,7 @@ const ExperienceView = ({
 	canWrite: boolean;
 }) => {
 	const { formatDate } = useOperatorDateTime();
+	const currency = useOperatorCurrency();
 	const created = formatDate(experience.createdAt);
 
 	return (
@@ -209,7 +215,7 @@ const ExperienceView = ({
 							</div>
 							<dl className="grid grid-cols-2 gap-4">
 								<AppDetailField label={m.starting_price()}>
-									{experience.startingPrice}
+									{formatMoney(experience.startingPrice, currency)}
 								</AppDetailField>
 								<AppDetailField label={m.booking_cutoff()}>
 									{`${experience.bookingCutoffHours}h`}

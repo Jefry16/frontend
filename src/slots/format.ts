@@ -41,13 +41,6 @@ export const formatSlotDuration = (minutes: number): string => {
 	return `${h} h ${mn} min`;
 };
 
-/** Price in the operator's currency, plain 2-decimal display (currency symbol later). */
-export const formatSlotPrice = (amount: number): string =>
-	new Intl.NumberFormat(undefined, {
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2,
-	}).format(amount);
-
 export const formatBookedCapacity = (rows: SlotAudiencePrice[]): string => {
 	const capacity = rows.reduce((sum, r) => sum + r.capacity, 0);
 	const booked = rows.reduce((sum, r) => sum + r.bookedCount, 0);

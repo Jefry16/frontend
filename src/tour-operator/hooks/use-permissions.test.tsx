@@ -28,6 +28,7 @@ const operator = (role: TourOperatorSummary["role"]): TourOperatorSummary => ({
 	name: "Acme Tours",
 	logoUrl: null,
 	timezone: "Europe/Madrid",
+	currency: "EUR",
 	isDefault: true,
 	role,
 });

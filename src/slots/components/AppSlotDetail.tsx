@@ -10,6 +10,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "#/components/ui/table";
+import { formatMoney } from "#/lib/money";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
@@ -23,13 +24,12 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { usePermissions } from "#/tour-operator";
+import { useOperatorCurrency, usePermissions } from "#/tour-operator";
 import {
 	formatBookedCapacity,
 	formatDayName,
 	formatSlotDateTime,
 	formatSlotDuration,
-	formatSlotPrice,
 	formatSlotStatus,
 	slotStatusBadgeVariant,
 } from "../format";
@@ -61,6 +61,7 @@ export const AppSlotDetail = ({
 	);
 
 	const { canWrite } = usePermissions();
+	const currency = useOperatorCurrency();
 
 	return (
 		<AppResourceView
@@ -182,7 +183,7 @@ export const AppSlotDetail = ({
 											<TableRow key={tier.audienceId}>
 												<TableCell>{tier.audienceName}</TableCell>
 												<TableCell className="text-right tabular-nums">
-													{formatSlotPrice(tier.price)}
+													{formatMoney(tier.price, currency)}
 												</TableCell>
 												<TableCell className="text-right tabular-nums">
 													{tier.capacity}
