@@ -92,6 +92,13 @@ both sides wrong about each other. Nothing that stubs the network can see that.
 **Opening a page proves it renders; submitting proves the payload is one the API
 accepts.** The second is the half that broke, so every edit flow saves.
 
+**Two things about the run itself.** Login is throttled per email — 20 attempts
+per 15 minutes, successes counted, reported as bad credentials — so the
+discovery token is cached in `.smoke-token` and only the browser signs in each
+run. And a flow's label is the flow in progress when an error fires, which is
+not always the one that caused it: a late response lands after the next
+navigation. Read the message, not the label.
+
 **Run it after any change to a request or response shape** — on either side of
 the repo boundary. That is the moment the two can drift, and drift is the only
 thing this catches that the suite does not.
