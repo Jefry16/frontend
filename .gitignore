@@ -16,3 +16,4 @@ coverage
 
 *storybook.log
 storybook-static
+.smoke-token
