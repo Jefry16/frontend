@@ -18,6 +18,7 @@ const USER: AuthUser = {
 			name: "Acme Tours",
 			logoUrl: null,
 			timezone: "UTC",
+			currency: "EUR",
 			isDefault: true,
 			role: "OWNER",
 		},

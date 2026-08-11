@@ -4,6 +4,8 @@ export interface TourOperatorSummary {
 	name: string;
 	logoUrl: string | null;
 	timezone: string;
+	/** ISO 4217, resolved server-side like `timezone` — what Intl.NumberFormat takes. */
+	currency: string;
 	isDefault: boolean;
 	/** The caller's role in THIS operator (from the profile). Non-null. */
 	role: "OWNER" | "ADMIN" | "STAFF";

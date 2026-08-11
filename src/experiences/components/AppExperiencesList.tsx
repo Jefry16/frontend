@@ -4,21 +4,27 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
+import {
+	useOperatorCurrency,
+	useOperatorDateTime,
+	usePermissions,
+} from "#/tour-operator";
 import { experienceColumns } from "../columns";
 
-// The operator's experiences as the standard cursor-paginated table: thumbnail,
-// name, publish status, duration, created — sort by name/created, infinite
-// scroll. Read-only browse for now (create/edit/publish land as later slices).
+// The operator's experiences as the standard cursor-paginated table. The
+// currency is in the dependency list, not just read: it arrives with the
+// profile, so the columns must rebuild when it does or every price stays
+// unlabelled for the life of the page.
 export const AppExperiencesList = ({
 	tourOperatorId,
 }: {
 	tourOperatorId: string;
 }) => {
 	const { formatDate } = useOperatorDateTime();
+	const currency = useOperatorCurrency();
 	const columns = useMemo(
-		() => experienceColumns(tourOperatorId, formatDate),
-		[tourOperatorId, formatDate],
+		() => experienceColumns(tourOperatorId, formatDate, currency),
+		[tourOperatorId, formatDate, currency],
 	);
 
 	const { canWrite } = usePermissions();

@@ -9,6 +9,7 @@ export { AppTourOperatorForm } from "./components/AppTourOperatorForm";
 export { AppTourOperatorSidebar } from "./components/AppTourOperatorSidebar";
 export { AppWriteGate } from "./components/AppWriteGate";
 export { useCurrentTourOperator } from "./hooks/use-current-tour-operator";
+export { useOperatorCurrency } from "./hooks/use-operator-currency";
 export { useOperatorDateTime } from "./hooks/use-operator-date-time";
 export { useOperatorLocales } from "./hooks/use-operator-locales";
 export { useOperatorSeo } from "./hooks/use-operator-seo";
