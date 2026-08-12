@@ -165,12 +165,16 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
 ## CI
 
 `.github/workflows/ci.yml` runs the full gate set — typecheck · check · depcheck ·
-tests · build · build-storybook — on every push and PR to `staging`. **There is no
-deploy step**: the hosting target is undecided. `build:staging` / `build:production`
-still produce the mode-specific bundles, so whatever host is chosen has something to
-upload; `storybook-static/` is built and discarded, since nothing hosts it either.
+tests · build · build-storybook · check-storybook-index — on every push and PR to
+`staging`. **There is no deploy step**: the hosting target is undecided.
+`build:staging` / `build:production` still produce the mode-specific bundles, so
+whatever host is chosen has something to upload; `storybook-static/` is built and
+discarded, since nothing hosts it either.
 
-`build-storybook` is there because the test suite reads `.storybook/preview` but never
-`main.ts`, leaving the framework and builder config ungated. It is a narrow gate: a bad
-framework entry fails it, while a missing addon or a `stories` glob matching nothing
-both warn and exit 0.
+The last two exist because the test suite reads `.storybook/preview` but never
+`main.ts`, leaving the framework and builder config ungated. They are separate steps
+because the build alone is weaker than it looks: a bad framework entry fails it, but a
+missing addon and a `stories` glob matching nothing each warn and exit 0.
+`.storybook/check-index.mjs` closes that — it compares the built `index.json` against
+the `*.stories.tsx` files on disk, so a glob that stops matching fails the build
+instead of silently shipping an empty inventory.

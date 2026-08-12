@@ -27,7 +27,8 @@
     "depcheck": "depcruise --config .dependency-cruiser.cjs src",
     "machine-translate": "inlang machine translate --project project.inlang",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "check-storybook-index": "node .storybook/check-index.mjs"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
