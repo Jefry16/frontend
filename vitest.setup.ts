@@ -39,6 +39,18 @@ class NoopIntersectionObserver implements IntersectionObserver {
 }
 vi.stubGlobal("IntersectionObserver", NoopIntersectionObserver);
 
+// Nor ResizeObserver, which Radix Checkbox needs: `CheckboxBubbleInput` sizes
+// the hidden input through `@radix-ui/react-use-size` in a mount layout effect.
+// Unlike the two stubs above this one bites on *render*, not on interaction —
+// five stories threw `ResizeObserver is not defined` before anyone touched
+// them, so every form carrying a checkbox was unmountable in jsdom.
+class NoopResizeObserver implements ResizeObserver {
+	disconnect() {}
+	observe() {}
+	unobserve() {}
+}
+vi.stubGlobal("ResizeObserver", NoopResizeObserver);
+
 // jsdom implements no Pointer Capture and no scrollIntoView, and Radix Select
 // calls both while opening. Without these a click on any select trigger throws
 // `target.hasPointerCapture is not a function` and the listbox never mounts —

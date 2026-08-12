@@ -15,8 +15,14 @@ structure; this covers behaviour.
 
 Everything else is already covered by something cheaper. `tsc` catches shapes,
 `depcheck` catches boundaries, Biome catches style, `token-drift` catches ad-hoc
-CSS, `story-coverage` catches a missing story, `form-pattern` catches a raw
-input in a form. 151 stories cover how things look.
+CSS, `story-coverage` catches a missing story, `story-render` catches a story
+that cannot mount, `form-pattern` catches a raw input in a form.
+
+Note the seam between the last two. `story-coverage` reads glob keys and imports
+nothing, so for a long time "150 of 150 components storied" meant 150 *files
+existed* — 24 of the 274 stories inside them threw on render, and Storybook was
+never executed by anything. `story-render` closed that. Neither gate looks at
+pixels: they prove a component still mounts, not that it looks right.
 
 What none of them can see is a mutation that succeeds and leaves the screen
 looking right. That is the whole target.
@@ -58,6 +64,21 @@ document passed against **deliberately broken source**:
   interval and stepped straight over the offending render.
 
 Coverage counted all three as covered. The mutation caught all three.
+
+`story-render.test.tsx` is the sharpest case, because it reported **274 passed**
+in three different ways while proving nothing:
+
+1. The router mounts asynchronously, so a synchronous `render` sees an empty
+   container. Every story "passed" against blank DOM.
+2. `setProjectAnnotations` in `beforeAll` runs *after* `composeStories`, which
+   executes at collection time — so the stories composed without a router.
+3. A story that throws does not fail its render: the framework catches it and
+   paints `"Story did something wrong : …"`, which is itself DOM. A deliberate
+   crash in `AppBreadcrumb` survived a gate that only asked "did it paint".
+
+Only after asserting against that error node did the mutation fail. A gate over
+274 items can be uniformly green and uniformly worthless; the count is not the
+evidence.
 
 Two habits that follow:
 
