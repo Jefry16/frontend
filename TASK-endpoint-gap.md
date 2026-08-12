@@ -33,7 +33,7 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 | `audit` | 2 | 2 | — |
 | `media` | 5 | 5 | — |
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
-| `metafield` — definitions · owner values (experience · page · **shop**) · metaobjects | 29 | 29 | — |
+| `metafield` — definitions · owner values (experience · page · **tour operator**) · metaobjects | 29 | 29 | — |
 | `contact` | 5 | 5 | — |
 | **Total** | **137** | **137** | **—** |
 

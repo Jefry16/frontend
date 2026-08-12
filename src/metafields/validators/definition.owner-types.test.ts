@@ -4,7 +4,7 @@ import { METAFIELD_OWNER_TYPES } from "../types";
 import { definitionSchema } from "./definition";
 
 const valid = {
-	namespace: "shop",
+	namespace: "operator",
 	key: "vat-number",
 	type: "single_line_text" as const,
 	metaobjectDefinitionId: "",
