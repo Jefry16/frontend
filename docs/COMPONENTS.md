@@ -302,7 +302,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 136, of which 132 ship a story
+### `App*` components — 150, all of which ship a story (gated by `story-coverage.test.ts`)
 
 **`shared/` — 48.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·

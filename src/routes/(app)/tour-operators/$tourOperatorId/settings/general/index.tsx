@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
@@ -58,6 +59,13 @@ function GeneralSettingsPage() {
 					<AppStorefrontPasswordCard
 						tourOperatorId={operator.id}
 						canWrite={canWrite}
+					/>
+					{/* The operator is its own owner, so ownerId is the operator's id.
+					    Renders nothing until a `Shop` metafield is defined. */}
+					<AppMetafieldsCard
+						tourOperatorId={operator.id}
+						ownerType="tour_operator"
+						ownerId={operator.id}
 					/>
 				</>
 			)}
