@@ -1,5 +1,9 @@
 import * as m from "#/paraglide/messages";
-import type { MetafieldOwnerTypeCode, MetafieldTypeCode } from "./types";
+import {
+	METAFIELD_OWNER_TYPES,
+	type MetafieldOwnerTypeCode,
+	type MetafieldTypeCode,
+} from "./types";
 
 // A record, not a ternary: a fourth owner type must fail to compile rather than
 // silently fall through to the last branch, which is how `tour_operator` got
@@ -13,9 +17,13 @@ const OWNER_TYPE_LABELS: Record<MetafieldOwnerTypeCode, () => string> = {
 export const ownerTypeLabel = (code: MetafieldOwnerTypeCode): string =>
 	OWNER_TYPE_LABELS[code]();
 
-export const OWNER_TYPE_CODES = Object.keys(
-	OWNER_TYPE_LABELS,
-) as MetafieldOwnerTypeCode[];
+export const OWNER_TYPE_CODES = METAFIELD_OWNER_TYPES;
+
+/** Options for the create form's owner select — one per owner type, in order. */
+export const OWNER_TYPE_OPTIONS = OWNER_TYPE_CODES.map((code) => ({
+	value: code,
+	label: ownerTypeLabel(code),
+}));
 
 const TYPE_LABELS: Record<MetafieldTypeCode, () => string> = {
 	single_line_text: m.metafield_type_single_line_text,

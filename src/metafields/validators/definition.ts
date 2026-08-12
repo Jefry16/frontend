@@ -1,5 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
+import { METAFIELD_OWNER_TYPES } from "../types";
 
 // Mirrors the backend value objects. ownerType and type are immutable after
 // create, so the edit form submits name and description only.
@@ -14,7 +15,7 @@ const slugField = z
 
 export const definitionSchema = z
 	.object({
-		ownerType: z.enum(["experience", "page"], m.validation_required()),
+		ownerType: z.enum(METAFIELD_OWNER_TYPES, m.validation_required()),
 		namespace: slugField,
 		key: slugField,
 		type: z.enum(

@@ -8,30 +8,26 @@ import type {
 	MetafieldValue,
 } from "../types";
 
-/** The collection segment an owner kind sits under; the operator has none. */
-const OWNER_COLLECTIONS: Record<MetafieldOwnerTypeCode, string | null> = {
-	experience: "experiences",
-	page: "pages",
-	tour_operator: null,
-};
-
 /**
- * The owner-scoped values endpoint — "experience" → …/experiences/{id}/metafields.
- *
- * `tour_operator` is the exception: the operator IS the owner, so its endpoint
- * is …/{tourOperatorId}/metafields with no id segment of its own.
+ * Each owner kind's sub-path under the tenant. Holding the WHOLE segment rather
+ * than just a collection name is what lets `tour_operator` contribute nothing:
+ * the operator is already in the path as the tenant, so it is its own owner and
+ * has no id segment to add. A new owner type is one line here.
  */
+const OWNER_PATHS: Record<MetafieldOwnerTypeCode, (ownerId: string) => string> =
+	{
+		experience: (ownerId) => `/experiences/${ownerId}`,
+		page: (ownerId) => `/pages/${ownerId}`,
+		tour_operator: () => "",
+	};
+
+/** The owner-scoped values endpoint — "experience" → …/experiences/{id}/metafields. */
 export const ownerMetafieldsEndpoint = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
 	ownerId: string,
-): string => {
-	const collection = OWNER_COLLECTIONS[ownerType];
-	const base = `/tour-operators/${tourOperatorId}`;
-	return collection
-		? `${base}/${collection}/${ownerId}/metafields`
-		: `${base}/metafields`;
-};
+): string =>
+	`/tour-operators/${tourOperatorId}${OWNER_PATHS[ownerType](ownerId)}/metafields`;
 
 // Everything the per-resource editor needs: the operator's definitions for
 // this owner type (the full catalogue — unset fields still render as empty
