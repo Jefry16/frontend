@@ -246,12 +246,28 @@ upstream shadcn). Run `pnpm storybook`; build with `pnpm build-storybook`.
 
 - Framework: `@storybook/tanstack-react` — auto-provides a memory-backed Router, so
   route-aware components render without the app shell.
-- Global providers (theme, React Query, tooltips) come from `.storybook/preview.tsx`.
-- **Connected components** (read `useAuth`, etc.) add the needed provider as a story-level
-  `decorators` entry (see `AppLoginForm.stories.tsx`).
+- Global providers (theme, React Query, tooltips, **auth**) come from
+  `.storybook/preview.tsx`. Auth is global because `useAuth` throws outright without a
+  provider and nineteen stories reached it indirectly — through `usePermissions` or
+  `useOperatorDateTime` → `useCurrentTourOperator` — while looking like plain
+  presentation. Leaving that to each story to remember is what broke them.
+- The provider is the real `AuthProvider`, unauthenticated: it refreshes on mount, finds
+  no session, and settles. Seeding a fake user would change nothing, because
+  `useCurrentTourOperator` resolves against the `$tourOperatorId` param and the memory
+  router leaves it empty — so `canWrite` is false in every story either way. A story that
+  needs a *permitted* state must say so itself.
 - Cover the meaningful states (default, error, loading/submitting), not every prop combo.
 
-A ratchet enforcing story-per-`App*` is a planned follow-up (the archive shipped one).
+**Two gates hold this up**, and they fail for different reasons:
+
+| Gate | Catches |
+|---|---|
+| `src/shared/story-coverage.test.ts` | An `App*` component with **no story file**. Reads glob keys; imports nothing. |
+| `src/shared/story-render.test.tsx` | A story that **exists but cannot render** — every story is mounted with the real decorators and has to paint. |
+
+The second exists because the first passes on a story that throws the moment it mounts:
+it asserts a file is present, not that anything works. When it landed, 24 of 274 stories
+were broken — 19 on the missing auth provider, 5 on a jsdom gap.
 
 ---
 
@@ -328,11 +344,14 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 ·
 `pickup-locations` 4 · `contact` 2 · `media` 5.
 
-**Every `App*` component ships a story — 149 of 149 — and `src/shared/story-coverage.test.ts`
+**Every `App*` component ships a story — 150 of 150 — and `src/shared/story-coverage.test.ts`
 fails the build if one does not.** The four data-table internals that carried this debt since
 July (`AppDataTable` · `AppDataTableHeader` · `AppAsyncSetFilter` · `AppFilterInput`) were
 written before the gate landed, so its allow-list is **empty**. The two that need a real
 `HeaderContext` are storied *through* a table, which is the only place they exist.
+
+Those 150 files hold **274 stories**, and `src/shared/story-render.test.tsx` mounts every
+one of them (§6). A story counts as inventory only if it renders.
 
 Add an entry to `EXEMPT` only for something that genuinely cannot be storied, with a
 one-line reason; it is empty today.
