@@ -7,7 +7,12 @@ import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppSelectField } from "#/shared/components/AppSelectField";
-import { ownerTypeLabel, TYPE_CODES, typeLabel } from "../format";
+import {
+	OWNER_TYPE_OPTIONS,
+	ownerTypeLabel,
+	TYPE_CODES,
+	typeLabel,
+} from "../format";
 import { useMetafieldDefinitionForm } from "../hooks/use-metafield-definition-form";
 import type { MetafieldDefinition } from "../types";
 import { deriveKey } from "../validators/definition";
@@ -61,13 +66,11 @@ export const AppMetafieldDefinitionForm = ({
 						<form.Field name="ownerType">
 							{(field) => (
 								<AppSelectField field={field} label={m.metafield_applies_to()}>
-									<SelectItem value="experience">
-										{ownerTypeLabel("experience")}
-									</SelectItem>
-									<SelectItem value="page">{ownerTypeLabel("page")}</SelectItem>
-									<SelectItem value="tour_operator">
-										{ownerTypeLabel("tour_operator")}
-									</SelectItem>
+									{OWNER_TYPE_OPTIONS.map((option) => (
+										<SelectItem key={option.value} value={option.value}>
+											{option.label}
+										</SelectItem>
+									))}
 								</AppSelectField>
 							)}
 						</form.Field>
