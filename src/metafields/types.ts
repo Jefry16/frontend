@@ -1,7 +1,7 @@
 // A definition carries the identity and type; values live on the owning resource.
 
 /** Wire code, verbatim in payloads and responses. */
-export type MetafieldOwnerTypeCode = "experience" | "page";
+export type MetafieldOwnerTypeCode = "experience" | "page" | "tour_operator";
 
 export type MetafieldTypeCode =
 	| "single_line_text"

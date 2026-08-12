@@ -5,9 +5,10 @@ consumes**. Tick an endpoint when a real frontend consumer ships.
 
 > **Snapshot basis:** backend `main`, re-diffed **2026-08-08** by enumerating every
 > `@(Get|Post|Put|Patch|Delete)Mapping` under `presentation/controller` and matching each
-> against the frontend source. **136 admin endpoints** across the 11 contexts with an admin
+> against the frontend source. **137 admin endpoints** across the 11 contexts with an admin
 > HTTP surface (`notification` is event-driven, so it has none). The previous count of 133
-> reconciles exactly: `−2` for the logo pair #106 deleted, `+5` for #106/#108/#109.
+> reconciles exactly: `−2` for the logo pair #106 deleted, `+5` for #106/#108/#109, and
+> `+1` for the third metafield owner (see below) that the 136 count missed.
 >
 > **Out of scope:** the `storefront` context's 8 public page routes (`/`, `/{locale}`,
 > `/experiences`, `/policies/{type}`, `/password`, + HEAD/POST). Those are unauthenticated
@@ -19,7 +20,7 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## Coverage: 136 / 136 consumed
+## Coverage: 137 / 137 consumed
 
 | Context | Endpoints | Consumed | Open |
 |---|---:|---:|---:|
@@ -32,9 +33,9 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 | `audit` | 2 | 2 | — |
 | `media` | 5 | 5 | — |
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
-| `metafield` — definitions · owner values · metaobjects | 26 | 26 | — |
+| `metafield` — definitions · owner values (experience · page · **shop**) · metaobjects | 29 | 29 | — |
 | `contact` | 5 | 5 | — |
-| **Total** | **136** | **136** | **—** |
+| **Total** | **137** | **137** | **—** |
 
 Every admin endpoint has a consumer. The **field-level** gap below is the one
 thing this count cannot see, so read it before assuming the surface is complete.
@@ -57,8 +58,14 @@ thing this count cannot see, so read it before assuming the surface is complete.
   `alt`, `width` and `height`, which `MediaResponse` had been returning unread.
 
 Owner-scoped metafield values are one generic path in
-`metafields/hooks/use-owner-metafields.ts` — both owner types (`experiences/{id}/metafields`
-and `pages/{id}/metafields`) are wired, from `AppExperienceDetail` and `AppPageDetail`.
+`metafields/hooks/use-owner-metafields.ts`. All **three** owner types are wired:
+`experiences/{id}/metafields` and `pages/{id}/metafields` from the two detail pages, and
+`tour_operator` from Settings → General.
+
+> The operator is the exception in that path: it **is** the owner, so its endpoint is
+> `…/{tourOperatorId}/metafields` with no id segment of its own. `ownerTypeLabel` and the
+> collection lookup are both `Record`s keyed by the owner code rather than ternaries — the
+> third type was previously routed at `pages` by a `? :` fallback that could not fail.
 
 ---
 

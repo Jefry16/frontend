@@ -1,8 +1,21 @@
 import * as m from "#/paraglide/messages";
 import type { MetafieldOwnerTypeCode, MetafieldTypeCode } from "./types";
 
+// A record, not a ternary: a fourth owner type must fail to compile rather than
+// silently fall through to the last branch, which is how `tour_operator` got
+// routed at `pages` when it was added backend-side.
+const OWNER_TYPE_LABELS: Record<MetafieldOwnerTypeCode, () => string> = {
+	experience: m.experiences,
+	page: m.pages,
+	tour_operator: m.metafield_owner_tour_operator,
+};
+
 export const ownerTypeLabel = (code: MetafieldOwnerTypeCode): string =>
-	code === "experience" ? m.experiences() : m.pages();
+	OWNER_TYPE_LABELS[code]();
+
+export const OWNER_TYPE_CODES = Object.keys(
+	OWNER_TYPE_LABELS,
+) as MetafieldOwnerTypeCode[];
 
 const TYPE_LABELS: Record<MetafieldTypeCode, () => string> = {
 	single_line_text: m.metafield_type_single_line_text,
@@ -26,9 +39,10 @@ export const TYPE_CODES = Object.keys(TYPE_LABELS) as MetafieldTypeCode[];
 // name, derived from the code.
 const filterValue = (code: string) => code.toUpperCase();
 
-export const OWNER_TYPE_FILTER_OPTIONS = (["experience", "page"] as const).map(
-	(code) => ({ value: filterValue(code), label: ownerTypeLabel(code) }),
-);
+export const OWNER_TYPE_FILTER_OPTIONS = OWNER_TYPE_CODES.map((code) => ({
+	value: filterValue(code),
+	label: ownerTypeLabel(code),
+}));
 
 export const TYPE_FILTER_OPTIONS = TYPE_CODES.map((code) => ({
 	value: filterValue(code),

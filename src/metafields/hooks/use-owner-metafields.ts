@@ -8,15 +8,30 @@ import type {
 	MetafieldValue,
 } from "../types";
 
-/** The owner-scoped values endpoint ("experience" → …/experiences/{id}/metafields). */
+/** The collection segment an owner kind sits under; the operator has none. */
+const OWNER_COLLECTIONS: Record<MetafieldOwnerTypeCode, string | null> = {
+	experience: "experiences",
+	page: "pages",
+	tour_operator: null,
+};
+
+/**
+ * The owner-scoped values endpoint — "experience" → …/experiences/{id}/metafields.
+ *
+ * `tour_operator` is the exception: the operator IS the owner, so its endpoint
+ * is …/{tourOperatorId}/metafields with no id segment of its own.
+ */
 export const ownerMetafieldsEndpoint = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
 	ownerId: string,
-): string =>
-	`/tour-operators/${tourOperatorId}/${
-		ownerType === "experience" ? "experiences" : "pages"
-	}/${ownerId}/metafields`;
+): string => {
+	const collection = OWNER_COLLECTIONS[ownerType];
+	const base = `/tour-operators/${tourOperatorId}`;
+	return collection
+		? `${base}/${collection}/${ownerId}/metafields`
+		: `${base}/metafields`;
+};
 
 // Everything the per-resource editor needs: the operator's definitions for
 // this owner type (the full catalogue — unset fields still render as empty

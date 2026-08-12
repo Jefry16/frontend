@@ -465,6 +465,7 @@
 	"no_metafield_definitions_body": "Define custom fields — subtitles, care notes, specs — and fill them in on each experience or page.",
 	"metafield_identifier": "Identifier",
 	"metafield_identifier_taken": "A metafield with this namespace and key already exists.",
+	"metafield_owner_tour_operator": "Shop",
 	"metafield_applies_to": "Applies to",
 	"metafield_type": "Type",
 	"metafield_type_hint": "How values are validated and how themes read them. Permanent.",

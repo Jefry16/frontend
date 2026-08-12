@@ -65,6 +65,9 @@ export const AppMetafieldDefinitionForm = ({
 										{ownerTypeLabel("experience")}
 									</SelectItem>
 									<SelectItem value="page">{ownerTypeLabel("page")}</SelectItem>
+									<SelectItem value="tour_operator">
+										{ownerTypeLabel("tour_operator")}
+									</SelectItem>
 								</AppSelectField>
 							)}
 						</form.Field>
