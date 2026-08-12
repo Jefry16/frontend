@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Verify (typecheck · check · depcheck · tests · build)
+    name: Verify (typecheck · check · depcheck · tests · build · storybook)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -42,3 +42,14 @@ jobs:
       - run: pnpm depcheck
       - run: pnpm test
       - run: pnpm build
+
+      # `story-render.test.tsx` mounts every story in jsdom via `composeStories`,
+      # which reads `.storybook/preview` but never `main.ts` — so the framework
+      # and builder config had no gate at all. This is that gate, and nothing
+      # more: output goes to `storybook-static/` and is discarded, because
+      # nothing hosts it and compiling is the whole assertion.
+      #
+      # Measured, not assumed — a bad framework entry fails it (exit 1), but a
+      # missing addon and a `stories` glob matching nothing both WARN and exit 0.
+      # An empty Storybook still passes this step; don't read it as more.
+      - run: pnpm build-storybook

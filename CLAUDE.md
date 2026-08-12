@@ -165,6 +165,12 @@ or its boundaries go unenforced — silently, since `depcheck` still passes.
 ## CI
 
 `.github/workflows/ci.yml` runs the full gate set — typecheck · check · depcheck ·
-tests · build — on every push and PR to `staging`. **There is no deploy step**: the
-hosting target is undecided. `build:staging` / `build:production` still produce the
-mode-specific bundles, so whatever host is chosen has something to upload.
+tests · build · build-storybook — on every push and PR to `staging`. **There is no
+deploy step**: the hosting target is undecided. `build:staging` / `build:production`
+still produce the mode-specific bundles, so whatever host is chosen has something to
+upload; `storybook-static/` is built and discarded, since nothing hosts it either.
+
+`build-storybook` is there because the test suite reads `.storybook/preview` but never
+`main.ts`, leaving the framework and builder config ungated. It is a narrow gate: a bad
+framework entry fails it, while a missing addon or a `stories` glob matching nothing
+both warn and exit 0.
