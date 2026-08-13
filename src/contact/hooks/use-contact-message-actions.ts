@@ -5,10 +5,10 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The message's mutating actions: the read-state flip (any member,
-// idempotent, silent — opening a message auto-marks it read, so no toast
-// noise) and delete (ADMIN+; audited backend-side; success copy/navigation
-// left to the caller).
+// The message's only mutating action: delete (ADMIN+; audited backend-side;
+// success copy and navigation left to the caller). The read-state flip this
+// hook used to own went with its endpoints in backend #65 — an inbox row is
+// either there or deleted.
 export const useContactMessageActions = (
 	tourOperatorId: string,
 	messageId: string,
