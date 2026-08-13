@@ -97,6 +97,35 @@ that merge.
 
 ---
 
+## ⚠️ Shape drift is the gap an endpoint count cannot see
+
+An endpoint can be consumed and still be read wrong. Two instances so far, both
+user-visible, neither caught by any gate:
+
+- **`page.status` vs `published`** (found 2026-08-13, fixed). Backend `258209a` replaced
+  `String status` with `boolean published` on `PageResponse` **and** `PageListItemResponse`.
+  The frontend kept `status: PageStatus`, so `page.status` was `undefined` at runtime:
+  every page rendered as **Draft** in the list and on the detail regardless of its real
+  state, and the detail always offered *Publish*, never *Unpublish*. The list also sent a
+  `set` filter on a field the backend exposes as `bool` and cannot sort by.
+- **The experience SEO pair** (fixed the same day) — see below.
+
+**Why 605 tests stayed green: the fixtures encode the same shape as the types.** Nine
+story and test fixtures said `status: "PUBLISHED"`, so every test agreed with the bug.
+A frontend type is an unverified claim about the wire, and fixtures written from the type
+cannot contradict it.
+
+Nothing in this repo can catch that class today. Re-diffing types against the backend's
+response records — as this pass did for eleven of them, finding one mismatch — is the only
+check that works, and it is manual. If it recurs, the durable fix is a contract artifact
+(the backend already publishes Spring REST Docs snippets) rather than more tests.
+
+Checked in this pass and matching exactly: `Experience`, `Policy`, `Audience`,
+`PickupLocation`, `MediaAsset`, `MetafieldDefinition`, `Metaobject`,
+`MetaobjectDefinition`, `Member`, `Invitation`, `ContactMessageListItem`, `Slot`.
+
+---
+
 ## ✅ The field-level gap is closed (2026-08-13)
 
 `ExperienceRequest` accepted `seoTitle`/`seoDescription` while `ExperienceResponse` never

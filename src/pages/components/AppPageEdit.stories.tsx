@@ -16,7 +16,7 @@ const PAGE: Page = {
 	body: "<h1>Who we are</h1>\n<p>Family-run boat tours since 1998.</p>",
 	seoTitle: "About our boat tours",
 	seoDescription: null,
-	status: "DRAFT",
+	published: false,
 	createdAt: "2026-07-20T10:00:00Z",
 	updatedAt: "2026-07-20T10:00:00Z",
 };

@@ -26,7 +26,7 @@ const EXISTING = {
 	body: "<p>Old</p>",
 	seoTitle: null,
 	seoDescription: null,
-	status: "DRAFT",
+	published: false,
 };
 
 type FieldName = "title" | "handle" | "body" | "seoTitle" | "seoDescription";
