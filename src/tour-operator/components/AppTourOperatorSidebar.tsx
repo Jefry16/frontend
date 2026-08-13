@@ -18,6 +18,7 @@ import {
 	settingsNavItem,
 	tourOperatorNavItems,
 } from "../nav-items";
+import { AppSignOutButton } from "./AppSignOutButton";
 import { AppTourOperatorSwitcher } from "./AppTourOperatorSwitcher";
 import { SidebarNavLeaf } from "./SidebarNavLeaf";
 
@@ -84,10 +85,12 @@ export const AppTourOperatorSidebar = () => {
 				)}
 			</SidebarContent>
 
-			{/* Settings pinned below the scrolling nav (Shopify's placement). */}
+			{/* Settings pinned below the scrolling nav (Shopify's placement), with
+			    sign-out under it until an account menu exists to hold it. */}
 			<SidebarFooter>
 				<SidebarMenu>
 					{operator && <SidebarNavLeaf item={settingsNavItem(operator.id)} />}
+					<AppSignOutButton />
 				</SidebarMenu>
 			</SidebarFooter>
 			<SidebarRail />

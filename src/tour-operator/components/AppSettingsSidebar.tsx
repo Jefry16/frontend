@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
 	SidebarMenu,
@@ -13,6 +14,7 @@ import * as m from "#/paraglide/messages";
 import { AppLink } from "#/shared/components/AppLink";
 import { useCurrentTourOperator } from "../hooks/use-current-tour-operator";
 import { settingsSectionItems } from "../nav-items";
+import { AppSignOutButton } from "./AppSignOutButton";
 import { SidebarNavLeaf } from "./SidebarNavLeaf";
 
 // The settings space's own rail (Shopify's model): under /settings/* the operator
@@ -54,6 +56,12 @@ export const AppSettingsSidebar = () => {
 					</SidebarMenu>
 				</SidebarGroup>
 			</SidebarContent>
+
+			<SidebarFooter>
+				<SidebarMenu>
+					<AppSignOutButton />
+				</SidebarMenu>
+			</SidebarFooter>
 
 			<SidebarRail />
 		</Sidebar>

@@ -302,7 +302,7 @@ find src -name '*.stories.tsx' | wc -l                         # stories
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 150, all of which ship a story (gated by `story-coverage.test.ts`)
+### `App*` components — 151, all of which ship a story (gated by `story-coverage.test.ts`)
 
 **`shared/` — 48.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
@@ -449,6 +449,8 @@ the ⌘K command palette · a grouped
 **settings hub** (`/settings` is a redirect to General) · a footer `AppLanguagePicker`
 (admin-UI language lives in Settings → Account as `AppLanguageCard`). There is **no desktop
 top bar** — the sidebar is always visible (toggle via its rail or Ctrl/Cmd+B); a mobile-only
-strip holds the `SidebarTrigger`. **Sign-out is still unhoused**: the only trigger is on the
-onboarding screen (`AppTourOperatorForm`), so a signed-in operator inside the app cannot
-sign out. It needs an account menu — pick that home when the next account-shaped slice lands.
+strip holds the `SidebarTrigger`. **Sign-out is a deliberate stopgap**: `AppSignOutButton` sits in BOTH sidebar footers —
+the operator shell's and the settings rail's, since `/settings/**` swaps one for the other
+and it would otherwise vanish inside Settings. It belongs in an account menu beside the
+user's name and avatar; this is the least chrome that stops a signed-in operator being
+unable to sign out at all, and the least to unpick when that menu lands.
