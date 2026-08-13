@@ -119,9 +119,14 @@ seeded `acme` operator; **everything written was restored and checked byte-ident
   `PUT /seo`, `PUT /translations/{locale}`, `PUT /brand`. What the UI hides and what the
   backend refuses now match on evidence rather than on reading the use cases.
 
-**The policy `DELETE` itself is still unverified**, deliberately: all four types are written
-in the seed, so exercising it would mean destroying data another session is using. The
-translation delete covers the same idempotent-204 shape.
+**The policy `DELETE` is verified too** (2026-08-13): `204`, **idempotent** on a repeat
+(204 again, not 404), `GET` by id then 404s and the list drops to three. Freeing the type
+turned `POST TERMS` from **409 into 201**, which is what proves the conflict is genuinely
+per-type rather than a coincidence of that row existing.
+
+The record was recreated from a full capture and its `type`, `title` and `body` are
+byte-identical. **Its id changed** — the seed uses fixed ids (`…042`) and a recreate mints a
+UUIDv7 — so anything pinned to that literal id wants a reseed rather than trusting this row.
 
 ---
 
