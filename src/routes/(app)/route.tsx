@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useAuth } from "#/auth";
-import { Spinner } from "#/components/ui/spinner";
+import { AppRoutePending } from "#/shared/components/AppRoutePending";
 
 export const Route = createFileRoute("/(app)")({
 	component: AppLayout,
@@ -21,11 +21,7 @@ function AppLayout() {
 	}, [isLoading, isAuthenticated, navigate]);
 
 	if (isLoading || !isAuthenticated) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<Spinner />
-			</div>
-		);
+		return <AppRoutePending />;
 	}
 
 	return <Outlet />;

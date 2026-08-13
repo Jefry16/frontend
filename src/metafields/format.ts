@@ -17,10 +17,8 @@ const OWNER_TYPE_LABELS: Record<MetafieldOwnerTypeCode, () => string> = {
 export const ownerTypeLabel = (code: MetafieldOwnerTypeCode): string =>
 	OWNER_TYPE_LABELS[code]();
 
-export const OWNER_TYPE_CODES = METAFIELD_OWNER_TYPES;
-
 /** Options for the create form's owner select — one per owner type, in order. */
-export const OWNER_TYPE_OPTIONS = OWNER_TYPE_CODES.map((code) => ({
+export const OWNER_TYPE_OPTIONS = METAFIELD_OWNER_TYPES.map((code) => ({
 	value: code,
 	label: ownerTypeLabel(code),
 }));
@@ -47,7 +45,7 @@ export const TYPE_CODES = Object.keys(TYPE_LABELS) as MetafieldTypeCode[];
 // name, derived from the code.
 const filterValue = (code: string) => code.toUpperCase();
 
-export const OWNER_TYPE_FILTER_OPTIONS = OWNER_TYPE_CODES.map((code) => ({
+export const OWNER_TYPE_FILTER_OPTIONS = METAFIELD_OWNER_TYPES.map((code) => ({
 	value: filterValue(code),
 	label: ownerTypeLabel(code),
 }));

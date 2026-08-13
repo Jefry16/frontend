@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { getPostLoginPath, useAuth } from "#/auth";
-import { Spinner } from "#/components/ui/spinner";
+import { AppRoutePending } from "#/shared/components/AppRoutePending";
 
 export const Route = createFileRoute("/(app)/")({
 	component: IndexRedirect,
@@ -18,9 +18,5 @@ function IndexRedirect() {
 		navigate({ to: getPostLoginPath(user), replace: true });
 	}, [user, navigate]);
 
-	return (
-		<div className="flex min-h-screen items-center justify-center">
-			<Spinner />
-		</div>
-	);
+	return <AppRoutePending />;
 }

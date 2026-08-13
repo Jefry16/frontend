@@ -6,9 +6,9 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "#/components/ui/sidebar";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { AppLink } from "#/shared/components/AppLink";
+import { AppRoutePending } from "#/shared/components/AppRoutePending";
 import {
 	AppSettingsSidebar,
 	AppTourOperatorSidebar,
@@ -36,11 +36,7 @@ function TourOperatorLayout() {
 		: AppTourOperatorSidebar;
 
 	if (isLoading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<Spinner />
-			</div>
-		);
+		return <AppRoutePending />;
 	}
 
 	if (!operator) {
