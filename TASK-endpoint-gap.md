@@ -97,27 +97,24 @@ that merge.
 
 ---
 
-## ⚠️ One field-level gap the endpoint count can't see
+## ✅ The field-level gap is closed (2026-08-13)
 
-The table above counts **endpoints**, not payload fields — so it reads 133/133 while a
-field on a consumed endpoint goes unused. One does.
+`ExperienceRequest` accepted `seoTitle`/`seoDescription` while `ExperienceResponse` never
+returned them, so the admin could not seed a form field from either — and because the
+backend maps blank-or-absent to `null`, **every experience edit cleared both**, including a
+value set anywhere else.
 
-**`ExperienceRequest` accepts `seoTitle` and `seoDescription`; `ExperienceResponse` never
-returns them.** The write side exists, the read side does not, so the admin cannot show an
-experience's SEO, cannot seed a form field from it, and therefore does not send it. Worse,
-`ExperienceInputMapper` maps blank-or-absent to `null` and the update writes that, so **every
-experience edit from the admin clears both fields** — including a value set by any other
-route.
+Backend **#145** returns the pair *at both levels* — `ExperienceResponse` and
+`ExperienceTranslationResponse` — and the frontend now reads, edits and re-sends it at both:
+the experience form and the per-locale overlay each carry the two fields.
 
-This is not fixable frontend-side alone: a form field would have nothing to populate from.
-It needs `ExperienceResponse` to expose the two fields first, after which the experience
-form adds them the way the page form already does (`use-page-form` sends all five of
-`UpdatePageRequest`'s fields precisely because the page GET returns all five).
+The overlay is the one that bites quietly, and it is pinned by a test for the same reason
+the localized `handle` is: **the translation PUT is a full replace**, so a payload missing a
+field clears it rather than leaving it alone. Mutation-checked — dropping the pair from the
+translation schema fails `carries the SEO pair`, and dropping it from the canonical schema
+fails typecheck, because the form field then has nothing to bind.
 
-Verified 2026-08-08 against backend `main`: `ExperienceRequest`, `ExperienceResponse`,
-`ExperienceInputMapper.seoTitle/seoDescription`.
-
-Everything else checked in the same pass matches exactly — `UpdatePageRequest`,
+Everything else checked in the same pass still matches — `UpdatePageRequest`,
 `CreatePageRequest`, `UpdateMetafieldDefinitionRequest`, `UpdateMetaobjectDefinitionRequest`
 and `UpdateMetaobjectRequest` against their forms, and every validation bound against its
 backend value object (experience name 200, long description 10 000, page title 255, body

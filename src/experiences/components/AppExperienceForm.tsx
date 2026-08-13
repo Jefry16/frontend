@@ -104,6 +104,25 @@ export const AppExperienceForm = ({
 						/>
 					)}
 				</form.Field>
+				<form.Field name="seoTitle">
+					{(field) => (
+						<AppField
+							field={field}
+							label={m.seo_title()}
+							description={m.seo_title_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="seoDescription">
+					{(field) => (
+						<AppTextareaField
+							field={field}
+							label={m.seo_description()}
+							description={m.seo_description_hint()}
+							rows={3}
+						/>
+					)}
+				</form.Field>
 			</FieldGroup>
 		</AppFormCard>
 	);

@@ -78,6 +78,8 @@ export const useExperienceForm = (
 			featured: experience?.featured ?? false,
 			thumbnailMediaId: experience?.thumbnailMediaId ?? null,
 			mediaIds: experience?.mediaIds ?? [],
+			seoTitle: experience?.seoTitle ?? "",
+			seoDescription: experience?.seoDescription ?? "",
 		} as ExperienceFormData,
 		validators: { onSubmit: experienceSchema },
 		onSubmit: ({ value }) => mutate(experienceSchema.parse(value)),

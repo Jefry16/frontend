@@ -89,6 +89,8 @@ export const useExperienceTranslationForm = ({
 			description: translation.description ?? "",
 			longDescription: translation.longDescription ?? "",
 			handle: translation.handle ?? "",
+			seoTitle: translation.seoTitle ?? "",
+			seoDescription: translation.seoDescription ?? "",
 		} as ExperienceTranslationFormData,
 		validators: { onSubmit: experienceTranslationSchema },
 		onSubmit: ({ value }) =>
