@@ -86,14 +86,9 @@ single-field (`name`) and this overlay has five.
 > overlay and submits all five every time — that is what keeps an untouched field intact,
 > not an accident of the form library.
 
-**The SPA is ahead of merged `main` by two fields, deliberately.** `slogan` and
-`shortDescription` land on this endpoint in backend **PR #103**, which is still open;
-`main` (`3f7685e`) serves a 3-field payload. Verified against the running backend: a
-5-field `PUT` returns **204** and the two unknown fields are silently ignored (Spring Boot
-disables Jackson's `FAIL_ON_UNKNOWN_PROPERTIES`), and the `GET` simply omits them, so the
-form seeds them empty. The two inputs are therefore inert until #103 merges, at which point
-they start working with **no frontend change**. Nothing to undo here — just re-verify after
-that merge.
+**`slogan` and `shortDescription` are live** (re-verified 2026-08-13). They arrived with
+backend #103; the endpoint now returns all five fields and the form has edited them since,
+with no frontend change — which is what the SPA being written ahead of the contract bought.
 
 ---
 
