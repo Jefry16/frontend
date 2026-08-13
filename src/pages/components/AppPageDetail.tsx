@@ -109,7 +109,7 @@ export const AppPageDetail = ({
 						icon: Link2,
 						onSelect: () => setRenameOpen(true),
 					},
-					page.status === "PUBLISHED"
+					page.published
 						? {
 								id: "unpublish",
 								label: m.unpublish(),
@@ -173,8 +173,8 @@ export const AppPageDetail = ({
 						<Card>
 							<CardContent className="flex flex-col gap-4">
 								<div className="flex flex-wrap gap-2">
-									<AppBadge variant={pageStatusBadgeVariant(page.status)}>
-										{pageStatusLabel(page.status)}
+									<AppBadge variant={pageStatusBadgeVariant(page.published)}>
+										{pageStatusLabel(page.published)}
 									</AppBadge>
 								</div>
 								<dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">

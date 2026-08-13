@@ -4,11 +4,7 @@ import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
-import {
-	PAGE_STATUS_OPTIONS,
-	pageStatusBadgeVariant,
-	pageStatusLabel,
-} from "./format";
+import { pageStatusBadgeVariant, pageStatusLabel } from "./format";
 import type { PageListItem } from "./types";
 
 // The pages columns: title (searchable, links to the detail), handle
@@ -53,20 +49,17 @@ export const pageColumns = (
 		),
 	},
 	{
-		id: "status",
-		accessorKey: "status",
-		enableSorting: true,
+		// The wire sends `published` (boolean), and the backend's list schema has
+		// it as a bool [eq] filter with no sort — so no filter UI and no sorting,
+		// matching the metaobject entries table.
+		id: "published",
+		accessorKey: "published",
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.status()}
-				headerContext={ctx}
-				allowFiltering="set"
-				items={PAGE_STATUS_OPTIONS}
-			/>
+			<AppDataTableHeader label={m.status()} headerContext={ctx} />
 		),
 		cell: ({ row }) => (
-			<AppBadge variant={pageStatusBadgeVariant(row.original.status)}>
-				{pageStatusLabel(row.original.status)}
+			<AppBadge variant={pageStatusBadgeVariant(row.original.published)}>
+				{pageStatusLabel(row.original.published)}
 			</AppBadge>
 		),
 	},

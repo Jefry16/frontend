@@ -1,15 +1,13 @@
 // GET /tour-operators/{id}/pages — CMS content pages. The list rows exclude
 // `body` (heavy HTML stays on the detail read); the detail carries everything.
 
-export type PageStatus = "DRAFT" | "PUBLISHED";
-
 /** A list row (no body/SEO/template — those live on the detail). */
 export interface PageListItem {
 	id: string;
 	context: "pages";
 	title: string;
 	handle: string;
-	status: PageStatus;
+	published: boolean;
 	createdAt: string;
 	updatedAt: string;
 }
@@ -23,7 +21,7 @@ export interface Page {
 	body: string;
 	seoTitle: string | null;
 	seoDescription: string | null;
-	status: PageStatus;
+	published: boolean;
 	createdAt: string;
 	updatedAt: string;
 }

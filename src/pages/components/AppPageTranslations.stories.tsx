@@ -16,7 +16,7 @@ const PAGE: Page = {
 	body: "<h1>Who we are</h1>",
 	seoTitle: null,
 	seoDescription: null,
-	status: "PUBLISHED",
+	published: true,
 	createdAt: "2026-07-20T10:00:00Z",
 	updatedAt: "2026-07-20T10:00:00Z",
 };

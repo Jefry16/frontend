@@ -16,7 +16,7 @@ const page = (overrides: Partial<Page>): Page => ({
 	body: "<h1>Who we are</h1>\n<p>Family-run boat tours since 1998.</p>",
 	seoTitle: "About our boat tours",
 	seoDescription: "Family-run boat tours on the coast since 1998.",
-	status: "PUBLISHED",
+	published: true,
 	createdAt: "2026-07-20T10:00:00Z",
 	updatedAt: "2026-07-25T10:00:00Z",
 	...overrides,
@@ -58,6 +58,6 @@ export const Published: Story = { decorators: [decorate(page({}))] };
 
 export const Draft: Story = {
 	decorators: [
-		decorate(page({ status: "DRAFT", seoTitle: null, seoDescription: null })),
+		decorate(page({ published: false, seoTitle: null, seoDescription: null })),
 	],
 };
