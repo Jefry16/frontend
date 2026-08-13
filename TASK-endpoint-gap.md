@@ -97,6 +97,34 @@ that merge.
 
 ---
 
+## ✅ Verified against the running stack (2026-08-13)
+
+The gaps this file has been carrying as "unit-covered only" are closed. Run against the
+seeded `acme` operator; **everything written was restored and checked byte-identical**.
+
+- **`page.published`** — the wire sends the boolean, no `status` field. The seed carries
+  mixed state (`Our boats` published, `Press`/`FAQ` not), which is exactly what the old
+  `page.status` could not render: before the fix all three showed as Draft.
+- **The policy translation legs** — `PUT` 204, a blank body collapsing to `null` rather than
+  `""`, an unsupported locale 422, `DELETE` 204 **and idempotent** on a repeat. Restored to
+  the baseline of no overlays. A repeat `type` on create 409s, which is the branch the form
+  maps to "that policy already exists".
+- **The og:image upload** — multipart `POST /media` → 201 + `Location`, `GET /media/{id}`
+  resolving a URL with measured dimensions, then `PUT /seo` carrying all three fields. SEO
+  restored byte-identical; the probe media row deleted.
+- **Role gating, as a real STAFF member** (`diego@acme.test`, seeded). The profile reports
+  `STAFF`, so `usePermissions` yields `canWrite: false`. Eight member-level reads answer
+  **200** — pages, policies, experiences, media, audiences, contact messages, seo,
+  translations — and five ADMIN+ writes answer **403**: `POST /pages`, `POST /policies`,
+  `PUT /seo`, `PUT /translations/{locale}`, `PUT /brand`. What the UI hides and what the
+  backend refuses now match on evidence rather than on reading the use cases.
+
+**The policy `DELETE` itself is still unverified**, deliberately: all four types are written
+in the seed, so exercising it would mean destroying data another session is using. The
+translation delete covers the same idempotent-204 shape.
+
+---
+
 ## ⚠️ Shape drift is the gap an endpoint count cannot see
 
 An endpoint can be consumed and still be read wrong. Two instances so far, both
