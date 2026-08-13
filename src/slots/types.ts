@@ -3,7 +3,8 @@
 // wall-clock datetimes ("2026-08-01T10:00:00", no zone); durationMinutes is
 // derived server-side (endAt − startAt). AVAILABLE and SOLD_OUT are both
 // operator-settable; CANCELLED is terminal.
-const SLOT_STATUSES = ["AVAILABLE", "SOLD_OUT", "CANCELLED"] as const;
+/** The backend's SlotStatus, in the order the filter offers them. */
+export const SLOT_STATUSES = ["AVAILABLE", "SOLD_OUT", "CANCELLED"] as const;
 export type SlotStatus = (typeof SLOT_STATUSES)[number];
 
 export interface SlotAudiencePrice {
