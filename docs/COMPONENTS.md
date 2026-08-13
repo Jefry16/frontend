@@ -156,6 +156,11 @@ second shape:
 </AppFormCard>
 ```
 
+**Select or combobox?** `AppSelectField` for a short, fixed list you can scan;
+`AppComboboxField` once it is long enough that typing beats scrolling (the country picker's
+249 rows). The combobox filters **client-side** — it is for reference data already cached,
+unlike the archive's server-side one, which paginated tenant data of unknown size.
+
 - **Field renderers live in `shared/components/`**, one per input kind, each taking a
   TanStack Form `field` plus `label`/`description`/`required` and rendering the errors
   below: `AppField` (text/email/password) · `AppTextareaField` · `AppSelectField` ·
@@ -295,14 +300,14 @@ find src -name 'App*.tsx' -not -name '*.stories.tsx' | wc -l   # App* components
 find src -name '*.stories.tsx' | wc -l                         # stories
 ```
 
-### `components/ui/` — shadcn primitives (radix-nova), 24 — vendored, no stories
+### `components/ui/` — shadcn primitives (radix-nova), 26 — vendored, no stories
 
 `alert` · `avatar` · `badge` · `breadcrumb` · `button` · `calendar` · `card` · `checkbox` ·
 `dialog` · `dropdown-menu` · `field` · `input` · `label` · `popover` · `select` ·
 `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
 `textarea` · `tooltip`
 
-### `App*` components — 151, all of which ship a story (gated by `story-coverage.test.ts`)
+### `App*` components — 152, all of which ship a story (gated by `story-coverage.test.ts`)
 
 **`shared/` — 48.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·

@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { AppAuthShell, getPostLoginPath, useAuth } from "#/auth";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
@@ -8,6 +9,7 @@ import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { useCountries, useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
+import { AppComboboxField } from "#/shared/components/AppComboboxField";
 import { AppField } from "#/shared/components/AppField";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useTourOperatorForm } from "../hooks/use-tour-operator-form";
@@ -20,6 +22,10 @@ export const AppTourOperatorForm = () => {
 	const { data: currencies = [] } = useCurrencies();
 	const { data: timezones = [] } = useTimezones();
 	const { data: countries = [] } = useCountries();
+	const countryOptions = useMemo(
+		() => countries.map((c) => ({ value: c.id, label: c.name })),
+		[countries],
+	);
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
@@ -79,17 +85,12 @@ export const AppTourOperatorForm = () => {
 							</form.Field>
 							<form.Field name="address.countryId">
 								{(field) => (
-									<AppSelectField
+									<AppComboboxField
 										field={field}
 										label={m.country()}
-										placeholder={m.select_option()}
-									>
-										{countries.map((c) => (
-											<SelectItem key={c.id} value={c.id}>
-												{c.name}
-											</SelectItem>
-										))}
-									</AppSelectField>
+										items={countryOptions}
+										required
+									/>
 								)}
 							</form.Field>
 							<form.Field name="currencyId">
