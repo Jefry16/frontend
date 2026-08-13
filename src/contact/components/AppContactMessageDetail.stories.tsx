@@ -9,7 +9,6 @@ import { AppContactMessageDetail } from "./AppContactMessageDetail";
 const OP = "op-1";
 const MSG = "cm-1";
 
-// Seeded READ so the story doesn't fire the auto-mark-read mutation.
 const MESSAGE: ContactMessage = {
 	id: MSG,
 	context: "contact-messages",
