@@ -9,6 +9,8 @@ const blank = {
 	included: [],
 	notIncluded: [],
 	handle: "",
+	seoTitle: "",
+	seoDescription: "",
 };
 
 describe("experienceTranslationSchema", () => {
@@ -29,5 +31,21 @@ describe("experienceTranslationSchema", () => {
 
 	it("collapses an empty handle to null so the canonical one serves", () => {
 		expect(experienceTranslationSchema.parse(blank).handle).toBeNull();
+	});
+
+	// The same full-replace trap the handle comment describes, on the pair that
+	// backend #145 made readable: the overlay's PUT rebuilds the row, so the
+	// payload has to carry them or a save clears the locale's SEO.
+	it("carries the SEO pair, collapsing blanks to null", () => {
+		expect(experienceTranslationSchema.parse(blank)).toMatchObject({
+			seoTitle: null,
+			seoDescription: null,
+		});
+		expect(
+			experienceTranslationSchema.parse({
+				...blank,
+				seoTitle: "  Excursión al Limón  ",
+			}).seoTitle,
+		).toBe("Excursión al Limón");
 	});
 });

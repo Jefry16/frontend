@@ -1,6 +1,13 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
+// Blank stays blank on the wire — the backend reads blank as "no override".
+const optionalText = (max: number) =>
+	z
+		.string()
+		.trim()
+		.max(max, m.validation_max_length({ count: max }));
+
 // Bounds mirror the backend value objects. Media refs go through the picker but
 // still live in the form, so the parsed value is the whole payload.
 
@@ -46,6 +53,11 @@ export const experienceSchema = z.object({
 	featured: z.boolean(),
 	thumbnailMediaId: z.string().nullable(),
 	mediaIds: z.array(z.string()),
+	// Optional overrides. The backend maps blank to null ("no override"), so an
+	// empty field is how the operator clears one — and why the form must SEND
+	// them: omitting a field is the same as clearing it.
+	seoTitle: optionalText(70),
+	seoDescription: optionalText(320),
 });
 
 export type ExperienceFormData = z.input<typeof experienceSchema>;

@@ -20,6 +20,8 @@ const CANONICAL: Experience = {
 	bookingCutoffHours: 24,
 	startingPrice: 95,
 	published: true,
+	seoTitle: null,
+	seoDescription: null,
 	createdBy: "u-1",
 	createdAt: "2026-03-01T10:00:00Z",
 };
@@ -30,6 +32,8 @@ const EMPTY: ExperienceTranslation = {
 	description: null,
 	longDescription: null,
 	handle: null,
+	seoTitle: null,
+	seoDescription: null,
 };
 
 const TRANSLATED: ExperienceTranslation = {
@@ -38,6 +42,8 @@ const TRANSLATED: ExperienceTranslation = {
 	description: "Rema por la bahía al caer el sol, con un guía local.",
 	longDescription: null,
 	handle: "tour-kayak-atardecer",
+	seoTitle: null,
+	seoDescription: null,
 };
 
 const qc = storyQueryClient();

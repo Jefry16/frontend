@@ -19,6 +19,8 @@ const base = {
 	galleryUrls: [],
 	bookingCutoffHours: 24,
 	startingPrice: 95,
+	seoTitle: null,
+	seoDescription: null,
 	createdBy: "u-1",
 };
 

@@ -14,6 +14,9 @@ export interface Experience {
 	mediaIds: string[];
 	galleryUrls: string[];
 	bookingCutoffHours: number;
+	/** SEO overrides; null means the storefront falls back to name/description. */
+	seoTitle: string | null;
+	seoDescription: string | null;
 	startingPrice: number;
 	published: boolean;
 	createdBy: string;
@@ -28,4 +31,6 @@ export interface ExperienceTranslation {
 	description: string | null;
 	longDescription: string | null;
 	handle: string | null;
+	seoTitle: string | null;
+	seoDescription: string | null;
 }

@@ -24,6 +24,8 @@ const EXPERIENCE: Experience = {
 	bookingCutoffHours: 24,
 	startingPrice: 95,
 	published: true,
+	seoTitle: null,
+	seoDescription: null,
 	createdBy: "u-1",
 	createdAt: "2026-03-01T10:00:00Z",
 };
@@ -34,6 +36,8 @@ const ES: ExperienceTranslation = {
 	description: null,
 	longDescription: null,
 	handle: null,
+	seoTitle: null,
+	seoDescription: null,
 };
 
 // One operator with three languages (en primary), Spanish already translated.

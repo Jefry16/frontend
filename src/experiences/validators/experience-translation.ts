@@ -30,6 +30,8 @@ export const experienceTranslationSchema = z.object({
 	description: text(500),
 	longDescription: text(10000),
 	handle,
+	seoTitle: text(70),
+	seoDescription: text(320),
 });
 
 export type ExperienceTranslationFormData = z.input<
