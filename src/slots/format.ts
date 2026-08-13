@@ -1,6 +1,10 @@
 import * as m from "#/paraglide/messages";
 import type { AppBadgeProps } from "#/shared/components/AppBadge";
-import type { SlotAudiencePrice, SlotStatus } from "./types";
+import {
+	SLOT_STATUSES,
+	type SlotAudiencePrice,
+	type SlotStatus,
+} from "./types";
 
 // Anchor: 2024-01-07 is a Sunday — day names come from Intl, not a hand list.
 const SUNDAY_ANCHOR = new Date(Date.UTC(2024, 0, 7));
@@ -76,6 +80,7 @@ export const DAY_OPTIONS = [0, 1, 2, 3, 4, 5, 6].map((d) => ({
 	label: formatDayName(d),
 }));
 
-export const STATUS_OPTIONS = (
-	["AVAILABLE", "SOLD_OUT", "CANCELLED"] as const
-).map((s) => ({ value: s, label: formatSlotStatus(s) }));
+export const STATUS_OPTIONS = SLOT_STATUSES.map((s) => ({
+	value: s,
+	label: formatSlotStatus(s),
+}));
