@@ -23,7 +23,8 @@ export interface Country {
 	context: "countries";
 	code: string;
 	name: string;
-	flagUrl: string;
+	/** Null on rows with no flag asset — the standalone list returns null today. */
+	flagUrl: string | null;
 }
 
 // The backend nests the country reference inside the timezone.

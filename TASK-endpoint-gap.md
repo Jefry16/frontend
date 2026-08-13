@@ -127,16 +127,20 @@ UUIDv7 — so anything pinned to that literal id wants a reseed rather than trus
 
 ## ⚠️ Shape drift is the gap an endpoint count cannot see
 
-An endpoint can be consumed and still be read wrong. Two instances so far, both
-user-visible, neither caught by any gate:
+An endpoint can be consumed and still be read wrong. **Three instances so far**, all
+user-visible, none caught by any gate:
 
-- **`page.status` vs `published`** (found 2026-08-13, fixed). Backend `258209a` replaced
-  `String status` with `boolean published` on `PageResponse` **and** `PageListItemResponse`.
-  The frontend kept `status: PageStatus`, so `page.status` was `undefined` at runtime:
-  every page rendered as **Draft** in the list and on the detail regardless of its real
-  state, and the detail always offered *Publish*, never *Unpublish*. The list also sent a
-  `set` filter on a field the backend exposes as `bool` and cannot sort by.
-- **The experience SEO pair** (fixed the same day) — see below.
+- **`operator.address` became a structured object** (found 2026-08-13, fixed). Backend V15
+  replaced the single string with `{address1, address2, city, province, zip, countryId}` and
+  a resolved `countryCode`/`countryName` on read. The frontend kept `address: string`, so
+  **Settings → General could not save at all** — the flat string answered
+  `400 Malformed request body` — the read-only view rendered a plain object as a React
+  child, and **onboarding sent the same broken shape**. The fix brings in `GET /countries`
+  for the country picker, which had no consumer until now.
+- **`page.status` vs `published`** (fixed). Backend `258209a` replaced `String status` with
+  `boolean published` on both page responses; the frontend kept `status: PageStatus`, so
+  every page rendered as **Draft** and the detail never offered *Unpublish*.
+- **The experience SEO pair** (fixed) — see below.
 
 **Why 605 tests stayed green: the fixtures encode the same shape as the types.** Nine
 story and test fixtures said `status: "PUBLISHED"`, so every test agreed with the bug.

@@ -50,7 +50,14 @@ export const useTourOperatorForm = () => {
 	const form = useForm({
 		defaultValues: {
 			name: "",
-			address: "",
+			address: {
+				address1: "",
+				address2: "",
+				city: "",
+				province: "",
+				zip: "",
+				countryId: "",
+			},
 			timezoneId: "",
 			currencyId: "",
 		} as TourOperatorFormData,

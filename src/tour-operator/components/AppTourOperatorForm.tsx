@@ -6,7 +6,7 @@ import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
-import { useCurrencies, useTimezones } from "#/reference";
+import { useCountries, useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppField } from "#/shared/components/AppField";
 import { AppSelectField } from "#/shared/components/AppSelectField";
@@ -19,6 +19,7 @@ export const AppTourOperatorForm = () => {
 	const { form, isPending, errorMessage } = useTourOperatorForm();
 	const { data: currencies = [] } = useCurrencies();
 	const { data: timezones = [] } = useTimezones();
+	const { data: countries = [] } = useCountries();
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
@@ -55,8 +56,41 @@ export const AppTourOperatorForm = () => {
 							<form.Field name="name">
 								{(field) => <AppField field={field} label={m.name()} />}
 							</form.Field>
-							<form.Field name="address">
-								{(field) => <AppField field={field} label={m.address()} />}
+							<form.Field name="address.address1">
+								{(field) => (
+									<AppField field={field} label={m.address_line1()} required />
+								)}
+							</form.Field>
+							<form.Field name="address.address2">
+								{(field) => (
+									<AppField field={field} label={m.address_line2()} />
+								)}
+							</form.Field>
+							<form.Field name="address.city">
+								{(field) => (
+									<AppField field={field} label={m.city()} required />
+								)}
+							</form.Field>
+							<form.Field name="address.province">
+								{(field) => <AppField field={field} label={m.province()} />}
+							</form.Field>
+							<form.Field name="address.zip">
+								{(field) => <AppField field={field} label={m.zip()} />}
+							</form.Field>
+							<form.Field name="address.countryId">
+								{(field) => (
+									<AppSelectField
+										field={field}
+										label={m.country()}
+										placeholder={m.select_option()}
+									>
+										{countries.map((c) => (
+											<SelectItem key={c.id} value={c.id}>
+												{c.name}
+											</SelectItem>
+										))}
+									</AppSelectField>
+								)}
 							</form.Field>
 							<form.Field name="currencyId">
 								{(field) => (
@@ -82,11 +116,13 @@ export const AppTourOperatorForm = () => {
 									>
 										{timezones.map((t) => (
 											<SelectItem key={t.id} value={t.id}>
-												<img
-													src={t.country.flagUrl}
-													alt=""
-													className="h-3.5 w-5 shrink-0 rounded-xs object-cover"
-												/>
+												{t.country.flagUrl && (
+													<img
+														src={t.country.flagUrl}
+														alt=""
+														className="h-3.5 w-5 shrink-0 rounded-xs object-cover"
+													/>
+												)}
 												<span>
 													{t.cityName}, {t.country.name}
 												</span>

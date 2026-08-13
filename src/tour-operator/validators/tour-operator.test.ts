@@ -3,7 +3,14 @@ import { tourOperatorSchema } from "./tour-operator";
 
 const valid = {
 	name: "Acme Tours",
-	address: "1 Main St",
+	address: {
+		address1: "Calle Mayor 1",
+		address2: "",
+		city: "Madrid",
+		province: "Madrid",
+		zip: "28013",
+		countryId: "11111111-1111-1111-1111-111111111111",
+	},
 	timezoneId: "tz-1",
 	currencyId: "cur-1",
 };
@@ -31,13 +38,23 @@ describe("tourOperatorSchema", () => {
 		).toBe(false);
 	});
 
-	it("requires a non-empty address within 500 chars", () => {
+	it("requires address1, city and a country — the backend's NOT NULL parts", () => {
+		for (const missing of ["address1", "city", "countryId"] as const) {
+			expect(
+				tourOperatorSchema.safeParse({
+					...valid,
+					address: { ...valid.address, [missing]: "" },
+				}).success,
+			).toBe(false);
+		}
+	});
+
+	it("leaves the optional address parts optional", () => {
 		expect(
-			tourOperatorSchema.safeParse({ ...valid, address: "" }).success,
-		).toBe(false);
-		expect(
-			tourOperatorSchema.safeParse({ ...valid, address: "x".repeat(501) })
-				.success,
-		).toBe(false);
+			tourOperatorSchema.safeParse({
+				...valid,
+				address: { ...valid.address, address2: "", province: "", zip: "" },
+			}).success,
+		).toBe(true);
 	});
 });

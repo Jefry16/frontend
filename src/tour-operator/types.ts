@@ -49,13 +49,29 @@ export type BrandImageSlot =
 	| "faviconMediaId"
 	| "coverImageMediaId";
 
+/**
+ * The operator's postal address, structured since backend V15. `countryCode`
+ * and `countryName` are resolved from `countryId` on read and are absent from
+ * every write — the request carries the id alone.
+ */
+export interface OperatorAddress {
+	address1: string;
+	address2: string | null;
+	city: string;
+	province: string | null;
+	zip: string | null;
+	countryId: string;
+	countryCode: string;
+	countryName: string;
+}
+
 export interface TourOperatorDetails {
 	id: string;
 	context: "tour-operators";
 	name: string;
 	/** Read-only, and absent from PATCH: it is the storefront subdomain. */
 	handle: string;
-	address: string;
+	address: OperatorAddress;
 	phone: string | null;
 	email: string | null;
 	timezoneId: string;
