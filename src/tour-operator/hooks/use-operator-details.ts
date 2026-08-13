@@ -65,7 +65,16 @@ export const useOperatorDetailsForm = (
 	const form = useForm({
 		defaultValues: {
 			name: operator.name,
-			address: operator.address,
+			address: {
+				address1: operator.address.address1,
+				// "" clears an optional line; the read returns null for an unset one.
+				address2: operator.address.address2 ?? "",
+				city: operator.address.city,
+				province: operator.address.province ?? "",
+				zip: operator.address.zip ?? "",
+				// The write carries the id alone — countryCode/countryName are read-only.
+				countryId: operator.address.countryId,
+			},
 			// "" clears; null would leave the column unchanged.
 			phone: operator.phone ?? "",
 			email: operator.email ?? "",

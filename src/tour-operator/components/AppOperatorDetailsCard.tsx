@@ -10,7 +10,7 @@ import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
-import { useCurrencies, useTimezones } from "#/reference";
+import { useCountries, useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
@@ -19,6 +19,7 @@ import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { EmptyValue } from "#/shared/components/EmptyValue";
+import { addressLines } from "../format";
 import {
 	useOperatorDetails,
 	useOperatorDetailsForm,
@@ -76,7 +77,11 @@ const DetailsSummary = ({ operator }: { operator: TourOperatorDetails }) => (
 		<AppDetailField label={m.handle()}>
 			<span className="font-mono text-sm">{operator.handle}</span>
 		</AppDetailField>
-		<AppDetailField label={m.address()}>{operator.address}</AppDetailField>
+		<AppDetailField label={m.address()}>
+			{addressLines(operator.address).map((line) => (
+				<div key={line}>{line}</div>
+			))}
+		</AppDetailField>
 		<AppDetailField label={m.phone()}>
 			{operator.phone ?? <EmptyValue />}
 		</AppDetailField>
@@ -93,6 +98,7 @@ const DetailsForm = ({
 	tourOperatorId: string;
 	operator: TourOperatorDetails;
 }) => {
+	const { data: countries = [] } = useCountries();
 	const timezones = useTimezones();
 	const currencies = useCurrencies();
 	const { form, isPending, errorMessage, submit } = useOperatorDetailsForm(
@@ -126,8 +132,55 @@ const DetailsForm = ({
 				<form.Field name="name">
 					{(field) => <AppField field={field} label={m.shop_name()} required />}
 				</form.Field>
-				<form.Field name="address">
-					{(field) => <AppField field={field} label={m.address()} required />}
+				<form.Field name="address.address1">
+					{(field) => (
+						<AppField field={field} label={m.address_line1()} required />
+					)}
+				</form.Field>
+				<form.Field name="address.address2">
+					{(field) => (
+						<AppField
+							field={field}
+							label={m.address_line2()}
+							description={m.operator_optional_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="address.city">
+					{(field) => <AppField field={field} label={m.city()} required />}
+				</form.Field>
+				<form.Field name="address.province">
+					{(field) => (
+						<AppField
+							field={field}
+							label={m.province()}
+							description={m.operator_optional_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="address.zip">
+					{(field) => (
+						<AppField
+							field={field}
+							label={m.zip()}
+							description={m.operator_optional_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="address.countryId">
+					{(field) => (
+						<AppSelectField
+							field={field}
+							label={m.country()}
+							placeholder={m.select_option()}
+						>
+							{countries.map((c) => (
+								<SelectItem key={c.id} value={c.id}>
+									{c.name}
+								</SelectItem>
+							))}
+						</AppSelectField>
+					)}
 				</form.Field>
 				<form.Field name="phone">
 					{(field) => (

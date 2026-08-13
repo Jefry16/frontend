@@ -3,7 +3,14 @@ import { operatorDetailsSchema } from "./operator-details";
 
 const valid = {
 	name: "Acme Tours",
-	address: "12 Malecón, Sosúa",
+	address: {
+		address1: "Calle Mayor 1",
+		address2: "",
+		city: "Madrid",
+		province: "Madrid",
+		zip: "28013",
+		countryId: "11111111-1111-1111-1111-111111111111",
+	},
 	phone: "",
 	email: "",
 	timezoneId: "tz-1",
@@ -20,13 +27,12 @@ describe("operatorDetailsSchema", () => {
 		expect(parsed.email).toBe("");
 	});
 
-	it("accepts a loosely-shaped address, matching the backend's check", () => {
+	it("requires the address parts the column cannot hold empty", () => {
 		expect(
-			operatorDetailsSchema.parse({ ...valid, email: "hola@acme.do" }).email,
-		).toBe("hola@acme.do");
-		expect(
-			operatorDetailsSchema.safeParse({ ...valid, email: "not-an-address" })
-				.success,
+			operatorDetailsSchema.safeParse({
+				...valid,
+				address: { ...valid.address, address1: "" },
+			}).success,
 		).toBe(false);
 	});
 

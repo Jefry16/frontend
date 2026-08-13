@@ -26,7 +26,13 @@ const USER: AuthUser = {
 	tourOperators: [],
 };
 
-type FieldName = "name" | "address" | "timezoneId" | "currencyId";
+type FieldName =
+	| "name"
+	| "address.address1"
+	| "address.city"
+	| "address.countryId"
+	| "timezoneId"
+	| "currencyId";
 
 const fill = (form: {
 	setFieldValue: (n: FieldName, v: string) => void;
@@ -34,7 +40,9 @@ const fill = (form: {
 }) => {
 	act(() => {
 		form.setFieldValue("name", "Acme Tours");
-		form.setFieldValue("address", "1 Main St");
+		form.setFieldValue("address.address1", "1 Main St");
+		form.setFieldValue("address.city", "Madrid");
+		form.setFieldValue("address.countryId", "country-1");
 		form.setFieldValue("timezoneId", "tz-1");
 		form.setFieldValue("currencyId", "cur-1");
 	});
