@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	Card,
 	CardContent,
@@ -13,6 +13,7 @@ import * as m from "#/paraglide/messages";
 import { useCountries, useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppCardBody } from "#/shared/components/AppCardBody";
+import { AppComboboxField } from "#/shared/components/AppComboboxField";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppField } from "#/shared/components/AppField";
@@ -99,6 +100,10 @@ const DetailsForm = ({
 	operator: TourOperatorDetails;
 }) => {
 	const { data: countries = [] } = useCountries();
+	const countryOptions = useMemo(
+		() => countries.map((c) => ({ value: c.id, label: c.name })),
+		[countries],
+	);
 	const timezones = useTimezones();
 	const currencies = useCurrencies();
 	const { form, isPending, errorMessage, submit } = useOperatorDetailsForm(
@@ -169,17 +174,12 @@ const DetailsForm = ({
 				</form.Field>
 				<form.Field name="address.countryId">
 					{(field) => (
-						<AppSelectField
+						<AppComboboxField
 							field={field}
 							label={m.country()}
-							placeholder={m.select_option()}
-						>
-							{countries.map((c) => (
-								<SelectItem key={c.id} value={c.id}>
-									{c.name}
-								</SelectItem>
-							))}
-						</AppSelectField>
+							items={countryOptions}
+							required
+						/>
 					)}
 				</form.Field>
 				<form.Field name="phone">

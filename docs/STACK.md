@@ -46,6 +46,7 @@ node -p "require('./node_modules/<pkg>/package.json').version"
 | `@tailwindcss/vite` | 4.3.3 | the Vite plugin (how Tailwind is wired here) | https://tailwindcss.com/docs/installation/using-vite |
 | `shadcn` | 4.13.1 (CLI) | component registry; our style is **`radix-nova`** (see `components.json`) | https://ui.shadcn.com/docs |
 | ↳ shadcn CLI | — | `shadcn add` — the ONLY sanctioned way to add/update `components/ui/*` | https://ui.shadcn.com/docs/cli |
+| `cmdk` | 1.1.1 | the command palette behind `components/ui/command` + `AppComboboxField` | https://cmdk.paco.me |
 | `radix-ui` | 1.6.4 | headless primitives (unified package the shadcn components import) | https://www.radix-ui.com/primitives/docs/overview/introduction |
 | `react-day-picker` | 10.0.1 | the date picker behind `components/ui/calendar` + `AppDateField` | https://daypicker.dev |
 | `lucide-react` | 0.545 | icon set | https://lucide.dev/guide/packages/lucide-react |
@@ -93,7 +94,7 @@ node -p "require('./node_modules/<pkg>/package.json').version"
 | `dependency-cruiser` | 17.4.3 | module-boundary enforcement (`.dependency-cruiser.cjs`) | https://github.com/sverweij/dependency-cruiser |
 | ↳ rules reference | — | the rule schema our config uses | https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md |
 
-## Storybook — the living component inventory (151 story files, gated)
+## Storybook — the living component inventory (152 story files, gated)
 
 | Package | Version | Role | Docs |
 |---|---|---|---|
