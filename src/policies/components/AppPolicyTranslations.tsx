@@ -2,6 +2,7 @@ import { Scale } from "lucide-react";
 import { useState } from "react";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
+import { localeLabel, useOperatorLocales } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
@@ -14,7 +15,6 @@ import {
 	AppTranslationSummary,
 	type TranslatedField,
 } from "#/shared/components/AppTranslationSummary";
-import { localeLabel, useOperatorLocales } from "#/tour-operator";
 import { usePolicy } from "../hooks/use-policy";
 import { usePolicyTranslations } from "../hooks/use-policy-translations";
 import type { PolicyTranslation } from "../types";

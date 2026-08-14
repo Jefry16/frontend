@@ -2,8 +2,8 @@ import { Images } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { useOperatorDateTime } from "#/tour-operator";
 import { mediaColumns } from "../columns";
 import { AppMediaUploadButton } from "./AppMediaUploadButton";
 

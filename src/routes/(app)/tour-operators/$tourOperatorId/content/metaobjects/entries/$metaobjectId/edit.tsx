@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppMetaobjectEdit } from "#/metaobjects";
+import { AppWriteGate } from "#/session";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metaobjects/entries/$metaobjectId/edit",

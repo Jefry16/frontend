@@ -2,13 +2,13 @@ import { Compass } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppDataTable } from "#/shared/components/AppDataTable";
-import { AppNewLink } from "#/shared/components/AppNewLink";
 import {
 	useOperatorCurrency,
 	useOperatorDateTime,
 	usePermissions,
-} from "#/tour-operator";
+} from "#/session";
+import { AppDataTable } from "#/shared/components/AppDataTable";
+import { AppNewLink } from "#/shared/components/AppNewLink";
 import { experienceColumns } from "../columns";
 
 // The operator's experiences as the standard cursor-paginated table. The

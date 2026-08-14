@@ -18,23 +18,6 @@ export const useOperatorSeo = (tourOperatorId: string) =>
 		},
 	});
 
-// Fetched here rather than through `#/media`'s useMediaByIds: `media` imports
-// `#/tour-operator`, so reaching back through the barrel is a cycle.
-export const useOperatorSeoImage = (
-	tourOperatorId: string,
-	mediaId: string | null,
-) =>
-	useQuery({
-		queryKey: queryKeys.mediaAsset(tourOperatorId, mediaId ?? ""),
-		enabled: !!mediaId,
-		queryFn: async () => {
-			const { data } = await authApi.get<{ id: string; url: string }>(
-				`/tour-operators/${tourOperatorId}/media/${mediaId}`,
-			);
-			return data;
-		},
-	});
-
 // The PUT is a full replace, so the card always sends all three fields —
 // including an `ogImageMediaId` the operator never touched.
 export const useOperatorSeoSave = (tourOperatorId: string) => {

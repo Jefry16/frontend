@@ -3,19 +3,19 @@ import { Languages } from "lucide-react";
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
+import {
+	localeLabel,
+	type OperatorLocales,
+	useCurrentTourOperator,
+	useOperatorLocales,
+} from "#/session";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import {
-	AppOperatorLanguagesForm,
-	localeLabel,
-	type OperatorLocales,
-	useCurrentTourOperator,
-	useOperatorLocales,
-} from "#/tour-operator";
+import { AppOperatorLanguagesForm } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/settings/languages/",

@@ -10,6 +10,7 @@ import {
 } from "#/components/ui/card";
 import { FieldDescription, FieldGroup } from "#/components/ui/field";
 import { Label } from "#/components/ui/label";
+import { useMedia } from "#/media";
 import * as m from "#/paraglide/messages";
 import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
@@ -20,7 +21,6 @@ import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
 	useOperatorSeo,
-	useOperatorSeoImage,
 	useOperatorSeoImageUpload,
 	useOperatorSeoSave,
 } from "../hooks/use-operator-seo";
@@ -78,7 +78,7 @@ const SeoForm = ({
 
 	const save = useOperatorSeoSave(tourOperatorId);
 	const upload = useOperatorSeoImageUpload(tourOperatorId);
-	const image = useOperatorSeoImage(tourOperatorId, imageId);
+	const image = useMedia(tourOperatorId, imageId);
 
 	const form = useForm({
 		defaultValues: {
@@ -184,7 +184,7 @@ const SeoSummary = ({
 	tourOperatorId: string;
 	seo: OperatorSeo;
 }) => {
-	const image = useOperatorSeoImage(tourOperatorId, seo.ogImageMediaId);
+	const image = useMedia(tourOperatorId, seo.ogImageMediaId);
 	const none = <span className="text-muted-foreground">{m.not_set()}</span>;
 
 	return (

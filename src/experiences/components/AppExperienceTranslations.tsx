@@ -6,6 +6,7 @@ import {
 	useMetafieldTranslationLocales,
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
+import { localeLabel, useOperatorLocales } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
@@ -18,7 +19,6 @@ import {
 	AppTranslationSummary,
 	type TranslatedField,
 } from "#/shared/components/AppTranslationSummary";
-import { localeLabel, useOperatorLocales } from "#/tour-operator";
 import { useExperience } from "../hooks/use-experience";
 import {
 	useExperienceTranslation,

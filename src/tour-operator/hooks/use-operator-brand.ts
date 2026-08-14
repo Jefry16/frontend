@@ -22,20 +22,6 @@ export const useBrand = (tourOperatorId: string) =>
 		},
 	});
 
-// Fetched here rather than through `#/media`'s useMediaByIds: `media` imports
-// `#/tour-operator`, so reaching back through the barrel is a cycle.
-export const useBrandImage = (tourOperatorId: string, mediaId: string | null) =>
-	useQuery({
-		queryKey: queryKeys.mediaAsset(tourOperatorId, mediaId ?? ""),
-		enabled: !!mediaId,
-		queryFn: async () => {
-			const { data } = await authApi.get<{ id: string; url: string }>(
-				`/tour-operators/${tourOperatorId}/media/${mediaId}`,
-			);
-			return data;
-		},
-	});
-
 /**
  * Every write sends the WHOLE row: `PUT /brand` is a full replace, so a
  * patch-shaped body silently wipes the palette and social links.

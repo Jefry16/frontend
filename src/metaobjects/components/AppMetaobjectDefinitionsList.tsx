@@ -2,9 +2,9 @@ import { Shapes } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { metaobjectDefinitionColumns } from "../columns";
 
 // The operator's metaobject definitions as the standard cursor table

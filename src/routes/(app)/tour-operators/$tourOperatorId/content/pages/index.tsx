@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppPagesList } from "#/pages";
 import * as m from "#/paraglide/messages";
+import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { usePermissions } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/pages/",

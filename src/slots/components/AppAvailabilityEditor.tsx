@@ -9,13 +9,13 @@ import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
+import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppEmptyState } from "#/shared/components/AppEmptyState";
 import { AppError } from "#/shared/components/AppError";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { usePermissions } from "#/tour-operator";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
 import { AppSingleSlotForm } from "./AppSingleSlotForm";
 

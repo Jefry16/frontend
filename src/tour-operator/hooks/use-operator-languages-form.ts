@@ -7,7 +7,7 @@ import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import type { OperatorLocales } from "../locales";
+import type { OperatorLocales } from "#/session";
 import {
 	type OperatorLocalesFormData,
 	operatorLocalesSchema,

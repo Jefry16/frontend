@@ -11,8 +11,8 @@ import {
 	SidebarRail,
 } from "#/components/ui/sidebar";
 import * as m from "#/paraglide/messages";
+import { useCurrentTourOperator } from "#/session";
 import { AppLink } from "#/shared/components/AppLink";
-import { useCurrentTourOperator } from "../hooks/use-current-tour-operator";
 import { settingsSectionItems } from "../nav-items";
 import { AppSignOutButton } from "./AppSignOutButton";
 import { SidebarNavLeaf } from "./SidebarNavLeaf";

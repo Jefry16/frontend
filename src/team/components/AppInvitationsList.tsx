@@ -2,9 +2,9 @@ import { Mail } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { invitationColumns } from "../invitation-columns";
 
 // The operator's invitations as the standard cursor-paginated table: all

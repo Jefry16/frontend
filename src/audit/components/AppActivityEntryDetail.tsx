@@ -9,6 +9,7 @@ import {
 	TableRow,
 } from "#/components/ui/table";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
@@ -16,7 +17,6 @@ import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime } from "#/tour-operator";
 import {
 	entityRoute,
 	formatAuditAction,

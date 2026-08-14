@@ -2,8 +2,8 @@ import { Inbox } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { useOperatorDateTime } from "#/tour-operator";
 import { contactMessageColumns } from "../columns";
 
 // The operator's contact inbox as the standard cursor table (Operations →

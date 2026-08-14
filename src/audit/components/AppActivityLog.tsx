@@ -2,8 +2,8 @@ import { Button } from "#/components/ui/button";
 import { Skeleton } from "#/components/ui/skeleton";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime } from "#/session";
 import { AppError } from "#/shared/components/AppError";
-import { useOperatorDateTime } from "#/tour-operator";
 import {
 	formatAuditAction,
 	formatAuditActor,

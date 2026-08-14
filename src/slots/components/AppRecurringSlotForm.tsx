@@ -1,12 +1,12 @@
 import type { Audience } from "#/audiences";
 import { FieldGroup } from "#/components/ui/field";
 import * as m from "#/paraglide/messages";
+import { useOperatorToday } from "#/session";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppCheckboxGroupField } from "#/shared/components/AppCheckboxGroupField";
 import { AppDateField } from "#/shared/components/AppDateField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppTimeField } from "#/shared/components/AppTimeField";
-import { useOperatorToday } from "#/tour-operator";
 import { DAY_OPTIONS } from "../format";
 import { useRecurringSlotForm } from "../hooks/use-recurring-slot-form";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";

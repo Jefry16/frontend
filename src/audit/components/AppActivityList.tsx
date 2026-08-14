@@ -2,8 +2,8 @@ import { History } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { useOperatorDateTime } from "#/tour-operator";
 import { activityColumns } from "../columns";
 
 // The operator's whole audit trail as the standard cursor table, newest first.
