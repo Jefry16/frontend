@@ -7,6 +7,7 @@ import { useAllPages } from "#/hooks/use-all-pages";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
@@ -19,7 +20,6 @@ import {
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { ownerTypeLabel, typeLabel } from "../format";
 import { useMetafieldDefinition } from "../hooks/use-metafield-definition";
 import { useMetafieldDefinitionActions } from "../hooks/use-metafield-definition-actions";

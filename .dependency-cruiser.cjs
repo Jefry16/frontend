@@ -105,17 +105,34 @@ module.exports = {
 			name: "shared-cant-import-modules",
 			severity: "error",
 			comment:
-				"shared/ must not depend on any business module. Move the dependency the other direction.",
+				"shared/ must not depend on any business module, nor on session/. Move the " +
+				"dependency the other direction — a shared component RECEIVES `canWrite`, it " +
+				"never calls usePermissions (which is also what keeps it storyable in both states).",
 			from: { path: "^src/shared/" },
-			to: { path: `^src/${MODULE_GROUP}/` },
+			to: { path: `^src/(${MODULES.join("|")}|session)/` },
 		},
 		{
 			name: "ui-cant-import-modules",
 			severity: "error",
 			comment:
-				"components/ui/ (shadcn primitives) must not depend on business modules.",
+				"components/ui/ (shadcn primitives) must not depend on business modules or session/.",
 			from: { path: "^src/components/ui/" },
-			to: { path: `^src/${MODULE_GROUP}/` },
+			to: { path: `^src/(${MODULES.join("|")}|session)/` },
+		},
+		{
+			name: "session-only-reaches-auth",
+			severity: "error",
+			comment:
+				"session/ is imported by everything, so it must import almost nothing — `auth` " +
+				"(for the signed-in user) is the single exception. This is the rule whose absence " +
+				"let `tour-operator` become a hub: it sat at the bottom of the graph AND wanted to " +
+				"use `media`/`metafields`, and the cycle that followed was worked around by copying " +
+				"the code three times. Anything session/ needs from a module belongs the other way up.",
+			from: { path: "^src/session/" },
+			to: {
+				path: `^src/${MODULE_GROUP}/`,
+				pathNot: ["^src/auth/index\\.(ts|tsx)$"],
+			},
 		},
 	],
 	options: {

@@ -10,6 +10,7 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import { metafieldTypeLabel } from "#/metafields";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
@@ -23,7 +24,6 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { metaobjectEntryColumns } from "../columns";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
 import { useMetaobjectDefinitionActions } from "../hooks/use-metaobject-definition-actions";

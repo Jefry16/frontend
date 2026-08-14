@@ -88,6 +88,10 @@ src/
                      No feature-module imports. See docs/COMPONENTS.md §8.
   lib/               framework-agnostic helpers: api client, tokens, query helpers, cn().
   hooks/             app-wide hooks (use-app-toast, use-resource, use-all-pages, use-mobile).
+  session/           who is signed in and what they may do HERE: usePermissions,
+                     useOperatorDateTime/Today/Currency, useOperatorLocales, localeLabel,
+                     AppWriteGate. Imported by nearly every module; imports only `#/auth`.
+                     Not a feature module — see "Module boundaries" below.
   test/              MSW server + handlers + renderWithProviders.
   paraglide/         GENERATED i18n output (gitignored) — recompile after pulling.
   <feature>/         a feature module (auth, tour-operator, experiences, …) — added one at a time.
@@ -103,10 +107,24 @@ Each feature lives in `src/<module>/` and exposes a **barrel** `index.ts`. The r
 1. No circular imports.
 2. Cross-module imports go **through the barrel** — `#/<module>`, never `#/<module>/components/...`.
 3. `routes/`, `lib/`, `hooks/` reach a module only via its barrel.
-4. `shared/` and `components/ui/` must **not** import any feature module.
+4. `shared/` and `components/ui/` must **not** import any feature module, nor `session/`.
+5. `session/` must import nothing but `#/auth`.
 
 When you create a module, **add its folder name to `MODULES` in `.dependency-cruiser.cjs`**
 or its boundaries go unenforced — silently, since `depcheck` still passes.
+
+**Why `session/` exists, and why rule 5 is strict.** It holds the answers every screen
+needs — *who is signed in, may they write here, what timezone and languages does this
+operator use* — and it is deliberately **not** a feature module. It used to live inside
+`tour-operator/`, which put that module at the bottom of the import graph (14 of 16
+modules imported it) while it also wanted to *use* `media` and `metafields` from the top.
+It cannot be both, and each time it tried, the cycle was worked around by copying code:
+two byte-identical media fetches and a pair of render-prop parameters, each with its own
+comment explaining the cycle. `depcheck` stayed green throughout — **the duplication is
+what kept it green**, which is why nothing ever surfaced it.
+
+Rule 5 is the guard against a repeat. Anything `session/` seems to need from a feature
+module belongs the other way up.
 
 ## Conventions
 

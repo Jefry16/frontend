@@ -2,6 +2,7 @@ import { Mail, Send, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { Card, CardContent } from "#/components/ui/card";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
@@ -13,7 +14,6 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import {
 	effectiveStatus,
 	roleBadgeVariant,

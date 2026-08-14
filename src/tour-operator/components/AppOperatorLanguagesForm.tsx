@@ -2,13 +2,13 @@ import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
 import { useLanguages } from "#/reference";
+import type { OperatorLocales } from "#/session";
+import { localeLabel } from "#/session";
 import { AppCheckboxGroupField } from "#/shared/components/AppCheckboxGroupField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useOperatorLanguagesForm } from "../hooks/use-operator-languages-form";
-import type { OperatorLocales } from "../locales";
-import { localeLabel } from "../locales";
 
 // The offerable set is the backend allowlist UNIONED with what the operator
 // already supports, so a language later dropped from the allowlist stays visible

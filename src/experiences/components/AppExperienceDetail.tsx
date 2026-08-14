@@ -13,6 +13,11 @@ import { Skeleton } from "#/components/ui/skeleton";
 import { formatMoney } from "#/lib/money";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
+import {
+	useOperatorCurrency,
+	useOperatorDateTime,
+	usePermissions,
+} from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
@@ -23,11 +28,6 @@ import {
 } from "#/shared/components/AppPageActions";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import {
-	useOperatorCurrency,
-	useOperatorDateTime,
-	usePermissions,
-} from "#/tour-operator";
 import { statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";

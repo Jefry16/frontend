@@ -10,7 +10,7 @@ import {
 	SidebarRail,
 } from "#/components/ui/sidebar";
 import * as m from "#/paraglide/messages";
-import { useCurrentTourOperator } from "../hooks/use-current-tour-operator";
+import { useCurrentTourOperator } from "#/session";
 import {
 	catalogNavItems,
 	contentNavItems,

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import { Label } from "#/components/ui/label";
+import { useMedia } from "#/media";
 import * as m from "#/paraglide/messages";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
-import { useBrandImage } from "../hooks/use-operator-brand";
 import type { BrandImageSlot } from "../types";
 
 const MAX_BYTES = 25 * 1024 * 1024;
@@ -33,7 +33,7 @@ export const AppBrandImageSlot = ({
 	onFile: (slot: BrandImageSlot, file: File) => void;
 	onClear: (slot: BrandImageSlot) => void;
 }) => {
-	const image = useBrandImage(tourOperatorId, mediaId);
+	const image = useMedia(tourOperatorId, mediaId);
 	const [error, setError] = useState<string | null>(null);
 	const [confirmOpen, setConfirmOpen] = useState(false);
 	const url = image.data?.url ?? null;

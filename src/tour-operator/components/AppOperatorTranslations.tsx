@@ -1,5 +1,10 @@
-import { type ReactNode, useState } from "react";
+import { useState } from "react";
+import {
+	AppMetafieldTranslationsCard,
+	useMetafieldTranslationLocales,
+} from "#/metafields";
 import * as m from "#/paraglide/messages";
+import { localeLabel, useOperatorLocales } from "#/session";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
@@ -8,12 +13,10 @@ import {
 	AppTranslationSummary,
 	type TranslatedField,
 } from "#/shared/components/AppTranslationSummary";
-import { useOperatorLocales } from "../hooks/use-operator-locales";
 import {
 	useOperatorTranslation,
 	useOperatorTranslations,
 } from "../hooks/use-operator-translations";
-import { localeLabel } from "../locales";
 import type { OperatorTranslation } from "../types";
 import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
 
@@ -22,25 +25,12 @@ import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
 //
 // Reads are member-visible and writes are ADMIN+, so a staff member gets the
 // content read-only rather than a form that 403s on save.
-//
-// The last two props exist because this module cannot reach `metafields`:
-// `metafields` imports `#/tour-operator`, so importing it back is a cycle
-// (verified — 6 `no-circular` errors). The page and experience editors, which
-// are not on that arc, render the metafield overlay inline. Here the route
-// composes it instead, and passes back the locales it covers so the tab dots
-// mean the same thing on all three screens.
 export const AppOperatorTranslations = ({
 	tourOperatorId,
 	canWrite,
-	alsoTranslated = [],
-	perLocale,
 }: {
 	tourOperatorId: string;
 	canWrite: boolean;
-	/** Locales a caller-rendered section translates, unioned into the tab dots. */
-	alsoTranslated?: readonly string[];
-	/** Rendered under the form for the active locale. */
-	perLocale?: (locale: string) => ReactNode;
 }) => {
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const listQuery = useOperatorTranslations(tourOperatorId);
@@ -53,9 +43,17 @@ export const AppOperatorTranslations = ({
 	const active = picked ?? translatable[0];
 
 	const translationQuery = useOperatorTranslation(tourOperatorId, active);
+	// The operator is its own metafield owner, so it is its own ownerId.
+	const metafieldLocales = useMetafieldTranslationLocales(
+		tourOperatorId,
+		"tour_operator",
+		tourOperatorId,
+	);
+	// A locale translated only in its metafields is still translated — the dot
+	// reads "has anything for this locale", not "has canonical fields".
 	const translated = new Set([
 		...(listQuery.data ?? []).map((t) => t.locale),
-		...alsoTranslated,
+		...(metafieldLocales.data ?? []),
 	]);
 
 	if (localesQuery.isPending) {
@@ -95,7 +93,16 @@ export const AppOperatorTranslations = ({
 			) : (
 				<AppLoadingBlock />
 			)}
-			{active && perLocale?.(active)}
+			{active && (
+				<AppMetafieldTranslationsCard
+					key={active}
+					tourOperatorId={tourOperatorId}
+					ownerType="tour_operator"
+					ownerId={tourOperatorId}
+					locale={active}
+					canWrite={canWrite}
+				/>
+			)}
 		</div>
 	);
 };

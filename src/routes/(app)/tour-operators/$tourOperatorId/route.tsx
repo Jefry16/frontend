@@ -7,13 +7,10 @@ import {
 	SidebarTrigger,
 } from "#/components/ui/sidebar";
 import * as m from "#/paraglide/messages";
+import { useCurrentTourOperator } from "#/session";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppRoutePending } from "#/shared/components/AppRoutePending";
-import {
-	AppSettingsSidebar,
-	AppTourOperatorSidebar,
-	useCurrentTourOperator,
-} from "#/tour-operator";
+import { AppSettingsSidebar, AppTourOperatorSidebar } from "#/tour-operator";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({
 	component: TourOperatorLayout,

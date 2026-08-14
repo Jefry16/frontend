@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppExperienceTranslations } from "#/experiences";
+import { usePermissions } from "#/session";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { usePermissions } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/experiences/$experienceId/translations",

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
@@ -18,7 +19,6 @@ import {
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { EmptyValue } from "#/shared/components/EmptyValue";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { metaobjectStatusBadgeVariant, metaobjectStatusLabel } from "../format";
 import { useMetaobject } from "../hooks/use-metaobject";
 import { useMetaobjectActions } from "../hooks/use-metaobject-actions";

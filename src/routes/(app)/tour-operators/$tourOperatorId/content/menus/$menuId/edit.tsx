@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppMenuEdit } from "#/menus";
+import { AppWriteGate } from "#/session";
 import { AppPageShell } from "#/shared/components/AppPageShell";
-import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/menus/$menuId/edit",

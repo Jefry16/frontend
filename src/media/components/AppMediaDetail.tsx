@@ -8,6 +8,7 @@ import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppDetailField } from "#/shared/components/AppDetailField";
@@ -18,7 +19,6 @@ import {
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { EmptyValue } from "#/shared/components/EmptyValue";
-import { useOperatorDateTime, usePermissions } from "#/tour-operator";
 import { formatBytes, isImage, mimeLabel } from "../format";
 import { useMedia } from "../hooks/use-media";
 import { useMediaActions } from "../hooks/use-media-actions";

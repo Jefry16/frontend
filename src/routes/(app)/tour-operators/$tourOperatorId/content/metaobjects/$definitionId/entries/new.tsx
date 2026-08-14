@@ -2,12 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Shapes } from "lucide-react";
 import { AppMetaobjectForm, useMetaobjectDefinition } from "#/metaobjects";
 import * as m from "#/paraglide/messages";
+import { AppWriteGate } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { AppWriteGate } from "#/tour-operator";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metaobjects/$definitionId/entries/new",
