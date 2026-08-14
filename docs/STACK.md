@@ -5,9 +5,16 @@ version we run, and the **authoritative documentation URL** to consult. Read thi
 before reaching for an API — we verify against these docs rather than assume. When a
 package is upgraded, update the version and re-check the doc link here.
 
-Versions are the **resolved** versions in `node_modules` (2026-08-06). `@tanstack/*`
-packages pinned to `latest` in `package.json` are noted with their resolved version, so
-they drift on any reinstall — re-read them rather than trusting the number:
+Versions are the **resolved** versions in `node_modules` (2026-08-14), and the table
+below is checked against them — every one of the 43 entries matched at that date.
+
+**Nothing is on `latest` any more.** Five `@tanstack/*` packages were, including the
+router and `react-start`; CI was safe (`--frozen-lockfile`) but any local `pnpm add`
+re-resolved the routing spine as a side effect of installing something unrelated. They
+are pinned exactly now, the way `@tanstack/react-query` and `@biomejs/biome` already
+were. A caret is fine for a leaf; the framework is not a leaf.
+
+To re-check a version rather than trusting this table:
 
 ```bash
 node -p "require('./node_modules/<pkg>/package.json').version"
