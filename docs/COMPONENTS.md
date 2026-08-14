@@ -39,6 +39,7 @@ Four layers, one-way imports, **enforced by `pnpm depcheck`**. Never import upwa
 ```
 routes/            file-based pages (thin — wiring only, no design decisions)
   └─→ <module>/    business domains (auth, tour-operator, experiences, …)
+        ├─→ session/     who is signed in, and what they may do HERE
         └─→ shared/      the App* design layer + cross-cutting hooks/lib/theme
               └─→ components/ui/   shadcn primitives (CLI-managed)
 ```
@@ -46,7 +47,12 @@ routes/            file-based pages (thin — wiring only, no design decisions)
 - **`components/ui/`** — shadcn primitives (radix-nova style). CLI-managed, **never**
   imports a business module, never hand-edited (R1).
 - **`shared/`** — the cross-cutting `App*` layer over shadcn + `theme.tsx`, shared hooks,
-  lib helpers. Importable anywhere; **must not import any module**.
+  lib helpers. Importable anywhere; **must not import any module, nor `session/`**.
+- **`session/`** — `usePermissions` · `useOperatorDateTime`/`Today`/`Currency` ·
+  `useOperatorLocales` · `localeLabel` · `AppWriteGate`. Not a feature module: it is
+  imported by nearly all of them, so it imports **only `#/auth`** (enforced by
+  `session-only-reaches-auth`). It lived in `tour-operator/` until that made the module a
+  hub it could not escape — see `../CLAUDE.md` → *Module boundaries* for what that cost.
 - **`<module>/`** — one folder per business domain (screaming layout — no `features/`
   wrapper). Owns its components, hooks, validators, types. Exposes a **barrel `index.ts`**;
   cross-module imports go through the barrel (`#/<module>`), never a deep path.
@@ -60,7 +66,7 @@ routes/            file-based pages (thin — wiring only, no design decisions)
   module **only through its barrel** — `#/<module>`, never `#/<module>/components/Foo`.
 - **Intra-module** imports are **relative** (`./`, `../`). The barrel imports the internals,
   so an internal importing the barrel would be circular — don't.
-- **`shared/` is importable from anywhere** but must not import any module.
+- **`shared/` is importable from anywhere** but must not import any module, nor `session/`.
 - **No barrels for `shared/components/`** (or its subfolders). `index.ts` barrels are a
   **module-level** convention only; `shared/` is not a module.
 
@@ -170,7 +176,7 @@ unlike the archive's server-side one, which paginated tenant data of unknown siz
   capacity inputs build on — not a form field itself.)
 - `AppFormCard` — the card + `<form>` + banners + footer above. **`onSubmit` takes
   `form.handleSubmit` by reference** (form-core binds it in the `FormApi` constructor), at
-  every one of the eighteen call sites — **no form validates and then mutates by hand.**
+  every one of the seventeen call sites — **no form validates and then mutates by hand.**
   That is the hook's job: `useForm`'s own `onSubmit` fires only after validation passes, so
   a component never reads `form.state.isValid`. Two hooks used to leave it unwired and
   their components compensated; both are wired now, and a form that reaches for
@@ -204,9 +210,10 @@ unlike the archive's server-side one, which paginated tenant data of unknown siz
 - `validators/<x>.ts` — a zod schema that **mirrors the backend value objects** (so a bad
   field fails client-side with a precise message instead of an opaque 422).
 
-**Per-locale translation editors** (experience · page · operator, plus the single-field
-`AppNameTranslations`) are one shape, and it is worth naming because it drifted once: an
-`AppLocaleTabs` strip over a form keyed by locale, whose fields are all optional and whose
+**Per-locale translation editors** (experience · page · policy · operator, plus the
+single-field `AppNameTranslations`) are one shape, and it is worth naming because it
+drifted once: an `AppLocaleTabs` strip over a form keyed by locale, whose fields are all
+optional and whose
 empty values collapse to `null` so the storefront falls back to canonical. An operator with
 one configured language gets `AppNoTranslatableLocales` instead — there is no locale to
 overlay onto — and a member without write access gets `AppTranslationSummary`, the
@@ -215,8 +222,16 @@ the fallback rule is **`AppTranslationNotice` in `AppFormCard`'s `notice` slot**
 it above the error banner — not a raw `<p>`, which is for per-field hints. It takes no
 props: the rule is the same on all five editors, and it was the same five copies of one
 `AppAlert` before. A module-local `hasTranslation(t)` decides whether *Clear translation*
-shows, and the footer is `AppFormActions` with Clear in its `secondary` slot. **The `PUT` is a full replace
-everywhere**, so the form always submits every field.
+shows, and the footer is `AppFormActions` with Clear in its `secondary` slot.
+
+**Know which `PUT` you are writing against — the two disagree about an omitted field.**
+For the canonical fields of all five editors above it is a **full replace**, so the form
+always submits every field and an omitted one is a *cleared* one. The metafield overlay
+underneath them (`AppMetafieldTranslationsCard`, on the experience, page and operator
+screens) is the exception: its `PUT` is a **patch**, an absent key is left alone, and a
+**blank value** is what clears one — so it sends only the keys the operator edited, and a
+box they emptied rides along as `""`. See `use-metafield-translation-save.ts`, which
+carries the reasoning and the note that the backend's own javadoc contradicts it.
 
 **The gate.** `src/shared/form-pattern.test.ts` fails when a component renders a form —
 a literal `<form>` **or** an `AppFormCard`, which renders one — containing **any** raw
@@ -295,21 +310,27 @@ Counts are a snapshot; **Storybook is the authoritative browsable catalog** (§6
 filesystem is the authoritative list. Regenerate the numbers rather than trusting them:
 
 ```bash
-ls src/components/ui | wc -l                                   # primitives
-find src -name 'App*.tsx' -not -name '*.stories.tsx' | wc -l   # App* components
-find src -name '*.stories.tsx' | wc -l                         # stories
+ls src/components/ui | wc -l                                     # primitives
+find src -name 'App*.tsx' ! -name '*.stories.tsx' ! -name '*.test.tsx' \
+     ! -path 'src/components/ui/*' | wc -l                       # App* components
+find src -name '*.stories.tsx' | wc -l                           # story files
+grep -rhoP '^export const \w+' --include='*.stories.tsx' src | wc -l   # stories
 ```
+
+The exclusions matter: without them the count picks up `App*.test.tsx` and drifts by a
+dozen, which is how the numbers below were wrong before. `pnpm check-storybook-index`
+prints the last two after a Storybook build and is the authority for both.
 
 ### `components/ui/` — shadcn primitives (radix-nova), 26 — vendored, no stories
 
 `alert` · `avatar` · `badge` · `breadcrumb` · `button` · `calendar` · `card` · `checkbox` ·
-`dialog` · `dropdown-menu` · `field` · `input` · `label` · `popover` · `select` ·
-`separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `spinner` · `table` ·
-`textarea` · `tooltip`
+`command` · `dialog` · `dropdown-menu` · `field` · `input` · `input-group` · `label` ·
+`popover` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` ·
+`spinner` · `table` · `textarea` · `tooltip`
 
-### `App*` components — 153, all of which ship a story (gated by `story-coverage.test.ts`)
+### `App*` components — 154, all of which ship a story (gated by `story-coverage.test.ts`)
 
-**`shared/` — 48.** The cross-cutting design layer.
+**`shared/` — 49.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`
@@ -344,18 +365,21 @@ find src -name '*.stories.tsx' | wc -l                         # stories
   field's asterisk) and `EmptyValue` (the muted em dash standing in for a value the record
   doesn't carry; use it rather than hand-rolling the span, which had drifted to ten copies).
 
-**Modules — 102.** Each owns its list / detail / form / edit set:
-`auth` 14 · `tour-operator` 13 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
-`metafields` 7 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 ·
+**Modules — 104.** Each owns its list / detail / form / edit set:
+`auth` 14 · `tour-operator` 14 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
+`metafields` 8 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 ·
 `pickup-locations` 4 · `contact` 2 · `media` 5.
 
-**Every `App*` component ships a story — 150 of 150 — and `src/shared/story-coverage.test.ts`
+**`session/` — 1.** `AppWriteGate`, the only component there; everything else it ships is
+a hook (§2).
+
+**Every `App*` component ships a story — 154 of 154 — and `src/shared/story-coverage.test.ts`
 fails the build if one does not.** The four data-table internals that carried this debt since
 July (`AppDataTable` · `AppDataTableHeader` · `AppAsyncSetFilter` · `AppFilterInput`) were
 written before the gate landed, so its allow-list is **empty**. The two that need a real
 `HeaderContext` are storied *through* a table, which is the only place they exist.
 
-Those 150 files hold **274 stories**, and `src/shared/story-render.test.tsx` mounts every
+Those 154 files hold **283 stories**, and `src/shared/story-render.test.tsx` mounts every
 one of them (§6). A story counts as inventory only if it renders.
 
 Add an entry to `EXEMPT` only for something that genuinely cannot be storied, with a
@@ -403,7 +427,7 @@ sections come from `settingsSectionItems` (General · Members · Invitations · 
 Translations · Account). Pages open with `AppPageHeader`, wrapped in an `AppPageShell`
 variant (§4), and nested pages carry an `AppBreadcrumb`.
 
-**Role gating — `usePermissions()` from `#/tour-operator`.** Every write in the product is
+**Role gating — `usePermissions()` from `#/session`.** Every write in the product is
 ADMIN+ behind the backend's `ensureAdmin`; reads are `ensureMember`. So a write affordance a
 STAFF member can see is a dead end. `usePermissions()` returns `{ canWrite, isOwner }` and
 gates the affordance at its call site:
@@ -428,7 +452,7 @@ gates the affordance at its call site:
 - **A settings form:** render a read-only summary instead — Settings → General's three
   cards and Languages all do this, since each writes through an ADMIN+ endpoint whose read
   is member-visible.
-- **A `/new` or `/edit` page:** wrap the body in **`<AppWriteGate>`** (from `#/tour-operator`),
+- **A `/new` or `/edit` page:** wrap the body in **`<AppWriteGate>`** (from `#/session`),
   keeping the page header outside it so the visitor knows where they are and can navigate
   away. Hiding the button that leads somewhere never stopped a bookmark or a typed URL.
   This is the one gate that calls `usePermissions` *for* you — twenty routes wrote the hook
@@ -442,12 +466,14 @@ security boundary. And **don't hide what a member may actually do** — the read
 are real: marking a contact message read is `ensureMember`, and so is every translation
 *read*, which is why the links into the per-locale editors stay visible for STAFF.
 
-The check lives in `tour-operator/` and not `shared/` because `shared/` may not import a
-feature module (§2) — so a `shared/` component can never *call* `usePermissions`, only
-receive its answer. `AppNewLink` therefore leaves the decision to the call site, while
-`AppPageActions` takes `canWrite` as a prop and applies it itself, the same way every
-translation card does. `AppWriteGate` is the exception that proves it: it calls the hook,
-which is exactly why it sits in `tour-operator/components/` and ships through that barrel.
+The check lives in `session/` and not `shared/` because `shared/` may not import it (§2) —
+so a `shared/` component can never *call* `usePermissions`, only receive its answer. That
+is deliberate twice over: it keeps the design layer free of session state, and it keeps
+every gated component storyable in both states instead of throwing on a missing provider.
+`AppNewLink` therefore leaves the decision to the call site, while `AppPageActions` takes
+`canWrite` as a prop and applies it itself, the same way every translation card does.
+`AppWriteGate` is the exception that proves it: it calls the hook, which is why it sits in
+`session/components/` and ships through that barrel rather than `shared/`.
 
 **Still deferred**, each re-earned with the feature that needs it: collapsible nav groups ·
 the ⌘K command palette · a grouped
