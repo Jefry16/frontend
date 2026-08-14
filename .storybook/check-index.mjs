@@ -10,7 +10,7 @@
  *
  * Run after `pnpm build-storybook` — it reads that build's output.
  */
-import { readFileSync, readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
@@ -56,7 +56,8 @@ if (missing.length > 0) {
 	for (const f of missing.slice(0, 10)) {
 		console.error(`    ${relative(root, f)}`);
 	}
-	if (missing.length > 10) console.error(`    …and ${missing.length - 10} more`);
+	if (missing.length > 10)
+		console.error(`    …and ${missing.length - 10} more`);
 	console.error();
 	process.exit(1);
 }

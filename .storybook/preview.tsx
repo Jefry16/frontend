@@ -1,5 +1,5 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Decorator, Preview } from "@storybook/tanstack-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
 import { TooltipProvider } from "#/components/ui/tooltip";
 import { ThemeProvider } from "#/shared/theme";
