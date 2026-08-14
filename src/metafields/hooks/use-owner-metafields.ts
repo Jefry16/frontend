@@ -21,13 +21,27 @@ const OWNER_PATHS: Record<MetafieldOwnerTypeCode, (ownerId: string) => string> =
 		tour_operator: () => "",
 	};
 
+const ownerBase = (
+	tourOperatorId: string,
+	ownerType: MetafieldOwnerTypeCode,
+	ownerId: string,
+): string =>
+	`/tour-operators/${tourOperatorId}${OWNER_PATHS[ownerType](ownerId)}`;
+
 /** The owner-scoped values endpoint — "experience" → …/experiences/{id}/metafields. */
 export const ownerMetafieldsEndpoint = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
 	ownerId: string,
+): string => `${ownerBase(tourOperatorId, ownerType, ownerId)}/metafields`;
+
+/** The per-locale overlay for those same values. */
+export const ownerMetafieldTranslationsEndpoint = (
+	tourOperatorId: string,
+	ownerType: MetafieldOwnerTypeCode,
+	ownerId: string,
 ): string =>
-	`/tour-operators/${tourOperatorId}${OWNER_PATHS[ownerType](ownerId)}/metafields`;
+	`${ownerBase(tourOperatorId, ownerType, ownerId)}/metafield-translations`;
 
 // Everything the per-resource editor needs: the operator's definitions for
 // this owner type (the full catalogue — unset fields still render as empty

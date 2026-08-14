@@ -1,6 +1,10 @@
 import { Languages } from "lucide-react";
 import { useState } from "react";
 import { Skeleton } from "#/components/ui/skeleton";
+import {
+	AppMetafieldTranslationsCard,
+	useMetafieldTranslationLocales,
+} from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
@@ -53,7 +57,17 @@ export const AppExperienceTranslations = ({
 		experienceId,
 		active,
 	);
-	const translated = new Set((listQuery.data ?? []).map((t) => t.locale));
+	const metafieldLocales = useMetafieldTranslationLocales(
+		tourOperatorId,
+		"experience",
+		experienceId,
+	);
+	// A locale translated only in its metafields is still translated — the dot
+	// reads "has anything for this locale", not "has canonical fields".
+	const translated = new Set([
+		...(listQuery.data ?? []).map((t) => t.locale),
+		...(metafieldLocales.data ?? []),
+	]);
 
 	const backLink = (
 		<AppBackLink
@@ -140,6 +154,16 @@ export const AppExperienceTranslations = ({
 								)
 							) : (
 								<AppLoadingBlock />
+							)}
+							{active && (
+								<AppMetafieldTranslationsCard
+									key={active}
+									tourOperatorId={tourOperatorId}
+									ownerType="experience"
+									ownerId={experienceId}
+									locale={active}
+									canWrite={canWrite}
+								/>
 							)}
 						</div>
 					)}

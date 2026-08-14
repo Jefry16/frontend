@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
@@ -22,12 +22,25 @@ import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
 //
 // Reads are member-visible and writes are ADMIN+, so a staff member gets the
 // content read-only rather than a form that 403s on save.
+//
+// The last two props exist because this module cannot reach `metafields`:
+// `metafields` imports `#/tour-operator`, so importing it back is a cycle
+// (verified — 6 `no-circular` errors). The page and experience editors, which
+// are not on that arc, render the metafield overlay inline. Here the route
+// composes it instead, and passes back the locales it covers so the tab dots
+// mean the same thing on all three screens.
 export const AppOperatorTranslations = ({
 	tourOperatorId,
 	canWrite,
+	alsoTranslated = [],
+	perLocale,
 }: {
 	tourOperatorId: string;
 	canWrite: boolean;
+	/** Locales a caller-rendered section translates, unioned into the tab dots. */
+	alsoTranslated?: readonly string[];
+	/** Rendered under the form for the active locale. */
+	perLocale?: (locale: string) => ReactNode;
 }) => {
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const listQuery = useOperatorTranslations(tourOperatorId);
@@ -40,7 +53,10 @@ export const AppOperatorTranslations = ({
 	const active = picked ?? translatable[0];
 
 	const translationQuery = useOperatorTranslation(tourOperatorId, active);
-	const translated = new Set((listQuery.data ?? []).map((t) => t.locale));
+	const translated = new Set([
+		...(listQuery.data ?? []).map((t) => t.locale),
+		...alsoTranslated,
+	]);
 
 	if (localesQuery.isPending) {
 		return <AppLoadingBlock />;
@@ -79,6 +95,7 @@ export const AppOperatorTranslations = ({
 			) : (
 				<AppLoadingBlock />
 			)}
+			{active && perLocale?.(active)}
 		</div>
 	);
 };

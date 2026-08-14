@@ -1,4 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+	AppMetafieldTranslationsCard,
+	useMetafieldTranslationLocales,
+} from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
@@ -17,6 +21,14 @@ export const Route = createFileRoute(
 function TranslationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();
+	// The operator is its own metafield owner, so it is its own ownerId. This
+	// lives here rather than inside AppOperatorTranslations because tour-operator
+	// cannot import metafields — see that component's note.
+	const metafieldLocales = useMetafieldTranslationLocales(
+		tourOperatorId,
+		"tour_operator",
+		tourOperatorId,
+	);
 
 	return (
 		<AppPageShell variant="form">
@@ -39,6 +51,17 @@ function TranslationsSettingsPage() {
 			<AppOperatorTranslations
 				tourOperatorId={tourOperatorId}
 				canWrite={canWrite}
+				alsoTranslated={metafieldLocales.data ?? []}
+				perLocale={(locale) => (
+					<AppMetafieldTranslationsCard
+						key={locale}
+						tourOperatorId={tourOperatorId}
+						ownerType="tour_operator"
+						ownerId={tourOperatorId}
+						locale={locale}
+						canWrite={canWrite}
+					/>
+				)}
 			/>
 		</AppPageShell>
 	);
