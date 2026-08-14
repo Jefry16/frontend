@@ -28,5 +28,3 @@ export const addressSchema = z.object({
 	zip: optional(20),
 	countryId: z.string().min(1, m.validation_required()),
 });
-
-export type AddressFormData = z.infer<typeof addressSchema>;

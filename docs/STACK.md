@@ -94,7 +94,7 @@ node -p "require('./node_modules/<pkg>/package.json').version"
 | `dependency-cruiser` | 17.4.3 | module-boundary enforcement (`.dependency-cruiser.cjs`) | https://github.com/sverweij/dependency-cruiser |
 | ↳ rules reference | — | the rule schema our config uses | https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md |
 
-## Storybook — the living component inventory (152 story files, gated)
+## Storybook — the living component inventory (153 story files, gated)
 
 | Package | Version | Role | Docs |
 |---|---|---|---|
