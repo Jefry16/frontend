@@ -3,12 +3,12 @@
 Point-in-time diff of the **backend admin HTTP surface** vs **what the admin frontend
 consumes**. Tick an endpoint when a real frontend consumer ships.
 
-> **Snapshot basis:** backend `main`, re-diffed **2026-08-08** by enumerating every
-> `@(Get|Post|Put|Patch|Delete)Mapping` under `presentation/controller` and matching each
-> against the frontend source. **137 admin endpoints** across the 11 contexts with an admin
-> HTTP surface (`notification` is event-driven, so it has none). The previous count of 133
-> reconciles exactly: `−2` for the logo pair #106 deleted, `+5` for #106/#108/#109, and
-> `+1` for the third metafield owner (see below) that the 136 count missed.
+> **Snapshot basis:** backend `main`, re-diffed **2026-08-14** — **150 admin
+> endpoints**, all consumed. The prior 137 count reconciles exactly: `+12` for the
+> three metafield-translation controllers and `+1` for `GET /countries`.
+> The method, unchanged: enumerate every `@(Get|Post|Put|Patch|Delete)Mapping` under
+> `presentation/controller` and match each against the frontend source, across the 11
+> contexts with an admin HTTP surface (`notification` is event-driven, so it has none).
 >
 > **Out of scope:** the `storefront` context's 8 public page routes (`/`, `/{locale}`,
 > `/experiences`, `/policies/{type}`, `/password`, + HEAD/POST). Those are unauthenticated
@@ -20,12 +20,12 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 
 ---
 
-## Coverage: 137 / 137 consumed
+## Coverage: 150 / 150 consumed
 
 | Context | Endpoints | Consumed | Open |
 |---|---:|---:|---:|
 | `identity` — `/auth/**` + `/ui-languages` | 14 | 14 | — |
-| `reference` — timezones · currencies · languages | 3 | 3 | — |
+| `reference` — timezones · currencies · languages · countries | 4 | 4 | — |
 | `touroperator` | 40 | 40 | — |
 | `audience` — CRUD + translations | 8 | 8 | — |
 | `experience` — CRUD/publish + translations + slots | 16 | 16 | — |
@@ -33,9 +33,9 @@ cursor-paginated list) and `hooks/use-all-pages` (drain-all-pages pickers).
 | `audit` | 2 | 2 | — |
 | `media` | 5 | 5 | — |
 | `page` — CRUD/publish/rename + translations | 12 | 12 | — |
-| `metafield` — definitions · owner values (experience · page · **tour operator**) · metaobjects | 29 | 29 | — |
+| `metafield` — definitions · owner values (experience · page · **tour operator**) · metaobjects · **translations** | 41 | 41 | — |
 | `contact` | 5 | 5 | — |
-| **Total** | **137** | **137** | **—** |
+| **Total** | **150** | **150** | **—** |
 
 Every admin endpoint has a consumer. The **field-level** gap below is the one
 thing this count cannot see, so read it before assuming the surface is complete.
@@ -122,6 +122,87 @@ per-type rather than a coincidence of that row existing.
 The record was recreated from a full capture and its `type`, `title` and `body` are
 byte-identical. **Its id changed** — the seed uses fixed ids (`…042`) and a recreate mints a
 UUIDv7 — so anything pinned to that literal id wants a reseed rather than trusting this row.
+
+---
+
+## ✅ Metafield translations — shipped (2026-08-14)
+
+Backend added three controllers — one per owner type — of four legs each, and
+`GET /countries`. That is the **13** the surface grew by (137 → 150); `/countries`
+already had a consumer from the address fix, so twelve were open and all twelve
+are now wired.
+
+```
+GET    …/metafield-translations           → string[]              locales with an overlay (member)
+GET    …/metafield-translations/{locale}  → Record<string,string> keyed "namespace.key" (member)
+PUT    …/metafield-translations/{locale}  ← { values }  204                          (ADMIN+)
+DELETE …/metafield-translations/{locale}                204, idempotent              (ADMIN+)
+```
+
+The overlay renders **inside** the three existing translation editors, under the
+canonical form, so the operator picks a locale once and translates everything for
+it. The tab dot unions both sources — a locale translated only in its metafields
+still reads as translated.
+
+> ⚠️ **`PUT` is a patch, not a full replace** — the opposite of every other
+> translation endpoint here, and the opposite of what its own controller javadoc
+> says (*"Replaces the whole locale in one write"*). **Verified on the wire**, not
+> read: writing one key left the untouched key intact. An absent key is left
+> alone and a **blank value clears** that key, so the card sends exactly the keys
+> the operator edited and an emptied box rides along as `""` — omitting it would
+> silently keep the old translation. Pinned by
+> `AppMetafieldTranslationsCard.test.tsx` and mutation-checked.
+
+Two more facts that shape the UI, both verified live against seeded `acme` (every
+write restored byte-identical):
+
+- **Only `single_line_text` and `multi_line_text` are translatable.** Sending any
+  other type **422s** — so the card's type filter is load-bearing, not cosmetic.
+  A number or date reads the same everywhere, and pointing a metaobject reference
+  elsewhere per locale is content *selection*, a different feature.
+- **An unsupported locale 422s**, and `DELETE` is **idempotent** (204 on a repeat).
+
+**The operator owner could not be wired the same way.** `metafields` imports
+`#/tour-operator`, so importing it back is a cycle — verified, 6 `no-circular`
+errors. The page and experience editors are not on that arc and render the card
+inline; for the operator, the *route* composes the two and `AppOperatorTranslations`
+takes `alsoTranslated` + `perLocale`. Same trap `media` hit with `AppMediaPicker`.
+
+---
+
+## ⚠️ REST Docs enforce less than they appear to (2026-08-14)
+
+Counting `document(...)` calls says coverage is near-total — **149 calls for 150
+endpoints**, and zero `relaxed*`, so any *declared* field table is strict. But a
+call with **no** field table documents a name and nothing else:
+
+- **81 body-returning endpoints; 56 carry an enforced field table, 25 do not.**
+- **6 of those 25 are legitimately undocumentable** — the metafield-translation
+  `get`/`list-locales` return a bare `string[]` and a `Record<string,string>` whose
+  keys are operator-defined; strict `fieldWithPath` cannot express that.
+- **19 are real gaps.** `slots` is all six of its own, and it is the richest shape
+  in the product (nested `audiencePrices`, frozen price/capacity).
+- The other 68 documented calls are 204s with no body — correctly no field table.
+
+This is how the controller javadoc above could contradict the use case without
+failing a build: the dynamic map has no field table, so nothing checked it.
+
+---
+
+## ✅ Every consumed response shape re-verified (2026-08-14)
+
+All **40** frontend response interfaces diffed field-by-field against the backend's
+response records. **Zero drift.** 31 matched by name; 2 flagged and cleared as
+name collisions with **storefront** DTOs (`Menu` belongs to `MenuDetailResponse`,
+`MetaobjectField` to `MetaobjectDefinitionResponse.FieldResponse`); 7 resolved by
+hand as nested or inherited (`MediaAsset`↔`MediaResponse`,
+`MenuItemNode`↔`MenuItemResponse`, `OperatorAddress`↔`AddressResponse`,
+`SlotAudiencePrice`↔`AudiencePricingResponse`, `AuthUser`↔`ProfileResponse`,
+`TourOperatorSummary`↔`TourOperatorMembershipView`, and `MenuItemInput` which is
+request-only). The four drifts below were the four that existed.
+
+The pass is a snapshot and decays on the next backend merge — which is the whole
+argument for the contract artifact rather than repeating it by hand.
 
 ---
 

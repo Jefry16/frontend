@@ -84,6 +84,32 @@ export const queryKeys = {
 		ownerType: string,
 		ownerId: string,
 	) => ["metafield-values", tourOperatorId, ownerType, ownerId] as const,
+	metafieldTranslationLocales: (
+		tourOperatorId: string,
+		ownerType: string,
+		ownerId: string,
+	) =>
+		[
+			"metafield-values",
+			tourOperatorId,
+			ownerType,
+			ownerId,
+			"translations",
+		] as const,
+	metafieldTranslation: (
+		tourOperatorId: string,
+		ownerType: string,
+		ownerId: string,
+		locale: string,
+	) =>
+		[
+			"metafield-values",
+			tourOperatorId,
+			ownerType,
+			ownerId,
+			"translations",
+			locale,
+		] as const,
 	media: (tourOperatorId: string) => ["media", tourOperatorId] as const,
 	mediaAsset: (tourOperatorId: string, mediaId: string) =>
 		["media", tourOperatorId, mediaId] as const,

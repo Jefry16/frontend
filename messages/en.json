@@ -490,6 +490,8 @@
 	"metafields": "Metafields",
 	"metafields_hint": "Custom fields defined in Content → Metafields.",
 	"metafields_saved": "Metafields saved",
+	"metafield_translations": "Metafield translations",
+	"metafield_translations_hint": "Text metafields for this locale. Numbers, dates and references read the same everywhere, so they are not translated.",
 	"not_set": "Not set",
 	"value_true": "True",
 	"value_false": "False",
