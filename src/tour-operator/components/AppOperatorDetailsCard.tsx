@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
 	Card,
 	CardContent,
@@ -10,10 +10,9 @@ import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
-import { useCountries, useCurrencies, useTimezones } from "#/reference";
+import { useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppCardBody } from "#/shared/components/AppCardBody";
-import { AppComboboxField } from "#/shared/components/AppComboboxField";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppField } from "#/shared/components/AppField";
@@ -30,6 +29,7 @@ import {
 	type OperatorDetailsFormData,
 	operatorDetailsSchema,
 } from "../validators/operator-details";
+import { AppOperatorAddressFields } from "./AppOperatorAddressFields";
 
 export const AppOperatorDetailsCard = ({
 	tourOperatorId,
@@ -99,11 +99,6 @@ const DetailsForm = ({
 	tourOperatorId: string;
 	operator: TourOperatorDetails;
 }) => {
-	const { data: countries = [] } = useCountries();
-	const countryOptions = useMemo(
-		() => countries.map((c) => ({ value: c.id, label: c.name })),
-		[countries],
-	);
 	const timezones = useTimezones();
 	const currencies = useCurrencies();
 	const { form, isPending, errorMessage, submit } = useOperatorDetailsForm(
@@ -137,51 +132,7 @@ const DetailsForm = ({
 				<form.Field name="name">
 					{(field) => <AppField field={field} label={m.shop_name()} required />}
 				</form.Field>
-				<form.Field name="address.address1">
-					{(field) => (
-						<AppField field={field} label={m.address_line1()} required />
-					)}
-				</form.Field>
-				<form.Field name="address.address2">
-					{(field) => (
-						<AppField
-							field={field}
-							label={m.address_line2()}
-							description={m.operator_optional_hint()}
-						/>
-					)}
-				</form.Field>
-				<form.Field name="address.city">
-					{(field) => <AppField field={field} label={m.city()} required />}
-				</form.Field>
-				<form.Field name="address.province">
-					{(field) => (
-						<AppField
-							field={field}
-							label={m.province()}
-							description={m.operator_optional_hint()}
-						/>
-					)}
-				</form.Field>
-				<form.Field name="address.zip">
-					{(field) => (
-						<AppField
-							field={field}
-							label={m.zip()}
-							description={m.operator_optional_hint()}
-						/>
-					)}
-				</form.Field>
-				<form.Field name="address.countryId">
-					{(field) => (
-						<AppComboboxField
-							field={field}
-							label={m.country()}
-							items={countryOptions}
-							required
-						/>
-					)}
-				</form.Field>
+				<AppOperatorAddressFields form={form} />
 				<form.Field name="phone">
 					{(field) => (
 						<AppField

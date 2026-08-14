@@ -1,5 +1,4 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useMemo } from "react";
 import { AppAuthShell, getPostLoginPath, useAuth } from "#/auth";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
@@ -7,12 +6,12 @@ import { FieldGroup } from "#/components/ui/field";
 import { SelectItem } from "#/components/ui/select";
 import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
-import { useCountries, useCurrencies, useTimezones } from "#/reference";
+import { useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
-import { AppComboboxField } from "#/shared/components/AppComboboxField";
 import { AppField } from "#/shared/components/AppField";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useTourOperatorForm } from "../hooks/use-tour-operator-form";
+import { AppOperatorAddressFields } from "./AppOperatorAddressFields";
 
 // Onboarding form (`/tour-operators/new`). Create-only: name/address + the
 // immutable currency + timezone. A user who already has an operator gets an
@@ -21,11 +20,6 @@ export const AppTourOperatorForm = () => {
 	const { form, isPending, errorMessage } = useTourOperatorForm();
 	const { data: currencies = [] } = useCurrencies();
 	const { data: timezones = [] } = useTimezones();
-	const { data: countries = [] } = useCountries();
-	const countryOptions = useMemo(
-		() => countries.map((c) => ({ value: c.id, label: c.name })),
-		[countries],
-	);
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
@@ -62,37 +56,7 @@ export const AppTourOperatorForm = () => {
 							<form.Field name="name">
 								{(field) => <AppField field={field} label={m.name()} />}
 							</form.Field>
-							<form.Field name="address.address1">
-								{(field) => (
-									<AppField field={field} label={m.address_line1()} required />
-								)}
-							</form.Field>
-							<form.Field name="address.address2">
-								{(field) => (
-									<AppField field={field} label={m.address_line2()} />
-								)}
-							</form.Field>
-							<form.Field name="address.city">
-								{(field) => (
-									<AppField field={field} label={m.city()} required />
-								)}
-							</form.Field>
-							<form.Field name="address.province">
-								{(field) => <AppField field={field} label={m.province()} />}
-							</form.Field>
-							<form.Field name="address.zip">
-								{(field) => <AppField field={field} label={m.zip()} />}
-							</form.Field>
-							<form.Field name="address.countryId">
-								{(field) => (
-									<AppComboboxField
-										field={field}
-										label={m.country()}
-										items={countryOptions}
-										required
-									/>
-								)}
-							</form.Field>
+							<AppOperatorAddressFields form={form} />
 							<form.Field name="currencyId">
 								{(field) => (
 									<AppSelectField
