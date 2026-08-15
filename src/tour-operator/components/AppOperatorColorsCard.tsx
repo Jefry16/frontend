@@ -19,14 +19,23 @@ import type { Brand, BrandColor } from "../types";
 
 // A colour the operator chose, so the swatch is painted inline rather than from
 // a token — there is no token for it and there cannot be. COMPONENTS.md §4.
+//
+// The hex sits beside it rather than in a `title`: the swatch shows the pair is
+// readable, the text says what it actually is. A tooltip does neither for anyone
+// reading with a screen reader, and the value IS the setting.
 const Swatch = ({ color }: { color: BrandColor }) => (
-	<span
-		className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border font-medium text-xs"
-		style={{ backgroundColor: color.background, color: color.foreground }}
-		title={`${color.background} / ${color.foreground}`}
-	>
-		Aa
-	</span>
+	<div className="flex items-center gap-2">
+		<span
+			aria-hidden
+			className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border font-medium text-xs"
+			style={{ backgroundColor: color.background, color: color.foreground }}
+		>
+			Aa
+		</span>
+		<span className="font-mono text-muted-foreground text-xs">
+			{color.background} / {color.foreground}
+		</span>
+	</div>
 );
 
 export const AppOperatorColorsCard = ({
@@ -206,12 +215,15 @@ const ColorsSummary = ({ brand }: { brand: Brand }) => {
 			{groups.map((group) => (
 				<div key={group.label} className="flex flex-col gap-2">
 					<FieldLabel>{group.label}</FieldLabel>
-					<div className="flex flex-wrap gap-2">
-						{group.colors.map((color) => (
-							<Swatch
-								key={`${color.background}-${color.foreground}`}
-								color={color}
-							/>
+					<div className="flex flex-col gap-2">
+						{group.colors.map((color, index) => (
+							// Keyed by position like the editor above, and for the same
+							// reason the backend keys on it: colour VALUES are not unique.
+							// The table's key is (operator, role, position), so a palette
+							// may legitimately hold the same pair twice — which a
+							// value-derived key would collide on.
+							// biome-ignore lint/suspicious/noArrayIndexKey: see above
+							<Swatch key={index} color={color} />
 						))}
 					</div>
 				</div>

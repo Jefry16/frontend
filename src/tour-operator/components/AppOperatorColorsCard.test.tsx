@@ -1,0 +1,116 @@
+import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { HttpResponse, http } from "msw";
+import { describe, expect, it, vi } from "vitest";
+import { queryKeys } from "#/lib/query-keys";
+import { server } from "#/test/server";
+import { createTestQueryClient, renderWithProviders } from "#/test/test-utils";
+import type { Brand } from "../types";
+import { AppOperatorColorsCard } from "./AppOperatorColorsCard";
+
+vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
+
+const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
+const OP = "op-1";
+const URL_ = `${API}/tour-operators/${OP}/brand`;
+
+const PALETTE: Brand["colors"] = {
+	primary: [
+		{ background: "#111111", foreground: "#ffffff" },
+		{ background: "#222222", foreground: "#ffffff" },
+		{ background: "#333333", foreground: "#ffffff" },
+	],
+	secondary: [],
+};
+
+const brand = (colors: Brand["colors"]): Brand => ({
+	slogan: null,
+	shortDescription: null,
+	logoMediaId: null,
+	squareLogoMediaId: null,
+	faviconMediaId: null,
+	coverImageMediaId: null,
+	colors,
+	socialLinks: [],
+});
+
+const render = (colors: Brand["colors"] = PALETTE) => {
+	const body = vi.fn();
+	server.use(
+		http.get(URL_, () => HttpResponse.json(brand(colors))),
+		http.put(URL_, async ({ request }) => {
+			body(await request.json());
+			return new HttpResponse(null, { status: 204 });
+		}),
+	);
+	const queryClient = createTestQueryClient();
+	queryClient.setQueryData(queryKeys.brand(OP), brand(colors));
+	renderWithProviders(<AppOperatorColorsCard tourOperatorId={OP} canWrite />, {
+		queryClient,
+	});
+	return body;
+};
+
+const save = async (user: ReturnType<typeof userEvent.setup>) =>
+	user.click(screen.getByRole("button", { name: /save changes/i }));
+
+describe("AppOperatorColorsCard", () => {
+	// Array position IS the palette order server-side, so what the rows read has
+	// to be what the payload carries.
+	it("submits the rows in the order they read", async () => {
+		const user = userEvent.setup();
+		const body = render();
+
+		await user.click(
+			(await screen.findAllByRole("button", { name: /move down/i }))[0],
+		);
+		await save(user);
+
+		await waitFor(() => expect(body).toHaveBeenCalled());
+		expect(
+			body.mock.calls[0][0].colors.primary.map(
+				(c: { background: string }) => c.background,
+			),
+		).toEqual(["#222222", "#111111", "#333333"]);
+	});
+
+	// The sibling card had exactly this bug: removing a NON-LAST row let React
+	// reuse the row component, and the survivor's control lost its value. Plain
+	// inputs are not immune by inspection — only by being run.
+	it("keeps the survivors intact when a middle row is removed", async () => {
+		const user = userEvent.setup();
+		const body = render();
+
+		await user.click(
+			(await screen.findAllByRole("button", { name: /^remove$/i }))[1],
+		);
+		await save(user);
+
+		await waitFor(() => expect(body).toHaveBeenCalled());
+		expect(body.mock.calls[0][0].colors.primary).toEqual([
+			{ background: "#111111", foreground: "#ffffff" },
+			{ background: "#333333", foreground: "#ffffff" },
+		]);
+	});
+
+	// PUT /brand is a full replace: clearing the palette is a legitimate save,
+	// not a no-op to guard against.
+	it("sends empty arrays when every colour is removed", async () => {
+		const user = userEvent.setup();
+		const body = render({
+			primary: [{ background: "#111111", foreground: "#ffffff" }],
+			secondary: [],
+		});
+
+		await user.click(
+			(await screen.findAllByRole("button", { name: /^remove$/i }))[0],
+		);
+		await save(user);
+
+		await waitFor(() => expect(body).toHaveBeenCalled());
+		expect(body.mock.calls[0][0].colors).toEqual({
+			primary: [],
+			secondary: [],
+		});
+	});
+});

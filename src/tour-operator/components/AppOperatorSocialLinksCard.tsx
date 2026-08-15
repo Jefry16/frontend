@@ -86,10 +86,15 @@ const SocialLinksForm = ({
 					return (
 						<div className="flex flex-col gap-3">
 							{rows.map((row, index) => (
-								// The platform is editable and rows carry no id, so the
-								// position is the only identity available.
-								// biome-ignore lint/suspicious/noArrayIndexKey: see above
-								<div key={index} className="flex items-end gap-2">
+								// Keyed by PLATFORM, not position, and that is load-bearing.
+								// One link per platform is the invariant this card enforces,
+								// so the platform is a real identity — while an index key lets
+								// React reuse a row across a removal, which broke this: delete
+								// a middle row and the survivor slid into a `Select` whose
+								// options were filtered for the row that used to be there, so
+								// Radix found the new value absent and cleared it. The save
+								// then failed validation on an empty platform, silently.
+								<div key={row.platform} className="flex items-end gap-2">
 									<div className="w-44 shrink-0">
 										<form.Field name={`socialLinks[${index}].platform`}>
 											{(field) => (
