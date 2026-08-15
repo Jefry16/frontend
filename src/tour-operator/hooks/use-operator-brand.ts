@@ -1,5 +1,10 @@
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+	type QueryClient,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { useAuth } from "#/auth";
@@ -9,35 +14,69 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { Brand, BrandImageSlot } from "../types";
-import { type BrandTextFormData, brandTextSchema } from "../validators/brand";
+import {
+	type BrandColorsFormData,
+	type BrandSocialLinksFormData,
+	type BrandTextFormData,
+	brandColorsSchema,
+	brandSocialLinksSchema,
+	brandTextSchema,
+} from "../validators/brand";
+
+const brandQuery = (tourOperatorId: string) => ({
+	queryKey: queryKeys.brand(tourOperatorId),
+	queryFn: async () => {
+		const { data } = await authApi.get<Brand>(
+			`/tour-operators/${tourOperatorId}/brand`,
+		);
+		return data;
+	},
+});
 
 export const useBrand = (tourOperatorId: string) =>
-	useQuery({
-		queryKey: queryKeys.brand(tourOperatorId),
-		queryFn: async () => {
-			const { data } = await authApi.get<Brand>(
-				`/tour-operators/${tourOperatorId}/brand`,
-			);
-			return data;
-		},
-	});
+	useQuery(brandQuery(tourOperatorId));
 
 /**
- * Every write sends the WHOLE row: `PUT /brand` is a full replace, so a
- * patch-shaped body silently wipes the palette and social links.
+ * Merge a change into the CURRENT brand and send the whole thing.
  *
- * If an image upload lands and the PUT then fails, the asset stays
- * unreferenced — there is no client media-delete to compensate with.
+ * `PUT /brand` is a full replace, so every section has to send the parts it does
+ * not edit. Merging over the render-time copy is what four independently-saving
+ * sections cannot do: one section saves, and until its refetch lands the others
+ * still hold the old value — their next save silently reverts it, with a 200 and
+ * a screen that looks right. So the freshest brand is fetched at save time.
+ *
+ * This closes the gap between one section's write and the refetch. It does NOT
+ * make the write atomic: two tabs saving the same instant still race, and that
+ * needs optimistic locking the API does not offer.
+ *
+ * `staleTime: 0` is passed rather than inherited: `fetchQuery` honours whatever
+ * the client's default is, and under a long one it would hand back the very
+ * cached copy this exists to get past. The guarantee has to belong to the call.
  */
-export const useBrandActions = (tourOperatorId: string, brand?: Brand) => {
+const putMerged = async (
+	queryClient: QueryClient,
+	tourOperatorId: string,
+	change: Partial<Brand>,
+) => {
+	const fresh = await queryClient.fetchQuery({
+		...brandQuery(tourOperatorId),
+		staleTime: 0,
+	});
+	await authApi.put(`/tour-operators/${tourOperatorId}/brand`, {
+		...fresh,
+		...change,
+	});
+};
+
+/**
+ * If an image upload lands and the PUT then fails, the asset stays unreferenced
+ * — there is no client media-delete to compensate with.
+ */
+export const useBrandActions = (tourOperatorId: string) => {
 	const { refreshUser } = useAuth();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
 	const base = `/tour-operators/${tourOperatorId}`;
-
-	const put = async (next: Brand) => {
-		await authApi.put(`${base}/brand`, next);
-	};
 
 	const settled = async () => {
 		// The sidebar switcher reads logoUrl off the auth profile, not off brand.
@@ -59,14 +98,13 @@ export const useBrandActions = (tourOperatorId: string, brand?: Brand) => {
 		{ slot: BrandImageSlot; file: File }
 	>({
 		mutationFn: async ({ slot, file }) => {
-			if (!brand) throw new Error("Brand not loaded");
 			const fd = new FormData();
 			fd.append("file", file);
 			// No Content-Type header: axios derives the multipart boundary itself.
 			const { headers } = await authApi.post(`${base}/media`, fd);
 			const mediaId = (headers.location ?? "").split("/").pop();
 			if (!mediaId) throw new Error("Missing Location header on media upload");
-			await put({ ...brand, [slot]: mediaId });
+			await putMerged(queryClient, tourOperatorId, { [slot]: mediaId });
 		},
 		onSuccess: async () => {
 			await settled();
@@ -76,10 +114,8 @@ export const useBrandActions = (tourOperatorId: string, brand?: Brand) => {
 	});
 
 	const clearImage = useMutation<void, AxiosError, BrandImageSlot>({
-		mutationFn: async (slot) => {
-			if (!brand) throw new Error("Brand not loaded");
-			await put({ ...brand, [slot]: null });
-		},
+		mutationFn: async (slot) =>
+			putMerged(queryClient, tourOperatorId, { [slot]: null }),
 		onSuccess: async () => {
 			await settled();
 			toast.success(m.brand_image_removed());
@@ -103,15 +139,13 @@ export const useBrandTextForm = (tourOperatorId: string, brand: Brand) => {
 		AxiosError,
 		BrandTextFormData
 	>({
-		mutationFn: async (text) => {
-			await authApi.put(`/tour-operators/${tourOperatorId}/brand`, {
-				...brand,
+		mutationFn: async (text) =>
+			putMerged(queryClient, tourOperatorId, {
 				// Blank collapses to null so the storefront falls back rather than
 				// rendering an empty line.
 				slogan: text.slogan || null,
 				shortDescription: text.shortDescription || null,
-			});
-		},
+			}),
 		onSuccess: async () => {
 			setErrorMessage(null);
 			await refreshUser();
@@ -133,6 +167,96 @@ export const useBrandTextForm = (tourOperatorId: string, brand: Brand) => {
 		} as BrandTextFormData,
 		validators: { onSubmit: brandTextSchema },
 		onSubmit: ({ value }) => mutate(brandTextSchema.parse(value)),
+	});
+
+	return { form, isPending, errorMessage };
+};
+
+/**
+ * The palette. Position in each array IS the order the storefront paints in, so
+ * the rows submit exactly as they read — no sorting on either side.
+ */
+export const useBrandColorsForm = (tourOperatorId: string, brand: Brand) => {
+	const toast = useAppToast();
+	const queryClient = useQueryClient();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const { mutate, isPending } = useMutation<
+		void,
+		AxiosError,
+		BrandColorsFormData
+	>({
+		mutationFn: async (colors) =>
+			putMerged(queryClient, tourOperatorId, { colors }),
+		onSuccess: async () => {
+			setErrorMessage(null);
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.brand(tourOperatorId),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.activity(tourOperatorId),
+				}),
+			]);
+			toast.success(m.brand_colors_saved());
+		},
+		onError: (error) => setErrorMessage(apiErrorMessage(error)),
+	});
+
+	const form = useForm({
+		defaultValues: {
+			primary: brand.colors.primary.map((c) => ({ ...c })),
+			secondary: brand.colors.secondary.map((c) => ({ ...c })),
+		} as BrandColorsFormData,
+		validators: { onSubmit: brandColorsSchema },
+		onSubmit: ({ value }) => mutate(brandColorsSchema.parse(value)),
+	});
+
+	return { form, isPending, errorMessage };
+};
+
+/**
+ * The social links. One row per platform — the card filters taken platforms out
+ * of each row's options, and the schema catches what that cannot (a row whose
+ * platform was picked before an earlier row changed to match it). Either way the
+ * backend answers a 422 naming the platform, which `apiErrorMessage` surfaces.
+ */
+export const useBrandSocialLinksForm = (
+	tourOperatorId: string,
+	brand: Brand,
+) => {
+	const toast = useAppToast();
+	const queryClient = useQueryClient();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const { mutate, isPending } = useMutation<
+		void,
+		AxiosError,
+		BrandSocialLinksFormData
+	>({
+		mutationFn: async ({ socialLinks }) =>
+			putMerged(queryClient, tourOperatorId, { socialLinks }),
+		onSuccess: async () => {
+			setErrorMessage(null);
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.brand(tourOperatorId),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.activity(tourOperatorId),
+				}),
+			]);
+			toast.success(m.brand_social_links_saved());
+		},
+		onError: (error) => setErrorMessage(apiErrorMessage(error)),
+	});
+
+	const form = useForm({
+		defaultValues: {
+			socialLinks: brand.socialLinks.map((l) => ({ ...l })),
+		} as BrandSocialLinksFormData,
+		validators: { onSubmit: brandSocialLinksSchema },
+		onSubmit: ({ value }) => mutate(brandSocialLinksSchema.parse(value)),
 	});
 
 	return { form, isPending, errorMessage };

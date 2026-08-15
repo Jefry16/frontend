@@ -73,7 +73,7 @@ const BrandBody = ({
 	brand: Brand;
 	canWrite: boolean;
 }) => {
-	const { setImage, clearImage } = useBrandActions(tourOperatorId, brand);
+	const { setImage, clearImage } = useBrandActions(tourOperatorId);
 	const { form, isPending, errorMessage } = useBrandTextForm(
 		tourOperatorId,
 		brand,

@@ -166,7 +166,7 @@ module belongs the other way up.
 - **Every `App*` component ships a story**, and `src/shared/story-coverage.test.ts` fails
   the build if one does not. Its allow-list is empty; add to `EXEMPT` only for something
   that genuinely cannot be storied, with a reason. That gate checks a file **exists** —
-  `src/shared/story-render.test.tsx` is what checks it **works**, mounting all 283 stories
+  `src/shared/story-render.test.tsx` is what checks it **works**, mounting all 294 stories
   through `composeStories` with the real decorators. Global providers, auth included, live
   in `.storybook/preview.tsx`; a story needing more adds its own decorator.
 - **Styling is gated.** `src/shared/token-drift.test.ts` fails on a raw palette class

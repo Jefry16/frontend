@@ -1,7 +1,9 @@
 export { AppOperatorBrandCard } from "./components/AppOperatorBrandCard";
+export { AppOperatorColorsCard } from "./components/AppOperatorColorsCard";
 export { AppOperatorDetailsCard } from "./components/AppOperatorDetailsCard";
 export { AppOperatorLanguagesForm } from "./components/AppOperatorLanguagesForm";
 export { AppOperatorSeoCard } from "./components/AppOperatorSeoCard";
+export { AppOperatorSocialLinksCard } from "./components/AppOperatorSocialLinksCard";
 export { AppOperatorTranslations } from "./components/AppOperatorTranslations";
 export { AppSettingsSidebar } from "./components/AppSettingsSidebar";
 export { AppStorefrontPasswordCard } from "./components/AppStorefrontPasswordCard";
