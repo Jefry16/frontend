@@ -111,6 +111,14 @@ its own drift to empty — fails on any raw palette class or arbitrary value in 
 outside `components/ui/`. It landed with an **empty** allow-list, because the five that
 had accumulated here since July were fixed first. Never add an entry; it only shrinks.
 
+**The one exception is a colour that is *content*.** An operator's brand palette is
+their data, not our design — `AppOperatorColorsCard`'s swatch and `AppColorField`'s
+picker paint it with an inline `style={{ backgroundColor }}`, which is the only
+`style={{` in `src/`. There is no token for it and there cannot be: the value is
+whatever they typed. `token-drift` scans Tailwind classes, so it does not fire, and
+the rule above is about **the app's own chrome**. Don't "fix" these two; don't reach
+for inline `style` anywhere else.
+
 **More styling rules:**
 - **Monochrome-placeholder palette — "premium through structure, not color."** The palette
   is deliberately chroma-0 greys + a few semantic accents (`--destructive`, `--success`,
@@ -172,7 +180,8 @@ unlike the archive's server-side one, which paginated tenant data of unknown siz
   below: `AppField` (text/email/password) · `AppTextareaField` · `AppSelectField` ·
   `AppCheckboxField` (one boolean) · `AppCheckboxGroupField` (membership of an array —
   supported languages, recurring weekdays) · `AppDateField` · `AppTimeField` ·
-  `AppPasswordField`. (`AppNumericInput` is the bare gated numeric control the price and
+  `AppPasswordField` · `AppColorField` (a native picker **and** a hex box — operators
+  paste a colour far more often than they pick one). (`AppNumericInput` is the bare gated numeric control the price and
   capacity inputs build on — not a form field itself.)
 - `AppFormCard` — the card + `<form>` + banners + footer above. **`onSubmit` takes
   `form.handleSubmit` by reference** (form-core binds it in the `FormApi` constructor), at
@@ -328,9 +337,9 @@ prints the last two after a Storybook build and is the authority for both.
 `popover` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` ·
 `spinner` · `table` · `textarea` · `tooltip`
 
-### `App*` components — 154, all of which ship a story (gated by `story-coverage.test.ts`)
+### `App*` components — 157, all of which ship a story (gated by `story-coverage.test.ts`)
 
-**`shared/` — 49.** The cross-cutting design layer.
+**`shared/` — 50.** The cross-cutting design layer.
 - *Page frame:* `AppPageShell` · `AppPageHeader` · `AppPageActions` · `AppBreadcrumb` ·
   `AppBackLink` · `AppLink` · `AppNewLink` · `AppResourceLink`
 - *States:* `AppResourceView` (loading / 404 / error around a page's query) · `AppCardBody`
@@ -348,7 +357,7 @@ prints the last two after a Storybook build and is the authority for both.
   `AppTextFilter` · `AppSetFilter` ·
   `AppAsyncSetFilter` · `AppFilterInput`
 - *Form fields:* see §5 — `AppField` · `AppTextareaField` · `AppSelectField` ·
-  `AppCheckboxField` · `AppDateField` · `AppTimeField` ·
+  `AppCheckboxField` · `AppDateField` · `AppTimeField` · `AppColorField` ·
   `AppPasswordField` · `AppNumericInput` · `AppFormCard` (the shell) ·
   `AppFormActions` (the footer)
 - *States:* also `AppLoadingBlock` — the centred spinner for a short swap inside painted
@@ -365,21 +374,21 @@ prints the last two after a Storybook build and is the authority for both.
   field's asterisk) and `EmptyValue` (the muted em dash standing in for a value the record
   doesn't carry; use it rather than hand-rolling the span, which had drifted to ten copies).
 
-**Modules — 104.** Each owns its list / detail / form / edit set:
-`auth` 14 · `tour-operator` 14 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
+**Modules — 106.** Each owns its list / detail / form / edit set:
+`auth` 14 · `tour-operator` 16 · `policies` 6 · `metaobjects` 8 · `slots` 8 · `experiences` 7 · `menus` 7 ·
 `metafields` 8 · `pages` 7 · `audiences` 5 · `team` 5 · `audit` 4 ·
 `pickup-locations` 4 · `contact` 2 · `media` 5.
 
 **`session/` — 1.** `AppWriteGate`, the only component there; everything else it ships is
 a hook (§2).
 
-**Every `App*` component ships a story — 154 of 154 — and `src/shared/story-coverage.test.ts`
+**Every `App*` component ships a story — 157 of 157 — and `src/shared/story-coverage.test.ts`
 fails the build if one does not.** The four data-table internals that carried this debt since
 July (`AppDataTable` · `AppDataTableHeader` · `AppAsyncSetFilter` · `AppFilterInput`) were
 written before the gate landed, so its allow-list is **empty**. The two that need a real
 `HeaderContext` are storied *through* a table, which is the only place they exist.
 
-Those 154 files hold **283 stories**, and `src/shared/story-render.test.tsx` mounts every
+Those 157 files hold **294 stories**, and `src/shared/story-render.test.tsx` mounts every
 one of them (§6). A story counts as inventory only if it renders.
 
 Add an entry to `EXEMPT` only for something that genuinely cannot be storied, with a

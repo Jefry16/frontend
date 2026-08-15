@@ -16,21 +16,23 @@ export interface OperatorTranslation {
 	shortDescription: string | null;
 }
 
-interface BrandColor {
+export interface BrandColor {
 	/** Operator-chosen hex. */
 	background: string;
 	foreground: string;
 }
 
-interface BrandSocialLink {
+export interface BrandSocialLink {
 	platform: string;
 	url: string;
 }
 
 /**
- * Modelled whole even though this release edits only the images, slogan and
- * short description: **PUT is a full replace**, so every write has to echo
- * `colors` and `socialLinks` back untouched or it silently wipes them.
+ * **PUT is a full replace**, so every write has to echo back the parts it does
+ * not edit or it silently wipes them — and four cards on Settings → General now
+ * edit different parts of this one object. That is why nothing sends a
+ * hand-built body: `putMerged` re-reads the brand and merges, so a card only
+ * ever states its own change.
  */
 export interface Brand {
 	slogan: string | null;
