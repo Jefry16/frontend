@@ -3,9 +3,10 @@
 The operator-facing admin SPA. A **fresh rebuild**, built **feature module by feature module**, in the same
 order the backend shipped its contexts, keeping only what a shipped feature needs.
 
-Cross-repo law and state live one level up, in their own git repo:
-`/home/jefrycayo/vointika/CONSTITUTION.md` (LAW) and `MAP.md` (the living
-architecture). LAW arrives automatically; **load MAP yourself**.
+Cross-repo law lives one level up, in its own git repo:
+`/home/jefrycayo/vointika/CONSTITUTION.md` (LAW). It arrives automatically. There
+is no cross-repo state file — **this repo's state is this file** (LAW §3); the
+backend's is `../backend/CLAUDE.md`.
 
 In this repo: this file is the *context and local calibration*, `docs/COMPONENTS.md`
 the *recipes*, `docs/STACK.md` the *versions and their gotchas*, `docs/TESTING.md`
