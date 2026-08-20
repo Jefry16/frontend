@@ -56,9 +56,14 @@ describe("composeStartEnd", () => {
 
 	// Every duration the domain allows, against every start minute. This is the
 	// property the whole thing rests on, and it is exact up to 1440 — which is
-	// also the longest span a Slot may have. See the DurationMinutes /
-	// Slot.MAX_SPAN entry in MAP.md: an experience may be declared longer than
-	// this, and the composition silently truncates when it is.
+	// also the longest span a Slot may have (`Slot.MAX_SPAN`, 24h, rejected above
+	// with "A slot may last at most 24 hours").
+	//
+	// This used to warn that an experience could be declared longer than any slot
+	// could represent, so the composition truncated silently. That is gone:
+	// `experiences.duration_minutes` was dropped in experience/V13, so nothing
+	// declares a duration a slot cannot hold. The bound below is now just the
+	// slot's own.
 	it("spans exactly the requested duration for every minute up to 24h", () => {
 		const wrong: string[] = [];
 		for (let duration = 1; duration <= 1440; duration++) {
