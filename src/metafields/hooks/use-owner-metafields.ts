@@ -9,39 +9,26 @@ import type {
 } from "../types";
 
 /**
- * Each owner kind's sub-path under the tenant. Holding the WHOLE segment rather
- * than just a collection name is what lets `tour_operator` contribute nothing:
- * the operator is already in the path as the tenant, so it is its own owner and
- * has no id segment to add. A new owner type is one line here.
+ * The owner is addressed by type and id, not by nesting under its collection.
+ * That is what lets one path serve all three kinds — and it means the operator,
+ * which used to contribute no id segment because it was already the tenant, now
+ * repeats its own id as the owner. The three codes go on the wire verbatim,
+ * lower-case, and an unknown one is a 422 rather than a 404.
  */
-const OWNER_PATHS: Record<MetafieldOwnerTypeCode, (ownerId: string) => string> =
-	{
-		experience: (ownerId) => `/experiences/${ownerId}`,
-		page: (ownerId) => `/pages/${ownerId}`,
-		tour_operator: () => "",
-	};
-
-const ownerBase = (
-	tourOperatorId: string,
-	ownerType: MetafieldOwnerTypeCode,
-	ownerId: string,
-): string =>
-	`/tour-operators/${tourOperatorId}${OWNER_PATHS[ownerType](ownerId)}`;
-
-/** The owner-scoped values endpoint — "experience" → …/experiences/{id}/metafields. */
 export const ownerMetafieldsEndpoint = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
 	ownerId: string,
-): string => `${ownerBase(tourOperatorId, ownerType, ownerId)}/metafields`;
+): string =>
+	`/tour-operators/${tourOperatorId}/metafields/${ownerType}/${ownerId}`;
 
-/** The per-locale overlay for those same values. */
+/** The per-locale overlay for those same values, addressed the same way. */
 export const ownerMetafieldTranslationsEndpoint = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
 	ownerId: string,
 ): string =>
-	`${ownerBase(tourOperatorId, ownerType, ownerId)}/metafield-translations`;
+	`/tour-operators/${tourOperatorId}/metafield-translations/${ownerType}/${ownerId}`;
 
 // Everything the per-resource editor needs: the operator's definitions for
 // this owner type (the full catalogue — unset fields still render as empty

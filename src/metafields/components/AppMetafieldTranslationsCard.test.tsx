@@ -12,7 +12,8 @@ const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
 const OWNER = "e-1";
 const LOCALE = "es";
-const ENDPOINT = `${API}/tour-operators/${OP}/experiences/${OWNER}/metafield-translations/${LOCALE}`;
+const OWNER_PATH = `${API}/tour-operators/${OP}/metafield-translations/experience/${OWNER}`;
+const ENDPOINT = `${OWNER_PATH}/${LOCALE}`;
 
 const definition = (
 	key: string,
@@ -81,13 +82,10 @@ describe("AppMetafieldTranslationsCard", () => {
 				return new HttpResponse(null, { status: 204 });
 			}),
 			http.get(
-				`${API}/tour-operators/${OP}/experiences/${OWNER}/metafields`,
+				`${API}/tour-operators/${OP}/metafields/experience/${OWNER}`,
 				() => HttpResponse.json(VALUES),
 			),
-			http.get(
-				`${API}/tour-operators/${OP}/experiences/${OWNER}/metafield-translations`,
-				() => HttpResponse.json([LOCALE]),
-			),
+			http.get(OWNER_PATH, () => HttpResponse.json([LOCALE])),
 			http.get(ENDPOINT, () => HttpResponse.json({})),
 		);
 	});
