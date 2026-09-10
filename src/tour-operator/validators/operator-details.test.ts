@@ -9,7 +9,6 @@ const valid = {
 		city: "Madrid",
 		province: "Madrid",
 		zip: "28013",
-		countryId: "11111111-1111-1111-1111-111111111111",
 	},
 	phone: "",
 	email: "",

@@ -53,8 +53,8 @@ export type BrandImageSlot =
 
 /**
  * The operator's postal address, structured since backend V15. `countryCode`
- * and `countryName` are resolved from `countryId` on read and are absent from
- * every write — the request carries the id alone.
+ * and `countryName` are read-only and absent from every write: since V17 the
+ * country is the timezone's country, not a field of the address.
  */
 export interface OperatorAddress {
 	address1: string;
@@ -62,7 +62,6 @@ export interface OperatorAddress {
 	city: string;
 	province: string | null;
 	zip: string | null;
-	countryId: string;
 	countryCode: string;
 	countryName: string;
 }

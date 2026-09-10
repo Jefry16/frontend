@@ -2,7 +2,10 @@ import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
 // Mirrors TourOperatorAddress: address1 and city are required, the rest
-// optional, countryId validated against reference.country server-side.
+// optional. There is no country here — backend V17 dropped the column, because
+// timezone_id is NOT NULL and a timezone already carries its country, so an
+// address country was a second copy free to disagree. Readers resolve it
+// through the timezone.
 //
 // Optional fields stay "" rather than collapsing to null — the backend clears
 // an optional column with a blank string, the same rule the rest of this
@@ -26,5 +29,4 @@ export const addressSchema = z.object({
 	city: required(120),
 	province: optional(120),
 	zip: optional(20),
-	countryId: z.string().min(1, m.validation_required()),
 });

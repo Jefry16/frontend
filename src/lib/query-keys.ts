@@ -4,7 +4,6 @@
 export const queryKeys = {
 	authProfile: ["auth", "profile"] as const,
 	timezones: ["timezones"] as const,
-	countries: ["countries"] as const,
 	currencies: ["currencies"] as const,
 	languages: ["languages"] as const,
 	uiLanguages: ["ui-languages"] as const,

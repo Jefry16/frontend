@@ -9,7 +9,6 @@ const valid = {
 		city: "Madrid",
 		province: "Madrid",
 		zip: "28013",
-		countryId: "11111111-1111-1111-1111-111111111111",
 	},
 	timezoneId: "tz-1",
 	currencyId: "cur-1",
@@ -38,8 +37,8 @@ describe("tourOperatorSchema", () => {
 		).toBe(false);
 	});
 
-	it("requires address1, city and a country — the backend's NOT NULL parts", () => {
-		for (const missing of ["address1", "city", "countryId"] as const) {
+	it("requires address1 and city — the backend's NOT NULL parts", () => {
+		for (const missing of ["address1", "city"] as const) {
 			expect(
 				tourOperatorSchema.safeParse({
 					...valid,
