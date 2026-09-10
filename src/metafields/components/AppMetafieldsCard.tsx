@@ -35,9 +35,21 @@ export const AppMetafieldsCard = ({
 	const save = useMetafieldValueSave(tourOperatorId, ownerType, ownerId);
 	const [drafts, setDrafts] = useState<Record<string, string>>({});
 
+	// The header rides along in every state. Without it a failure renders an
+	// anonymous box: the operator sees that something on the page did not load
+	// but not WHICH thing, which is exactly what it looked like while this card
+	// was calling an endpoint that had moved.
+	const header = (
+		<CardHeader>
+			<CardTitle>{m.metafields()}</CardTitle>
+			<CardDescription>{m.metafields_hint()}</CardDescription>
+		</CardHeader>
+	);
+
 	if (isError) {
 		return (
 			<Card>
+				{header}
 				<CardContent>
 					<AppError onRetry={refetch} />
 				</CardContent>
@@ -47,6 +59,7 @@ export const AppMetafieldsCard = ({
 	if (isPending) {
 		return (
 			<Card>
+				{header}
 				<CardContent className="flex flex-col gap-4">
 					{["a", "b"].map((k) => (
 						<Skeleton key={k} className="h-12 w-full" />
@@ -75,16 +88,12 @@ export const AppMetafieldsCard = ({
 		.map((d) => ({
 			namespace: d.namespace,
 			key: d.key,
-			name: d.name,
 			value: effective(drafts[`${d.namespace}.${d.key}`] ?? ""),
 		}));
 
 	return (
 		<Card>
-			<CardHeader>
-				<CardTitle>{m.metafields()}</CardTitle>
-				<CardDescription>{m.metafields_hint()}</CardDescription>
-			</CardHeader>
+			{header}
 			<CardContent>
 				<form
 					onSubmit={(e) => {
