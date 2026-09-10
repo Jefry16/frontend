@@ -41,6 +41,11 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"audience.updated": m.activity_action_audience_updated,
 	"audience.translation_updated": m.activity_action_translation_updated,
 	"audience.translation_deleted": m.activity_action_translation_deleted,
+	"category.created": m.activity_action_category_created,
+	"category.updated": m.activity_action_category_updated,
+	"category.deleted": m.activity_action_category_deleted,
+	"category.translation_updated": m.activity_action_translation_updated,
+	"category.translation_deleted": m.activity_action_translation_deleted,
 	"page.created": m.activity_action_page_created,
 	"page.updated": m.activity_action_page_updated,
 	"page.published": m.activity_action_page_published,
@@ -186,6 +191,13 @@ const ENTITY_TYPES: Record<
 		route: {
 			to: "/tour-operators/$tourOperatorId/audiences/$audienceId",
 			param: "audienceId",
+		},
+	},
+	CATEGORY: {
+		label: m.category,
+		route: {
+			to: "/tour-operators/$tourOperatorId/categories/$categoryId",
+			param: "categoryId",
 		},
 	},
 	PICKUP_LOCATION: {

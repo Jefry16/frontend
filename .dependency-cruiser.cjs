@@ -32,6 +32,7 @@ const MODULES = [
 	"pages",
 	"policies",
 	"experiences",
+	"categories",
 ];
 // A never-matching group while MODULES is empty, so the module-scoped rules below
 // are inert until the first feature module is added.
