@@ -1,13 +1,14 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
-import { type ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
 import * as m from "#/paraglide/messages";
-import { useCountries } from "#/reference";
-import { AppComboboxField } from "#/shared/components/AppComboboxField";
 import { AppField } from "#/shared/components/AppField";
 
 /**
- * The operator's postal address, as the six fields the backend's
- * TourOperatorAddress carries. Shared because both write paths need exactly
+ * The operator's postal address, as the five fields the backend's
+ * TourOperatorAddress carries. There is no country field: backend V17 dropped
+ * the column, because a timezone already carries its country and the address
+ * copy was free to disagree with it. The country an operator sees comes from
+ * the timezone selector both callers already render. Shared because both write paths need exactly
  * this block: onboarding creates the operator and Settings → General edits it,
  * and the shape is the backend's, not either screen's.
  *
@@ -15,9 +16,8 @@ import { AppField } from "#/shared/components/AppField";
  * generics, the way AppAuthFormWrapper types its own — the two callers' forms
  * differ in every field except `address`.
  *
- * `address1`, `city` and `countryId` are required; the rest are optional and
- * stay "" rather than null, because the backend clears an optional column with
- * a blank string.
+ * `address1` and `city` are required; the rest are optional and stay "" rather
+ * than null, because the backend clears an optional column with a blank string.
  */
 export const AppOperatorAddressFields = ({
 	form,
@@ -37,12 +37,6 @@ export const AppOperatorAddressFields = ({
 		Field: (props: any) => ReactNode | Promise<ReactNode>;
 	};
 }) => {
-	const { data: countries = [] } = useCountries();
-	const countryOptions = useMemo(
-		() => countries.map((c) => ({ value: c.id, label: c.name })),
-		[countries],
-	);
-
 	return (
 		<>
 			<form.Field name="address.address1">
@@ -79,16 +73,6 @@ export const AppOperatorAddressFields = ({
 						field={field}
 						label={m.zip()}
 						description={m.operator_optional_hint()}
-					/>
-				)}
-			</form.Field>
-			<form.Field name="address.countryId">
-				{(field: AnyFieldApi) => (
-					<AppComboboxField
-						field={field}
-						label={m.country()}
-						items={countryOptions}
-						required
 					/>
 				)}
 			</form.Field>

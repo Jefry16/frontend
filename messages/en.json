@@ -71,7 +71,6 @@
 	"city": "City",
 	"province": "Region or state",
 	"zip": "Postcode",
-	"country": "Country",
 	"currency": "Currency",
 	"timezone": "Timezone",
 	"create": "Create",

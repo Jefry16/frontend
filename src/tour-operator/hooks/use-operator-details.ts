@@ -72,8 +72,6 @@ export const useOperatorDetailsForm = (
 				city: operator.address.city,
 				province: operator.address.province ?? "",
 				zip: operator.address.zip ?? "",
-				// The write carries the id alone — countryCode/countryName are read-only.
-				countryId: operator.address.countryId,
 			},
 			// "" clears; null would leave the column unchanged.
 			phone: operator.phone ?? "",

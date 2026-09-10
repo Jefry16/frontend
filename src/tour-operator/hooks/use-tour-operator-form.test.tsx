@@ -30,7 +30,6 @@ type FieldName =
 	| "name"
 	| "address.address1"
 	| "address.city"
-	| "address.countryId"
 	| "timezoneId"
 	| "currencyId";
 
@@ -42,7 +41,6 @@ const fill = (form: {
 		form.setFieldValue("name", "Acme Tours");
 		form.setFieldValue("address.address1", "1 Main St");
 		form.setFieldValue("address.city", "Madrid");
-		form.setFieldValue("address.countryId", "country-1");
 		form.setFieldValue("timezoneId", "tz-1");
 		form.setFieldValue("currencyId", "cur-1");
 	});
@@ -54,16 +52,22 @@ const fill = (form: {
 describe("useTourOperatorForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	it("creates then navigates to the new operator (id from Location)", async () => {
+	// The address is NESTED, and it carries five fields. It used to carry a sixth,
+	// `countryId`, which backend V17 deleted — the operator's country is its
+	// timezone's country now. Nothing failed when that happened: an unknown
+	// property is dropped on the floor by Jackson, so the create kept answering
+	// 201 while the country the operator picked went nowhere. Assert the whole
+	// body, not the fields we happen to remember.
+	it("posts the operator with a five-field address and no country", async () => {
+		const body = vi.fn();
 		server.use(
-			http.post(
-				`${API}/tour-operators`,
-				() =>
-					new HttpResponse(null, {
-						status: 201,
-						headers: { Location: "/api/tour-operators/op-123" },
-					}),
-			),
+			http.post(`${API}/tour-operators`, async ({ request }) => {
+				body(await request.json());
+				return new HttpResponse(null, {
+					status: 201,
+					headers: { Location: "/api/tour-operators/op-123" },
+				});
+			}),
 			http.get(`${API}/auth/profile`, () => HttpResponse.json(USER)),
 		);
 		const { Wrapper } = wrapperWithProviders({ user: USER });
@@ -80,6 +84,18 @@ describe("useTourOperatorForm", () => {
 			}),
 		);
 		expect(result.current.errorMessage).toBeNull();
+		expect(body).toHaveBeenCalledWith({
+			name: "Acme Tours",
+			address: {
+				address1: "1 Main St",
+				address2: "",
+				city: "Madrid",
+				province: "",
+				zip: "",
+			},
+			timezoneId: "tz-1",
+			currencyId: "cur-1",
+		});
 	});
 
 	it("surfaces the server error and does not navigate", async () => {
