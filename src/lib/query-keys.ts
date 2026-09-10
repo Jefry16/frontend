@@ -7,12 +7,8 @@ export const queryKeys = {
 	currencies: ["currencies"] as const,
 	languages: ["languages"] as const,
 	uiLanguages: ["ui-languages"] as const,
-	storefrontPassword: (tourOperatorId: string) =>
-		["storefront-password", tourOperatorId] as const,
 	operatorDetails: (tourOperatorId: string) =>
 		["operator-details", tourOperatorId] as const,
-	operatorSeo: (tourOperatorId: string) =>
-		["operator-seo", tourOperatorId] as const,
 	operatorTranslations: (tourOperatorId: string) =>
 		["operator-translations", tourOperatorId] as const,
 	operatorTranslation: (tourOperatorId: string, locale: string) =>

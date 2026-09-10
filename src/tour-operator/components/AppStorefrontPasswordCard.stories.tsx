@@ -7,10 +7,12 @@ import { AppStorefrontPasswordCard } from "./AppStorefrontPasswordCard";
 const OP = "op-1";
 
 const qc = storyQueryClient((qc) =>
-	qc.setQueryData(queryKeys.storefrontPassword(OP), {
-		enabled: true,
-		password: "sunset2026",
-		message: "We're launching soon — check back in August.",
+	qc.setQueryData(queryKeys.operatorDetails(OP), {
+		storefrontPassword: {
+			enabled: true,
+			password: "sunset2026",
+			message: "We're launching soon — check back in August.",
+		},
 	}),
 );
 

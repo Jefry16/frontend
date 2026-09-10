@@ -29,8 +29,10 @@ export const useOperatorLanguagesForm = (
 		AxiosError,
 		OperatorLocalesFormData
 	>({
-		mutationFn: async (data) => {
-			await authApi.patch(`/tour-operators/${tourOperatorId}/locales`, data);
+		// One key only, and BOTH fields every time: a partial `locales` is a 422,
+		// and so is a primary that is not among the supported set.
+		mutationFn: async (locales) => {
+			await authApi.patch(`/tour-operators/${tourOperatorId}`, { locales });
 		},
 		onSuccess: () => {
 			setErrorMessage(null);

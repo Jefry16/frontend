@@ -9,7 +9,7 @@ const OP = "op-1";
 
 const seed = (seo: OperatorSeo) =>
 	storyQueryClient((qc) => {
-		qc.setQueryData(queryKeys.operatorSeo(OP), seo);
+		qc.setQueryData(queryKeys.operatorDetails(OP), { seo });
 	});
 
 const filled = seed({

@@ -6,31 +6,31 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { OperatorSeo } from "../types";
+import { operatorDetailQuery } from "./use-operator-details";
 
 export const useOperatorSeo = (tourOperatorId: string) =>
 	useQuery({
-		queryKey: queryKeys.operatorSeo(tourOperatorId),
-		queryFn: async () => {
-			const { data } = await authApi.get<OperatorSeo>(
-				`/tour-operators/${tourOperatorId}/seo`,
-			);
-			return data;
-		},
+		...operatorDetailQuery(tourOperatorId),
+		select: (operator) => operator.seo,
 	});
 
-// The PUT is a full replace, so the card always sends all three fields —
-// including an `ogImageMediaId` the operator never touched.
+/**
+ * A `seo` present in the PATCH replaces the whole section, so the card always
+ * sends all three fields — including an `ogImageMediaId` the operator never
+ * touched. One key only: the sibling sections came back on the same read and
+ * must not ride along into a request that replaces each one it is given.
+ */
 export const useOperatorSeoSave = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
 
 	return useMutation<void, AxiosError, OperatorSeo>({
-		mutationFn: async (body) => {
-			await authApi.put(`/tour-operators/${tourOperatorId}/seo`, body);
+		mutationFn: async (seo) => {
+			await authApi.patch(`/tour-operators/${tourOperatorId}`, { seo });
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: queryKeys.operatorSeo(tourOperatorId),
+				queryKey: queryKeys.operatorDetails(tourOperatorId),
 			});
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),

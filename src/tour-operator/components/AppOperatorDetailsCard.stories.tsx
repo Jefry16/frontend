@@ -24,6 +24,9 @@ const details = (
 		colors: { primary: [], secondary: [] },
 		socialLinks: [],
 	},
+	seo: { seoTitle: null, seoDescription: null, ogImageMediaId: null },
+	locales: { primaryLocale: "en", supportedLocales: ["en"] },
+	storefrontPassword: { enabled: false, password: null, message: null },
 	address: {
 		address1: "Calle Mayor 1",
 		address2: null,
