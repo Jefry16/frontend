@@ -1,0 +1,93 @@
+import { Tags } from "lucide-react";
+import { Card, CardContent } from "#/components/ui/card";
+import { Skeleton } from "#/components/ui/skeleton";
+import { queryKeys } from "#/lib/query-keys";
+import * as m from "#/paraglide/messages";
+import { localeLabel, useOperatorLocales } from "#/session";
+import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppNameTranslations } from "#/shared/components/AppNameTranslations";
+import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppResourceView } from "#/shared/components/AppResourceView";
+import { useCategory } from "../hooks/use-category";
+
+// The category translations editor: the shared single-name editor bound to this
+// category's endpoints (name ≤80, mirroring the backend CategoryName). The
+// handle is not translatable — one category has one storefront address.
+export const AppCategoryTranslations = ({
+	tourOperatorId,
+	categoryId,
+	canWrite,
+}: {
+	tourOperatorId: string;
+	categoryId: string;
+	canWrite: boolean;
+}) => {
+	const query = useCategory(tourOperatorId, categoryId);
+	const localesQuery = useOperatorLocales(tourOperatorId);
+	const primary = localesQuery.data?.primaryLocale;
+	const translatable = (localesQuery.data?.supportedLocales ?? []).filter(
+		(code) => code !== primary,
+	);
+
+	return (
+		<AppResourceView
+			query={query}
+			resource={m.translations()}
+			icon={Tags}
+			breadcrumb={
+				<AppBreadcrumb
+					items={[{ label: m.catalog() }, { label: m.categories() }]}
+				/>
+			}
+			loading={
+				<Card>
+					<CardContent className="flex flex-col gap-4">
+						<Skeleton className="h-9 w-64" />
+						<Skeleton className="h-9 w-full" />
+					</CardContent>
+				</Card>
+			}
+		>
+			{(category) => (
+				<>
+					<AppPageHeader
+						title={m.translations()}
+						description={m.name_translations_description()}
+						breadcrumb={
+							<AppBreadcrumb
+								items={[
+									{ label: m.catalog() },
+									{
+										label: m.categories(),
+										to: "/tour-operators/$tourOperatorId/categories",
+										params: { tourOperatorId },
+									},
+									{
+										label: category.name,
+										to: "/tour-operators/$tourOperatorId/categories/$categoryId",
+										params: { tourOperatorId, categoryId },
+									},
+									{ label: m.translations() },
+								]}
+							/>
+						}
+					/>
+					<AppNameTranslations
+						tourOperatorId={tourOperatorId}
+						endpointBase={`/tour-operators/${tourOperatorId}/categories/${categoryId}/translations`}
+						queryKeyBase={queryKeys.categoryTranslations(
+							tourOperatorId,
+							categoryId,
+						)}
+						canonicalName={category.name}
+						maxLength={80}
+						translatable={translatable}
+						localesPending={localesQuery.isPending}
+						localeLabel={localeLabel}
+						canWrite={canWrite}
+					/>
+				</>
+			)}
+		</AppResourceView>
+	);
+};

@@ -131,4 +131,10 @@ export const queryKeys = {
 			"translations",
 			locale,
 		] as const,
+	categories: (tourOperatorId: string) =>
+		["categories", tourOperatorId] as const,
+	category: (tourOperatorId: string, categoryId: string) =>
+		["categories", tourOperatorId, categoryId] as const,
+	categoryTranslations: (tourOperatorId: string, categoryId: string) =>
+		["categories", tourOperatorId, categoryId, "translations"] as const,
 };

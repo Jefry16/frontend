@@ -18,6 +18,7 @@ import {
 	Scale,
 	Settings,
 	Shapes,
+	Tags,
 	UserRound,
 	Users,
 	UsersRound,
@@ -48,6 +49,14 @@ export const catalogNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Compass,
 		link: {
 			to: "/tour-operators/$tourOperatorId/experiences",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.categories(),
+		icon: Tags,
+		link: {
+			to: "/tour-operators/$tourOperatorId/categories",
 			params: { tourOperatorId },
 		},
 	},
