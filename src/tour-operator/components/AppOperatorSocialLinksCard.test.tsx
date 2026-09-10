@@ -38,6 +38,13 @@ describe("AppOperatorSocialLinksCard", () => {
 	// The table's key is (operator, platform) and a repeat is a 422. Filtering the
 	// options is what turns that into something the operator cannot do, rather
 	// than something they get told off for after a round trip.
+	//
+	// The explicit timeout is not a slow assertion, it is a slow test: two real
+	// pointer interactions, each opening a portalled listbox, and jsdom does that
+	// unhurriedly. Alone it takes ~300ms; sharing a machine with the rest of the
+	// suite it has overrun the 5s default in about half of local runs while
+	// passing every time in CI. The default stays low everywhere else on purpose,
+	// so that a genuine hang fails in seconds instead of costing the job.
 	it("does not offer a platform that another row already uses", async () => {
 		const user = userEvent.setup();
 		render([{ platform: "INSTAGRAM", url: "https://instagram.com/acme" }]);
@@ -53,7 +60,7 @@ describe("AppOperatorSocialLinksCard", () => {
 		const labels = options.map((o) => o.textContent);
 		expect(labels).not.toContain("Instagram");
 		expect(labels).toContain("Facebook");
-	});
+	}, 20_000);
 
 	// The row's own pick has to stay in its list, or reopening the select on a
 	// saved row shows it as unavailable and the value looks invalid.
