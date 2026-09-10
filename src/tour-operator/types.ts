@@ -1,3 +1,4 @@
+import type { OperatorLocales } from "#/session";
 // What a storefront page falls back to when its locale carries no override.
 export interface OperatorSeo {
 	seoTitle: string | null;
@@ -85,4 +86,18 @@ export interface TourOperatorDetails {
 	 * null texts and empty colour arrays.
 	 */
 	brand: Brand;
+	seo: OperatorSeo;
+	locales: OperatorLocales;
+	storefrontPassword: StorefrontPasswordSettings;
+}
+
+/**
+ * The storefront gate. Member-visible WITH the password, deliberately: it is
+ * something the operator hands to visitors, not a credential. Sending a blank
+ * one keeps whatever is stored, so this can be changed but never cleared.
+ */
+export interface StorefrontPasswordSettings {
+	enabled: boolean;
+	password: string | null;
+	message: string | null;
 }

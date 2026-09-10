@@ -18,7 +18,7 @@ vi.mock("sonner", () => ({
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
-const URL = `${API}/tour-operators/${OP}/locales`;
+const URL = `${API}/tour-operators/${OP}`;
 
 const LOCALES = { primaryLocale: "en", supportedLocales: ["en", "es"] };
 
@@ -67,9 +67,10 @@ describe("useOperatorLanguagesForm", () => {
 			supportedLocales: ["en", "es"],
 		});
 
+		// One key, and BOTH fields. A partial `locales` is a 422, and the sibling
+		// sections must not ride along into a PATCH that replaces each one it gets.
 		expect(body).toHaveBeenCalledWith({
-			primaryLocale: "es",
-			supportedLocales: ["en", "es"],
+			locales: { primaryLocale: "es", supportedLocales: ["en", "es"] },
 		});
 		expect(navigateMock).not.toHaveBeenCalled();
 	});
