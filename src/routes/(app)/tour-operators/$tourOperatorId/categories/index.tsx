@@ -13,7 +13,6 @@ export const Route = createFileRoute(
 	component: CategoriesPage,
 });
 
-// How experiences are grouped on the storefront.
 function CategoriesPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();

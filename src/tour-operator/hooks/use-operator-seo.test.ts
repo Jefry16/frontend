@@ -19,12 +19,6 @@ const patching = (body: ReturnType<typeof vi.fn>) =>
 	});
 
 describe("useOperatorSeoSave", () => {
-	// The search listing shares the operator's PATCH with three other sections,
-	// and every section present in that request is REPLACED. So the body has to
-	// carry one key and the card has to send all three fields — an og:image the
-	// operator never touched included, or saving a title deletes their share
-	// image. Nothing in the type system says so: `{ seo: { seoTitle } }` is a
-	// perfectly valid argument.
 	it("sends one section, with all three of its fields", async () => {
 		const body = vi.fn();
 		server.use(patching(body));
@@ -50,8 +44,6 @@ describe("useOperatorSeoSave", () => {
 		});
 	});
 
-	// Every card on the page reads one entry now, so this refresh is what lets
-	// the others see the operator the save just changed.
 	it("refreshes the operator and the trail", async () => {
 		server.use(patching(vi.fn()));
 		const { Wrapper, queryClient } = wrapperWithProviders();

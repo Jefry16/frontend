@@ -10,12 +10,9 @@ import { AppTranslationNotice } from "#/shared/components/AppTranslationNotice";
 import { useExperienceTranslationForm } from "../hooks/use-experience-translation-form";
 import type { Experience, ExperienceTranslation } from "../types";
 
-// Whether an overlay localizes anything — decides if "Clear translation" shows.
 const hasTranslation = (t: ExperienceTranslation): boolean =>
 	Boolean(t.name || t.description || t.longDescription || t.handle);
 
-// One locale's translation editor. Every field is optional: left blank, the
-// storefront falls back to the canonical experience, shown as the placeholder.
 export const AppExperienceTranslationForm = ({
 	tourOperatorId,
 	experienceId,

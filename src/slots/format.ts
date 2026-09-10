@@ -6,7 +6,6 @@ import {
 	type SlotStatus,
 } from "./types";
 
-// Anchor: 2024-01-07 is a Sunday — day names come from Intl, not a hand list.
 const SUNDAY_ANCHOR = new Date(Date.UTC(2024, 0, 7));
 
 export const formatDayName = (day: number): string => {
@@ -18,7 +17,6 @@ export const formatDayName = (day: number): string => {
 	}).format(date);
 };
 
-/** "2026-08-01T10:00:00" (operator-local wall clock) → a local Date with the SAME wall-clock parts. */
 const parseWallClock = (dateTime: string): Date | null => {
 	const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(dateTime);
 	if (!match) return null;
@@ -26,7 +24,6 @@ const parseWallClock = (dateTime: string): Date | null => {
 	return new Date(y ?? 1970, (mo ?? 1) - 1, d ?? 1, h ?? 0, mn ?? 0);
 };
 
-/** Wall-clock datetime → "Aug 1, 2026, 10:00 AM" in the viewer's formats — NO timezone conversion. */
 export const formatSlotDateTime = (dateTime: string): string => {
 	const date = parseWallClock(dateTime);
 	if (!date) return dateTime;
@@ -36,7 +33,6 @@ export const formatSlotDateTime = (dateTime: string): string => {
 	}).format(date);
 };
 
-/** ~"2 h 30 min" from the server-derived minutes. */
 export const formatSlotDuration = (minutes: number): string => {
 	const h = Math.floor(minutes / 60);
 	const mn = minutes % 60;

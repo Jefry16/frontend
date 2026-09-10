@@ -17,16 +17,10 @@ import {
 interface AppSelectFieldProps {
 	field: AnyFieldApi;
 	label: string;
-	/** `SelectItem` children. */
 	children: ReactNode;
 	placeholder?: string;
 	description?: string;
-	/**
-	 * For a cell in a repeating row: a visible label on every row is noise, but
-	 * the control still needs a programmatic name — a placeholder is not one.
-	 */
 	hideLabel?: boolean;
-	/** For a pick that invalidates sibling fields. */
 	onValueChange?: (value: string) => void;
 }
 

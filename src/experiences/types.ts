@@ -1,5 +1,3 @@
-// Media is resolved to URLs at read time, never stored. List rows and the detail
-// share this shape.
 export interface Experience {
 	id: string;
 	context: "experiences";
@@ -8,13 +6,11 @@ export interface Experience {
 	description: string;
 	longDescription: string;
 	featured: boolean;
-	// The raw references, for editing; the URLs above are for display.
 	thumbnailMediaId: string | null;
 	thumbnailUrl: string | null;
 	mediaIds: string[];
 	galleryUrls: string[];
 	bookingCutoffHours: number;
-	/** SEO overrides; null means the storefront falls back to name/description. */
 	seoTitle: string | null;
 	seoDescription: string | null;
 	startingPrice: number;
@@ -23,8 +19,6 @@ export interface Experience {
 	createdAt: string;
 }
 
-// null means untranslated, so the storefront falls back to the canonical field.
-// `handle` is per-locale.
 export interface ExperienceTranslation {
 	locale: string;
 	name: string | null;

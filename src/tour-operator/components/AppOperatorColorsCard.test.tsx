@@ -57,8 +57,6 @@ const save = async (user: ReturnType<typeof userEvent.setup>) =>
 	user.click(screen.getByRole("button", { name: /save changes/i }));
 
 describe("AppOperatorColorsCard", () => {
-	// Array position IS the palette order server-side, so what the rows read has
-	// to be what the payload carries.
 	it("submits the rows in the order they read", async () => {
 		const user = userEvent.setup();
 		const body = render();
@@ -76,9 +74,6 @@ describe("AppOperatorColorsCard", () => {
 		).toEqual(["#222222", "#111111", "#333333"]);
 	});
 
-	// The sibling card had exactly this bug: removing a NON-LAST row let React
-	// reuse the row component, and the survivor's control lost its value. Plain
-	// inputs are not immune by inspection — only by being run.
 	it("keeps the survivors intact when a middle row is removed", async () => {
 		const user = userEvent.setup();
 		const body = render();
@@ -95,8 +90,6 @@ describe("AppOperatorColorsCard", () => {
 		]);
 	});
 
-	// PUT /brand is a full replace: clearing the palette is a legitimate save,
-	// not a no-op to guard against.
 	it("sends empty arrays when every colour is removed", async () => {
 		const user = userEvent.setup();
 		const body = render({

@@ -51,8 +51,6 @@ const submit = async (
 describe("useRegisterForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// The confirmation is a typo check, not a credential. It is destructured out
-	// of the payload rather than filtered, so a rename would drop the guard.
 	it("strips the confirmation and trims the name", async () => {
 		const body = vi.fn();
 		server.use(
@@ -72,8 +70,6 @@ describe("useRegisterForm", () => {
 		});
 	});
 
-	// Not login: the account is unverified, so login would answer 403. The email
-	// rides in the search params so the notice can name the address.
 	it("lands on verify-email carrying the address", async () => {
 		server.use(http.post(URL, () => new HttpResponse(null, { status: 201 })));
 		const { result } = render();

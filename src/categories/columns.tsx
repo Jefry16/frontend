@@ -5,14 +5,6 @@ import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
 import type { Category } from "./types";
 
-// The categories columns: name (sortable + text filter, links to the detail),
-// handle (mono — the storefront address), created.
-//
-// The handle is deliberately neither sortable nor filterable: the backend list
-// schema accepts sort and filter on name, createdAt and id only, and answers a
-// hard 422 for anything else. It earns its place read-only because the value is
-// derived and not guessable — accents are stripped and a collision appends a
-// suffix, so "Café" may have landed as `cafe` or as `cafe-2`.
 export const categoryColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

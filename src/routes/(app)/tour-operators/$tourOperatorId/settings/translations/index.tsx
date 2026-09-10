@@ -12,9 +12,6 @@ export const Route = createFileRoute(
 	component: TranslationsSettingsPage,
 });
 
-// The operator's own shop text, per supported language. Editing is ADMIN+ (STAFF
-// would 403 on save), so the role decides form vs read-only summary — the same
-// split the Languages section makes.
 function TranslationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();

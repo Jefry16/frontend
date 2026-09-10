@@ -16,7 +16,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// An undescribed upload — Save stays disabled until something is typed.
 export const Undescribed: Story = {};
 
 export const Described: Story = {

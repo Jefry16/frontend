@@ -32,9 +32,6 @@ const USER: AuthUser = {
 describe("AppSignOutButton", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// logout() clears the token but does NOT navigate — the caller does. Both
-	// halves matter: clearing without leaving strands the user on a page the
-	// auth gate will bounce, and leaving without clearing keeps the session.
 	it("clears the session and sends the user to login", async () => {
 		server.use(
 			http.post(
@@ -56,8 +53,6 @@ describe("AppSignOutButton", () => {
 		expect(navigateMock).toHaveBeenCalledWith({ to: "/auth/login" });
 	});
 
-	// The endpoint is best-effort: a signed-out user must not be stuck signed in
-	// because the server was unreachable.
 	it("still signs out locally when the endpoint fails", async () => {
 		server.use(http.post(`${API}/auth/logout`, () => HttpResponse.error()));
 		renderWithProviders(

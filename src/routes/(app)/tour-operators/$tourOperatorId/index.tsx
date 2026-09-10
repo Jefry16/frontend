@@ -9,9 +9,6 @@ export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId/")({
 	component: TourOperatorDashboard,
 });
 
-// The operator dashboard — the post-login landing, rendered inside the shell.
-// A thin operator-facts page for now; the real metrics/loops land with their
-// feature slices.
 function TourOperatorDashboard() {
 	const operator = useCurrentTourOperator();
 

@@ -1,9 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend value objects: PickupLocationName 1–200 after trim;
-// PickupLocationTime a strict HH:mm (two-digit 24h — LocalTime.parse rejects
-// single-digit hours, so the schema does too).
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 export const pickupLocationSchema = z.object({

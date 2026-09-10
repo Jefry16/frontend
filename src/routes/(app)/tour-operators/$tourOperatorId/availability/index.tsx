@@ -14,7 +14,6 @@ export const Route = createFileRoute(
 	component: AvailabilityPage,
 });
 
-// Adding starts with an experience picker, because availability is per-experience.
 function AvailabilityPage() {
 	const { tourOperatorId } = Route.useParams();
 	const [addOpen, setAddOpen] = useState(false);

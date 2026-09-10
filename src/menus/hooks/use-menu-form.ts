@@ -10,9 +10,6 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { type MenuFormData, menuSchema } from "../validators/menu";
 
-// Create-only (menus have no edit form: the handle is immutable and the title
-// changes via the rename dialog). POSTs handle + title, navigates to the new
-// menu's detail (create-navigates-to-detail rule). A 409 is a taken handle.
 export const useMenuForm = (tourOperatorId: string) => {
 	const navigate = useNavigate();
 	const toast = useAppToast();

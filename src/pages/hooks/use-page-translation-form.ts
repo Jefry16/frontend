@@ -33,6 +33,5 @@ export const usePageTranslationForm = ({
 			queryKeys.pageTranslations(tourOperatorId, pageId),
 			queryKeys.pageTranslation(tourOperatorId, pageId, locale),
 		],
-		// A 409 here is a localized-handle collision (per operator + locale).
 		conflictMessage: m.slug_taken(),
 	});

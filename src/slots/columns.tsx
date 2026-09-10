@@ -15,10 +15,6 @@ import {
 } from "./format";
 import type { Slot } from "./types";
 
-// The availability columns: experience (async set filter by id, sortable by
-// name, links to the SLOT detail), start (sortable; the server's default sort,
-// soonest first), day (set filter), status (set filter + badge), booked/capacity
-// summary. startAt has no server-side date filter yet (backend gap, noted).
 export const slotColumns = (
 	tourOperatorId: string,
 ): ColumnDef<Slot, unknown>[] => [

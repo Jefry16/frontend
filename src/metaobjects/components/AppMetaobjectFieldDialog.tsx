@@ -27,9 +27,6 @@ import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import type { MetaobjectField } from "../types";
 import { deriveSlug, fieldSchema } from "../validators/metaobject";
 
-// Add a field to a live definition, or rename an existing one — a dialog
-// because it's a small structural edit on the detail page, not a page of its
-// own. In rename mode key/type are shown frozen (immutable server-side).
 export const AppMetaobjectFieldDialog = ({
 	open,
 	onOpenChange,
@@ -40,7 +37,6 @@ export const AppMetaobjectFieldDialog = ({
 }: {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	/** Present → rename mode; absent → add mode. */
 	field?: MetaobjectField;
 	pending: boolean;
 	errorMessage: string | null;

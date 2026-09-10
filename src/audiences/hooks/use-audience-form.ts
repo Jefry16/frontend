@@ -15,9 +15,6 @@ import {
 	audienceSchema,
 } from "../validators/audience";
 
-// Create (no `audience`) or edit (with one). On success navigates to the
-// detail page (create-navigates-to-detail rule). A 409 is specifically a
-// duplicate name (unique per operator, case-insensitive).
 export const useAudienceForm = (
 	tourOperatorId: string,
 	audience?: Audience,

@@ -6,8 +6,6 @@ export const Route = createFileRoute("/auth/verify")({
 		token: typeof search.token === "string" ? search.token : undefined,
 	}),
 	loaderDeps: ({ search }) => ({ token: search.token }),
-	// Runs once per navigation (no effect double-invoke) — the single-use token
-	// is consumed exactly once. Never throws; maps to a UI state.
 	loader: ({ deps }) => verifyToken(deps.token),
 	pendingComponent: () => <AppVerifyAccount state="verifying" />,
 	component: VerifyPage,

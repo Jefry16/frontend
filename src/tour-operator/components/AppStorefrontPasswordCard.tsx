@@ -21,16 +21,11 @@ import {
 	useStorefrontPasswordForm,
 } from "../hooks/use-storefront-password";
 
-// Settings → General → Store access (Shopify's password protection): restrict
-// the storefront to visitors with the shared password, plus the optional
-// message the password page shows. The password is member-visible by design —
-// it's the gate the operator hands out, not a credential.
 export const AppStorefrontPasswordCard = ({
 	tourOperatorId,
 	canWrite,
 }: {
 	tourOperatorId: string;
-	/** ADMIN+. False shows the settings read-only — the read is member-level. */
 	canWrite: boolean;
 }) => {
 	const query = useStorefrontPassword(tourOperatorId);

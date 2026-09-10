@@ -21,8 +21,6 @@ const client = storyQueryClient((qc) =>
 	),
 );
 
-// Storied through a table because the header only exists as a column's `header`
-// renderer, and needs a real HeaderContext.
 function HeaderDemo({
 	sortable = true,
 	header,
@@ -53,14 +51,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Clicking cycles asc → desc → none, and the <th> carries the matching aria-sort.
 export const Sortable: Story = {
 	args: {
 		header: (ctx) => <AppDataTableHeader label="Name" headerContext={ctx} />,
 	},
 };
 
-// An operator plus a debounced search, sent as filter[field][op].
 export const WithTextFilter: Story = {
 	args: {
 		header: (ctx) => (
@@ -89,7 +85,6 @@ export const WithSetFilter: Story = {
 	},
 };
 
-// No opt-in to sorting: a plain label, no button, no aria-sort.
 export const PlainLabel: Story = {
 	args: {
 		sortable: false,

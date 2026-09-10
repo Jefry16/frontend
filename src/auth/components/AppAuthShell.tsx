@@ -1,16 +1,12 @@
 import type { ReactNode } from "react";
 import { cn } from "#/lib/utils";
 
-// Stops above the card on purpose: the screens below it genuinely differ (a
-// form, a message, and onboarding's alert and sign-out that sit OUTSIDE the
-// card). The frame is the part that has to stay identical, not the body.
 export const AppAuthShell = ({
 	width = "sm",
 	title,
 	subtitle,
 	children,
 }: {
-	/** `lg` is the onboarding form, whose four fields need the room. */
 	width?: "sm" | "lg";
 	title?: string;
 	subtitle?: string;

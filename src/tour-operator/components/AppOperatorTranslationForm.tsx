@@ -17,10 +17,6 @@ const hasTranslation = (t: OperatorTranslation) =>
 	t.seoDescription !== null ||
 	t.passwordMessage !== null;
 
-// No field shows its canonical value as a hint, unlike the experience and page
-// translation forms: the slogan and short description live on the read-path-only
-// brand row, and the SEO pair would need a second fetch. Showing the hint for
-// one field in five is worse than the shared fallback note above them.
 export const AppOperatorTranslationForm = ({
 	tourOperatorId,
 	locale,

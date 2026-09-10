@@ -21,9 +21,6 @@ const REFRESHED = {
 };
 
 describe("useSlotActions", () => {
-	// Unlike every other actions hook, these write the response STRAIGHT into
-	// the detail cache instead of invalidating it — the endpoint returns the
-	// refreshed slot, so a refetch would be a second round trip for the same row.
 	it("writes the returned slot into the detail cache and invalidates the list", async () => {
 		server.use(http.post(`${BASE}/cancel`, () => HttpResponse.json(REFRESHED)));
 		const { result, invalidated, queryClient } = renderActions(() =>
@@ -39,8 +36,6 @@ describe("useSlotActions", () => {
 		]);
 	});
 
-	// SOLD_OUT is derived at checkout, so the operator has no status toggle —
-	// the PATCH this hook sends carries capacities and nothing else.
 	it("offers no status setter", () => {
 		const { result } = renderActions(() => useSlotActions(OP, ID));
 
@@ -50,9 +45,6 @@ describe("useSlotActions", () => {
 		]);
 	});
 
-	// Capacity below the seats already booked is a 422 the operator can act on,
-	// so the reason has to reach them — this is one of the five hooks CLAUDE.md
-	// names as surfacing the backend message.
 	it("shows the backend reason when a capacity is below what is booked", async () => {
 		server.use(
 			http.patch(BASE, () =>

@@ -7,8 +7,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useMenu } from "../hooks/use-menu";
 import { AppMenuItemsEditor } from "./AppMenuItemsEditor";
 
-// The menu-items edit page: fetches the menu, then hands the loaded tree to
-// the editor (whose local state seeds once from it).
 export const AppMenuEdit = ({
 	tourOperatorId,
 	menuId,

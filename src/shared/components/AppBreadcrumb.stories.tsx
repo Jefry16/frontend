@@ -9,7 +9,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// A non-navigable section label (muted) → a linked parent → the current page.
 export const Default: Story = {
 	args: {
 		items: [
@@ -24,7 +23,6 @@ export const Default: Story = {
 	},
 };
 
-// Two crumbs: a section and the current page.
 export const SectionAndPage: Story = {
 	args: {
 		items: [{ label: "Content" }, { label: "Media" }],

@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { AppCardBody } from "./AppCardBody";
 
-// Hand-built query results — the states matter, not how they were fetched.
 const result = (
 	over: Partial<UseQueryResult<string>>,
 ): UseQueryResult<string> =>
@@ -40,14 +39,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// The header stays put while the body resolves.
 export const Loading: Story = { args: { query: result({ isPending: true }) } };
 
 export const Loaded: Story = {
 	args: { query: result({ data: "Kayak tours in Sosúa — book online" }) },
 };
 
-// The state three cards used to swallow into a permanent skeleton.
 export const Failed: Story = {
 	args: { query: result({ error: new Error("Network error") }) },
 };

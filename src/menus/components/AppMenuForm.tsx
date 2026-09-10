@@ -6,9 +6,6 @@ import { AppFormCard } from "#/shared/components/AppFormCard";
 import { useMenuForm } from "../hooks/use-menu-form";
 import { deriveHandle } from "../validators/menu";
 
-// The create-menu form: title + handle (a blurred title prefills an empty
-// handle). Create-only — the handle is immutable and the title is renamed via
-// the detail's dialog; items are added in the editor afterwards.
 export const AppMenuForm = ({ tourOperatorId }: { tourOperatorId: string }) => {
 	const { form, isPending, errorMessage } = useMenuForm(tourOperatorId);
 

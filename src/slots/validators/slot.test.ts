@@ -1,12 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { composeStartEnd, rollsToNextDay } from "./slot";
 
-// The only hand-rolled date arithmetic in the app. There is no date library
-// behind it, and an off-by-one-day is invisible until someone reads a booking.
-
 describe("rollsToNextDay", () => {
-	// Equal is not "zero length" — a departure whose end time matches its start
-	// runs a full 24 hours, which is the maximum a slot may span.
 	it.each([
 		["22:00", "02:00", true],
 		["10:00", "10:00", true],
@@ -41,8 +36,6 @@ describe("composeStartEnd", () => {
 		});
 	});
 
-	// The next day is computed through Date rather than by incrementing the day
-	// number, which is the whole reason these hold.
 	it.each([
 		["2026-12-31", "2027-01-01", "year end"],
 		["2026-02-28", "2026-03-01", "non-leap February"],
@@ -54,16 +47,6 @@ describe("composeStartEnd", () => {
 		);
 	});
 
-	// Every duration the domain allows, against every start minute. This is the
-	// property the whole thing rests on, and it is exact up to 1440 — which is
-	// also the longest span a Slot may have (`Slot.MAX_SPAN`, 24h, rejected above
-	// with "A slot may last at most 24 hours").
-	//
-	// This used to warn that an experience could be declared longer than any slot
-	// could represent, so the composition truncated silently. That is gone:
-	// `experiences.duration_minutes` was dropped in experience/V13, so nothing
-	// declares a duration a slot cannot hold. The bound below is now just the
-	// slot's own.
 	it("spans exactly the requested duration for every minute up to 24h", () => {
 		const wrong: string[] = [];
 		for (let duration = 1; duration <= 1440; duration++) {

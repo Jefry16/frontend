@@ -10,14 +10,10 @@ import {
 } from "#/components/ui/breadcrumb";
 import { AppLink } from "./AppLink";
 
-// A crumb without `to` is a non-navigable label — a nav section like "Content".
 type BreadcrumbCrumb = {
 	label: ReactNode;
 } & (Pick<LinkProps, "to" | "params"> | { to?: undefined; params?: undefined });
 
-// The LAST crumb is the current page and never a link. An earlier crumb without
-// a `to` renders as muted text rather than BreadcrumbPage, so a section label
-// does not claim aria-current.
 export function AppBreadcrumb({ items }: { items: BreadcrumbCrumb[] }) {
 	return (
 		<Breadcrumb>

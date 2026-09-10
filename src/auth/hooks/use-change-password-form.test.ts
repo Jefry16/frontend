@@ -50,8 +50,6 @@ const submit = async (
 describe("useChangePasswordForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// The confirmation exists to catch a typo, not to be stored. Sending it would
-	// put a third copy of the password on the wire for nothing.
 	it("sends current and new, never the confirmation", async () => {
 		const body = vi.fn();
 		server.use(
@@ -88,8 +86,6 @@ describe("useChangePasswordForm", () => {
 		expect(body).not.toHaveBeenCalled();
 	});
 
-	// The backend rejects it too; catching it here keeps the operator from
-	// spending a round trip to be told what the form already knew.
 	it("blocks reusing the current password", async () => {
 		const body = vi.fn();
 		server.use(
@@ -109,13 +105,6 @@ describe("useChangePasswordForm", () => {
 		expect(body).not.toHaveBeenCalled();
 	});
 
-	// A wrong current password is something the operator can act on, so the
-	// reason belongs inline beside the field rather than in a toast.
-	//
-	// The attempt count is the point: /auth/change-password is in SKIP_AUTH_URLS,
-	// so its 401 — which means "wrong password", not "expired session" — is passed
-	// straight through. Without that entry the interceptor refreshes and retries,
-	// sending the attempt twice and rotating the refresh token for nothing.
 	it("puts a rejected current password inline, without retrying", async () => {
 		let attempts = 0;
 		const refreshed = vi.fn();

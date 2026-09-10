@@ -1,9 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Store access: the shared password gate on the storefront. The cross-field
-// rule mirrors the backend's — a gate with no password is not a gate — so the
-// common mistake fails here instead of round-tripping to a 422.
 export const storefrontPasswordSchema = z
 	.object({
 		enabled: z.boolean(),

@@ -15,8 +15,6 @@ const KEY = ["async-filter-story", "op-1"] as const;
 const OPTIONS_ENDPOINT = "/tour-operators/op-1/members";
 const OPTIONS_KEY = ["async-filter-options", "op-1"] as const;
 
-// Two seeds: the table's rows, and the option catalogue the filter drains —
-// useAllPages keys that one as [...queryKey, "all-pages"].
 const client = storyQueryClient((qc) => {
 	qc.setQueryData(
 		[...KEY, ENDPOINT, [], [], undefined],
@@ -35,7 +33,6 @@ const client = storyQueryClient((qc) => {
 	);
 });
 
-// A filter *mode* of a column header, so it is storied where it lives.
 function AsyncFilterDemo() {
 	const columns: ColumnDef<Row, unknown>[] = [
 		{
@@ -68,5 +65,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// The Owner options come from the endpoint, not from the rows on screen.
 export const Default: Story = {};

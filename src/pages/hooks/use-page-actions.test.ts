@@ -19,8 +19,6 @@ const LIST = ["pages", OP];
 const TRAIL = ["activity", OP];
 
 describe("usePageActions", () => {
-	// Publish and unpublish share ONE endpoint; the body is the only thing that
-	// separates them, so asserting it is the only way to tell them apart.
 	it.each([
 		["publish", true],
 		["unpublish", false],
@@ -60,8 +58,6 @@ describe("usePageActions", () => {
 		expect(invalidated()).toEqual([DETAIL, LIST, TRAIL]);
 	});
 
-	// The detail is deliberately absent: the record is gone, so refetching it
-	// would 404 the page the caller is navigating away from.
 	it("drops only the list and the trail on delete", async () => {
 		server.use(
 			http.delete(BASE, () => new HttpResponse(null, { status: 204 })),

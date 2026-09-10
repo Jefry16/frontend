@@ -13,8 +13,6 @@ const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const ENDPOINT = "/tour-operators/op-1/policies/policy-1/translations/es";
 const URL = `${API}${ENDPOINT}`;
 
-// Two keys standing in for the three-or-two each real caller passes: what is
-// under test is that EVERY key given is invalidated, not any caller's list.
 const KEYS = [
 	["policies", "op-1", "policy-1", "translations"],
 	["activity", "op-1"],
@@ -30,11 +28,6 @@ const render = () =>
 		}),
 	);
 
-// The four callers' invalidation was untested in all four modules before this
-// hook existed: a dropped key still typechecks, still sends the right request,
-// still resolves — and the switcher dots and the audit trail just keep showing
-// what the operator has already changed. Verified by mutation: emptying the
-// invalidate loop leaves every other test in the suite green.
 describe("useTranslationOverlayForm invalidation", () => {
 	it("refreshes every key it was given after a save", async () => {
 		server.use(http.put(URL, () => new HttpResponse(null, { status: 204 })));

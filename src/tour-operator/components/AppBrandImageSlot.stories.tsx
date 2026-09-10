@@ -43,7 +43,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Nothing uploaded yet: the dropzone, and no Remove to offer.
 export const Empty: Story = {};
 
 export const Filled: Story = {
@@ -59,10 +58,8 @@ export const Filled: Story = {
 	],
 };
 
-// Mid-upload: the dropzone is out and so is Remove.
 export const Uploading: Story = { args: { mediaId: MEDIA, pending: true } };
 
-// STAFF sees the image without a way to change it.
 export const ReadOnly: Story = {
 	args: { mediaId: MEDIA, canWrite: false },
 	decorators: [

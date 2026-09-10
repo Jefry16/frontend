@@ -11,7 +11,6 @@ import { DAY_OPTIONS } from "../format";
 import { useRecurringSlotForm } from "../hooks/use-recurring-slot-form";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";
 
-// A departure on every selected weekday between the two dates.
 export const AppRecurringSlotForm = ({
 	tourOperatorId,
 	experienceId,

@@ -14,18 +14,14 @@ export const useOperatorSeo = (tourOperatorId: string) =>
 		select: (operator) => operator.seo,
 	});
 
-/**
- * A `seo` present in the PATCH replaces the whole section, so the card always
- * sends all three fields — including an `ogImageMediaId` the operator never
- * touched. One key only: the sibling sections came back on the same read and
- * must not ride along into a request that replaces each one it is given.
- */
 export const useOperatorSeoSave = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
 
 	return useMutation<void, AxiosError, OperatorSeo>({
 		mutationFn: async (seo) => {
+			// All three fields every time: this section is replaced whole, so a partial
+			// body clears the share image the operator never touched.
 			await authApi.patch(`/tour-operators/${tourOperatorId}`, { seo });
 		},
 		onSuccess: () => {
@@ -41,7 +37,6 @@ export const useOperatorSeoSave = (tourOperatorId: string) => {
 	});
 };
 
-// The id is held in form state until Save, so the PUT carries it with the rest.
 export const useOperatorSeoImageUpload = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -50,7 +45,6 @@ export const useOperatorSeoImageUpload = (tourOperatorId: string) => {
 		mutationFn: async (file) => {
 			const fd = new FormData();
 			fd.append("file", file);
-			// No Content-Type header: axios derives the multipart boundary itself.
 			const { headers } = await authApi.post(
 				`/tour-operators/${tourOperatorId}/media`,
 				fd,

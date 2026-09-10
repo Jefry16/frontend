@@ -8,8 +8,6 @@ import {
 import { useState } from "react";
 import { AppTextFilter } from "./AppTextFilter";
 
-// Drive the filter with a real (headless) table so column state behaves as in
-// the app; the current filter value is echoed below.
 function Demo() {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const helper = createColumnHelper<{ name: string }>();

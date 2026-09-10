@@ -19,16 +19,12 @@ import type { AuditLogEntry } from "./types";
 
 const SHOWN_CHANGES = 2;
 
-// createdAt sorts by descending id, which is the server default. It has no
-// date-range filter yet: the backend supports one, the table framework does not.
 export const activityColumns = (
 	tourOperatorId: string,
 	formatDateTime: (iso: string) => string,
 ): ColumnDef<AuditLogEntry, unknown>[] => [
 	timestampColumn<AuditLogEntry>("createdAt", m.date(), formatDateTime),
 	{
-		// Filters on the FROZEN actor name. An actorType filter earns its place
-		// when SYSTEM emitters exist; today every writer is a USER.
 		id: "actorName",
 		accessorKey: "actorName",
 		header: (ctx) => (

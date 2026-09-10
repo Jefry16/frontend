@@ -45,7 +45,6 @@ const DEFINITIONS: MetafieldDefinitionListItem[] = [
 	{
 		id: "d-4",
 		context: "metafield-definitions",
-		// A page-owned definition — must NOT render on an experience.
 		ownerType: "page",
 		namespace: "custom",
 		key: "hero-subtitle",

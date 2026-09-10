@@ -3,8 +3,6 @@ import * as m from "#/paraglide/messages";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-// Every field optional: trim, cap at the canonical VO's max, collapse empty to
-// null so the PUT stores absence and the locale falls back to canonical.
 const text = (max: number) =>
 	z
 		.string()
@@ -14,7 +12,6 @@ const text = (max: number) =>
 
 export const pageTranslationSchema = z.object({
 	title: text(255),
-	// Body is raw HTML — trimmed only, never reshaped.
 	body: z
 		.string()
 		.transform((v) => v.trim())
@@ -22,8 +19,6 @@ export const pageTranslationSchema = z.object({
 		.transform((v): string | null => (v.length ? v : null)),
 	seoTitle: text(70),
 	seoDescription: text(320),
-	// Localized handle: empty → null (absent w/ a translated title the backend
-	// derives one; absent without = canonical serves the locale).
 	handle: z
 		.string()
 		.transform((v) => v.trim())

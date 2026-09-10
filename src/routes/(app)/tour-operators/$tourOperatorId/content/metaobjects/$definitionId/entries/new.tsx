@@ -15,8 +15,6 @@ export const Route = createFileRoute(
 	component: NewMetaobjectPage,
 });
 
-// New entry OF a definition — the form is generated from the definition's
-// field set, so the route fetches it first.
 function NewMetaobjectPage() {
 	const { tourOperatorId, definitionId } = Route.useParams();
 	const query = useMetaobjectDefinition(tourOperatorId, definitionId);

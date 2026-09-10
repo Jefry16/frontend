@@ -5,8 +5,6 @@ const blank = { title: "", body: "" };
 
 describe("policyTranslationSchema", () => {
 	it("collapses empty and whitespace-only fields to null", () => {
-		// The fallback rule: null stores absence, so the storefront renders the
-		// canonical policy. Storing "" would blank the field for that locale.
 		expect(policyTranslationSchema.parse(blank)).toEqual({
 			title: null,
 			body: null,

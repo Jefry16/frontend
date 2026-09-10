@@ -15,15 +15,11 @@ describe("brandColorsSchema", () => {
 		expect(colors("#0b3d5c").success).toBe(true);
 	});
 
-	// The backend lower-cases before its CHECK; doing it here too means the box
-	// shows what will be stored rather than reading back different after a save.
 	it("lower-cases what the operator pasted from a design tool", () => {
 		const result = colors("#0B3D5C");
 		expect(result.success && result.data.primary[0].background).toBe("#0b3d5c");
 	});
 
-	// HexColor rejects shorthand rather than expanding it: the column is
-	// VARCHAR(7) and a value that round-trips differently is worse than a refusal.
 	it("rejects three-digit shorthand rather than expanding it", () => {
 		expect(colors("#abc").success).toBe(false);
 	});
@@ -39,8 +35,6 @@ describe("brandColorsSchema", () => {
 		expect(colors(value).success).toBe(false);
 	});
 
-	// Both halves are colours — a valid background must not carry a bad
-	// foreground through, or the pair renders unreadable text.
 	it("checks the foreground too, not just the background", () => {
 		expect(colors("#0b3d5c", "#fff").success).toBe(false);
 	});
@@ -62,9 +56,6 @@ describe("brandSocialLinksSchema", () => {
 		).toBe(true);
 	});
 
-	// The table's key is (operator, platform). The form filters taken platforms
-	// out, so this catches only what the UI cannot — but the backend 422s either
-	// way, and failing client-side names the problem beside the field.
 	it("rejects two links for the same platform", () => {
 		expect(
 			links([
@@ -74,8 +65,6 @@ describe("brandSocialLinksSchema", () => {
 		).toBe(false);
 	});
 
-	// Restricted to http/https on purpose: the value is rendered as a link on a
-	// public page, and `javascript:` is not a link.
 	it.each([
 		"javascript:alert(1)",
 		"data:text/html,x",
@@ -86,8 +75,6 @@ describe("brandSocialLinksSchema", () => {
 	});
 
 	it("rejects a platform outside the backend's closed list", () => {
-		// V10 shipped Shopify's nine; V11 replaced Snapchat/Tumblr/Vimeo with
-		// TripAdvisor and WhatsApp. Picking off the old list is a 422.
 		expect(
 			links([{ platform: "SNAPCHAT", url: "https://snapchat.com/acme" }])
 				.success,

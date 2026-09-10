@@ -14,13 +14,6 @@ import {
 	operatorDetailsSchema,
 } from "../validators/operator-details";
 
-/**
- * The operator's whole record — details AND the brand, seo, locales and
- * storefront-password sections that used to have routes of their own. Exported
- * so every section reads it through one definition, under one key: five cards on
- * this page asking five names for one record is five requests and five chances
- * to disagree with each other.
- */
 export const operatorDetailQuery = (tourOperatorId: string) => ({
 	queryKey: queryKeys.operatorDetails(tourOperatorId),
 	queryFn: async () => {
@@ -34,11 +27,6 @@ export const operatorDetailQuery = (tourOperatorId: string) => ({
 export const useOperatorDetails = (tourOperatorId: string) =>
 	useQuery(operatorDetailQuery(tourOperatorId));
 
-/**
- * A genuine PATCH, unlike most writes here: an absent field is left unchanged
- * and a BLANK string clears an optional one. The form submits all six anyway,
- * so an untouched value re-sends itself and a cleared phone arrives as "".
- */
 export const useOperatorDetailsForm = (
 	tourOperatorId: string,
 	operator: TourOperatorDetails,
@@ -58,7 +46,6 @@ export const useOperatorDetailsForm = (
 		},
 		onSuccess: async () => {
 			setErrorMessage(null);
-			// name and timezone are also on the auth profile's operator summary.
 			await refreshUser();
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.operatorDetails(tourOperatorId),
@@ -76,13 +63,11 @@ export const useOperatorDetailsForm = (
 			name: operator.name,
 			address: {
 				address1: operator.address.address1,
-				// "" clears an optional line; the read returns null for an unset one.
 				address2: operator.address.address2 ?? "",
 				city: operator.address.city,
 				province: operator.address.province ?? "",
 				zip: operator.address.zip ?? "",
 			},
-			// "" clears; null would leave the column unchanged.
 			phone: operator.phone ?? "",
 			email: operator.email ?? "",
 			timezoneId: operator.timezoneId,

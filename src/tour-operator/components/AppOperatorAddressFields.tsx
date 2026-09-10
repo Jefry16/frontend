@@ -3,35 +3,9 @@ import type { ReactNode } from "react";
 import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
 
-/**
- * The operator's postal address, as the five fields the backend's
- * TourOperatorAddress carries. There is no country field: backend V17 dropped
- * the column, because a timezone already carries its country and the address
- * copy was free to disagree with it. The country an operator sees comes from
- * the timezone selector both callers already render. Shared because both write paths need exactly
- * this block: onboarding creates the operator and Settings → General edits it,
- * and the shape is the backend's, not either screen's.
- *
- * The form is typed by the surface used rather than by TanStack's form
- * generics, the way AppAuthFormWrapper types its own — the two callers' forms
- * differ in every field except `address`.
- *
- * `address1` and `city` are required; the rest are optional and stay "" rather
- * than null, because the backend clears an optional column with a blank string.
- */
 export const AppOperatorAddressFields = ({
 	form,
 }: {
-	/**
-	 * Typed by the surface used, the way AppAuthFormWrapper types its own form
-	 * prop. TanStack's `Field` carries twelve generics that differ per form, so
-	 * there is no shared type the create form and the details form both satisfy —
-	 * and they share only the `address` sub-shape anyway. The field the render
-	 * prop receives IS typed, as AnyFieldApi, which is what the children use.
-	 */
-	// The return is ReactNode | Promise<ReactNode> because TanStack's Field
-	// allows an async render prop; narrowing it to ReactNode makes neither
-	// caller's form assignable.
 	form: {
 		// biome-ignore lint/suspicious/noExplicitAny: no shared FieldComponent type — see above
 		Field: (props: any) => ReactNode | Promise<ReactNode>;

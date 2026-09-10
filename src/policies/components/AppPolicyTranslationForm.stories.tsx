@@ -52,10 +52,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Title overlaid, body still falling back — Clear is offered. */
 export const Default: Story = {};
 
-/** Nothing overlaid yet, so there is nothing to clear. */
 export const Untranslated: Story = {
 	args: {
 		tourOperatorId: "op-1",

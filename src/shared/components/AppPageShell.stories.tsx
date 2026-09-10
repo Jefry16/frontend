@@ -15,7 +15,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Full width — table pages.
 export const List: Story = {
 	args: {
 		variant: "list",
@@ -28,7 +27,6 @@ export const List: Story = {
 	},
 };
 
-// Centered 3xl, gap-8 — single-resource card stacks.
 export const Detail: Story = {
 	args: {
 		variant: "detail",
@@ -42,7 +40,6 @@ export const Detail: Story = {
 	},
 };
 
-// Centered 3xl, gap-6 — create/edit/translations/settings forms.
 export const Form: Story = {
 	args: {
 		variant: "form",

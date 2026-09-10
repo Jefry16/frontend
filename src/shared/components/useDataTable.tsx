@@ -12,21 +12,16 @@ import { useMemo, useState } from "react";
 import { authApi } from "#/lib/api";
 
 declare module "@tanstack/react-table" {
-	// For when the column id is not the API's sort field name. Filters always
-	// send the column id; no column has needed otherwise.
 	interface ColumnMeta<TData extends RowData, TValue> {
 		sortField?: string;
-		// Right-align + tabular figures for numeric columns so digits line up.
 		align?: "right";
 	}
 }
 
 type FieldMap = Record<string, { sortField?: string }>;
 
-// Server does the sorting/filtering/paging — the table's own filter fns are no-ops.
 const passFilterFn: FilterFn<unknown> = () => true;
 
-// The shared cursor-page envelope every list endpoint returns.
 interface CursorResponse<TData> {
 	data: TData[];
 	nextCursor: string | null;
@@ -39,8 +34,6 @@ interface UseDataTableProps<TData> {
 	baseParams?: Record<string, string>;
 }
 
-// Translates the table's sort/filter state into the backend's query grammar.
-// AppDataTable is the rendered shell over this.
 export function useDataTable<TData extends { id: string }>({
 	columns,
 	endpoint,
@@ -99,8 +92,6 @@ export function useDataTable<TData extends { id: string }>({
 		state: { sorting, columnFilters },
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
-		// LOAD-BEARING: key rows by their stable id, not the array index — else
-		// state would reassign to different rows on infinite-scroll appends.
 		getRowId: (row) => row.id,
 		manualSorting: true,
 		manualFiltering: true,
@@ -109,9 +100,6 @@ export function useDataTable<TData extends { id: string }>({
 		enableSortingRemoval: true,
 		defaultColumn: {
 			filterFn: passFilterFn as FilterFn<TData>,
-			// Opt-in per column, and declared HERE so the table knows: a header-only
-			// flag leaves getCanSort() true for everything, including a thumbnail,
-			// and nothing can then build a truthful aria-sort.
 			enableSorting: false,
 		},
 		getCoreRowModel: getCoreRowModel(),

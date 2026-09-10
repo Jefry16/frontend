@@ -8,7 +8,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { usePage } from "../hooks/use-page";
 import { AppPageForm } from "./AppPageForm";
 
-// The edit page: loads the record, then renders the form seeded with it.
 export const AppPageEdit = ({
 	tourOperatorId,
 	pageId,

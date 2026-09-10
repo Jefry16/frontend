@@ -13,8 +13,6 @@ export const useLoginForm = () => {
 	const { login } = useAuth();
 	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	// A 403 means the account exists but isn't verified — the form offers a
-	// resend path in that case (distinct from a wrong-credentials 401).
 	const [notVerified, setNotVerified] = useState(false);
 
 	const { mutate, isPending } = useMutation<

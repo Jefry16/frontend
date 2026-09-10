@@ -3,8 +3,6 @@ import * as m from "#/paraglide/messages";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-// Mirrors the backend value objects. An empty optional collapses to null, so
-// the backend stores absence rather than a blank.
 const optionalText = (max: number) =>
 	z
 		.string()
@@ -19,8 +17,6 @@ const requiredHandle = z
 	.max(170, m.validation_max_length({ count: 170 }))
 	.refine((v) => SLUG_RE.test(v), m.validation_slug());
 
-// One schema for both modes, so the form's data type stays single. The handle is
-// validated on CREATE only — renaming is a separate deliberate action.
 export const pageFormSchema = (isEdit: boolean) =>
 	z.object({
 		title: z

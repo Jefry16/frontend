@@ -42,9 +42,6 @@ const submit = (form: { handleSubmit: () => Promise<void> }) =>
 
 describe("useOperatorTranslationForm", () => {
 	it("sends all five fields — the PUT is a full replace, not a patch", async () => {
-		// The guard that matters: the backend rebuilds the row from the body, so
-		// a field omitted here is a field cleared in the database. Editing one
-		// field must still carry the other four.
 		let body: unknown;
 		server.use(
 			http.put(ENDPOINT, async ({ request }) => {
@@ -89,8 +86,6 @@ describe("useOperatorTranslationForm", () => {
 		await submit(result.current.form);
 
 		await waitFor(() => expect(body).toBeDefined());
-		// Empty string in the input, null on the wire — that is what makes the
-		// locale fall back to canonical rather than storing a blank override.
 		expect(body).toEqual({
 			slogan: null,
 			shortDescription: null,

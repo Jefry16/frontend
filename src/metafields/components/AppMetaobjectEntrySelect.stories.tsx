@@ -18,7 +18,6 @@ const qc = storyQueryClient((qc) =>
 				name: "Beginner chart",
 			},
 			{ id: "e-2", definitionId: PIN, handle: "pro", name: "Pro chart" },
-			// Another type's entry — must not be offered.
 			{ id: "e-3", definitionId: "mo-2", handle: "maria", name: "María" },
 		]),
 	),

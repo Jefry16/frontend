@@ -10,8 +10,6 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useAudience } from "../hooks/use-audience";
 
-// The audience translations editor: the shared single-name editor bound to this
-// audience's endpoints (name ≤80, mirroring the backend AudienceName).
 export const AppAudienceTranslations = ({
 	tourOperatorId,
 	audienceId,

@@ -2,19 +2,13 @@ import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
 
 interface AppLocaleTabsProps {
-	/** Tab codes, already filtered by the caller (e.g. supported minus primary). */
 	locales: string[];
 	active: string | undefined;
 	onSelect: (code: string) => void;
-	/** Locales that have a saved translation → the status dot fills in. */
 	translated: Set<string>;
-	/** Code → display label (e.g. localeLabel). */
 	label: (code: string) => string;
 }
 
-// The locale switcher shared by translation editors: a tab strip with a
-// per-locale status dot (filled = translated). Presentational — the active
-// state and the per-locale form live in the container.
 export const AppLocaleTabs = ({
 	locales,
 	active,

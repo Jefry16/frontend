@@ -27,7 +27,6 @@ function client() {
 	});
 	const key = queryKeys.categoryTranslations(OP, CAT);
 	qc.setQueryData([...key], []);
-	// An untranslated locale answers 200 with a null name, not a 404.
 	qc.setQueryData([...key, "es"], { locale: "es", name: null });
 	return qc;
 }
@@ -52,7 +51,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-/** A STAFF member: the stored overlay, read-only — reads are member-level. */
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 };

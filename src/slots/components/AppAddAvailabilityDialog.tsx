@@ -22,10 +22,6 @@ interface ExperienceRow {
 	name: string;
 }
 
-// The "Add availability" entry point: availability belongs to an experience, so
-// the flow starts by picking one. Loads the (bounded) experience catalog, offers
-// a client-side search, and navigates to the per-experience editor. Content
-// mounts only while open, so nothing is fetched until the dialog is used.
 export const AppAddAvailabilityDialog = ({
 	tourOperatorId,
 	open,

@@ -6,8 +6,6 @@ import { AppImageDropzone } from "./AppImageDropzone";
 
 const file = (name: string, type: string, bytes = 10) => {
 	const f = new File(["x".repeat(bytes)], name, { type });
-	// jsdom sizes a File from its parts, but the cases worth testing are files
-	// too large to construct — so the size is defined outright.
 	Object.defineProperty(f, "size", { value: bytes });
 	return f;
 };
@@ -33,11 +31,6 @@ const render = (
 	return { onFile, onError, input, button: screen.getByRole("button") };
 };
 
-// fireEvent, not userEvent.upload: upload honours the input's `accept`
-// attribute and drops a mismatched file before the component sees it. A real
-// browser does not — `accept` is a filter hint and the picker offers an
-// "All files" escape — so the component's own check is reachable and has to be
-// tested with the file actually delivered.
 const pick = (input: HTMLInputElement, picked: File) => {
 	Object.defineProperty(input, "files", {
 		value: [picked],
@@ -47,7 +40,6 @@ const pick = (input: HTMLInputElement, picked: File) => {
 };
 
 describe("AppImageDropzone — accept matching", () => {
-	// The three shapes an `accept` string takes in this app.
 	it.each([
 		["image/*", "image/png", true],
 		["image/*", "application/pdf", false],
@@ -73,7 +65,6 @@ describe("AppImageDropzone — accept matching", () => {
 });
 
 describe("AppImageDropzone — size", () => {
-	// Client-side, so an oversize file never reaches the network to be 413'd.
 	it("rejects a file over maxBytes before calling onFile", async () => {
 		const { onFile, onError, input } = render({ maxBytes: 100 });
 
@@ -102,15 +93,6 @@ describe("AppImageDropzone — size", () => {
 });
 
 describe("AppImageDropzone — interaction", () => {
-	// Re-picking the same file is a real action: an operator picks the wrong
-	// one, fixes it on disk, and picks again. A browser leaves the filename in
-	// `value`, so without the reset the second pick is not a change and onChange
-	// never fires.
-	//
-	// jsdom refuses to set `value` on a file input, so the assignment is observed
-	// through an accessor rather than by reading the value back. Installed after
-	// the change event, because replacing the descriptor earlier breaks React's
-	// input value tracker and onChange stops firing at all.
 	it("resets the input value so the same file can be picked again", () => {
 		const { onFile, input } = render();
 		const assignments: string[] = [];
@@ -163,8 +145,6 @@ describe("AppImageDropzone — interaction", () => {
 		expect(onError).not.toHaveBeenCalled();
 	});
 
-	// A real <button>, so the dialog opens on Enter and Space too — the file
-	// input itself is sr-only and never reachable directly.
 	it("opens the file dialog from the keyboard", async () => {
 		const user = userEvent.setup();
 		const { input, button } = render();

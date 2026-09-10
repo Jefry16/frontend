@@ -47,7 +47,6 @@ const INVITATIONS: Invitation[] = [
 		email: "katherine@acme.test",
 		name: "Katherine Johnson",
 		role: "STAFF",
-		// A lapsed PENDING row → shown as EXPIRED.
 		status: "PENDING",
 		expired: true,
 		createdAt: "2026-01-05T10:00:00Z",
@@ -57,11 +56,7 @@ const INVITATIONS: Invitation[] = [
 	},
 ];
 
-// staleTime: Infinity so the seeded page is treated as fresh — no background
-// refetch (which would fail with no network and surface an error row).
 const qc = storyQueryClient();
-// Seed the infinite-query cache under the exact key useDataTable builds on first
-// render (queryKey + endpoint + empty sorting/filters + undefined baseParams).
 qc.setQueryData(
 	[
 		...queryKeys.invitations(OP_ID),

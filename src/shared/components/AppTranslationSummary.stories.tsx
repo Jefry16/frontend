@@ -24,10 +24,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A fully translated locale. */
 export const Default: Story = {};
 
-/** Overlay hit and miss together — the usual case a reviewer needs to see. */
 export const PartlyTranslated: Story = {
 	args: {
 		fields: [

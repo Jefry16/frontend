@@ -77,8 +77,6 @@ describe("useInviteMemberForm", () => {
 		});
 	});
 
-	// OWNER moves only by transfer, never by invitation — the backend 422s it.
-	// The enum is what stops the form offering a role that cannot be granted.
 	it("refuses to send OWNER as an invite role", async () => {
 		const body = vi.fn();
 		server.use(
@@ -98,8 +96,6 @@ describe("useInviteMemberForm", () => {
 		expect(body).not.toHaveBeenCalled();
 	});
 
-	// 409 means already a member or already invited — actionable, so it is named
-	// rather than collapsed into the generic failure.
 	it("distinguishes a duplicate invite from any other failure", async () => {
 		server.use(http.post(BASE, () => new HttpResponse(null, { status: 409 })));
 		const { result: dup } = render();

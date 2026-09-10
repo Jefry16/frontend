@@ -2,10 +2,6 @@ import { z } from "zod";
 import * as m from "#/paraglide/messages";
 import { passwordSchema } from "./password";
 
-// Change-password: the current password (to re-authenticate), a new password
-// meeting the shared policy, and a confirmation. The new password must differ
-// from the current one, and the confirmation must match — both mirrored from the
-// backend so a bad field is caught client-side instead of coming back as a 422.
 export const changePasswordSchema = z
 	.object({
 		currentPassword: z.string().min(1, m.validation_required()),

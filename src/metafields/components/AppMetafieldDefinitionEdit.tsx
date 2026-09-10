@@ -7,8 +7,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useMetafieldDefinition } from "../hooks/use-metafield-definition";
 import { AppMetafieldDefinitionForm } from "./AppMetafieldDefinitionForm";
 
-// The definition edit page: fetches the record, renders the form pre-filled
-// (identity read-only — only name/description are editable).
 export const AppMetafieldDefinitionEdit = ({
 	tourOperatorId,
 	definitionId,

@@ -36,5 +36,4 @@ const decorate =
 
 export const Default: Story = { decorators: [decorate(EXPERIENCES)] };
 
-// No experiences yet → the picker points at creating one first.
 export const NoExperiences: Story = { decorators: [decorate([])] };

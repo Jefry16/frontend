@@ -39,8 +39,6 @@ describe("timestampColumn", () => {
 		);
 
 		expect(await screen.findByText("9 Aug 2026")).toBeInTheDocument();
-		// Every list declared this column sortable; the factory keeps that, and
-		// AppDataTable turns it into the aria-sort a screen reader reads.
 		expect(
 			screen.getByRole("columnheader", { name: /created/i }),
 		).toHaveAttribute("aria-sort", "none");

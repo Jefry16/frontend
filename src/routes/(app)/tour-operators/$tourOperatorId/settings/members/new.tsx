@@ -12,7 +12,6 @@ export const Route = createFileRoute(
 	component: InviteMemberPage,
 });
 
-// The route owns the page chrome; the component is just the form card.
 function InviteMemberPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

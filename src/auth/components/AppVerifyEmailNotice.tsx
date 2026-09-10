@@ -7,11 +7,8 @@ import { AppLink } from "#/shared/components/AppLink";
 import { useResendVerification } from "../hooks/use-resend-verification";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
 
-// Purely UX — the backend throttles too.
 const COOLDOWN_SECONDS = 30;
 
-// Anti-enumeration: a resend never confirms the address exists, it just
-// re-requests. Falls back to a generic message when deep-linked without an email.
 export const AppVerifyEmailNotice = ({ email }: { email?: string }) => {
 	const resend = useResendVerification();
 	const [cooldown, setCooldown] = useState(0);

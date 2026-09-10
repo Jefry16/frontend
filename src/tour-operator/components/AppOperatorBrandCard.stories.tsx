@@ -14,8 +14,6 @@ const brand = (over: Partial<Brand> = {}): Brand => ({
 	squareLogoMediaId: null,
 	faviconMediaId: null,
 	coverImageMediaId: null,
-	// Never edited here, but always echoed back — a brand sent in the PATCH
-	// replaces the whole section.
 	colors: { primary: [], secondary: [] },
 	socialLinks: [],
 	...over,
@@ -45,7 +43,6 @@ export const Editable: Story = {
 	],
 };
 
-// A brand nobody has filled in yet.
 export const Empty: Story = {
 	decorators: [
 		(Story) => (
@@ -58,7 +55,6 @@ export const Empty: Story = {
 	],
 };
 
-// STAFF may read the brand but not write it.
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 	decorators: [

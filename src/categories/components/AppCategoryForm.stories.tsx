@@ -32,6 +32,5 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Create carries the hint: this is the only save that derives the handle. */
 export const Create: Story = {};
 export const Edit: Story = { args: { category: CATEGORY } };

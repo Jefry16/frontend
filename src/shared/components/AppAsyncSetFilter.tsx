@@ -7,7 +7,6 @@ import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 type AsyncRow = Record<string, unknown>;
 
-// Dot-path read, e.g. "invitedBy.name".
 const readPath = (row: AsyncRow, path: string): unknown =>
 	path
 		.split(".")
@@ -21,16 +20,12 @@ const readPath = (row: AsyncRow, path: string): unknown =>
 
 interface Props<TData> {
 	headerContext: HeaderContext<TData, unknown>;
-	// Cursor-paginated; the options are derived from its rows.
 	endpoint: string;
 	queryKey: readonly unknown[];
-	// Dot-paths reach nested fields ("invitedBy.name").
 	valueKey?: string;
 	labelKey?: string;
 }
 
-// Loads EVERY page, so the client-side search covers the whole set. Safe for a
-// bounded list like a roster; an unbounded one needs a server-searched variant.
 export function AppAsyncSetFilter<TData>({
 	headerContext,
 	endpoint,
@@ -67,7 +62,6 @@ export function AppAsyncSetFilter<TData>({
 		);
 	}
 
-	// A name or email can repeat across members.
 	const seen = new Set<string>();
 	const items: SetFilterItem[] = [];
 	for (const row of data?.pages.flatMap((p) => p.data) ?? []) {

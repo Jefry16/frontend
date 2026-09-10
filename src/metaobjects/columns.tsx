@@ -7,8 +7,6 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { metaobjectStatusBadgeVariant, metaobjectStatusLabel } from "./format";
 import type { MetaobjectDefinitionListItem, MetaobjectListItem } from "./types";
 
-// The definitions columns: name (searchable, links to the detail), the type
-// slug (mono — what themes will reference), created.
 export const metaobjectDefinitionColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,
@@ -55,9 +53,6 @@ export const metaobjectDefinitionColumns = (
 	),
 ];
 
-// One definition's entries (the definition detail's table): name (links to
-// the entry), handle (mono), status badge (published is a boolean [eq]
-// filter server-side — no set-filter UI, badge only), created.
 export const metaobjectEntryColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

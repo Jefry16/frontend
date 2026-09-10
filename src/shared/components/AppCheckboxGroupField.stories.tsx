@@ -53,12 +53,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// A short set reads as one row — the recurring-slot weekday picker.
 export const Wrapping: Story = {
 	args: { label: "Days", required: true, options: DAYS, initial: [1, 3, 5] },
 };
 
-// A long catalogue gets columns — the supported-languages picker.
 export const Grid: Story = {
 	args: {
 		label: "Supported languages",

@@ -62,8 +62,6 @@ describe("usePermissions", () => {
 	});
 
 	it("denies when the route's operator is not one the user belongs to", () => {
-		// A membership elsewhere must not leak a role into this operator — the
-		// role is per-operator, not per-user.
 		const elsewhere: TourOperatorSummary = {
 			...operator("OWNER"),
 			id: "other-op",

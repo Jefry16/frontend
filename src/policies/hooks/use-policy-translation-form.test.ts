@@ -73,8 +73,6 @@ describe("usePolicyTranslationForm", () => {
 		expect(body).toHaveBeenCalledWith({ title: "Cancelación", body: null });
 	});
 
-	// Both fields go every time: the PUT replaces the row, so an omitted one is
-	// a cleared one.
 	it("posts both fields even when only one changed", async () => {
 		const body = vi.fn();
 		server.use(

@@ -68,9 +68,6 @@ const created = (body: ReturnType<typeof vi.fn>) =>
 describe("useMetaobjectForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// `values` is rebuilt from the DEFINITION's fields, not from the form's own
-	// keys. That is what makes the payload independent of whatever the form
-	// happens to be holding.
 	it("sends one value per definition field, blanks as null", async () => {
 		const body = vi.fn();
 		server.use(created(body));
@@ -90,8 +87,6 @@ describe("useMetaobjectForm", () => {
 		});
 	});
 
-	// A key the definition no longer has must not ride along — it would be
-	// writing a value for a field that does not exist.
 	it("drops a stale key the definition does not declare", async () => {
 		const body = vi.fn();
 		server.use(created(body));
@@ -109,8 +104,6 @@ describe("useMetaobjectForm", () => {
 		});
 	});
 
-	// Create carries the definition it belongs to; an edit cannot move an entry
-	// between definitions, so the id is absent from the PATCH.
 	it("sends definitionId on create and never on edit", async () => {
 		const patched = vi.fn();
 		server.use(

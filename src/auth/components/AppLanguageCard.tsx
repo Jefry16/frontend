@@ -20,18 +20,12 @@ import { AppCardBody } from "#/shared/components/AppCardBody";
 import { useChangeUiLanguage } from "../hooks/use-change-ui-language";
 import { useUiLanguages } from "../hooks/use-ui-languages";
 
-// Each language labelled IN ITSELF ("English", "Español") — a user stuck in the
-// wrong language can still find their own. Names come from Intl.DisplayNames, so
-// a locale added to the allowlist needs no label code here.
 const languageLabel = (code: string): string => {
 	const name =
 		new Intl.DisplayNames([code], { type: "language" }).of(code) ?? code;
 	return name.charAt(0).toLocaleUpperCase(code) + name.slice(1);
 };
 
-// The admin interface-language picker: options from the backend allowlist
-// (/ui-languages), current value from Paraglide. Changing it persists to the
-// profile then reloads with the new catalog (via the mutation).
 export const AppLanguageCard = () => {
 	const languages = useUiLanguages();
 	const changeLanguage = useChangeUiLanguage();

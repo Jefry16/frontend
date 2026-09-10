@@ -17,8 +17,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// The compact input inside a column-filter popover — shorter than a form field
-// because it sits in chrome, not in a form.
 export const Default: Story = {};
 
 export const WithValue: Story = { args: { defaultValue: "kayak" } };

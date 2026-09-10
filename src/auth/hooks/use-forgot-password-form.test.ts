@@ -40,8 +40,6 @@ const submit = async (
 describe("useForgotPasswordForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// `submittedEmail` is what flips the screen to "check your inbox", and it
-	// carries the address back so the confirmation can name it.
 	it("records the submitted address on success", async () => {
 		server.use(http.post(URL, () => new HttpResponse(null, { status: 204 })));
 		const { result } = render();
@@ -52,9 +50,6 @@ describe("useForgotPasswordForm", () => {
 		expect(result.current.errorMessage).toBeNull();
 	});
 
-	// Anti-enumeration: the endpoint 204s whether or not the address exists, so
-	// the confirmation must look identical either way. A test that asserted a
-	// different outcome for an unknown address would be asserting a leak.
 	it("confirms identically for an address that is not registered", async () => {
 		server.use(http.post(URL, () => new HttpResponse(null, { status: 204 })));
 		const { result } = render();
@@ -80,8 +75,6 @@ describe("useForgotPasswordForm", () => {
 		expect(result.current.submittedEmail).toBeNull();
 	});
 
-	// A real failure must NOT flip to the confirmation — that would tell the
-	// operator a mail is coming when none was queued.
 	it("stays on the form when the request fails", async () => {
 		server.use(http.post(URL, () => new HttpResponse(null, { status: 500 })));
 		const { result } = render();

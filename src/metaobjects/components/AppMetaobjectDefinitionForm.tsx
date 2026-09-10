@@ -12,10 +12,6 @@ import { useMetaobjectDefinitionForm } from "../hooks/use-metaobject-definition-
 import type { MetaobjectDefinition } from "../types";
 import { deriveSlug } from "../validators/metaobject";
 
-// The definition form — create (no `definition`: type + name + description +
-// the initial field rows; a blurred name prefills an empty type slug) or edit
-// (name/description only — the type is immutable and the field set is managed
-// on the detail page).
 export const AppMetaobjectDefinitionForm = ({
 	tourOperatorId,
 	definition,
@@ -78,8 +74,6 @@ export const AppMetaobjectDefinitionForm = ({
 						<div className="flex flex-col gap-3">
 							<FieldLabel>{m.metaobject_fields()}</FieldLabel>
 							{(fieldsField.state.value ?? []).map((_, index) => (
-								// Rows are only appended and removed, and a key is
-								// editable, so the index is the only stable identity.
 								// biome-ignore lint/suspicious/noArrayIndexKey: see above
 								<div key={index} className="flex items-start gap-2">
 									<form.Field

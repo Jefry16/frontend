@@ -4,7 +4,6 @@ import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppLanguageCard } from "./AppLanguageCard";
 
-// Seed the allowlist so the picker renders its options without a live backend.
 function client(languages: string[]) {
 	const qc = storyQueryClient();
 	qc.setQueryData(queryKeys.uiLanguages, languages);

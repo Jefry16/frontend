@@ -39,9 +39,6 @@ const COUNTRIES: SetFilterItem[] = [
 	"Vietnam",
 ].map((c) => ({ value: c.toLowerCase(), label: c }));
 
-// A minimal stand-in for TanStack's HeaderContext — AppSetFilter only touches
-// column.getFilterValue / setFilterValue, so a stateful mock makes the story
-// interactive (tick boxes, type to search).
 function Harness({ items }: { items: SetFilterItem[] }) {
 	const [value, setValue] = useState<unknown>(undefined);
 	const headerContext = {
@@ -74,10 +71,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Small set: no search box (below the threshold).
 export const SmallSet: Story = { render: () => <Harness items={ROLES} /> };
 
-// Large set: the search box appears to narrow the options.
 export const LargeSetWithSearch: Story = {
 	render: () => <Harness items={COUNTRIES} />,
 };

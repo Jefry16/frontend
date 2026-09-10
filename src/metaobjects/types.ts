@@ -1,8 +1,5 @@
 import type { MetafieldTypeCode } from "#/metafields";
 
-// A DEFINITION is the blueprint; an ENTRY is one piece of content of that type.
-
-/** Position-ordered. key and type are immutable. */
 export interface MetaobjectField {
 	key: string;
 	type: MetafieldTypeCode;
@@ -20,7 +17,6 @@ export interface MetaobjectDefinitionListItem {
 export interface MetaobjectDefinition {
 	id: string;
 	context: "metaobject-definitions";
-	/** Immutable after create, unique per operator. */
 	type: string;
 	name: string;
 	description: string | null;
@@ -39,7 +35,6 @@ export interface MetaobjectListItem {
 	createdAt: string;
 }
 
-/** Every definition field; value is null when unset. */
 export interface Metaobject {
 	id: string;
 	context: "metaobjects";

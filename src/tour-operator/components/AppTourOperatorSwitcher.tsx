@@ -17,8 +17,6 @@ interface AppTourOperatorSwitcherProps {
 	activeId: string;
 }
 
-// The operator picker in the sidebar header: shows the active operator, and a
-// dropdown to switch between the user's operators or create a new one.
 export const AppTourOperatorSwitcher = ({
 	activeId,
 }: AppTourOperatorSwitcherProps) => {

@@ -11,10 +11,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { experienceColumns } from "../columns";
 
-// The operator's experiences as the standard cursor-paginated table. The
-// currency is in the dependency list, not just read: it arrives with the
-// profile, so the columns must rebuild when it does or every price stays
-// unlabelled for the life of the page.
 export const AppExperiencesList = ({
 	tourOperatorId,
 }: {

@@ -12,10 +12,6 @@ import {
 } from "./format";
 import type { MetafieldDefinitionListItem } from "./types";
 
-// The definitions columns: name (searchable, links to the detail), the
-// namespace.key identifier (mono — what themes reference), owner type + type
-// (set filters; NB the filter values are the backend enum NAMES while the row
-// data carries the lowercase codes), created.
 export const metafieldDefinitionColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

@@ -4,13 +4,9 @@ import { cn } from "#/lib/utils";
 interface AppDetailFieldProps {
 	label: string;
 	children: ReactNode;
-	/** Layout classes on the wrapper — e.g. `sm:col-span-2` for wide values. */
 	className?: string;
 }
 
-// **Must sit inside a `<dl>`.** It renders the `<dt>`/`<dd>` pair, which is what
-// makes a screen reader announce "Handle, /pages/about" instead of two unrelated
-// runs of text. Preflight zeroes the `<dd>` indent, so it costs nothing visually.
 export function AppDetailField({
 	label,
 	children,

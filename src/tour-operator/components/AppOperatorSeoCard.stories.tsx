@@ -43,10 +43,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Both fields authored. */
 export const Default: Story = {};
 
-/** Nothing set yet — the storefront falls back to the shop name. */
 export const Unset: Story = {
 	decorators: [
 		(Story) => (
@@ -59,7 +57,6 @@ export const Unset: Story = {
 	],
 };
 
-/** A STAFF member: the same settings, read-only. */
 export const ReadOnly: Story = {
 	args: { tourOperatorId: OP, canWrite: false },
 };

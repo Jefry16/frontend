@@ -19,14 +19,9 @@ const entryFormSchema = entrySchema.extend({
 interface EntryFormValues {
 	handle: string;
 	name: string;
-	/** One draft string per definition field key ("" = unset/clear). */
 	values: Record<string, string>;
 }
 
-// Create (no `entry`, POSTs against the definition) or edit (PATCHes the
-// entry: name/handle + EVERY field's value — blank → null clears; the
-// backend no-ops unchanged fields and audits only real diffs). On success
-// navigates to the entry detail. A 409 is a duplicate handle.
 export const useMetaobjectForm = (
 	tourOperatorId: string,
 	definition: MetaobjectDefinition,
@@ -107,8 +102,6 @@ export const useMetaobjectForm = (
 				]),
 			),
 		} as EntryFormValues,
-		// handle/name validate client-side; the dynamic `values` only need a
-		// shape (the backend validates each value against its field's type).
 		validators: { onSubmit: entryFormSchema },
 		onSubmit: ({ value }) => mutate(value),
 	});

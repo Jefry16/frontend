@@ -15,10 +15,6 @@ import {
 	definitionSchema,
 } from "../validators/definition";
 
-// Create (no `definition`) or edit (with one). ownerType/namespace/key/type
-// are immutable — the edit PUT carries only name/description. On success
-// navigates to the detail page (create-navigates-to-detail rule). A 409 is a
-// duplicate namespace.key for that owner type.
 export const useMetafieldDefinitionForm = (
 	tourOperatorId: string,
 	definition?: MetafieldDefinition,

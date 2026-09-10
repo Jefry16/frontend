@@ -20,9 +20,6 @@ import { usePolicyTranslations } from "../hooks/use-policy-translations";
 import type { PolicyTranslation } from "../types";
 import { AppPolicyTranslationForm } from "./AppPolicyTranslationForm";
 
-// Reads ONE query, unlike the page and experience editors: there is no
-// per-locale GET, so the active row comes out of the list the switcher needs
-// anyway.
 export const AppPolicyTranslations = ({
 	tourOperatorId,
 	policyId,
@@ -44,7 +41,6 @@ export const AppPolicyTranslations = ({
 	const active = picked ?? translatable[0];
 	const translated = new Set((listQuery.data ?? []).map((t) => t.locale));
 
-	// An untranslated locale has no row at all, so the empty overlay is ours.
 	const overlay: PolicyTranslation = (active &&
 		listQuery.data?.find((t) => t.locale === active)) || {
 		locale: active ?? "",
@@ -138,7 +134,6 @@ export const AppPolicyTranslations = ({
 	);
 };
 
-// The two fields the form edits.
 const policyFields = (t: PolicyTranslation): TranslatedField[] => [
 	[m.title(), t.title],
 	[m.policy_body(), t.body],

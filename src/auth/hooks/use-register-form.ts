@@ -18,7 +18,6 @@ export const useRegisterForm = () => {
 	>({
 		mutationFn: ({ confirmPassword: _confirm, ...data }) =>
 			authApi.post("/auth/register", data),
-		// Not login: an unverified account would just 403 there.
 		onSuccess: (_data, variables) => {
 			setErrorMessage(null);
 			navigate({
@@ -27,9 +26,6 @@ export const useRegisterForm = () => {
 			});
 		},
 		onError: () => {
-			// Anti-enumeration: a duplicate signup returns the same 201 as a fresh
-			// one, so there is no "already registered" response to branch on. Any
-			// error reaching here is an unexpected one.
 			setErrorMessage(m.error());
 		},
 	});
@@ -43,7 +39,6 @@ export const useRegisterForm = () => {
 		} as RegisterFormData,
 		validators: { onSubmit: registerSchema },
 		onSubmit: ({ value }) => {
-			// Re-parse so the schema's transforms apply — form state holds raw input.
 			mutate(registerSchema.parse(value));
 		},
 	});

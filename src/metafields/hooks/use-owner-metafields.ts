@@ -8,13 +8,8 @@ import type {
 	MetafieldValue,
 } from "../types";
 
-/**
- * The owner is addressed by type and id, not by nesting under its collection.
- * That is what lets one path serve all three kinds — and it means the operator,
- * which used to contribute no id segment because it was already the tenant, now
- * repeats its own id as the owner. The three codes go on the wire verbatim,
- * lower-case, and an unknown one is a 422 rather than a 404.
- */
+// The owner is addressed by type and id, so the operator repeats its own id
+// rather than relying on being the tenant in the path.
 export const ownerMetafieldsEndpoint = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
@@ -22,7 +17,6 @@ export const ownerMetafieldsEndpoint = (
 ): string =>
 	`/tour-operators/${tourOperatorId}/metafields/${ownerType}/${ownerId}`;
 
-/** The per-locale overlay for those same values, addressed the same way. */
 export const ownerMetafieldTranslationsEndpoint = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
@@ -30,11 +24,6 @@ export const ownerMetafieldTranslationsEndpoint = (
 ): string =>
 	`/tour-operators/${tourOperatorId}/metafield-translations/${ownerType}/${ownerId}`;
 
-// Everything the per-resource editor needs: the operator's definitions for
-// this owner type (the full catalogue — unset fields still render as empty
-// inputs) plus the owner's stored values. Definitions come from the whole
-// bounded catalogue, filtered client-side, so the cache is shared with the
-// Settings list.
 export const useOwnerMetafields = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,

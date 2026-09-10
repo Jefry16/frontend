@@ -21,8 +21,6 @@ const SET = [
 ];
 
 describe("useExperienceActions", () => {
-	// There is no delete: an experience owns slots and bookings, so retiring one
-	// is an unpublish. A delete appearing here would be the regression.
 	it("offers publish and unpublish, and nothing destructive", () => {
 		const { result } = renderActions(() => useExperienceActions(OP, ID));
 
@@ -32,8 +30,6 @@ describe("useExperienceActions", () => {
 		]);
 	});
 
-	// Both go to the SAME endpoint; the body is the only thing that differs, so
-	// asserting it is the only way to tell an unpublish from a publish.
 	it.each([
 		["publish", true],
 		["unpublish", false],

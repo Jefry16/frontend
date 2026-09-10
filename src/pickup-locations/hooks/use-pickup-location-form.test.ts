@@ -68,8 +68,6 @@ describe("usePickupLocationForm", () => {
 		expect(body).toHaveBeenCalledWith({ name: "Harbour gate", time: "08:30" });
 	});
 
-	// The backend parses with LocalTime, which rejects a single-digit hour. The
-	// schema mirrors that, so "8:30" never leaves the browser.
 	it.each([
 		"8:30",
 		"24:00",

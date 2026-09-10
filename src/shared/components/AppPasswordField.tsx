@@ -17,9 +17,6 @@ interface AppPasswordFieldProps {
 	autoComplete?: string;
 }
 
-// A password AppField with a show/hide toggle: the eye button flips the input
-// between password and text. Kept out of the tab order (tabIndex={-1}) so it
-// doesn't interrupt the form flow. Pairs with AppField / AppSelectField.
 export const AppPasswordField = ({
 	field,
 	label,

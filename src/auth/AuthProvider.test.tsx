@@ -25,9 +25,6 @@ const USER = {
 	tourOperators: [],
 };
 
-// NOT createTestQueryClient: that sets gcTime 0, so unobserved data is
-// collected the moment it is written and the assertions below would pass
-// whether or not the cache is actually cleared.
 const sessionClient = () =>
 	new QueryClient({
 		defaultOptions: {
@@ -36,15 +33,12 @@ const sessionClient = () =>
 		},
 	});
 
-// A previous session's operator data, of the kind every list and detail caches.
 const seedOperatorData = (qc: QueryClient) => {
 	qc.setQueryData(queryKeys.pages("op-1"), [{ id: "p1", title: "Secret" }]);
 	qc.setQueryData(queryKeys.members("op-1"), [{ id: "m1", name: "Ada" }]);
 };
 
 describe("AuthProvider session boundaries", () => {
-	// This is an SPA: signing out and signing in again never reloads the page,
-	// so anything left in the cache is served to the next session.
 	it("logout empties the cache, not just the profile", async () => {
 		server.use(
 			http.post(

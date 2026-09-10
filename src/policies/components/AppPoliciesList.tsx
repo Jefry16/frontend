@@ -7,9 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { policyColumns } from "../columns";
 
-// The operator's store policies as the standard cursor table. Four rows will
-// never paginate, but this is tenant data and speaks the same grammar as every
-// other tenant list.
 export const AppPoliciesList = ({
 	tourOperatorId,
 }: {

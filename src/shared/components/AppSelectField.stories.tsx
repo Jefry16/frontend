@@ -3,8 +3,6 @@ import { useForm } from "@tanstack/react-form";
 import { SelectItem } from "#/components/ui/select";
 import { AppSelectField } from "./AppSelectField";
 
-// AppSelectField binds to a live TanStack Form field, so the story renders it
-// inside a throwaway form.
 function SelectDemo(props: { label: string; placeholder?: string }) {
 	const form = useForm({ defaultValues: { demo: "" } });
 	return (

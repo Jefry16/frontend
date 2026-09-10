@@ -7,8 +7,6 @@ import { AppTimeField } from "#/shared/components/AppTimeField";
 import { usePickupLocationForm } from "../hooks/use-pickup-location-form";
 import type { PickupLocation } from "../types";
 
-// The pickup-location form — create (no `pickup`) or edit (with one): name +
-// meeting time (HH:mm, operator-local).
 export const AppPickupLocationForm = ({
 	tourOperatorId,
 	pickup,

@@ -8,9 +8,6 @@ import { cn } from "#/lib/utils";
 import { AppMediaPicker, type MediaAsset, useMediaByIds } from "#/media";
 import * as m from "#/paraglide/messages";
 
-// The backend requires the cover to be one of the media items, so it is picked
-// FROM the set and never independently — which is why adding photos defaults the
-// cover and removing the cover re-defaults it.
 export const AppExperienceMediaSection = ({
 	tourOperatorId,
 	thumbnailMediaId,
@@ -29,7 +26,6 @@ export const AppExperienceMediaSection = ({
 
 	const { byId, isLoading } = useMediaByIds(tourOperatorId, mediaIds);
 
-	// Seeded so useMediaByIds resolves the new ids without a GET.
 	const seed = (assets: MediaAsset[]) => {
 		for (const asset of assets) {
 			queryClient.setQueryData(
@@ -39,7 +35,6 @@ export const AppExperienceMediaSection = ({
 		}
 	};
 
-	// Keeps the cover valid against a new set.
 	const applySet = (ids: string[]) => {
 		onGalleryChange(ids);
 		if (!thumbnailMediaId || !ids.includes(thumbnailMediaId)) {

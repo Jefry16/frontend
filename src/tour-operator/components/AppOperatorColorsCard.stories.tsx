@@ -50,18 +50,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Editable: Story = { decorators: withBrand(PALETTE) };
 
-/** No palette yet — the theme falls back to its own. */
 export const Empty: Story = {
 	decorators: withBrand({ primary: [], secondary: [] }),
 };
 
-/** A STAFF member reads the palette; writing it is ADMIN+. */
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 	decorators: withBrand(PALETTE),
 };
 
-/** Read-only with nothing set — the one state that shows the empty line. */
 export const ReadOnlyEmpty: Story = {
 	args: { canWrite: false },
 	decorators: withBrand({ primary: [], secondary: [] }),

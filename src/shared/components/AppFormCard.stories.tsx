@@ -5,9 +5,6 @@ import { AppAlert } from "./AppAlert";
 import { AppFormActions } from "./AppFormActions";
 import { AppFormCard } from "./AppFormCard";
 
-// Raw fields on purpose: a story has no TanStack form to hand the renderers, and
-// this component owns the card and banners, not how a field renders. The §5 gate
-// skips .stories.tsx, so this does not weaken it.
 const fields = (
 	<FieldGroup>
 		<Field>
@@ -36,12 +33,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-// A rejected save reads above the fields, never in a toast.
 export const WithError: Story = {
 	args: { errorMessage: "Handle is already taken." },
 };
 
-// The translation editors add a fallback note above the error slot.
 export const WithNotice: Story = {
 	args: {
 		notice: (

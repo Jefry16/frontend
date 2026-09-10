@@ -6,7 +6,6 @@ import { getAccessToken, setAccessToken } from "./tokens";
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 
-/** 401s the first `failures` calls, then 200s — how an expired token behaves. */
 const expiring = (path: string, failures: number, onCall?: () => void) => {
 	let seen = 0;
 	return http.get(`${API}${path}`, ({ request }) => {
@@ -41,8 +40,6 @@ describe("authApi request interceptor", () => {
 		expect(data.authorization).toBe("Bearer tok-1");
 	});
 
-	// The auth endpoints are reached while signed out, and /auth/refresh must not
-	// send the very token it exists to replace.
 	it("sends no Authorization header to an auth endpoint", async () => {
 		setAccessToken("tok-1");
 		server.use(
@@ -72,9 +69,6 @@ describe("authApi 401 handling", () => {
 		expect(getAccessToken()).toBe("fresh");
 	});
 
-	// THE loop guard. Without `_retry` the interceptor goes round forever against
-	// a 401 that never becomes anything else. The endpoint relents on the 6th call
-	// so a broken guard fails this loudly instead of hanging the run.
 	it("gives up after one retry when the 401 repeats", async () => {
 		setAccessToken("stale");
 		const calls = vi.fn();
@@ -92,10 +86,6 @@ describe("authApi 401 handling", () => {
 		expect(refreshed).toHaveBeenCalledTimes(1);
 	});
 
-	// Refresh sessions ROTATE, so a second concurrent refresh invalidates the
-	// first. Without the in-flight promise every parallel 401 starts its own,
-	// and the surviving token is whichever landed last — the rest of the tab's
-	// requests then fail against a token the server has already retired.
 	it("refreshes ONCE for many simultaneous 401s", async () => {
 		setAccessToken("stale");
 		const refreshed = vi.fn();
@@ -118,8 +108,6 @@ describe("authApi 401 handling", () => {
 		}
 	});
 
-	// A 401 from /auth/login means "wrong password", not "expired session". A
-	// refresh here would answer the form's error with a redirect to login.
 	it("does not refresh when an auth endpoint itself 401s", async () => {
 		const refreshed = vi.fn();
 		server.use(
@@ -153,8 +141,6 @@ describe("authApi 401 handling", () => {
 		expect(getAccessToken()).toBe("tok-1");
 	});
 
-	// The session is genuinely gone. Dropping the token is what stops the next
-	// request retrying against it; the callback is what routes to login.
 	it("clears the token and calls the expiry hook when the refresh fails", async () => {
 		setAccessToken("stale");
 		const expired = vi.fn();

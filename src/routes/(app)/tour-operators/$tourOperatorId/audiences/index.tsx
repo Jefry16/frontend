@@ -13,7 +13,6 @@ export const Route = createFileRoute(
 	component: AudiencesPage,
 });
 
-// Pricing tiers, reused across departures' pricing.
 function AudiencesPage() {
 	const { tourOperatorId } = Route.useParams();
 	const { canWrite } = usePermissions();

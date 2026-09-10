@@ -1,8 +1,6 @@
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 
-// A row is `h-9`, not the Input's `h-8`: it stands in for a whole field —
-// label, control and the gap under it — so the record lands without a jump.
 export const AppFormSkeleton = ({
 	rows,
 	card = true,

@@ -8,8 +8,6 @@ interface ActivityPage {
 	nextCursor: string | null;
 }
 
-// One entity's audit timeline, newest first (the server's -id default), with
-// load-more pagination.
 export const useActivityLog = (
 	tourOperatorId: string,
 	entityType: string,
@@ -19,7 +17,6 @@ export const useActivityLog = (
 		queryKey: queryKeys.activityTimeline(tourOperatorId, entityType, entityId),
 		queryFn: async ({ pageParam }) => {
 			const params = new URLSearchParams();
-			// Set-type filters accept IN (not eq) — the list framework's grammar.
 			params.set("filter[entityType][in]", entityType);
 			params.set("filter[entityId][in]", entityId);
 			if (pageParam) params.set("cursor", pageParam);

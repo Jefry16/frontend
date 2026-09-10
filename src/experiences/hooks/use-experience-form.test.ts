@@ -70,8 +70,6 @@ const created = (body: ReturnType<typeof vi.fn>) =>
 describe("useExperienceForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// Both come from text inputs; the columns are numeric. The schema's
-	// transform is the only thing converting them.
 	it("converts the cutoff and price from strings to numbers", async () => {
 		const body = vi.fn();
 		server.use(created(body));
@@ -85,8 +83,6 @@ describe("useExperienceForm", () => {
 		});
 	});
 
-	// The media refs live in the form like any other field, so they must reach
-	// the payload — the picker writes them, nothing else does.
 	it("carries the media refs through", async () => {
 		const body = vi.fn();
 		server.use(created(body));
@@ -104,9 +100,6 @@ describe("useExperienceForm", () => {
 		});
 	});
 
-	// The column's own check is `starting_price > 0`, so a zero is refused by
-	// the database itself. Catching it here beats an opaque 422 on save — which
-	// is what an operator got for every edit until this field existed.
 	it.each([
 		"0",
 		"-1",
@@ -122,7 +115,6 @@ describe("useExperienceForm", () => {
 		expect(body).not.toHaveBeenCalled();
 	});
 
-	// An opaque 422 is worse than a message beside the field.
 	it.each([
 		"-5",
 		"abc",

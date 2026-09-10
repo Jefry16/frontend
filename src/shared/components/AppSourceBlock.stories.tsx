@@ -16,7 +16,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Markup: Story = {};
 
-// Long bodies scroll inside the block rather than stretching the card.
 export const Overflowing: Story = {
 	args: {
 		label: "Policy body",

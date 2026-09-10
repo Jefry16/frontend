@@ -30,7 +30,6 @@ import {
 	operatorSeoSchema,
 } from "../validators/operator-seo";
 
-// The backend's OperatorSeoTitle / OperatorSeoDescription value objects.
 const MAX_IMAGE_BYTES = 25 * 1024 * 1024;
 
 export const AppOperatorSeoCard = ({
@@ -86,8 +85,6 @@ const SeoForm = ({
 			seoDescription: seo.seoDescription ?? "",
 		} as OperatorSeoFormData,
 		validators: { onSubmit: operatorSeoSchema },
-		// A full replace, so the image id has to ride along: it is not a form field,
-		// the dropzone uploads on drop.
 		onSubmit: ({ value }) => {
 			const v = operatorSeoSchema.parse(value);
 			save.mutate({
@@ -142,7 +139,6 @@ const SeoForm = ({
 							}}
 							onFile={(file) => {
 								setImageError(null);
-								// Uploading mints the id; Save is what persists it.
 								upload.mutate(file, { onSuccess: setImageId });
 							}}
 							onError={setImageError}
@@ -176,7 +172,6 @@ const SeoForm = ({
 	);
 };
 
-// Read-only for a member who may read the settings but not write them.
 const SeoSummary = ({
 	tourOperatorId,
 	seo,

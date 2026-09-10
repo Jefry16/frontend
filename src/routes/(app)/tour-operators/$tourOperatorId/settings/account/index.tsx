@@ -8,8 +8,6 @@ export const Route = createFileRoute(
 	component: AccountSettingsPage,
 });
 
-// The signed-in user's account (avatar + password) — a Settings section. Personal
-// (not operator-scoped), but grouped with the operator settings in the rail.
 function AccountSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

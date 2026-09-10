@@ -60,8 +60,6 @@ const put = (body: ReturnType<typeof vi.fn>) =>
 describe("useMenuItemsForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// Each link kind uses one target field. Sending the other — empty — would
-	// put a meaningless "" on a column the backend expects to be absent.
 	it("sends only the target field the link kind uses", async () => {
 		const body = vi.fn();
 		server.use(put(body));
@@ -82,8 +80,6 @@ describe("useMenuItemsForm", () => {
 		expect(home).not.toHaveProperty("url");
 	});
 
-	// A blank per-locale title is NOT a translation — the storefront falls back
-	// to the canonical one. Sending "" would publish an empty menu label.
 	it("drops blank translations and omits the key entirely when none remain", async () => {
 		const body = vi.fn();
 		server.use(put(body));

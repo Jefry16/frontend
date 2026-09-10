@@ -9,8 +9,6 @@ const blank = {
 	passwordMessage: "",
 };
 
-// The caps mirror the backend value objects; a change here that drifts from
-// them turns a precise client-side message into an opaque 422.
 const CAPS = [
 	["slogan", 80],
 	["shortDescription", 150],
@@ -20,8 +18,6 @@ const CAPS = [
 
 describe("operatorTranslationSchema", () => {
 	it("collapses empty and whitespace-only fields to null", () => {
-		// This is the fallback rule: null stores absence, so the storefront
-		// renders the canonical text. Storing "" would blank the field instead.
 		expect(operatorTranslationSchema.parse(blank)).toEqual({
 			slogan: null,
 			shortDescription: null,
@@ -65,7 +61,6 @@ describe("operatorTranslationSchema", () => {
 	});
 
 	it("caps each field independently", () => {
-		// A too-long slogan must not be masked by the other four being valid.
 		const result = operatorTranslationSchema.safeParse({
 			...blank,
 			slogan: "x".repeat(81),

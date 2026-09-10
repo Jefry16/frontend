@@ -14,11 +14,9 @@ interface AppNumberFieldProps {
 	description?: string;
 	placeholder?: string;
 	required?: boolean;
-	/** Prices need one; counts do not. */
 	decimal?: boolean;
 }
 
-// The field holds the RAW STRING; the zod schema does the Number transform.
 export const AppNumberField = ({
 	field,
 	label,

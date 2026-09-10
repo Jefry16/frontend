@@ -2,20 +2,12 @@ import { z } from "zod";
 import * as m from "#/paraglide/messages";
 import { addressSchema } from "./address";
 
-// Mirrors the backend value objects. Phone imposes no format (it is printed in a
-// footer, not dialled) and email is checked loosely — a stricter grammar would
-// reject addresses that work.
-//
-// Empty stays "" rather than collapsing to null: the backend clears an optional
-// column with a blank string, not an absent field.
 export const operatorDetailsSchema = z.object({
 	name: z
 		.string()
 		.trim()
 		.min(2, m.validation_min_length({ count: 2 }))
 		.max(150, m.validation_max_length({ count: 150 })),
-	// Structured since backend V15 — a NOT NULL column, so the PATCH replaces it
-	// whole rather than patching fields inside it.
 	address: addressSchema,
 	phone: z
 		.string()

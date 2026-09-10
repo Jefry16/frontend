@@ -1,9 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend value objects: AudienceName 1–80 after trim, PaxPerUnit a
-// positive integer. Keeping these in lockstep rejects a bad field client-side
-// with a precise message instead of an opaque 422.
 export const audienceSchema = z.object({
 	name: z
 		.string()

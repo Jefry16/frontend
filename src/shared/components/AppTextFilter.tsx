@@ -50,9 +50,6 @@ const operatorLabel = (op: TextOperator): string => {
 	}
 };
 
-// A text column filter (operator + search text) for the backend's TEXT filter
-// grammar (`filter[field][contains]=…`). The typed text is debounced so a
-// keystroke doesn't fire a request; clearing it removes the filter.
 export function AppTextFilter<TData>({
 	headerContext,
 }: {

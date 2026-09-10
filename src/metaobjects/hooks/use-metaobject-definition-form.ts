@@ -15,8 +15,6 @@ import {
 	definitionEditSchema,
 } from "../validators/metaobject";
 
-// Edit PUTs name and description only: the type is immutable, and the field set
-// is managed on the detail page. A 409 is a duplicate type.
 export const useMetaobjectDefinitionForm = (
 	tourOperatorId: string,
 	definition?: MetaobjectDefinition,
@@ -83,8 +81,6 @@ export const useMetaobjectDefinitionForm = (
 			),
 	});
 
-	// The schema differs by mode: only create defines the initial field set, so
-	// `fields` rides along empty on an edit.
 	const isEdit = !!definition;
 	const form = useForm({
 		defaultValues: {

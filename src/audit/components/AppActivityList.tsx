@@ -6,7 +6,6 @@ import { useOperatorDateTime } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { activityColumns } from "../columns";
 
-// The operator's whole audit trail as the standard cursor table, newest first.
 export const AppActivityList = ({
 	tourOperatorId,
 }: {

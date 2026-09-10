@@ -20,11 +20,6 @@ import {
 import type { OperatorTranslation } from "../types";
 import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
 
-// The primary locale is absent from the strip on purpose: it IS the canonical
-// text, so there is nothing to overlay onto it.
-//
-// Reads are member-visible and writes are ADMIN+, so a staff member gets the
-// content read-only rather than a form that 403s on save.
 export const AppOperatorTranslations = ({
 	tourOperatorId,
 	canWrite,
@@ -43,14 +38,11 @@ export const AppOperatorTranslations = ({
 	const active = picked ?? translatable[0];
 
 	const translationQuery = useOperatorTranslation(tourOperatorId, active);
-	// The operator is its own metafield owner, so it is its own ownerId.
 	const metafieldLocales = useMetafieldTranslationLocales(
 		tourOperatorId,
 		"tour_operator",
 		tourOperatorId,
 	);
-	// A locale translated only in its metafields is still translated — the dot
-	// reads "has anything for this locale", not "has canonical fields".
 	const translated = new Set([
 		...(listQuery.data ?? []).map((t) => t.locale),
 		...(metafieldLocales.data ?? []),
@@ -107,7 +99,6 @@ export const AppOperatorTranslations = ({
 	);
 };
 
-// The same five fields the form edits, in the same order.
 const operatorFields = (t: OperatorTranslation): TranslatedField[] => [
 	[m.slogan(), t.slogan],
 	[m.short_description(), t.shortDescription],

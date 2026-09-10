@@ -5,12 +5,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on a single category: delete (ADMIN+). Success copy +
-// navigation are left to the caller's per-call onSuccess (it navigates back to
-// the list); this invalidates the list and error-toasts.
-//
-// The delete never conflicts, even when experiences reference the category —
-// they fall back to uncategorized. The confirm copy is what says so.
 export const useCategoryActions = (
 	tourOperatorId: string,
 	categoryId: string,

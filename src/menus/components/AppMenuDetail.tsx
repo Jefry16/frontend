@@ -25,9 +25,6 @@ import { useMenuActions } from "../hooks/use-menu-actions";
 import type { Menu, MenuItemNode } from "../types";
 import { AppMenuRenameDialog } from "./AppMenuRenameDialog";
 
-// Menu detail: the menu's facts (handle = what the theme references) + the
-// item tree read-only + Edit items / Rename / Delete actions. The item tree
-// is edited wholesale on its own page.
 export const AppMenuDetail = ({
 	tourOperatorId,
 	menuId,
@@ -197,8 +194,6 @@ const MenuView = ({
 	);
 };
 
-// The read-only tree: each item's title + its link kind (the URL for external
-// links), children indented under a rail.
 const ItemTree = ({ items }: { items: MenuItemNode[] }) => (
 	<ul className="flex flex-col gap-1.5">
 		{items.map((item) => (

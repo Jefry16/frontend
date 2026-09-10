@@ -12,7 +12,6 @@ export const Route = createFileRoute(
 	component: NewExperiencePage,
 });
 
-// Static "new" wins over the dynamic $experienceId sibling.
 function NewExperiencePage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

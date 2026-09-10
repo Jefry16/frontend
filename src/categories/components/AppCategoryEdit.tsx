@@ -7,7 +7,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCategory } from "../hooks/use-category";
 import { AppCategoryForm } from "./AppCategoryForm";
 
-// The category edit page: fetches the record, renders the form pre-filled.
 export const AppCategoryEdit = ({
 	tourOperatorId,
 	categoryId,

@@ -7,8 +7,6 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { pageStatusBadgeVariant, pageStatusLabel } from "./format";
 import type { PageListItem } from "./types";
 
-// The pages columns: title (searchable, links to the detail), handle
-// (searchable, mono — it IS the URL), status (set filter + badge), created.
 export const pageColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,
@@ -49,9 +47,6 @@ export const pageColumns = (
 		),
 	},
 	{
-		// The wire sends `published` (boolean), and the backend's list schema has
-		// it as a bool [eq] filter with no sort — so no filter UI and no sorting,
-		// matching the metaobject entries table.
 		id: "published",
 		accessorKey: "published",
 		header: (ctx) => (

@@ -38,7 +38,6 @@ const GRID_MINUTES = Array.from({ length: 12 }, (_, i) =>
 	String(i * 5).padStart(2, "0"),
 );
 
-/** null when not a valid time. */
 const displayTime = (time: string): string | null => {
 	if (!time) return null;
 	const [h, mn] = time.split(":").map(Number);
@@ -49,9 +48,6 @@ const displayTime = (time: string): string | null => {
 	}).format(new Date(2024, 0, 1, h ?? 0, mn ?? 0));
 };
 
-// Minutes offer 5-minute steps, but an existing off-grid value ("09:37") stays
-// in the list so editing never silently rounds it. The stored value is 24h
-// "HH:mm" whatever the trigger displays. Closing blurs, so validation fires.
 export const AppTimeField = ({
 	field,
 	label,

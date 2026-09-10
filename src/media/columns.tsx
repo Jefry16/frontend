@@ -8,7 +8,6 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { formatBytes, isImage, mimeLabel } from "./format";
 import type { MediaAsset } from "./types";
 
-// Only the types the backend accepts, so every option can match a stored asset.
 const typeItems = [
 	{ value: "image/png", label: "PNG" },
 	{ value: "image/jpeg", label: "JPEG" },
@@ -16,8 +15,6 @@ const typeItems = [
 	{ value: "application/pdf", label: "PDF" },
 ];
 
-// Only what the list schema supports gets an affordance; the rest are
-// display-only. A factory so the Added cell closes over the operator timezone.
 export const mediaColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

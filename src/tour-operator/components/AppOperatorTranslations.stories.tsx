@@ -59,15 +59,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Two secondary locales; Spanish is translated, French is not. */
 export const Default: Story = {};
 
-/** A staff member: the same overlay, read-only. */
 export const ReadOnly: Story = {
 	args: { tourOperatorId: OP, canWrite: false },
 };
 
-/** Only the primary language configured — nothing to translate onto. */
 export const SingleLanguage: Story = {
 	decorators: [
 		(Story) => (

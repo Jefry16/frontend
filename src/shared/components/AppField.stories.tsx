@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { useForm } from "@tanstack/react-form";
 import { AppField } from "./AppField";
 
-// AppField binds to a live TanStack Form field, so the story renders it inside a
-// throwaway form.
 function FieldDemo(props: {
 	label: string;
 	type?: "text" | "email" | "password";

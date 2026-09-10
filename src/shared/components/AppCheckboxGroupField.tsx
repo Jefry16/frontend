@@ -21,16 +21,10 @@ interface Props<T extends string | number> {
 	options: Option<T>[];
 	description?: string;
 	required?: boolean;
-	/** `grid` for a long catalogue (locales); `wrap` for a short row (weekdays). */
 	layout?: "wrap" | "grid";
-	/** e.g. clearing a primary that just went away. */
 	onChanged?: (next: T[]) => void;
 }
 
-// A checkbox GROUP is a fieldset with a legend, not a labelled control — a bare
-// <label> has no single control to point at. Each row associates by `htmlFor`,
-// because the Radix Checkbox renders a <button>, and wrapping that in a <label>
-// does not link the two.
 export function AppCheckboxGroupField<T extends string | number>({
 	field,
 	label,

@@ -14,9 +14,6 @@ import { useUserAvatar } from "../hooks/use-user-avatar";
 
 const MAX_AVATAR_BYTES = 10 * 1024 * 1024;
 
-// The account avatar card: current avatar + a drag-and-drop / click dropzone
-// that uploads on selection (single multipart POST), and a destructive Remove
-// behind a confirm dialog. Mirrors the operator-logo card.
 export const AppUserAvatarCard = ({
 	avatarUrl,
 }: {

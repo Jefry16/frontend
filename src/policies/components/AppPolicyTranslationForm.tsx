@@ -13,8 +13,6 @@ import type { Policy, PolicyTranslation } from "../types";
 const hasTranslation = (t: PolicyTranslation) =>
 	t.title !== null || t.body !== null;
 
-// One locale's overlay: both fields optional, an empty one falling back to the
-// canonical policy shown as each field's hint. Clear removes the whole overlay.
 export const AppPolicyTranslationForm = ({
 	tourOperatorId,
 	policyId,

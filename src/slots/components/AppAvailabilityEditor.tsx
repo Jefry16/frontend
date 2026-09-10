@@ -19,9 +19,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
 import { AppSingleSlotForm } from "./AppSingleSlotForm";
 
-// The per-experience availability editor: Recurring (default) | One-time, both
-// pricing per audience. Prerequisite guard: with no audiences there is nothing
-// to price, so the forms are withheld until one exists.
 export const AppAvailabilityEditor = ({
 	tourOperatorId,
 	experienceId,

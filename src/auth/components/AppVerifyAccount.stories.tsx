@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { AppVerifyAccount } from "./AppVerifyAccount";
 
-// Presentational now (the verify request lives in the route loader), so every
-// outcome stories cleanly with no network.
 const meta = {
 	title: "Auth/AppVerifyAccount",
 	component: AppVerifyAccount,

@@ -1,12 +1,3 @@
-// A definition carries the identity and type; values live on the owning resource.
-
-/** Wire code, verbatim in payloads and responses. */
-/**
- * The owner kinds a metafield can hang off, in the order the create form offers
- * them. ONE source: the union is derived, the validator's enum reads this array,
- * and format.ts keys its label record by it — so adding an owner type here makes
- * every place that must follow fail to compile or fail a test.
- */
 export const METAFIELD_OWNER_TYPES = [
 	"experience",
 	"page",
@@ -26,7 +17,6 @@ export type MetafieldTypeCode =
 	| "json"
 	| "metaobject_reference";
 
-/** A list row; the description lives on the detail. */
 export interface MetafieldDefinitionListItem {
 	id: string;
 	context: "metafield-definitions";
@@ -34,7 +24,6 @@ export interface MetafieldDefinitionListItem {
 	namespace: string;
 	key: string;
 	type: MetafieldTypeCode;
-	/** The pinned metaobject type (metaobject_reference only), else null. */
 	metaobjectDefinitionId: string | null;
 	name: string;
 	createdAt: string;
@@ -43,12 +32,10 @@ export interface MetafieldDefinitionListItem {
 export interface MetafieldDefinition {
 	id: string;
 	context: "metafield-definitions";
-	/** Immutable after create, like namespace/key/type. */
 	ownerType: MetafieldOwnerTypeCode;
 	namespace: string;
 	key: string;
 	type: MetafieldTypeCode;
-	/** The pinned metaobject type (metaobject_reference only), else null. */
 	metaobjectDefinitionId: string | null;
 	name: string;
 	description: string | null;

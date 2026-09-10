@@ -1,9 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend InviteTeamMemberRequest: the invitee's name + email + an
-// invite role. name is the inviter's label (greets the email, shows in the
-// pending list). OWNER is never invitable (transfer-only, backend 422).
 export const inviteSchema = z.object({
 	name: z
 		.string()

@@ -33,8 +33,6 @@ import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";
 import type { Experience } from "../types";
 
-// Read-only experience detail plus a Publish/Unpublish toggle via the shared action pattern. Owns its fetch
-// (skeleton / 404 empty state). The list's name column links here.
 export const AppExperienceDetail = ({
 	tourOperatorId,
 	experienceId,
@@ -89,8 +87,6 @@ export const AppExperienceDetail = ({
 		>
 			{(experience) => {
 				const actions: AppAction[] = [
-					// First (the primary slot), matching the archive: scheduling
-					// departures is the experience's most common follow-up action.
 					{
 						id: "add-availability",
 						label: m.add_availability(),
@@ -112,7 +108,6 @@ export const AppExperienceDetail = ({
 							}),
 					},
 					{
-						// ListExperienceTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,

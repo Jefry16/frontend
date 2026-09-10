@@ -15,9 +15,6 @@ const paths = (value: { items: MenuItemFormNode[] }) =>
 	menuItemsSchema.safeParse(value).error?.issues.map((i) => i.path.join("."));
 
 describe("menuItemsSchema", () => {
-	// This was a recursive validate() returning one string for the whole tree, so
-	// a nested item's missing URL raised a banner at the top of the page with
-	// nothing to point at. Now it reports on the field.
 	it("reports a missing URL on the nested item that lacks it", () => {
 		const result = paths({
 			items: [

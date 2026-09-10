@@ -15,8 +15,6 @@ const render = (props: Partial<Parameters<typeof AppDialogFooter>[0]> = {}) =>
 	);
 
 describe("AppDialogFooter", () => {
-	// Seven dialogs disagreed about this before: only one disabled Cancel while
-	// a save was running, so the rest let you close the dialog mid-request.
 	it("disables both buttons while pending", () => {
 		render({ pending: true });
 		expect(screen.getByRole("button", { name: /cancel/i })).toBeDisabled();

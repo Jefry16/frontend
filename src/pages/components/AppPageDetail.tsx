@@ -36,9 +36,6 @@ import { usePage } from "../hooks/use-page";
 import { usePageActions } from "../hooks/use-page-actions";
 import { AppRenameHandleDialog } from "./AppRenameHandleDialog";
 
-// Page detail: facts (handle/status/SEO/template/created) + the raw-HTML body
-// SOURCE (shown as written, never rendered — the admin authored it, the
-// storefront renders it) + the standard action set and the Activity timeline.
 export const AppPageDetail = ({
 	tourOperatorId,
 	pageId,
@@ -92,7 +89,6 @@ export const AppPageDetail = ({
 							}),
 					},
 					{
-						// ListPageTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,
@@ -223,7 +219,6 @@ export const AppPageDetail = ({
 							open={renameOpen}
 							onOpenChange={(open) => {
 								setRenameOpen(open);
-								// A stale 409 from a prior attempt must not greet the reopen.
 								if (open) rename.reset();
 							}}
 							currentHandle={page.handle}

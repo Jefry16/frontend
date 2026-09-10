@@ -5,10 +5,6 @@ import { useResetPasswordForm } from "../hooks/use-reset-password-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
 
-// The "set a new password" page. Unlike verify, the token is consumed on SUBMIT
-// (not on load), so there is no single-use-on-mount concern — we just need it
-// present. A link with no token shows an invalid-link card; a bad/expired token
-// surfaces as a 401 from the submit and is shown inline by the form.
 export const AppResetPasswordForm = ({ token }: { token?: string }) => {
 	if (!token) {
 		return (
@@ -26,8 +22,6 @@ export const AppResetPasswordForm = ({ token }: { token?: string }) => {
 	return <ResetPasswordForm token={token} />;
 };
 
-// Split out so the form hook is only called once we have a token (hooks can't
-// run conditionally).
 const ResetPasswordForm = ({ token }: { token: string }) => {
 	const { form, isPending, errorMessage } = useResetPasswordForm(token);
 	return (

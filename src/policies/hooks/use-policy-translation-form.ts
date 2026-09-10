@@ -6,7 +6,6 @@ import {
 	policyTranslationSchema,
 } from "../validators/policy-translation";
 
-// Both fields fall back to the canonical policy when cleared.
 export const usePolicyTranslationForm = ({
 	tourOperatorId,
 	policyId,

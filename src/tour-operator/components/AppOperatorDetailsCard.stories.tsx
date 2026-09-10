@@ -77,7 +77,6 @@ export const Editable: Story = {
 	],
 };
 
-// Phone and email are optional columns — a shop may have neither.
 export const NoContactDetails: Story = {
 	decorators: [
 		(Story) => (
@@ -88,7 +87,6 @@ export const NoContactDetails: Story = {
 	],
 };
 
-// STAFF may read the record but not change it.
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 	decorators: [

@@ -8,7 +8,6 @@ interface AppCheckboxFieldProps {
 	description?: string;
 }
 
-// A boolean form field: a checkbox + inline label bound to a TanStack Form field.
 export const AppCheckboxField = ({
 	field,
 	label,

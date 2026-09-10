@@ -46,8 +46,6 @@ const render = (active: boolean) => {
 };
 
 describe("SidebarNavLeaf", () => {
-	// shadcn's isActive only reaches the DOM as data-active, a styling hook — so
-	// without this the current page looked different and sounded identical.
 	it("announces the active leaf as the current page", () => {
 		render(true);
 		expect(screen.getByRole("link", { name: /dashboard/i })).toHaveAttribute(

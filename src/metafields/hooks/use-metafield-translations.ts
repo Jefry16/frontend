@@ -4,7 +4,6 @@ import { queryKeys } from "#/lib/query-keys";
 import type { MetafieldOwnerTypeCode } from "../types";
 import { ownerMetafieldTranslationsEndpoint } from "./use-owner-metafields";
 
-/** The locales this owner carries any metafield overlay in — for the tab dots. */
 export const useMetafieldTranslationLocales = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,
@@ -24,10 +23,6 @@ export const useMetafieldTranslationLocales = (
 		},
 	});
 
-/**
- * One locale's overlay, keyed `namespace.key`. The wire sends `{}` for an
- * untranslated locale rather than 404ing, so there is no not-found branch.
- */
 export const useMetafieldTranslation = (
 	tourOperatorId: string,
 	ownerType: MetafieldOwnerTypeCode,

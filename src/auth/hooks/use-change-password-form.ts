@@ -11,9 +11,6 @@ import {
 	changePasswordSchema,
 } from "../validators/change-password";
 
-// Change the signed-in user's password (POST /auth/change-password). Sends only
-// current + new; the confirmation is a client-side check. Resets the form on
-// success so the fields clear.
 export const useChangePasswordForm = () => {
 	const toast = useAppToast();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -34,7 +31,6 @@ export const useChangePasswordForm = () => {
 			toast.success(m.password_changed());
 			form.reset();
 		},
-		// A wrong current password comes back as a 4xx; surface it inline.
 		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});
 

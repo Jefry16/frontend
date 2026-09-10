@@ -57,15 +57,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Spanish overlaid, French not — the switcher's dots show which. */
 export const Default: Story = {};
 
-/** A STAFF member: the stored overlay, read-only. */
 export const ReadOnly: Story = {
 	args: { tourOperatorId: OP, policyId: ID, canWrite: false },
 };
 
-/** Only the primary language configured — nothing to translate onto. */
 export const SingleLanguage: Story = {
 	decorators: [
 		(Story) => (

@@ -12,7 +12,6 @@ export const Route = createFileRoute(
 	component: NewPolicyPage,
 });
 
-// Static "new" wins over the dynamic $policyId sibling.
 function NewPolicyPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

@@ -20,8 +20,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCategory } from "../hooks/use-category";
 import { useCategoryActions } from "../hooks/use-category-actions";
 
-// Category detail: the storefront handle, when it was created, and the three
-// actions. Owns its fetch (skeleton / 404). The list's name column links here.
 export const AppCategoryDetail = ({
 	tourOperatorId,
 	categoryId,
@@ -73,7 +71,6 @@ export const AppCategoryDetail = ({
 							}),
 					},
 					{
-						// ListCategoryTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,

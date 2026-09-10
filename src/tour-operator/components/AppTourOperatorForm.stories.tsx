@@ -5,8 +5,6 @@ import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppTourOperatorForm } from "./AppTourOperatorForm";
 
-// Connected: reads useAuth + fetches reference data. The story provides
-// AuthProvider (router + query come from the framework + preview decorator).
 const meta = {
 	title: "TourOperator/AppTourOperatorForm",
 	component: AppTourOperatorForm,
@@ -24,9 +22,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-// Onboarding: a signed-in user with no operators yet. Seeding the profile makes
-// `isOnboarding` true, so the "wait for an invitation" hint renders below the
-// form (the state a freshly-registered user lands on).
 const ONBOARDING_USER: AuthUser = {
 	id: "u-1",
 	context: "users",

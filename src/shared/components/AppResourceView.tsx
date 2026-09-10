@@ -8,17 +8,11 @@ import { AppPageHeader } from "./AppPageHeader";
 
 interface Props<TData> {
 	query: UseQueryResult<TData>;
-	// Doubles as the AppNotFound label, so it names the entity, e.g. m.experience().
 	resource: string;
-	// The ENTITY's icon — the one its nav leaf and empty state already use, so a
-	// resource reads as one glyph everywhere. Not a negation icon.
 	icon?: LucideIcon;
 	breadcrumb?: ReactNode;
 	notFoundAction?: ReactNode;
 	loading: ReactNode;
-	// A callback, not a component, so it may NOT call hooks — `pnpm check` is the
-	// gate that catches it. A body needing one becomes a named sub-component,
-	// which is always the case for a hook taking the loaded record's id.
 	children: (data: TData) => ReactNode;
 }
 

@@ -4,8 +4,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend contract, and rejects client-side first so a bad file
-// never round-trips to a 422.
 const MEDIA_ALLOWED_TYPES = new Set([
 	"image/jpeg",
 	"image/png",
@@ -15,7 +13,6 @@ const MEDIA_ALLOWED_TYPES = new Set([
 export const MEDIA_ACCEPT = [...MEDIA_ALLOWED_TYPES].join(",");
 const MEDIA_MAX_BYTES = 25 * 1024 * 1024;
 
-// One request per file, uploaded in parallel.
 export const useMediaUpload = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -25,7 +22,6 @@ export const useMediaUpload = (tourOperatorId: string) => {
 			const results = await Promise.allSettled(
 				files.map((file) => {
 					const fd = new FormData();
-					// No Content-Type header: axios derives the multipart boundary itself.
 					fd.append("file", file);
 					return authApi.post(`/tour-operators/${tourOperatorId}/media`, fd);
 				}),

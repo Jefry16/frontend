@@ -17,10 +17,6 @@ import { RequiredMark } from "#/shared/components/RequiredMark";
 import type { AudiencePriceRow } from "../validators/slot";
 import { emptyPriceRow } from "../validators/slot";
 
-// The whole array is ONE form field, rows are
-// gated inputs rather than nested fields, and the schema validates the array as
-// a unit. An audience taken by another row leaves this row's options, so a
-// duplicate cannot be picked.
 export const AppAudiencePriceRows = ({
 	field,
 	audiences,
@@ -51,7 +47,6 @@ export const AppAudiencePriceRows = ({
 				<span />
 			</div>
 			{rows.map((row) => {
-				// This row keeps its own pick; audiences taken by OTHER rows are hidden.
 				const options = audiences.filter(
 					(a) =>
 						a.id === row.audienceId || !rows.some((r) => r.audienceId === a.id),

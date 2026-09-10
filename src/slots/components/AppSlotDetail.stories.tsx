@@ -76,7 +76,6 @@ export const SoldOut: Story = {
 	decorators: [decorate(slot({ status: "SOLD_OUT" }))],
 };
 
-// Terminal: no page actions at all.
 export const Cancelled: Story = {
 	decorators: [decorate(slot({ status: "CANCELLED" }))],
 };

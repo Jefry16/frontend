@@ -15,9 +15,6 @@ import {
 	recurringSlotSchema,
 } from "../validators/slot";
 
-// Creates recurring departures (weekday pattern × date window) for one
-// experience. 201 with no body — many slots are minted — so on success we go to
-// the Availability list, not a detail page.
 export const useRecurringSlotForm = (
 	tourOperatorId: string,
 	experienceId: string,

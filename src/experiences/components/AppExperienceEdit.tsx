@@ -8,9 +8,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useExperience } from "../hooks/use-experience";
 import { AppExperienceForm } from "./AppExperienceForm";
 
-// Edit page: fetch the experience, then prefill the form (which carries the
-// arrays + media refs through unchanged). Owns its fetch (skeleton / 404 via
-// AppResourceView). The detail's Edit action links here.
 export const AppExperienceEdit = ({
 	tourOperatorId,
 	experienceId,

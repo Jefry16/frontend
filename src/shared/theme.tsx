@@ -17,8 +17,6 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-// The one documented exception to the no-localStorage rule: per-device by
-// nature and not sensitive. The FOUC script in __root.tsx reads the same key.
 const STORAGE_KEY = "theme";
 
 const readStored = (): Theme | null => {
@@ -33,16 +31,12 @@ const readStored = (): Theme | null => {
 const writeStored = (t: Theme) => {
 	try {
 		localStorage.setItem(STORAGE_KEY, t);
-	} catch {
-		// localStorage can throw in private mode or when storage is full.
-	}
+	} catch {}
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 	const [theme, setThemeState] = useState<Theme>("light");
 
-	// Not a lazy useState initializer: those run on the server too, where there
-	// is no localStorage and no <html> for the FOUC script to have written to.
 	useEffect(() => {
 		if (typeof document === "undefined") return;
 		const stored = readStored();
@@ -67,8 +61,6 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 		writeStored(t);
 	}, []);
 
-	// The write stays OUT of the updater: updaters run during render and may be
-	// invoked twice, or for a render that is thrown away.
 	const toggle = useCallback(() => {
 		setTheme(theme === "dark" ? "light" : "dark");
 	}, [theme, setTheme]);

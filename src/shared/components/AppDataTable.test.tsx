@@ -48,8 +48,6 @@ const renderTable = () => {
 };
 
 describe("AppDataTable sorting semantics", () => {
-	// The arrow icon in the header is decoration. Without aria-sort a screen
-	// reader hears "Name, button" and learns nothing about the sort state.
 	it("announces the sort state, and only on sortable columns", async () => {
 		renderTable();
 

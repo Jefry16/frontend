@@ -37,8 +37,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Create includes the permanent handle field.
 export const Create: Story = {};
 
-// Edit drops the handle (renames are a separate action) and adds the template.
 export const Edit: Story = { args: { page: PAGE } };

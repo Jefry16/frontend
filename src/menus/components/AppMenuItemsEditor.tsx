@@ -24,12 +24,6 @@ import { AppMenuTargetSelect } from "./AppMenuTargetSelect";
 
 const MAX_DEPTH = 3;
 
-/**
- * TanStack computes a field-path union by walking the value type, and a menu
- * tree is recursive — `mode="array"` on `items` alone reports "type
- * instantiation is excessively deep". So the tree is addressed through this
- * structural view, cast once here; the rest of the form keeps its real types.
- */
 interface TreeForm {
 	Field: (props: {
 		name: string;
@@ -42,12 +36,6 @@ interface TreeForm {
 	swapFieldValues: (path: string, from: number, to: number) => void;
 }
 
-// One form for the whole tree, saved wholesale via PUT /items — the backend has
-// no per-item calls.
-//
-// The tree lives in the form, addressed by path, rather than in local state
-// keyed by row id. That is what lets every rule live in the schema, so a missing
-// URL reports on that URL box instead of as a banner at the top of the page.
 export const AppMenuItemsEditor = ({
 	tourOperatorId,
 	menu,
@@ -107,7 +95,6 @@ export const AppMenuItemsEditor = ({
 
 interface RowsProps {
 	form: TreeForm;
-	/** The array's path, e.g. `items` or `items[0].children`. */
 	path: string;
 	nodes: MenuItemFormNode[];
 	depth: number;
@@ -115,7 +102,6 @@ interface RowsProps {
 	extraLocales: string[];
 }
 
-// The field paths ARE the tree, so nothing has to be kept in sync with it.
 const ItemRows = ({
 	form,
 	path,
@@ -173,7 +159,6 @@ const ItemRows = ({
 												label={m.menu_link_type()}
 												hideLabel
 												onValueChange={() => {
-													// A changed kind invalidates the old payload.
 													form.setFieldValue(`${rowPath}.resourceId`, "");
 													form.setFieldValue(`${rowPath}.url`, "");
 												}}

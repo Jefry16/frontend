@@ -1,9 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend rules on PATCH /locales: at least one supported language,
-// a primary language, and the primary must be one of the supported set (server
-// returns 422 otherwise — we reject client-side with a precise message first).
 export const operatorLocalesSchema = z
 	.object({
 		primaryLocale: z.string().min(1, m.validation_required()),

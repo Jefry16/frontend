@@ -17,7 +17,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// The sign-in and register shape: logo, heading, subtitle.
 export const WithHeading: Story = {
 	args: {
 		title: "Welcome back",
@@ -25,11 +24,8 @@ export const WithHeading: Story = {
 	},
 };
 
-// AppAuthMessageCard drops the heading — a verification result puts its own
-// title inside the card, next to the result icon.
 export const LogoOnly: Story = {};
 
-// Onboarding: four fields need the wider column.
 export const Wide: Story = {
 	args: {
 		width: "lg",

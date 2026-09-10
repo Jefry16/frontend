@@ -7,8 +7,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
 import { AppMetaobjectDefinitionForm } from "./AppMetaobjectDefinitionForm";
 
-// The definition edit page: fetches the record, renders the form pre-filled
-// (type immutable, fields managed on the detail — only name/description here).
 export const AppMetaobjectDefinitionEdit = ({
 	tourOperatorId,
 	definitionId,

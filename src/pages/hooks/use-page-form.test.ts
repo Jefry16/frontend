@@ -81,8 +81,6 @@ describe("usePageForm", () => {
 		});
 	});
 
-	// Renaming a handle moves the page's public address, so it is a separate
-	// deliberate action. An edit that sent one would move it silently.
 	it("never sends the handle on edit", async () => {
 		const body = vi.fn();
 		server.use(
@@ -119,7 +117,6 @@ describe("usePageForm", () => {
 		expect(body.mock.calls[0][0].seoDescription).toBeNull();
 	});
 
-	// A taken handle is fixable by choosing another; anything else is not.
 	it("names a taken handle rather than reporting a generic failure", async () => {
 		server.use(http.post(BASE, () => new HttpResponse(null, { status: 409 })));
 		const { result: taken } = render();

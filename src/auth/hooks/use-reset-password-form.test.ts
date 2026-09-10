@@ -53,8 +53,6 @@ const failing = (status: number) =>
 describe("useResetPasswordForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// The token comes from the emailed link, not from a field — it is a
-	// capability, and the form never shows it.
 	it("sends the token alongside the new password", async () => {
 		const body = vi.fn();
 		server.use(
@@ -74,9 +72,6 @@ describe("useResetPasswordForm", () => {
 		expect(navigateMock).toHaveBeenCalledWith({ to: "/auth/login" });
 	});
 
-	// Two different failures the operator resolves two different ways: a dead
-	// link needs a new email, a rejected password needs a different password.
-	// Collapsing them to one message would send people down the wrong path.
 	it.each([
 		[401, "expired or already-used link"],
 		[422, "password rejected"],

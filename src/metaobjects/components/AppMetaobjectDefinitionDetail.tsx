@@ -30,10 +30,6 @@ import { useMetaobjectDefinitionActions } from "../hooks/use-metaobject-definiti
 import type { MetaobjectDefinition, MetaobjectField } from "../types";
 import { AppMetaobjectFieldDialog } from "./AppMetaobjectFieldDialog";
 
-// Definition detail: the type's facts + its FIELD set (add/rename/remove via
-// dialogs — key/type immutable per field, remove cascades stored values) +
-// the entries of this type as the standard table + Edit and Delete (cascade-
-// confirmed) actions. The list's name column links here.
 export const AppMetaobjectDefinitionDetail = ({
 	tourOperatorId,
 	definitionId,
@@ -89,9 +85,6 @@ const DefinitionView = ({
 	const { remove, addField, renameField, removeField } =
 		useMetaobjectDefinitionActions(tourOperatorId, definition.id);
 
-	// One dialog instance per mode: add (no field), rename (with one), and a
-	// removal confirm. Rename keeps its target through the close animation
-	// (a separate open flag) so the dialog doesn't flash into add-mode.
 	const [addOpen, setAddOpen] = useState(false);
 	const [renameOpen, setRenameOpen] = useState(false);
 	const [renaming, setRenaming] = useState<MetaobjectField | null>(null);

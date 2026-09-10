@@ -7,8 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { pickupLocationColumns } from "../columns";
 
-// The operator's pickup locations (meeting points) as the standard
-// cursor-paginated table: name searchable, time + createdAt sortable.
 export const AppPickupLocationsList = ({
 	tourOperatorId,
 }: {

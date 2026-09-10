@@ -70,10 +70,6 @@ describe("useAcceptInvitation", () => {
 		refreshUser.mockReset();
 	});
 
-	// THE branch. `accessToken` present means the backend provisioned a new
-	// account and issued it a session; the invitee is not signed in and has no
-	// other way to become so. Refreshing a profile that does not exist instead
-	// would leave them authenticated as nobody, on an operator page.
 	it("adopts the issued session when a new account was provisioned", async () => {
 		server.use(accepts("fresh-token"));
 		const { result } = render();
@@ -84,8 +80,6 @@ describe("useAcceptInvitation", () => {
 		expect(refreshUser).not.toHaveBeenCalled();
 	});
 
-	// The mirror: an already-signed-in accepter has an identity. Adopting a
-	// session here would be adopting `null`.
 	it("refreshes the profile when the accepter already had an account", async () => {
 		server.use(accepts(null));
 		const { result } = render();
@@ -98,8 +92,6 @@ describe("useAcceptInvitation", () => {
 		expect(establishSession).not.toHaveBeenCalled();
 	});
 
-	// The one-click path sends NO body — the caller's own account is the
-	// identity. A form payload here would try to provision a second account.
 	it("sends an empty body for the authenticated one-click accept", async () => {
 		const body = vi.fn();
 		server.use(accepts(null, body));
@@ -122,8 +114,6 @@ describe("useAcceptInvitation", () => {
 		expect(body).toHaveBeenCalledWith(VALID);
 	});
 
-	// Lands in the operator that was joined, using the id the accept returned —
-	// there is no other source for it on this page.
 	it("navigates into the operator it just joined", async () => {
 		server.use(accepts("fresh-token"));
 		const { result } = render();
@@ -136,9 +126,6 @@ describe("useAcceptInvitation", () => {
 		});
 	});
 
-	// Four rejections an invitee resolves four different ways: sign in instead,
-	// use the invited address, ask for a new invite, check the link. Collapsing
-	// them to one message sends people down the wrong path.
 	it.each([409, 403, 410, 404])("gives %i its own message", async (status) => {
 		server.use(http.post(URL_, () => new HttpResponse(null, { status })));
 		const { result } = render();

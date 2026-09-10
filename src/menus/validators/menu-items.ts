@@ -2,13 +2,6 @@ import { z } from "zod";
 import * as m from "#/paraglide/messages";
 import { MENU_LINK_TYPES } from "../format";
 
-/**
- * Recursive, so `z.lazy`. The depth cap lives in the editor — it stops offering
- * "add child" — because a tree that is too deep cannot be typed into existence.
- *
- * The conditional rules report on the field that is actually wrong, so a
- * missing URL marks that URL box rather than raising a page-level banner.
- */
 export interface MenuItemFormNode {
 	title: string;
 	linkType: (typeof MENU_LINK_TYPES)[number];
@@ -54,8 +47,6 @@ interface MenuItemsFormData {
 	items: MenuItemFormNode[];
 }
 
-// Typed explicitly: `z.lazy` erases the inferred shape to `unknown`, and the
-// form's value type has to survive that.
 export const menuItemsSchema: z.ZodType<MenuItemsFormData, MenuItemsFormData> =
 	z.object({
 		items: z.array(menuItemNodeSchema),

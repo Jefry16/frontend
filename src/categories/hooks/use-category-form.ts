@@ -15,14 +15,6 @@ import {
 	categorySchema,
 } from "../validators/category";
 
-// Create (no `category`) or edit (with one). On success navigates to the detail
-// page (create-navigates-to-detail rule).
-//
-// The 409 wording follows the mode, not the message. Create can conflict two
-// ways — the name is taken, or another category claimed the same derived handle
-// first — and edit can only conflict the first way, because the handle is never
-// regenerated. The mode is state we own, so this stays clear of the rule against
-// branching on `message`, which is prose and changes.
 export const useCategoryForm = (
 	tourOperatorId: string,
 	category?: Category,
@@ -43,8 +35,6 @@ export const useCategoryForm = (
 					await authApi.patch(`${base}/${category.id}`, fields);
 					return category.id;
 				}
-				// The create answers 201 with an empty body, so the Location header is
-				// the only place the new id exists.
 				const { headers } = await authApi.post(base, fields);
 				const id = (headers.location ?? "").split("/").pop();
 				if (!id) throw new Error("Missing Location header on create response");

@@ -15,8 +15,6 @@ import {
 	pageFormSchema,
 } from "../validators/page";
 
-// On create a 409 means the handle is taken. An edit never sends the handle:
-// renaming is a separate action.
 export const usePageForm = (tourOperatorId: string, page?: Page) => {
 	const navigate = useNavigate();
 	const toast = useAppToast();
@@ -79,7 +77,6 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 	);
 
 	const form = useForm({
-		// Both modes seed every field; zod strips what each schema omits.
 		defaultValues: {
 			title: page?.title ?? "",
 			handle: page?.handle ?? "",

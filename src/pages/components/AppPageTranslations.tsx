@@ -27,9 +27,6 @@ import {
 import type { PageTranslation } from "../types";
 import { AppPageTranslationForm } from "./AppPageTranslationForm";
 
-// The page translations editor — the experience-translations shell: a locale
-// switcher (supported minus the primary, which IS the canonical content) over
-// a per-locale overlay form, keyed by locale so it reseeds on switch.
 export const AppPageTranslations = ({
 	tourOperatorId,
 	pageId,
@@ -56,8 +53,6 @@ export const AppPageTranslations = ({
 		"page",
 		pageId,
 	);
-	// A locale translated only in its metafields is still translated — the dot
-	// reads "has anything for this locale", not "has canonical fields".
 	const translated = new Set([
 		...(listQuery.data ?? []).map((t) => t.locale),
 		...(metafieldLocales.data ?? []),
@@ -162,7 +157,6 @@ export const AppPageTranslations = ({
 	);
 };
 
-// This resource's rows for AppTranslationSummary — the fields the form edits.
 const pageFields = (t: PageTranslation): TranslatedField[] => [
 	[m.title(), t.title],
 	[m.page_body(), t.body],

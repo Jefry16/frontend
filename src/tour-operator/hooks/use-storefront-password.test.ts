@@ -41,10 +41,6 @@ const submit = async (
 };
 
 describe("useStorefrontPasswordForm", () => {
-	// `enabled` is REQUIRED: the backend 422s without it. That is the rule that
-	// stops a storefront being opened to the public by an accidentally empty
-	// body, so it has to be in every request, including one that only edits the
-	// message.
 	it("always names enabled, and sends one section", async () => {
 		const body = vi.fn();
 		server.use(patching(body));
@@ -64,10 +60,6 @@ describe("useStorefrontPasswordForm", () => {
 		});
 	});
 
-	// A blank password KEEPS the stored one rather than clearing it. So leaving
-	// the box empty while the gate is on is a legitimate save, not a lockout —
-	// and sending "" instead of null would be too, which is why the null matters
-	// rather than the emptiness.
 	it("sends null for a blank password, which keeps the stored one", async () => {
 		const body = vi.fn();
 		server.use(patching(body));

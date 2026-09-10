@@ -13,9 +13,6 @@ import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-// Renames the page's canonical handle — a dialog because changing the
-// permanent URL is a deliberate act (the backend gives it its own endpoint
-// for the same reason). 409 = the handle is taken.
 export const AppRenameHandleDialog = ({
 	open,
 	onOpenChange,

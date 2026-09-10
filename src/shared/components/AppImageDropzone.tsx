@@ -5,23 +5,17 @@ import { cn } from "#/lib/utils";
 
 interface AppImageDropzoneProps {
 	onFile: (file: File) => void;
-	// Called with one of the two messages below.
 	onError?: (message: string) => void;
-	// "image/*", explicit types, or a comma list.
 	accept?: string;
 	maxBytes?: number;
 	pending?: boolean;
 	disabled?: boolean;
 	hint?: string;
-	// This component never creates object URLs — a caller passing one must revoke it.
 	previewUrl?: string | null;
-	// Props, so the component stays i18n-agnostic.
 	errorMessages?: { wrongType: string; tooLarge: string };
-	// Sizes the drop target; defaults to a full-width box.
 	className?: string;
 }
 
-// Handles "image/*", explicit MIME types, and comma-separated lists.
 const matchesAccept = (file: File, accept: string): boolean =>
 	accept
 		.split(",")
@@ -32,8 +26,6 @@ const matchesAccept = (file: File, accept: string): boolean =>
 			return file.type === token;
 		});
 
-// A real <button>, so the file dialog opens on Enter/Space as well as click.
-// Validation is client-side: a bad file never reaches the network.
 export const AppImageDropzone = ({
 	onFile,
 	onError,
@@ -80,7 +72,6 @@ export const AppImageDropzone = ({
 				className="sr-only"
 				onChange={(e) => {
 					handleFile(e.target.files?.[0]);
-					// Reset so re-picking the same file fires onChange again.
 					e.target.value = "";
 				}}
 			/>

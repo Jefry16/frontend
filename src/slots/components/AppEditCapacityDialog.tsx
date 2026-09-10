@@ -12,9 +12,6 @@ import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import type { SlotAudiencePrice } from "../types";
 
-// Edits a slot's per-tier capacity. Every tier is listed with its booked count;
-// the server floors each capacity at the seats already booked (below → 422,
-// all-or-nothing), so the inputs enforce the same minimum client-side.
 export const AppEditCapacityDialog = ({
 	open,
 	onOpenChange,

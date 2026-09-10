@@ -18,7 +18,6 @@ describe("resetPasswordSchema", () => {
 			confirmPassword: "Different1!",
 		});
 		expect(result.success).toBe(false);
-		// The mismatch is reported on confirmPassword (so it renders under it).
 		expect(result.error?.issues[0]?.path).toEqual(["confirmPassword"]);
 	});
 

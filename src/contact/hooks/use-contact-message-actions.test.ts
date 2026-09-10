@@ -18,9 +18,6 @@ const LIST = ["contact-messages", OP];
 const TRAIL = ["activity", OP];
 
 describe("useContactMessageActions", () => {
-	// The read-state flip is gone with its endpoints — the message is opened,
-	// answered by email and deleted. A `setRead` reappearing here would mean
-	// the admin is calling something the backend no longer serves.
 	it("offers delete and nothing else", () => {
 		const { result } = renderActions(() => useContactMessageActions(OP, ID));
 

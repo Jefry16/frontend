@@ -15,11 +15,6 @@ import { ThemeProvider, useTheme } from "#/shared/theme";
 
 import appCss from "../styles.css?url";
 
-// Inline pre-paint script: resolves the persisted theme (or OS preference if
-// none) and applies the matching class to <html> before React hydrates, to
-// avoid a flash of the wrong theme. The "theme" localStorage key is the
-// documented exception to the no-browser-storage rule (UI preference, not
-// security-sensitive, per-device by nature). Read by ThemeProvider too.
 const THEME_INIT_SCRIPT = `(function(){try{var s=window.localStorage.getItem('theme');var resolved=(s==='light'||s==='dark')?s:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);root.style.colorScheme=resolved;}catch(e){}})();`;
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(

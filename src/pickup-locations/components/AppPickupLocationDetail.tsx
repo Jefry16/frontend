@@ -21,10 +21,6 @@ import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 import { usePickupLocationActions } from "../hooks/use-pickup-location-actions";
 
-// Pickup-location detail: the meeting point's facts + Edit and Delete actions
-// (delete is destructive-confirmed; pickups are a standalone catalog today, so
-// deleting one affects nothing else). Owns its fetch (skeleton / 404). The
-// list's name column links here.
 export const AppPickupLocationDetail = ({
 	tourOperatorId,
 	pickupLocationId,

@@ -7,8 +7,6 @@ import { queryKeys } from "#/lib/query-keys";
 import type { MetafieldTypeCode } from "#/metafields";
 import * as m from "#/paraglide/messages";
 
-// Delete CASCADES entries and values — the caller's confirm carries that
-// warning. Removing a field cascades its stored values the same way.
 export const useMetaobjectDefinitionActions = (
 	tourOperatorId: string,
 	definitionId: string,
@@ -35,7 +33,6 @@ export const useMetaobjectDefinitionActions = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjectDefinitions(tourOperatorId),
 			});
-			// The cascade took the entries too.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjects(tourOperatorId),
 			});
@@ -76,13 +73,11 @@ export const useMetaobjectDefinitionActions = (
 		mutationFn: ({ key }) => authApi.delete(`${base}/fields/${key}`),
 		onSuccess: () => {
 			toast.success(m.metaobject_field_removed());
-			// Every entry's detail read loses those values.
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metaobjects(tourOperatorId),
 			});
 			invalidate();
 		},
-		// Removing the last field 409s, and the reason is worth showing.
 		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 

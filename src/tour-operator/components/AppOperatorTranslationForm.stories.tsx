@@ -46,10 +46,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A partially translated locale — Clear is offered. */
 export const Default: Story = {};
 
-/** Nothing overlaid yet: empty fields, and no Clear to offer. */
 export const Untranslated: Story = {
 	args: { tourOperatorId: "op-1", locale: "fr", translation: UNTRANSLATED },
 };

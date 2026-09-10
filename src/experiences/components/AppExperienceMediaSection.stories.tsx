@@ -21,7 +21,6 @@ const asset = (n: number): MediaAsset => ({
 	uploadedBy: { id: "u-1", context: "users", name: "Ada" },
 });
 
-// Seed the per-id cache so useMediaByIds resolves previews without a backend.
 function client(ids: number[]) {
 	const qc = storyQueryClient();
 	for (const n of ids) {
@@ -57,7 +56,6 @@ export const Empty: Story = {
 };
 
 export const WithMedia: Story = {
-	// The cover (thumbnail) is one of the media items — the backend's invariant.
 	args: {
 		thumbnailMediaId: "media-2",
 		mediaIds: ["media-2", "media-3", "media-4"],
