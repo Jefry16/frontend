@@ -32,14 +32,16 @@ describe("useExperienceActions", () => {
 		]);
 	});
 
+	// Both go to the SAME endpoint; the body is the only thing that differs, so
+	// asserting it is the only way to tell an unpublish from a publish.
 	it.each([
-		"publish",
-		"unpublish",
-	] as const)("%s refreshes the detail, the list and the trail", async (action) => {
-		const hit = vi.fn();
+		["publish", true],
+		["unpublish", false],
+	] as const)("%s PUTs the flag to the published sub-resource, then refreshes", async (action, published) => {
+		const body = vi.fn();
 		server.use(
-			http.post(`${BASE}/${action}`, () => {
-				hit();
+			http.put(`${BASE}/published`, async ({ request }) => {
+				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),
 		);
@@ -49,7 +51,7 @@ describe("useExperienceActions", () => {
 
 		await fire(() => result.current[action].mutateAsync());
 
-		expect(hit).toHaveBeenCalled();
+		expect(body).toHaveBeenCalledWith({ published });
 		expect(invalidated()).toEqual(SET);
 	});
 });

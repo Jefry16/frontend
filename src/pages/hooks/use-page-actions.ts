@@ -6,7 +6,9 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on a single page (all ADMIN+): publish/unpublish,
+// The mutating actions on a single page (all ADMIN+): publish/unpublish through
+// the one `published` sub-resource (PUT the boolean; asking for the state it is
+// already in is a silent no-op),
 // rename the handle (409 = taken), delete. Success copy + navigation for
 // delete are left to the caller; everything refreshes detail + list + trail.
 export const usePageActions = (tourOperatorId: string, pageId: string) => {
@@ -28,7 +30,7 @@ export const usePageActions = (tourOperatorId: string, pageId: string) => {
 	};
 
 	const publish = useMutation<unknown, AxiosError>({
-		mutationFn: () => authApi.post(`${base}/publish`),
+		mutationFn: () => authApi.put(`${base}/published`, { published: true }),
 		onSuccess: () => {
 			toast.success(m.page_published());
 			invalidate();
@@ -37,7 +39,7 @@ export const usePageActions = (tourOperatorId: string, pageId: string) => {
 	});
 
 	const unpublish = useMutation<unknown, AxiosError>({
-		mutationFn: () => authApi.post(`${base}/unpublish`),
+		mutationFn: () => authApi.put(`${base}/published`, { published: false }),
 		onSuccess: () => {
 			toast.success(m.page_unpublished());
 			invalidate();

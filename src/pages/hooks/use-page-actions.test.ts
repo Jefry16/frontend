@@ -19,11 +19,16 @@ const LIST = ["pages", OP];
 const TRAIL = ["activity", OP];
 
 describe("usePageActions", () => {
-	it("publishes, then refreshes the detail, the list and the trail", async () => {
-		const hit = vi.fn();
+	// Publish and unpublish share ONE endpoint; the body is the only thing that
+	// separates them, so asserting it is the only way to tell them apart.
+	it.each([
+		["publish", true],
+		["unpublish", false],
+	] as const)("%s PUTs the flag to the published sub-resource, then refreshes", async (action, published) => {
+		const body = vi.fn();
 		server.use(
-			http.post(`${BASE}/publish`, () => {
-				hit();
+			http.put(`${BASE}/published`, async ({ request }) => {
+				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),
 		);
@@ -31,27 +36,9 @@ describe("usePageActions", () => {
 			usePageActions(OP, PAGE),
 		);
 
-		await fire(() => result.current.publish.mutateAsync());
+		await fire(() => result.current[action].mutateAsync());
 
-		expect(hit).toHaveBeenCalled();
-		expect(invalidated()).toEqual([DETAIL, LIST, TRAIL]);
-	});
-
-	it("unpublishes through its own endpoint, not a flag on the detail", async () => {
-		const hit = vi.fn();
-		server.use(
-			http.post(`${BASE}/unpublish`, () => {
-				hit();
-				return new HttpResponse(null, { status: 204 });
-			}),
-		);
-		const { result, invalidated } = renderActions(() =>
-			usePageActions(OP, PAGE),
-		);
-
-		await fire(() => result.current.unpublish.mutateAsync());
-
-		expect(hit).toHaveBeenCalled();
+		expect(body).toHaveBeenCalledWith({ published });
 		expect(invalidated()).toEqual([DETAIL, LIST, TRAIL]);
 	});
 
@@ -90,8 +77,8 @@ describe("usePageActions", () => {
 
 	it("invalidates nothing when the request fails", async () => {
 		server.use(
-			http.post(
-				`${BASE}/publish`,
+			http.put(
+				`${BASE}/published`,
 				() => new HttpResponse(null, { status: 500 }),
 			),
 		);
