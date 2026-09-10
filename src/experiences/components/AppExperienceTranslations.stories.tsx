@@ -44,9 +44,11 @@ const ES: ExperienceTranslation = {
 function client() {
 	const qc = storyQueryClient();
 	qc.setQueryData(queryKeys.experience(OP, EXP), EXPERIENCE);
-	qc.setQueryData(queryKeys.operatorLocales(OP), {
-		primaryLocale: "en",
-		supportedLocales: ["en", "es", "fr"],
+	qc.setQueryData(queryKeys.operatorDetails(OP), {
+		locales: {
+			primaryLocale: "en",
+			supportedLocales: ["en", "es", "fr"],
+		},
 	});
 	qc.setQueryData(queryKeys.experienceTranslations(OP, EXP), [ES]);
 	qc.setQueryData(queryKeys.experienceTranslation(OP, EXP, "es"), ES);

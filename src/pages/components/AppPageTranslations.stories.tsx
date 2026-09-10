@@ -32,9 +32,11 @@ const ES: PageTranslation = {
 
 const qc = storyQueryClient((qc) => {
 	qc.setQueryData(queryKeys.pageDetail(OP, PAGE_ID), PAGE);
-	qc.setQueryData(queryKeys.operatorLocales(OP), {
-		primaryLocale: "en",
-		supportedLocales: ["en", "es", "fr"],
+	qc.setQueryData(queryKeys.operatorDetails(OP), {
+		locales: {
+			primaryLocale: "en",
+			supportedLocales: ["en", "es", "fr"],
+		},
 	});
 	qc.setQueryData(queryKeys.pageTranslations(OP, PAGE_ID), [ES]);
 	qc.setQueryData(queryKeys.pageTranslation(OP, PAGE_ID, "es"), ES);
