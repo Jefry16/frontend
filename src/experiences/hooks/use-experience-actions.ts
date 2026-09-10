@@ -8,6 +8,9 @@ import * as m from "#/paraglide/messages";
 // The mutating actions on a single experience: publish / unpublish (both ADMIN+,
 // reversible — there is no delete; an experience is retired via unpublish since
 // it owns slots/bookings). Both toast + invalidate the detail and the list.
+//
+// One endpoint, not two verbs: publication is a sub-resource you PUT a boolean
+// to. Asking for the state it is already in is a silent no-op, not an error.
 export const useExperienceActions = (
 	tourOperatorId: string,
 	experienceId: string,
@@ -29,7 +32,7 @@ export const useExperienceActions = (
 	};
 
 	const publish = useMutation<unknown, AxiosError>({
-		mutationFn: () => authApi.post(`${base}/publish`),
+		mutationFn: () => authApi.put(`${base}/published`, { published: true }),
 		onSuccess: () => {
 			toast.success(m.experience_published());
 			invalidate();
@@ -38,7 +41,7 @@ export const useExperienceActions = (
 	});
 
 	const unpublish = useMutation<unknown, AxiosError>({
-		mutationFn: () => authApi.post(`${base}/unpublish`),
+		mutationFn: () => authApi.put(`${base}/published`, { published: false }),
 		onSuccess: () => {
 			toast.success(m.experience_unpublished());
 			invalidate();

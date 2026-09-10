@@ -6,9 +6,12 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on one entry (all ADMIN+): publish/unpublish (409 on
-// a redundant flip) and delete (values cascade; success copy + navigation
-// left to the caller). Everything refreshes detail + list + trail.
+// The mutating actions on one entry (all ADMIN+): publish/unpublish through the
+// one `published` sub-resource, and delete (values cascade; success copy +
+// navigation left to the caller). Everything refreshes detail + list + trail.
+//
+// A redundant flip is a silent no-op, not the 409 this used to claim — the use
+// case returns before it writes when the entry is already in that state.
 export const useMetaobjectActions = (
 	tourOperatorId: string,
 	metaobjectId: string,
@@ -30,7 +33,7 @@ export const useMetaobjectActions = (
 	};
 
 	const publish = useMutation<unknown, AxiosError>({
-		mutationFn: () => authApi.post(`${base}/publish`),
+		mutationFn: () => authApi.put(`${base}/published`, { published: true }),
 		onSuccess: () => {
 			toast.success(m.metaobject_published());
 			invalidate();
@@ -39,7 +42,7 @@ export const useMetaobjectActions = (
 	});
 
 	const unpublish = useMutation<unknown, AxiosError>({
-		mutationFn: () => authApi.post(`${base}/unpublish`),
+		mutationFn: () => authApi.put(`${base}/published`, { published: false }),
 		onSuccess: () => {
 			toast.success(m.metaobject_unpublished());
 			invalidate();
