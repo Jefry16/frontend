@@ -25,7 +25,9 @@ const LINKS: Brand["socialLinks"] = [
 ];
 
 const qc = (links: Brand["socialLinks"]) =>
-	storyQueryClient((c) => c.setQueryData(queryKeys.brand(OP), brand(links)));
+	storyQueryClient((c) =>
+		c.setQueryData(queryKeys.operatorDetails(OP), { brand: brand(links) }),
+	);
 
 const withBrand = (links: Brand["socialLinks"]) => [
 	(Story: () => React.ReactElement) => (

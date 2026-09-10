@@ -12,7 +12,7 @@ vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
-const URL_ = `${API}/tour-operators/${OP}/brand`;
+const URL_ = `${API}/tour-operators/${OP}`;
 
 const brand = (socialLinks: Brand["socialLinks"]): Brand => ({
 	slogan: null,
@@ -27,7 +27,9 @@ const brand = (socialLinks: Brand["socialLinks"]): Brand => ({
 
 const render = (links: Brand["socialLinks"]) => {
 	const queryClient = createTestQueryClient();
-	queryClient.setQueryData(queryKeys.brand(OP), brand(links));
+	queryClient.setQueryData(queryKeys.operatorDetails(OP), {
+		brand: brand(links),
+	});
 	return renderWithProviders(
 		<AppOperatorSocialLinksCard tourOperatorId={OP} canWrite />,
 		{ queryClient },
@@ -100,14 +102,14 @@ describe("AppOperatorSocialLinksCard", () => {
 		const body = vi.fn();
 		server.use(
 			http.get(URL_, () =>
-				HttpResponse.json(
-					brand([
+				HttpResponse.json({
+					brand: brand([
 						{ platform: "FACEBOOK", url: "https://facebook.com/acme" },
 						{ platform: "INSTAGRAM", url: "https://instagram.com/acme" },
 					]),
-				),
+				}),
 			),
-			http.put(URL_, async ({ request }) => {
+			http.patch(URL_, async ({ request }) => {
 				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),
@@ -124,7 +126,7 @@ describe("AppOperatorSocialLinksCard", () => {
 
 		await waitFor(() => expect(body).toHaveBeenCalled());
 		const sent = body.mock.calls[0][0];
-		expect(sent.socialLinks).toEqual([
+		expect(sent.brand.socialLinks).toEqual([
 			{ platform: "INSTAGRAM", url: "https://instagram.com/acme" },
 		]);
 	});
