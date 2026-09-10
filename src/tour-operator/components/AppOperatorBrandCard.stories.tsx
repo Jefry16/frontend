@@ -14,14 +14,17 @@ const brand = (over: Partial<Brand> = {}): Brand => ({
 	squareLogoMediaId: null,
 	faviconMediaId: null,
 	coverImageMediaId: null,
-	// Never edited here, but always echoed back — PUT /brand is a full replace.
+	// Never edited here, but always echoed back — a brand sent in the PATCH
+	// replaces the whole section.
 	colors: { primary: [], secondary: [] },
 	socialLinks: [],
 	...over,
 });
 
 const qc = (b: Brand) =>
-	storyQueryClient((c) => c.setQueryData(queryKeys.brand(OP), b));
+	storyQueryClient((c) =>
+		c.setQueryData(queryKeys.operatorDetails(OP), { brand: b }),
+	);
 
 const meta = {
 	title: "TourOperator/AppOperatorBrandCard",

@@ -79,4 +79,10 @@ export interface TourOperatorDetails {
 	currencyId: string;
 	createdAt: string;
 	updatedAt: string;
+	/**
+	 * A section of the operator, not a resource of its own — its route was folded
+	 * into this one. Never null: an operator that has never saved a brand reads
+	 * null texts and empty colour arrays.
+	 */
+	brand: Brand;
 }

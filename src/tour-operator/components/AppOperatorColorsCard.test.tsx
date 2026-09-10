@@ -12,7 +12,7 @@ vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
-const URL_ = `${API}/tour-operators/${OP}/brand`;
+const URL_ = `${API}/tour-operators/${OP}`;
 
 const PALETTE: Brand["colors"] = {
 	primary: [
@@ -37,14 +37,16 @@ const brand = (colors: Brand["colors"]): Brand => ({
 const render = (colors: Brand["colors"] = PALETTE) => {
 	const body = vi.fn();
 	server.use(
-		http.get(URL_, () => HttpResponse.json(brand(colors))),
-		http.put(URL_, async ({ request }) => {
+		http.get(URL_, () => HttpResponse.json({ brand: brand(colors) })),
+		http.patch(URL_, async ({ request }) => {
 			body(await request.json());
 			return new HttpResponse(null, { status: 204 });
 		}),
 	);
 	const queryClient = createTestQueryClient();
-	queryClient.setQueryData(queryKeys.brand(OP), brand(colors));
+	queryClient.setQueryData(queryKeys.operatorDetails(OP), {
+		brand: brand(colors),
+	});
 	renderWithProviders(<AppOperatorColorsCard tourOperatorId={OP} canWrite />, {
 		queryClient,
 	});
@@ -68,7 +70,7 @@ describe("AppOperatorColorsCard", () => {
 
 		await waitFor(() => expect(body).toHaveBeenCalled());
 		expect(
-			body.mock.calls[0][0].colors.primary.map(
+			body.mock.calls[0][0].brand.colors.primary.map(
 				(c: { background: string }) => c.background,
 			),
 		).toEqual(["#222222", "#111111", "#333333"]);
@@ -87,7 +89,7 @@ describe("AppOperatorColorsCard", () => {
 		await save(user);
 
 		await waitFor(() => expect(body).toHaveBeenCalled());
-		expect(body.mock.calls[0][0].colors.primary).toEqual([
+		expect(body.mock.calls[0][0].brand.colors.primary).toEqual([
 			{ background: "#111111", foreground: "#ffffff" },
 			{ background: "#333333", foreground: "#ffffff" },
 		]);
@@ -108,7 +110,7 @@ describe("AppOperatorColorsCard", () => {
 		await save(user);
 
 		await waitFor(() => expect(body).toHaveBeenCalled());
-		expect(body.mock.calls[0][0].colors).toEqual({
+		expect(body.mock.calls[0][0].brand.colors).toEqual({
 			primary: [],
 			secondary: [],
 		});

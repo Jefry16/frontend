@@ -27,7 +27,9 @@ const PALETTE: Brand["colors"] = {
 };
 
 const qc = (colors: Brand["colors"]) =>
-	storyQueryClient((c) => c.setQueryData(queryKeys.brand(OP), brand(colors)));
+	storyQueryClient((c) =>
+		c.setQueryData(queryKeys.operatorDetails(OP), { brand: brand(colors) }),
+	);
 
 const withBrand = (colors: Brand["colors"]) => [
 	(Story: () => React.ReactElement) => (

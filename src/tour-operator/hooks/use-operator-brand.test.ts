@@ -15,7 +15,7 @@ vi.mock("sonner", () => ({
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
-const URL_ = `${API}/tour-operators/${OP}/brand`;
+const URL_ = `${API}/tour-operators/${OP}`;
 
 // A brand with every collection populated — the parts no editor in this
 // release touches, and the parts a partial body would silently destroy.
@@ -36,27 +36,46 @@ const BRAND: Brand = {
 	socialLinks: [{ platform: "INSTAGRAM", url: "https://instagram.test/acme" }],
 };
 
-const putting = (body: ReturnType<typeof vi.fn>) =>
-	http.put(URL_, async ({ request }) => {
+const patching = (body: ReturnType<typeof vi.fn>) =>
+	http.patch(URL_, async ({ request }) => {
 		body(await request.json());
 		return new HttpResponse(null, { status: 204 });
 	});
 
-/** What the server currently holds — every write merges over THIS, not a prop. */
+/**
+ * What the server currently holds — every write merges over THIS, not a prop.
+ *
+ * The envelope matters as much as the brand. The read is the whole operator now,
+ * so the sibling sections are here to be spread by accident: send `{ ...fresh }`
+ * instead of `{ brand: ... }` and they ride along into a PATCH that replaces
+ * every section it is handed. The body assertions are exact, so that shows up as
+ * a failure rather than as a wiped operator.
+ */
 const serving = (brand: Brand = BRAND) =>
-	http.get(URL_, () => HttpResponse.json(brand));
+	http.get(URL_, () =>
+		HttpResponse.json({
+			id: OP,
+			context: "tour-operators",
+			name: "Acme Tours",
+			handle: "acme-tours",
+			brand,
+			seo: { seoTitle: "Keep me", seoDescription: null, ogImageMediaId: null },
+			locales: { primaryLocale: "en", supportedLocales: ["en"] },
+			storefrontPassword: { enabled: true, password: "hunter2", message: null },
+		}),
+	);
 
 describe("useBrandActions", () => {
 	beforeEach(() => refreshUser.mockReset());
 
-	// `PUT /brand` is a FULL REPLACE — an absent field clears its value and an
-	// absent collection empties it. So a write that changes one image still has
+	// A `brand` present in the PATCH is a FULL REPLACE — an absent field clears
+	// its value and an absent collection empties it. So a write that changes one image still has
 	// to carry the palette and the social links, or changing a logo deletes the
 	// operator's colours. Nothing in the type system enforces that: a partial
 	// object is a perfectly valid argument to `authApi.put`.
 	it("clearing an image still sends the palette and the social links", async () => {
 		const body = vi.fn();
-		server.use(serving(), putting(body));
+		server.use(serving(), patching(body));
 		const { Wrapper } = wrapperWithProviders();
 		const { result } = renderHook(() => useBrandActions(OP), {
 			wrapper: Wrapper,
@@ -66,9 +85,10 @@ describe("useBrandActions", () => {
 			await result.current.clearImage.mutateAsync("logoMediaId");
 		});
 
+		// Exact: one top-level key. `seo`, `locales` and `storefrontPassword` came
+		// back on the same read and must not be in this request.
 		expect(body).toHaveBeenCalledWith({
-			...BRAND,
-			logoMediaId: null,
+			brand: { ...BRAND, logoMediaId: null },
 		});
 	});
 
@@ -76,7 +96,7 @@ describe("useBrandActions", () => {
 	// the slogan and the other three image slots.
 	it("changes exactly the one slot it was asked to change", async () => {
 		const body = vi.fn();
-		server.use(serving(), putting(body));
+		server.use(serving(), patching(body));
 		const { Wrapper } = wrapperWithProviders();
 		const { result } = renderHook(() => useBrandActions(OP), {
 			wrapper: Wrapper,
@@ -87,15 +107,16 @@ describe("useBrandActions", () => {
 		});
 
 		const sent = body.mock.calls[0][0];
-		expect(sent.faviconMediaId).toBeNull();
-		expect(sent.logoMediaId).toBe("m-logo");
-		expect(sent.squareLogoMediaId).toBe("m-square");
-		expect(sent.coverImageMediaId).toBe("m-cover");
-		expect(sent.slogan).toBe("Sail the coast");
+		expect(Object.keys(sent)).toEqual(["brand"]);
+		expect(sent.brand.faviconMediaId).toBeNull();
+		expect(sent.brand.logoMediaId).toBe("m-logo");
+		expect(sent.brand.squareLogoMediaId).toBe("m-square");
+		expect(sent.brand.coverImageMediaId).toBe("m-cover");
+		expect(sent.brand.slogan).toBe("Sail the coast");
 	});
 
-	// THE stale-write guard. Four sections of Settings → General save independently
-	// against a full-replace PUT, so each has to merge over what the server holds
+	// THE stale-write guard. Three brand cards on Settings → General save
+	// independently against a full-replace section, so each has to merge over what the server holds
 	// NOW — not over the copy it was rendered with. Here the palette has moved on
 	// since this hook mounted (another section saved it); merging over the old one
 	// would revert it, with a 204 and a screen that looks right.
@@ -108,14 +129,14 @@ describe("useBrandActions", () => {
 			},
 		};
 		const body = vi.fn();
-		server.use(serving(moved), putting(body));
+		server.use(serving(moved), patching(body));
 		const { Wrapper, queryClient } = wrapperWithProviders();
 		// Seeded with the OLD brand on purpose. The cache holding a stale copy is
 		// the whole scenario, and it is also what makes this test bite: the client
 		// here has `staleTime: Infinity`, so a `fetchQuery` that inherits it would
 		// hand back this seed and never ask the server. That is why the fetch pins
 		// `staleTime: 0` itself rather than trusting whoever built the client.
-		queryClient.setQueryData(queryKeys.brand(OP), BRAND);
+		queryClient.setQueryData(queryKeys.operatorDetails(OP), { brand: BRAND });
 		const { result } = renderHook(() => useBrandActions(OP), {
 			wrapper: Wrapper,
 		});
@@ -125,14 +146,14 @@ describe("useBrandActions", () => {
 		});
 
 		const sent = body.mock.calls[0][0];
-		expect(sent.colors).toEqual(moved.colors);
-		expect(sent.logoMediaId).toBeNull();
+		expect(sent.brand.colors).toEqual(moved.colors);
+		expect(sent.brand.logoMediaId).toBeNull();
 	});
 
 	// The sidebar switcher reads the logo off the auth profile, not off brand,
 	// so a brand write that skipped this would leave a stale logo until reload.
 	it("refreshes the profile after a brand write", async () => {
-		server.use(serving(), putting(vi.fn()));
+		server.use(serving(), patching(vi.fn()));
 		const { Wrapper } = wrapperWithProviders();
 		const { result } = renderHook(() => useBrandActions(OP), {
 			wrapper: Wrapper,
@@ -174,7 +195,7 @@ describe("useBrandTextForm", () => {
 	// update sending four image ids looks redundant until you know why.
 	it("sends the whole brand when only the text changed", async () => {
 		const body = vi.fn();
-		server.use(serving(), putting(body));
+		server.use(serving(), patching(body));
 		const { Wrapper } = wrapperWithProviders();
 		const { result } = renderHook(() => useBrandTextForm(OP, BRAND), {
 			wrapper: Wrapper,
@@ -183,15 +204,14 @@ describe("useBrandTextForm", () => {
 		await submit(result.current.form, { slogan: "New slogan" });
 
 		expect(body).toHaveBeenCalledWith({
-			...BRAND,
-			slogan: "New slogan",
+			brand: { ...BRAND, slogan: "New slogan" },
 		});
 	});
 
 	// Blank means "no slogan", not an empty line on the storefront.
 	it("collapses a blank to null rather than sending an empty string", async () => {
 		const body = vi.fn();
-		server.use(serving(), putting(body));
+		server.use(serving(), patching(body));
 		const { Wrapper } = wrapperWithProviders();
 		const { result } = renderHook(() => useBrandTextForm(OP, BRAND), {
 			wrapper: Wrapper,
@@ -200,10 +220,10 @@ describe("useBrandTextForm", () => {
 		await submit(result.current.form, { slogan: "", shortDescription: "  " });
 
 		const sent = body.mock.calls[0][0];
-		expect(sent.slogan).toBeNull();
-		expect(sent.shortDescription).toBeNull();
+		expect(sent.brand.slogan).toBeNull();
+		expect(sent.brand.shortDescription).toBeNull();
 		// …and the collections still ride along.
-		expect(sent.colors).toEqual(BRAND.colors);
-		expect(sent.socialLinks).toEqual(BRAND.socialLinks);
+		expect(sent.brand.colors).toEqual(BRAND.colors);
+		expect(sent.brand.socialLinks).toEqual(BRAND.socialLinks);
 	});
 });

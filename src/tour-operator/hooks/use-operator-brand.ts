@@ -22,25 +22,21 @@ import {
 	brandSocialLinksSchema,
 	brandTextSchema,
 } from "../validators/brand";
+import { operatorDetailQuery } from "./use-operator-details";
 
-const brandQuery = (tourOperatorId: string) => ({
-	queryKey: queryKeys.brand(tourOperatorId),
-	queryFn: async () => {
-		const { data } = await authApi.get<Brand>(
-			`/tour-operators/${tourOperatorId}/brand`,
-		);
-		return data;
-	},
-});
-
+// Plain property access, so the cached object's own reference comes back and
+// the three brand forms keep stable defaults across renders.
 export const useBrand = (tourOperatorId: string) =>
-	useQuery(brandQuery(tourOperatorId));
+	useQuery({
+		...operatorDetailQuery(tourOperatorId),
+		select: (operator) => operator.brand,
+	});
 
 /**
- * Merge a change into the CURRENT brand and send the whole thing.
+ * Merge a change into the CURRENT brand and send the whole section.
  *
- * `PUT /brand` is a full replace, so every section has to send the parts it does
- * not edit. Merging over the render-time copy is what four independently-saving
+ * A `brand` present in the PATCH is a full replace, so every section has to send
+ * the parts it does not edit. Merging over the render-time copy is what four independently-saving
  * sections cannot do: one section saves, and until its refetch lands the others
  * still hold the old value — their next save silently reverts it, with a 200 and
  * a screen that looks right. So the freshest brand is fetched at save time.
@@ -53,18 +49,21 @@ export const useBrand = (tourOperatorId: string) =>
  * the client's default is, and under a long one it would hand back the very
  * cached copy this exists to get past. The guarantee has to belong to the call.
  */
-const putMerged = async (
+const patchBrandSection = async (
 	queryClient: QueryClient,
 	tourOperatorId: string,
 	change: Partial<Brand>,
 ) => {
 	const fresh = await queryClient.fetchQuery({
-		...brandQuery(tourOperatorId),
+		...operatorDetailQuery(tourOperatorId),
 		staleTime: 0,
 	});
-	await authApi.put(`/tour-operators/${tourOperatorId}/brand`, {
-		...fresh,
-		...change,
+	// ONE key, `brand`. `fresh` is now the whole operator, so spreading it here
+	// instead of its brand would put seo, locales and storefrontPassword into a
+	// request that replaces every section it is given — a 204, a screen that
+	// still looks right, and the rest of the operator's settings gone.
+	await authApi.patch(`/tour-operators/${tourOperatorId}`, {
+		brand: { ...fresh.brand, ...change },
 	});
 };
 
@@ -82,7 +81,7 @@ export const useBrandActions = (tourOperatorId: string) => {
 		// The sidebar switcher reads logoUrl off the auth profile, not off brand.
 		await refreshUser();
 		queryClient.invalidateQueries({
-			queryKey: queryKeys.brand(tourOperatorId),
+			queryKey: queryKeys.operatorDetails(tourOperatorId),
 		});
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.media(tourOperatorId),
@@ -104,7 +103,7 @@ export const useBrandActions = (tourOperatorId: string) => {
 			const { headers } = await authApi.post(`${base}/media`, fd);
 			const mediaId = (headers.location ?? "").split("/").pop();
 			if (!mediaId) throw new Error("Missing Location header on media upload");
-			await putMerged(queryClient, tourOperatorId, { [slot]: mediaId });
+			await patchBrandSection(queryClient, tourOperatorId, { [slot]: mediaId });
 		},
 		onSuccess: async () => {
 			await settled();
@@ -115,7 +114,7 @@ export const useBrandActions = (tourOperatorId: string) => {
 
 	const clearImage = useMutation<void, AxiosError, BrandImageSlot>({
 		mutationFn: async (slot) =>
-			putMerged(queryClient, tourOperatorId, { [slot]: null }),
+			patchBrandSection(queryClient, tourOperatorId, { [slot]: null }),
 		onSuccess: async () => {
 			await settled();
 			toast.success(m.brand_image_removed());
@@ -140,7 +139,7 @@ export const useBrandTextForm = (tourOperatorId: string, brand: Brand) => {
 		BrandTextFormData
 	>({
 		mutationFn: async (text) =>
-			putMerged(queryClient, tourOperatorId, {
+			patchBrandSection(queryClient, tourOperatorId, {
 				// Blank collapses to null so the storefront falls back rather than
 				// rendering an empty line.
 				slogan: text.slogan || null,
@@ -150,7 +149,7 @@ export const useBrandTextForm = (tourOperatorId: string, brand: Brand) => {
 			setErrorMessage(null);
 			await refreshUser();
 			queryClient.invalidateQueries({
-				queryKey: queryKeys.brand(tourOperatorId),
+				queryKey: queryKeys.operatorDetails(tourOperatorId),
 			});
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
@@ -187,12 +186,12 @@ export const useBrandColorsForm = (tourOperatorId: string, brand: Brand) => {
 		BrandColorsFormData
 	>({
 		mutationFn: async (colors) =>
-			putMerged(queryClient, tourOperatorId, { colors }),
+			patchBrandSection(queryClient, tourOperatorId, { colors }),
 		onSuccess: async () => {
 			setErrorMessage(null);
 			await Promise.all([
 				queryClient.invalidateQueries({
-					queryKey: queryKeys.brand(tourOperatorId),
+					queryKey: queryKeys.operatorDetails(tourOperatorId),
 				}),
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
@@ -235,12 +234,12 @@ export const useBrandSocialLinksForm = (
 		BrandSocialLinksFormData
 	>({
 		mutationFn: async ({ socialLinks }) =>
-			putMerged(queryClient, tourOperatorId, { socialLinks }),
+			patchBrandSection(queryClient, tourOperatorId, { socialLinks }),
 		onSuccess: async () => {
 			setErrorMessage(null);
 			await Promise.all([
 				queryClient.invalidateQueries({
-					queryKey: queryKeys.brand(tourOperatorId),
+					queryKey: queryKeys.operatorDetails(tourOperatorId),
 				}),
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),

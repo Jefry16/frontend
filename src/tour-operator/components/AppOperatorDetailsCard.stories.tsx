@@ -14,6 +14,16 @@ const details = (
 	context: "tour-operators",
 	name: "Acme Tours",
 	handle: "acme-tours",
+	brand: {
+		slogan: null,
+		shortDescription: null,
+		logoMediaId: null,
+		squareLogoMediaId: null,
+		faviconMediaId: null,
+		coverImageMediaId: null,
+		colors: { primary: [], secondary: [] },
+		socialLinks: [],
+	},
 	address: {
 		address1: "Calle Mayor 1",
 		address2: null,
