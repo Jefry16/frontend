@@ -19,9 +19,11 @@ const CATEGORY: Category = {
 function client() {
 	const qc = storyQueryClient();
 	qc.setQueryData(queryKeys.category(OP, CAT), CATEGORY);
-	qc.setQueryData(queryKeys.operatorLocales(OP), {
-		primaryLocale: "en",
-		supportedLocales: ["en", "es"],
+	qc.setQueryData(queryKeys.operatorDetails(OP), {
+		locales: {
+			primaryLocale: "en",
+			supportedLocales: ["en", "es"],
+		},
 	});
 	const key = queryKeys.categoryTranslations(OP, CAT);
 	qc.setQueryData([...key], []);

@@ -19,9 +19,11 @@ const AUDIENCE: Audience = {
 function client() {
 	const qc = storyQueryClient();
 	qc.setQueryData(queryKeys.audience(OP, AUD), AUDIENCE);
-	qc.setQueryData(queryKeys.operatorLocales(OP), {
-		primaryLocale: "en",
-		supportedLocales: ["en", "es"],
+	qc.setQueryData(queryKeys.operatorDetails(OP), {
+		locales: {
+			primaryLocale: "en",
+			supportedLocales: ["en", "es"],
+		},
 	});
 	const key = queryKeys.audienceTranslations(OP, AUD);
 	qc.setQueryData([...key], []);

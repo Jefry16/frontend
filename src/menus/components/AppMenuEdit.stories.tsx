@@ -30,9 +30,11 @@ const MENU: Menu = {
 
 const qc = storyQueryClient((qc) => {
 	qc.setQueryData(queryKeys.menu(OP, MENU_ID), MENU);
-	qc.setQueryData(queryKeys.operatorLocales(OP), {
-		primaryLocale: "en",
-		supportedLocales: ["en"],
+	qc.setQueryData(queryKeys.operatorDetails(OP), {
+		locales: {
+			primaryLocale: "en",
+			supportedLocales: ["en"],
+		},
 	});
 	qc.setQueryData(
 		[...queryKeys.experiences(OP), "all-pages"],

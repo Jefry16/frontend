@@ -28,9 +28,11 @@ const seed = (supportedLocales: string[]) =>
 	storyQueryClient((qc) => {
 		qc.setQueryData(queryKeys.policy(OP, ID), POLICY);
 		qc.setQueryData(queryKeys.policyTranslations(OP, ID), [ES]);
-		qc.setQueryData(queryKeys.operatorLocales(OP), {
-			primaryLocale: "en",
-			supportedLocales,
+		qc.setQueryData(queryKeys.operatorDetails(OP), {
+			locales: {
+				primaryLocale: "en",
+				supportedLocales,
+			},
 		});
 	});
 

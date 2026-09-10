@@ -27,9 +27,11 @@ const FR: OperatorTranslation = {
 
 const seed = (supportedLocales: string[]) =>
 	storyQueryClient((qc) => {
-		qc.setQueryData(queryKeys.operatorLocales(OP), {
-			primaryLocale: "en",
-			supportedLocales,
+		qc.setQueryData(queryKeys.operatorDetails(OP), {
+			locales: {
+				primaryLocale: "en",
+				supportedLocales,
+			},
 		});
 		qc.setQueryData(queryKeys.operatorTranslations(OP), [ES]);
 		qc.setQueryData(queryKeys.operatorTranslation(OP, "es"), ES);

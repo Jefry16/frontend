@@ -36,7 +36,7 @@ export const useOperatorLanguagesForm = (
 			setErrorMessage(null);
 			toast.updated(m.languages());
 			queryClient.invalidateQueries({
-				queryKey: queryKeys.operatorLocales(tourOperatorId),
+				queryKey: queryKeys.operatorDetails(tourOperatorId),
 			});
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
