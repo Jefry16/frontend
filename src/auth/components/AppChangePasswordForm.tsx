@@ -12,8 +12,6 @@ import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useChangePasswordForm } from "../hooks/use-change-password-form";
 
-// The change-password card: current + new + confirm, validated against the
-// shared password policy. On success the fields clear (form.reset in the hook).
 export const AppChangePasswordForm = () => {
 	const { form, isPending, errorMessage } = useChangePasswordForm();
 

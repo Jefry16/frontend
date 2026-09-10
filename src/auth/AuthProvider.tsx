@@ -29,7 +29,6 @@ interface AuthContextType {
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	login: (email: string, password: string) => Promise<AuthUser>;
-	/** Login minus the credentials post — the server has already set the refresh cookie. */
 	establishSession: (accessToken: string) => Promise<AuthUser>;
 	logout: () => Promise<void>;
 	refreshUser: () => Promise<AuthUser | null>;
@@ -42,8 +41,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const navigate = useNavigate();
 	const [bootstrapped, setBootstrapped] = useState(false);
 
-	// Trade the httpOnly refresh cookie for an access token; failing that, the
-	// visitor is simply unauthenticated.
 	useEffect(() => {
 		let cancelled = false;
 		(async () => {
@@ -53,7 +50,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				);
 				if (!cancelled) setAccessToken(data.accessToken);
 			} catch {
-				// no session — user remains unauthenticated
 			} finally {
 				if (!cancelled) setBootstrapped(true);
 			}
@@ -71,10 +67,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		retry: false,
 	});
 
-	// The profile is the source of truth for the UI language (set once, follows
-	// the user across devices); the Paraglide cookie is only a cache. When they
-	// disagree, apply the profile's — setLocale writes the cookie and reloads
-	// once, after which they agree and this no-ops.
 	const profileLanguage = profileQuery.data?.language;
 	useEffect(() => {
 		if (
@@ -86,8 +78,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	}, [profileLanguage]);
 
-	// When a background refresh finally fails (session gone), drop the cached
-	// profile and bounce to login.
 	useEffect(() => {
 		setOnAuthExpired(() => {
 			queryClient.clear();
@@ -98,8 +88,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		};
 	}, [navigate, queryClient]);
 
-	// The whole cache, not just `authProfile`: nothing reloads the page in an SPA,
-	// so anything left behind is served to the next session.
 	const clearSessionCache = useCallback(() => {
 		queryClient.clear();
 	}, [queryClient]);
@@ -138,9 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const logout = useCallback(async () => {
 		try {
 			await authApi.post("/auth/logout");
-		} catch {
-			// best-effort; clear local state regardless
-		}
+		} catch {}
 		clearAccessToken();
 		clearSessionCache();
 	}, [clearSessionCache]);

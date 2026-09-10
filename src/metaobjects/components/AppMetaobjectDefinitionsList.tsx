@@ -7,8 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { metaobjectDefinitionColumns } from "../columns";
 
-// The operator's metaobject definitions as the standard cursor table
-// (Content → Metaobjects).
 export const AppMetaobjectDefinitionsList = ({
 	tourOperatorId,
 }: {

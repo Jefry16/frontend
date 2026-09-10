@@ -1,10 +1,6 @@
 import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 
-// `fields` is how many facts the card will hold, so the placeholder reserves
-// the real height and nothing jumps when the record lands. `variant` mirrors
-// how the card lays them out: one block per fact, or AppDetailField's label
-// bar over a value bar.
 export const AppDetailSkeleton = ({
 	fields,
 	variant = "plain",

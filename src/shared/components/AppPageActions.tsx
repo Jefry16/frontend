@@ -22,14 +22,9 @@ export interface AppAction {
 	confirm?: { title: string; description?: string; confirmLabel?: string };
 	disabled?: boolean;
 	pending?: boolean;
-	// A claim about the backend, not a UI preference: set it only where the check
-	// is `ensureMember` or membership alone. Absent means ADMIN+.
 	member?: boolean;
 }
 
-// `canWrite` is a required prop, not a hook call, because `shared/` may not
-// import `tour-operator/`. Required so a new call site fails typecheck rather
-// than quietly showing STAFF a button the backend will 403.
 export function AppPageActions({
 	actions,
 	canWrite,
@@ -37,12 +32,8 @@ export function AppPageActions({
 	actions: AppAction[];
 	canWrite: boolean;
 }) {
-	// By id, not the object, so `confirming` re-reads from the live set: its
-	// `pending` tracks the mutation, and the dialog closes itself when the action
-	// leaves the set.
 	const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
-	// Everything below derives from `visible`, never `actions`.
 	const visible = actions.filter((action) => canWrite || action.member);
 	const confirming = confirmingId
 		? (visible.find((a) => a.id === confirmingId) ?? null)
@@ -55,7 +46,6 @@ export function AppPageActions({
 
 	if (visible.length === 0) return null;
 
-	// A destructive action never leads; if they all are, the first still has to.
 	const firstSafe = visible.findIndex((a) => a.variant !== "destructive");
 	const primaryIndex = firstSafe !== -1 ? firstSafe : 0;
 	const primary = visible[primaryIndex];
@@ -83,7 +73,6 @@ export function AppPageActions({
 							variant="outline"
 							size="icon"
 							aria-label={m.more_actions()}
-							// outline's bg-background reads grey on a white card.
 							className="bg-card dark:bg-card"
 						>
 							<MoreHorizontal />
@@ -122,9 +111,6 @@ export function AppPageActions({
 					confirmLabel={confirming.confirm?.confirmLabel ?? confirming.label}
 					destructive={confirming.variant === "destructive"}
 					pending={confirming.pending}
-					// Don't close here: while the mutation runs the dialog shows its
-					// pending state, then auto-closes when the action leaves the set (on
-					// success) — and stays open on error so the user can retry.
 					onConfirm={confirming.onSelect}
 				/>
 			)}

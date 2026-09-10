@@ -5,9 +5,6 @@ import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
 import type { ContactMessageListItem } from "./types";
 
-// The inbox columns: subject (links to the message), sender, received.
-// name/email/summary are filter-only — the backend sorts by id/createdAt
-// (name is nullable, and nullable columns can't keyset-sort).
 export const contactMessageColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

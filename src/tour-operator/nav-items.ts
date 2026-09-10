@@ -29,11 +29,9 @@ export interface NavLeaf {
 	label: string;
 	icon: LucideIcon;
 	link: Pick<LinkProps, "to" | "params">;
-	/** Match the route exactly (Dashboard) vs. prefix-match (section roots). */
 	exact?: boolean;
 }
 
-// A feature slice adds its leaf here — this file is what the sidebar renders.
 export const tourOperatorNavItems = (tourOperatorId: string): NavLeaf[] => [
 	{
 		label: m.dashboard(),
@@ -86,7 +84,6 @@ export const catalogNavItems = (tourOperatorId: string): NavLeaf[] => [
 	},
 ];
 
-// Pinned in the sidebar footer rather than listed with the feature nav.
 export const settingsNavItem = (tourOperatorId: string): NavLeaf => ({
 	label: m.settings(),
 	icon: Settings,
@@ -96,7 +93,6 @@ export const settingsNavItem = (tourOperatorId: string): NavLeaf => ({
 	},
 });
 
-// Shares NavLeaf with the feature nav so both render through SidebarNavLeaf.
 export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 	{
 		label: m.general(),

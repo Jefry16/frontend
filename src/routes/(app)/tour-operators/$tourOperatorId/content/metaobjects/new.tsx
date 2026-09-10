@@ -12,7 +12,6 @@ export const Route = createFileRoute(
 	component: NewMetaobjectDefinitionPage,
 });
 
-// Static "new" wins over the dynamic $definitionId sibling.
 function NewMetaobjectDefinitionPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

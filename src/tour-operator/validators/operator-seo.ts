@@ -1,8 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors OperatorSeoTitle 70 / OperatorSeoDescription 320 — the same bounds
-// the page SEO fields use, since both feed the same kind of search snippet.
 export const operatorSeoSchema = z.object({
 	seoTitle: z
 		.string()

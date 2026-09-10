@@ -37,8 +37,6 @@ describe("useMediaActions", () => {
 		expect(invalidated()).toEqual([ASSET, LIST, TRAIL]);
 	});
 
-	// Blank is a real value here — it CLEARS the description, so it must still
-	// reach the wire rather than being skipped as empty.
 	it("sends a blank alt rather than omitting it", async () => {
 		const body = vi.fn();
 		server.use(

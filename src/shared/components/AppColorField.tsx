@@ -14,21 +14,11 @@ interface AppColorFieldProps {
 	label: string;
 	description?: string;
 	required?: boolean;
-	/**
-	 * For a cell in a repeating row: a visible label on every row is noise, but
-	 * the control still needs a programmatic name — a placeholder is not one.
-	 */
 	hideLabel?: boolean;
 }
 
-// A colour the OPERATOR chose, not one of ours — so the swatch is the only place
-// in src/ that sets a colour inline rather than through a token. There is no
-// token for it and there cannot be: it is content. See COMPONENTS.md §4.
 const SWATCH = "size-9 shrink-0 cursor-pointer rounded-md border border-border";
 
-// Both controls, because neither alone is enough: the native picker is how you
-// choose a colour you do not know, and the text box is how you paste the one
-// your designer already gave you. They are one field — same value, same errors.
 export const AppColorField = ({
 	field,
 	label,
@@ -39,8 +29,6 @@ export const AppColorField = ({
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
 	const value = (field.state.value as string) ?? "";
-	// The picker's own value must always be a valid 6-digit hex or the browser
-	// silently shows black; the text box is where a half-typed value lives.
 	const swatchValue = /^#[0-9a-f]{6}$/i.test(value) ? value : "#000000";
 
 	return (
@@ -65,8 +53,6 @@ export const AppColorField = ({
 					id={field.name}
 					name={field.name}
 					value={value}
-					// Lower-cased on the way in, matching what the backend stores — so
-					// a pasted #0B3D5C does not read back differently after a save.
 					onChange={(e) => field.handleChange(e.target.value.toLowerCase())}
 					onBlur={field.handleBlur}
 					aria-invalid={isInvalid}

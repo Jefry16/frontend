@@ -20,7 +20,6 @@ const DEFINITION: MetafieldDefinition = {
 };
 
 const qc = storyQueryClient((qc) =>
-	// The pin select's options once "Metaobject reference" is chosen.
 	qc.setQueryData(
 		[...queryKeys.metaobjectDefinitions("op-1"), "all-pages"],
 		listPage([{ id: "mo-1", name: "Size chart" }]),

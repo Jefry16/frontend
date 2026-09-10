@@ -7,9 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { menuColumns } from "../columns";
 
-// The operator's navigation menus as the standard cursor table
-// (Content → Menus). Every operator starts with main-menu + footer, so the
-// empty state only shows after deleting them all.
 export const AppMenusList = ({
 	tourOperatorId,
 }: {

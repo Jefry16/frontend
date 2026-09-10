@@ -20,8 +20,6 @@ import { renderWithProviders } from "#/test/test-utils";
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 
-// One case per finding the hand rounds turned up, so this suite would have
-// caught the class instead of five separate readings.
 describe("accessibility", () => {
 	it("a facts list is a real description list", async () => {
 		const { container } = renderWithProviders(

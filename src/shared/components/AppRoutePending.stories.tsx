@@ -9,6 +9,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// What a cold load shows before the bundle boots: the prerendered shell is this
-// and nothing else.
 export const Default: Story = {};

@@ -12,8 +12,6 @@ import {
 } from "../format";
 import { useActivityLog } from "../hooks/use-activity-log";
 
-// Actor names arrive ON each entry, frozen at write time — no roster fetch and
-// no client-side join.
 export const AppActivityLog = ({
 	tourOperatorId,
 	entityType,
@@ -42,8 +40,6 @@ export const AppActivityLog = ({
 
 	const entries = log.data.pages.flatMap((page) => page.data);
 	if (entries.length === 0) {
-		// Not a full AppEmptyState: "no activity" is not a first-run state a CTA
-		// could fix.
 		return (
 			<p className="text-sm text-muted-foreground">{m.activity_empty()}</p>
 		);

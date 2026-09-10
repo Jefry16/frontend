@@ -29,10 +29,6 @@ interface AppAlertProps {
 	className?: string;
 }
 
-// A semantic inline alert (icon + title + description) over the shadcn `Alert`
-// primitive. Picks the icon + token color per variant so callers never repeat
-// the `text-destructive`/`text-info` incantation. Defaults to destructive
-// (the common case — a server-error banner above a form).
 export const AppAlert = ({
 	variant = "destructive",
 	title,

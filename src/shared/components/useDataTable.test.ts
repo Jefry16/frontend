@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildParams } from "./useDataTable";
 
-// Pins that a filter sends the column id, and a sort sends the field-map
-// override when one exists.
 const params = (over: Partial<Parameters<typeof buildParams>[0]> = {}) =>
 	buildParams({
 		cursor: null,
@@ -42,8 +40,6 @@ describe("buildParams", () => {
 		).toBe("");
 	});
 
-	// The one indirection that is real: a column whose id differs from the API's
-	// sort field. `slots/columns.tsx` is the only user (experience → experienceName).
 	it("maps sort through the column's sortField override", () => {
 		expect(
 			params({

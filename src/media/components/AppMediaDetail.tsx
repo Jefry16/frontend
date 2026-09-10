@@ -25,9 +25,6 @@ import { useMediaActions } from "../hooks/use-media-actions";
 import type { MediaAsset } from "../types";
 import { AppMediaAltDialog } from "./AppMediaAltDialog";
 
-// Read-only media detail (preview + facts) plus a destructive Delete, via the
-// shared action pattern. Owns its fetch (skeleton / 404 empty state). The
-// library's name column links here.
 export const AppMediaDetail = ({
 	tourOperatorId,
 	mediaId,
@@ -51,7 +48,6 @@ export const AppMediaDetail = ({
 		</AppBackLink>
 	);
 
-	// Delete is independent of the loaded record, so it's built once here.
 	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
@@ -177,8 +173,6 @@ const MediaFacts = ({
 						{isImage(media.contentType) ? (
 							<img
 								src={media.url}
-								// The filename is a poor description but beats nothing while
-								// alt is unset; the Edit alt text action fills it in.
 								alt={media.alt ?? media.originalName}
 								className="max-h-64 rounded object-contain"
 							/>

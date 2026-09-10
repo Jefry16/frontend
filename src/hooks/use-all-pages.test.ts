@@ -12,7 +12,6 @@ interface Row {
 	id: string;
 }
 
-/** Serves `pages` in order, handing back each one's cursor. */
 const paginated = (pages: { data: Row[]; nextCursor: string | null }[]) => {
 	const cursors: (string | null)[] = [];
 	return {
@@ -52,13 +51,6 @@ describe("useAllPages", () => {
 		expect(result.current.rows.map((r) => r.id)).toEqual(["a", "b", "c", "d"]);
 	});
 
-	// The whole point of the hook: a consumer filtering a catalogue must never be
-	// handed a partial one, or its options silently exclude real rows.
-	//
-	// Every render is recorded rather than polled. waitFor samples on an interval
-	// and can step straight over the render that reports one page as settled —
-	// which it did, and the first version of this test passed against a hook that
-	// leaked the partial set.
 	it("never reports settled while pages remain", async () => {
 		const { handler } = paginated([
 			{ data: [{ id: "a" }], nextCursor: "c1" },
@@ -87,8 +79,6 @@ describe("useAllPages", () => {
 		expect(leaked).toEqual([]);
 	});
 
-	// Cursors are opaque and routinely base64 — an unencoded `+` arrives as a
-	// space and the server answers from the wrong position, silently.
 	it("url-encodes the cursor", async () => {
 		const { handler, cursors } = paginated([
 			{ data: [{ id: "a" }], nextCursor: "a+b/c==" },
@@ -102,10 +92,6 @@ describe("useAllPages", () => {
 		expect(cursors).toEqual([null, "a+b/c=="]);
 	});
 
-	// The stall this hook shipped with: between page two and page three the
-	// effect's dependencies hold the values they already held, so it never re-ran
-	// and the list stopped at two pages while `isPending` stayed true. Six pages
-	// is well past that, and past the point any hand-run check would notice.
 	it("keeps going well past the second page", async () => {
 		server.use(
 			http.get(`${API}${ENDPOINT}`, ({ request }) => {
@@ -148,9 +134,6 @@ describe("useAllPages", () => {
 		expect(calls).toHaveBeenCalledTimes(1);
 	});
 
-	// A failure PART WAY through is the dangerous one: rows are already in hand,
-	// so a naive `isPending` reads settled and the caller renders a truncated
-	// catalogue as if it were whole.
 	it("surfaces a mid-pagination failure instead of loading forever", async () => {
 		let call = 0;
 		server.use(

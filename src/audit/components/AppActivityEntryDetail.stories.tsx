@@ -53,7 +53,6 @@ const decorate = (e: AuditLogEntry) => (Story: React.ComponentType) => (
 
 export const WithChanges: Story = { decorators: [decorate(entry({}))] };
 
-// A pure event: no field diff, identity in details instead.
 export const PureEvent: Story = {
 	decorators: [
 		decorate(

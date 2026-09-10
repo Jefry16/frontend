@@ -9,24 +9,16 @@ import { useMetaobjectForm } from "../hooks/use-metaobject-form";
 import type { Metaobject, MetaobjectDefinition } from "../types";
 import { deriveSlug } from "../validators/metaobject";
 
-/**
- * TanStack proves a field path against the value type, and `values` is a
- * `Record<string, string>` whose keys arrive from the definition at runtime —
- * so `values.<key>` is not in the union it can prove. Cast once here, the way
- * AppMenuItemsEditor handles its recursive tree, rather than at each use.
- */
 interface ValuesForm {
 	Field: (props: {
 		name: string;
 		children: (field: {
-			// Undefined is reachable: this indexes a record keyed at runtime.
 			state: { value: string | undefined };
 			handleChange: (value: string) => void;
 		}) => ReactNode;
 	}) => ReactNode;
 }
 
-// Value validation is the backend's — a per-field 422 surfaces in the alert.
 export const AppMetaobjectForm = ({
 	tourOperatorId,
 	definition,

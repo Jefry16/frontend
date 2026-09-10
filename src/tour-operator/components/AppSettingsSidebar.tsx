@@ -17,10 +17,6 @@ import { settingsSectionItems } from "../nav-items";
 import { AppSignOutButton } from "./AppSignOutButton";
 import { SidebarNavLeaf } from "./SidebarNavLeaf";
 
-// The settings space's own rail (Shopify's model): under /settings/* the operator
-// sidebar is swapped for this — a back-to-app header plus the grouped section
-// list. Same Sidebar primitives as the operator shell, so look, active states,
-// and mobile collapse all match. The swap itself lives in the layout route.
 export const AppSettingsSidebar = () => {
 	const operator = useCurrentTourOperator();
 	const sections = operator ? settingsSectionItems(operator.id) : [];

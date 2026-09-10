@@ -40,7 +40,6 @@ const save = async (
 	});
 };
 
-/** Records the one request the whole edit should now be. */
 const recording = (seen: { path: string; body: unknown }[]) =>
 	http.put(
 		`${API}/tour-operators/:op/metafields/:ownerType/:ownerId`,
@@ -54,8 +53,6 @@ const recording = (seen: { path: string; body: unknown }[]) =>
 	);
 
 describe("useMetafieldValueSave", () => {
-	// One request for the whole edit, keyed `namespace.key`. It used to be one
-	// request per field, so a count of 1 is half of what this asserts.
 	it("sends the whole edit as a single keyed write", async () => {
 		const seen: { path: string; body: unknown }[] = [];
 		server.use(recording(seen));
@@ -69,9 +66,6 @@ describe("useMetafieldValueSave", () => {
 		});
 	});
 
-	// An emptied box is a CLEAR, and a clear is a key sent blank. Omitting it
-	// would leave the old value in place — a save that says it worked and
-	// changes nothing — because the write is a merge, not a replace.
 	it("carries an emptied field as a blank rather than dropping it", async () => {
 		const seen: { path: string; body: unknown }[] = [];
 		server.use(recording(seen));
@@ -82,9 +76,6 @@ describe("useMetafieldValueSave", () => {
 		expect(seen[0].body).toEqual({ values: { "custom.notes": "" } });
 	});
 
-	// The owner is addressed by type and id. The operator is its own owner, and
-	// its id used to be dropped from the path because it was already the tenant
-	// — which is exactly what 404s against the endpoint that replaced it.
 	it.each([
 		[
 			"experience",
@@ -106,8 +97,6 @@ describe("useMetafieldValueSave", () => {
 		expect(seen[0].path).toBe(path);
 	});
 
-	// The backend validates every entry before writing any, so a refusal leaves
-	// nothing written and the message names the key that caused it.
 	it("surfaces the backend's reason when the write is refused", async () => {
 		server.use(
 			http.put(`${API}/tour-operators/:op/metafields/:ownerType/:ownerId`, () =>

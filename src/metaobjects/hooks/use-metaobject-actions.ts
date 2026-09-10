@@ -6,12 +6,6 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on one entry (all ADMIN+): publish/unpublish through the
-// one `published` sub-resource, and delete (values cascade; success copy +
-// navigation left to the caller). Everything refreshes detail + list + trail.
-//
-// A redundant flip is a silent no-op, not the 409 this used to claim — the use
-// case returns before it writes when the entry is already in that state.
 export const useMetaobjectActions = (
 	tourOperatorId: string,
 	metaobjectId: string,

@@ -8,13 +8,7 @@ import { setAccessToken } from "#/lib/tokens";
 
 interface ProvidersOptions {
 	queryClient?: QueryClient;
-	/**
-	 * Wrap in AuthProvider — needed for anything that calls `useAuth`. Implied
-	 * when `user` is set. Components using it must mock `useNavigate` (AuthProvider
-	 * reads it) unless rendered under a real router.
-	 */
 	withAuth?: boolean;
-	/** Seed an authenticated session: sets a token + primes the profile query. */
 	user?: AuthUser;
 }
 

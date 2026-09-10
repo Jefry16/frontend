@@ -6,12 +6,6 @@ import { AppFormCard } from "#/shared/components/AppFormCard";
 import { useCategoryForm } from "../hooks/use-category-form";
 import type { Category } from "../types";
 
-// The category form — create (no `category`) or edit (with one): the name, and
-// nothing else the operator may change.
-//
-// The hint is create-only on purpose. The storefront handle is derived from the
-// name at create and never regenerated, so "generated from this name" is true
-// exactly once; on edit it would describe something the save no longer does.
 export const AppCategoryForm = ({
 	tourOperatorId,
 	category,

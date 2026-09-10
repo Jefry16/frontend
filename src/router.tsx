@@ -14,7 +14,6 @@ export function getRouter() {
 		scrollRestoration: true,
 		defaultPreload: "intent",
 		defaultPreloadStaleTime: 0,
-		// Also what the SPA shell prerenders — see AppRoutePending.
 		defaultPendingComponent: AppRoutePending,
 		context: { queryClient },
 	});

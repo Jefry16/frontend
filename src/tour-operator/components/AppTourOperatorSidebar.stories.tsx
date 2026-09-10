@@ -28,9 +28,6 @@ const USER: AuthUser = {
 const qc = storyQueryClient();
 qc.setQueryData(queryKeys.authProfile, USER);
 
-// The nav is driven by the current-operator route param, which the framework's
-// memory router resolves at "/" — so here the sidebar shows just the switcher;
-// the full nav renders in the running app under an operator route.
 const meta = {
 	title: "TourOperator/AppTourOperatorSidebar",
 	component: AppTourOperatorSidebar,

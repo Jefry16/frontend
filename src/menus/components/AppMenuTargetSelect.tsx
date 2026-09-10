@@ -12,7 +12,6 @@ import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// Declared locally so menus does not import experiences/pages for two fields.
 interface ExperienceRow {
 	id: string;
 	name: string;
@@ -36,7 +35,6 @@ export const AppMenuTargetSelect = ({
 	value: string;
 	onValueChange: (value: string) => void;
 	ariaLabel: string;
-	/** Shown below, the way a renderer would. */
 	errors?: { message?: string }[];
 }) => {
 	const experiences = useAllPages<ExperienceRow>(
@@ -52,8 +50,6 @@ export const AppMenuTargetSelect = ({
 	if (catalogue.isPending) {
 		return <Skeleton className="h-9 w-full" />;
 	}
-	// Without this a failed fetch renders as "Not set", which lies about the
-	// stored target.
 	if (catalogue.isError) {
 		return <p className="text-sm text-destructive">{m.error()}</p>;
 	}

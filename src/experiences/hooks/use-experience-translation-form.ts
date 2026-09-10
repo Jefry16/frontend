@@ -34,6 +34,5 @@ export const useExperienceTranslationForm = ({
 			queryKeys.experienceTranslations(tourOperatorId, experienceId),
 			queryKeys.experienceTranslation(tourOperatorId, experienceId, locale),
 		],
-		// A 409 here is a localized-slug collision (per operator + locale).
 		conflictMessage: m.slug_taken(),
 	});

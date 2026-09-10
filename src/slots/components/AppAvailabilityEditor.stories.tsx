@@ -8,8 +8,6 @@ import { AppAvailabilityEditor } from "./AppAvailabilityEditor";
 const OP = "op-1";
 const EXPERIENCE_ID = "e-1";
 
-// Only the fields the editor reads — the seeded object stands in for a full
-// Experience response.
 const EXPERIENCE = {
 	id: EXPERIENCE_ID,
 	context: "experiences",
@@ -62,5 +60,4 @@ const decorate = (audiences: Audience[]) => (Story: React.ComponentType) => (
 
 export const Default: Story = { decorators: [decorate(AUDIENCES)] };
 
-// No audiences yet → the prerequisite guard instead of the forms.
 export const NoAudiences: Story = { decorators: [decorate([])] };

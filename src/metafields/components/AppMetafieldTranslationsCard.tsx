@@ -20,24 +20,11 @@ import { useOwnerMetafields } from "../hooks/use-owner-metafields";
 import type { MetafieldOwnerTypeCode, MetafieldTypeCode } from "../types";
 import { AppTypedValueInput } from "./AppTypedValueInput";
 
-/**
- * Only text carries a translation. The backend refuses the rest on the same
- * grounds — a number or a date reads the same in every locale, and pointing a
- * metaobject reference somewhere else per locale is content selection, a
- * different feature. Sending a non-translatable key 422s, so the filter is what
- * keeps the form honest rather than a cosmetic choice.
- */
 const TRANSLATABLE: readonly MetafieldTypeCode[] = [
 	"single_line_text",
 	"multi_line_text",
 ];
 
-/**
- * One locale's overlay over the owner's metafield values, for whichever locale
- * the surrounding editor has selected. Renders nothing when the operator has
- * defined no translatable metafield for this owner kind — the same silence
- * AppMetafieldsCard keeps when there are no definitions at all.
- */
 export const AppMetafieldTranslationsCard = ({
 	tourOperatorId,
 	ownerType,
@@ -103,8 +90,6 @@ export const AppMetafieldTranslationsCard = ({
 	const translated = overlay.data;
 	const current = (id: string) => drafts[id] ?? translated[id] ?? "";
 
-	// A whitespace-only draft means "not translated in this locale", and a blank
-	// value is exactly how the endpoint clears one — so it rides along as "".
 	const effective = (raw: string) => (raw.trim() === "" ? "" : raw);
 	const changes = Object.fromEntries(
 		definitions

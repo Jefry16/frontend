@@ -35,11 +35,7 @@ const MEMBERS: Member[] = [
 	},
 ];
 
-// staleTime: Infinity so the seeded page is treated as fresh — no background
-// refetch (which would fail with no network and surface an error row).
 const qc = storyQueryClient();
-// Seed the infinite-query cache under the exact key useDataTable builds on first
-// render (queryKey + endpoint + empty sorting/filters + undefined baseParams).
 qc.setQueryData(
 	[
 		...queryKeys.members(OP_ID),

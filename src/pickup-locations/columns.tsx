@@ -6,9 +6,6 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { formatTime } from "./format";
 import type { PickupLocation } from "./types";
 
-// The pickup-location columns: name (sortable + text filter, links to detail),
-// meeting time (sortable), createdAt (sortable; API default = newest first).
-// A factory so the cells close over the operator id and timezone.
 export const pickupLocationColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

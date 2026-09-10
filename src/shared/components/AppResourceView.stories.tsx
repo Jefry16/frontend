@@ -4,7 +4,6 @@ import { Compass } from "lucide-react";
 import { Skeleton } from "#/components/ui/skeleton";
 import { AppResourceView } from "./AppResourceView";
 
-// A minimal fake query — AppResourceView only reads data/isPending/error/refetch.
 const query = (over: Partial<UseQueryResult<string>>): UseQueryResult<string> =>
 	({
 		data: undefined,

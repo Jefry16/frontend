@@ -2,10 +2,6 @@ import { z } from "zod";
 import * as m from "#/paraglide/messages";
 import { passwordSchema } from "./password";
 
-// Mirrors the backend value objects (identity/domain/valueobject):
-// UserName (2–100 after trim), Email (≤255), Password (see passwordSchema).
-// Keeping these in lockstep means a bad field is rejected client-side with a
-// precise message instead of coming back as an opaque 422 from the server.
 export const registerSchema = z
 	.object({
 		name: z

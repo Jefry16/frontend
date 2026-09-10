@@ -13,9 +13,6 @@ import {
 	operatorLocalesSchema,
 } from "../validators/locales";
 
-// The Languages settings form: PATCH /locales with the operator's primary +
-// supported content languages. Stays on the page after save (in-place settings
-// update) and invalidates the locales query so the form re-baselines.
 export const useOperatorLanguagesForm = (
 	tourOperatorId: string,
 	locales: OperatorLocales,
@@ -29,9 +26,9 @@ export const useOperatorLanguagesForm = (
 		AxiosError,
 		OperatorLocalesFormData
 	>({
-		// One key only, and BOTH fields every time: a partial `locales` is a 422,
-		// and so is a primary that is not among the supported set.
 		mutationFn: async (locales) => {
+			// Both fields every time: a partial `locales` is a 422, and so is a primary
+			// that is not among the supported set.
 			await authApi.patch(`/tour-operators/${tourOperatorId}`, { locales });
 		},
 		onSuccess: () => {

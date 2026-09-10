@@ -10,9 +10,6 @@ import { AppSelectField } from "#/shared/components/AppSelectField";
 import { roleLabel } from "../format";
 import { useInviteMemberForm } from "../hooks/use-invite-member-form";
 
-// The invite-a-member form: name + email + role → POST an invitation, then on
-// to the new invitation's detail. The route owns the page chrome (wrapper,
-// header, breadcrumb) — this is just the card.
 export const AppInviteMemberForm = ({
 	tourOperatorId,
 }: {

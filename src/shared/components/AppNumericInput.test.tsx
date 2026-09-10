@@ -4,10 +4,6 @@ import { describe, expect, it, vi } from "vitest";
 import { renderWithProviders } from "#/test/test-utils";
 import { AppNumericInput } from "./AppNumericInput";
 
-// The gate is a REJECTION, not a transform: a keystroke that fails the pattern
-// never reaches onValueChange, so the consumer's value is unchanged and the
-// character never appears. Typing is the only way to see that — setting the
-// value directly bypasses the very handler under test.
 const type = async (text: string, decimal?: boolean) => {
 	const onValueChange = vi.fn();
 	renderWithProviders(
@@ -23,16 +19,12 @@ const type = async (text: string, decimal?: boolean) => {
 };
 
 describe("AppNumericInput", () => {
-	// Two keystrokes, two calls. The value stays "" because nothing here feeds it
-	// back, so each character is judged on its own rather than accumulating.
 	it("accepts digits", async () => {
 		const onValueChange = await type("42");
 
 		expect(onValueChange.mock.calls.flat()).toEqual(["4", "2"]);
 	});
 
-	// The value prop is controlled and stays "", so each keystroke is judged on
-	// its own. What matters is which characters get through at all.
 	it.each([
 		"a",
 		"-",
@@ -46,8 +38,6 @@ describe("AppNumericInput", () => {
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
-	// `type="number"` would accept "e" and "+" as exponent syntax and would let
-	// a scroll wheel change the value. That is why this is a gated text input.
 	it("rejects the exponent characters a number input would allow", async () => {
 		const onValueChange = await type("e");
 
@@ -66,8 +56,6 @@ describe("AppNumericInput", () => {
 		expect(onValueChange).toHaveBeenCalledWith(".");
 	});
 
-	// A price field must not become "1.2.3". The pattern allows at most one
-	// point, and the second is refused like any other bad character.
 	it("refuses a second decimal point", async () => {
 		const onValueChange = vi.fn();
 		renderWithProviders(
@@ -84,8 +72,6 @@ describe("AppNumericInput", () => {
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
-	// Reported raw so the consumer's schema owns the Number conversion and the
-	// bounds — the input never rounds, clamps or reformats behind the operator.
 	it("reports the raw string, leaving conversion to the schema", async () => {
 		const onValueChange = vi.fn();
 		renderWithProviders(

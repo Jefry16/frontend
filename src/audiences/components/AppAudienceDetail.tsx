@@ -16,9 +16,6 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useAudience } from "../hooks/use-audience";
 
-// Audience detail: the tier's facts + an Edit action. Owns its fetch
-// (skeleton / 404). Delete lands as a later slice. The list's name column
-// links here.
 export const AppAudienceDetail = ({
 	tourOperatorId,
 	audienceId,
@@ -68,7 +65,6 @@ export const AppAudienceDetail = ({
 							}),
 					},
 					{
-						// ListAudienceTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,

@@ -6,8 +6,6 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { MemberRole } from "../types";
 
-// `remove` leaves success handling to the caller: the toast copy and navigation
-// differ for leave vs remove. The backend guards (owner, last-owner, self) 4xx.
 export const useMemberActions = (tourOperatorId: string, userId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -37,8 +35,6 @@ export const useMemberActions = (tourOperatorId: string, userId: string) => {
 		onError: () => toast.error(m.error()),
 	});
 
-	// Its own action because it also demotes the CALLER to ADMIN, so the caller's
-	// own profile has to refresh too.
 	const transferOwnership = useMutation<unknown, AxiosError>({
 		mutationFn: () => authApi.patch(base, { role: "OWNER" }),
 		onSuccess: () => {

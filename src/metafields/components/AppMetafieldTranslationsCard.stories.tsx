@@ -36,8 +36,6 @@ const DEFINITIONS: MetafieldDefinitionListItem[] = [
 		id: "d-3",
 		context: "metafield-definitions",
 		ownerType: "experience",
-		// Not translatable — a number reads the same in every locale, so this
-		// must not get an input.
 		namespace: "specs",
 		key: "max-altitude",
 		type: "number_integer",
@@ -105,7 +103,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Nothing translated yet — every box empty, no Clear button. */
 export const Untranslated: Story = {
 	decorators: [withClient({})],
 };
@@ -119,7 +116,6 @@ export const Translated: Story = {
 	],
 };
 
-/** A STAFF member reads the overlay; writes are ADMIN+. */
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 	decorators: [withClient({ "custom.difficulty": "Moderado" })],

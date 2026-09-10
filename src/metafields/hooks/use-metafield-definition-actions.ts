@@ -5,9 +5,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// Delete (ADMIN+) — CASCADES every stored value for the definition, which is
-// why the caller's confirm dialog carries the warning. Success copy +
-// navigation are left to the caller.
 export const useMetafieldDefinitionActions = (
 	tourOperatorId: string,
 	definitionId: string,
@@ -24,7 +21,6 @@ export const useMetafieldDefinitionActions = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metafieldDefinitions(tourOperatorId),
 			});
-			// Cascaded values are gone too — drop every owner's cached editor.
 			queryClient.invalidateQueries({ queryKey: ["metafield-values"] });
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),

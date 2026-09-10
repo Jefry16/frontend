@@ -11,17 +11,13 @@ export interface SetFilterItem {
 	label: string;
 }
 
-// useDataTable serializes this to `filter[field][in]=a,b`.
 interface SetFilterValue {
 	operator: "in";
 	values: string[];
 }
 
-// Below this, a search box is noise.
 const SEARCH_THRESHOLD = 8;
 
-// Reads and writes the column's filter value directly — the checked set IS the
-// filter state, with no copy to keep in sync.
 export function AppSetFilter<TData>({
 	headerContext,
 	items,

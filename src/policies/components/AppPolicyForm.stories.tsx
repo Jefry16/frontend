@@ -34,8 +34,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Create — the type picker is offered, because the type is the address. */
 export const Create: Story = {};
 
-/** Edit — no type picker: the address is fixed once written. */
 export const Edit: Story = { args: { tourOperatorId: "op-1", policy: POLICY } };

@@ -5,10 +5,6 @@ import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
 import type { Audience } from "./types";
 
-// The audiences columns. Everything the list schema supports gets affordances:
-// name (sortable + text filter), paxPerUnit (sortable, right-aligned), createdAt
-// (sortable; API default = newest first). A factory so the date cell closes over
-// the operator's timezone. The name cell links to the detail once it exists.
 export const audienceColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

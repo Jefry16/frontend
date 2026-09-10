@@ -23,5 +23,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The table fetches through the shared cursor framework; unseeded it shows its loading face. */
 export const Default: Story = {};

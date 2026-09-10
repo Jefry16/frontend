@@ -10,7 +10,6 @@ import {
 } from "../validators/menu-items";
 import { useMenuActions } from "./use-menu-actions";
 
-/** Exported so the editor's "add" buttons agree on the shape. */
 export const emptyMenuItem = (): MenuItemFormNode => ({
 	title: "",
 	linkType: "HOME",
@@ -30,7 +29,6 @@ const toFormNodes = (nodes: MenuItemNode[]): MenuItemFormNode[] =>
 		children: toFormNodes(node.children),
 	}));
 
-// Drops the fields the chosen link kind does not use, and blank translations.
 const toPayload = (nodes: MenuItemFormNode[]): MenuItemInput[] =>
 	nodes.map((node) => {
 		const translations = Object.fromEntries(
@@ -48,8 +46,6 @@ const toPayload = (nodes: MenuItemFormNode[]): MenuItemInput[] =>
 		};
 	});
 
-// The whole tree saves wholesale via PUT /items: the backend has no per-item
-// call, so the form holds the tree and the submit maps it.
 export const useMenuItemsForm = (tourOperatorId: string, menu: Menu) => {
 	const navigate = useNavigate();
 	const { replaceItems } = useMenuActions(tourOperatorId, menu.id);

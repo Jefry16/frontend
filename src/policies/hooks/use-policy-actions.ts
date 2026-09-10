@@ -5,8 +5,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The policy's destructive action (ADMIN+, audited). Delete is idempotent
-// backend-side; success copy and navigation are the caller's.
 export const usePolicyActions = (tourOperatorId: string, policyId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();

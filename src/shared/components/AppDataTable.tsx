@@ -16,10 +16,8 @@ import * as m from "#/paraglide/messages";
 import { AppEmptyState } from "./AppEmptyState";
 import { useDataTable } from "./useDataTable";
 
-// Stable keys, so the skeleton rows need no array-index key.
 const SKELETON_ROW_KEYS = ["s0", "s1", "s2", "s3", "s4", "s5"];
 
-/** First-run empty state for a genuinely empty (unfiltered) list. */
 interface EmptyStateConfig {
 	icon?: LucideIcon;
 	title: string;
@@ -32,12 +30,9 @@ interface Props<TData extends { id: string }> {
 	endpoint: string;
 	queryKey: readonly unknown[];
 	baseParams?: Record<string, string>;
-	// For a genuinely empty list; filtered-to-nothing keeps the terse row.
 	emptyState?: EmptyStateConfig;
 }
 
-// The rendered shell over useDataTable. getIsSorted() answers
-// "asc" | "desc" | false, and aria-sort wants words for all three.
 const SORT_STATE = {
 	asc: "ascending",
 	desc: "descending",
@@ -80,7 +75,6 @@ export function AppDataTable<TData extends { id: string }>({
 	const rows = table.getRowModel().rows;
 	const visibleColumns = table.getVisibleFlatColumns();
 	const colSpan = visibleColumns.length;
-	// First-run vs filtered-to-nothing.
 	const filtersActive = table.getState().columnFilters.length > 0;
 	const showEmptyState = Boolean(emptyState) && !filtersActive;
 
@@ -94,13 +88,9 @@ export function AppDataTable<TData extends { id: string }>({
 								{headerGroup.headers.map((header) => (
 									<TableHead
 										key={header.id}
-										// The arrow icon is decoration; this is the only thing that
-										// announces sort state. `none` is load-bearing — it is what
-										// says the column can be sorted at all.
 										aria-sort={
 											header.column.columnDef.enableSorting === true
-												? // getIsSorted() answers `false` when unsorted, not "".
-													SORT_STATE[header.column.getIsSorted() || "none"]
+												? SORT_STATE[header.column.getIsSorted() || "none"]
 												: undefined
 										}
 										className={cn(

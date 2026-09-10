@@ -30,10 +30,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-// An unchanged or invalid form: confirm is out, Cancel still works.
 export const ConfirmDisabled: Story = { args: { disabled: true } };
 
-// Mid-save: both are out, so nothing races the request.
 export const Pending: Story = { args: { pending: true } };
 
 export const Destructive: Story = {

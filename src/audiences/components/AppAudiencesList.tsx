@@ -7,8 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { audienceColumns } from "../columns";
 
-// The operator's audiences (pax pricing tiers) as the standard cursor-paginated
-// table: name searchable, paxPerUnit + createdAt sortable, infinite scroll.
 export const AppAudiencesList = ({
 	tourOperatorId,
 }: {

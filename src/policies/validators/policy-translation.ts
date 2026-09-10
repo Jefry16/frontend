@@ -1,8 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Both fields optional here, unlike the canonical policy: an empty one collapses
-// to null so the PUT stores absence and that locale falls back.
 const overlay = (max: number) =>
 	z
 		.string()

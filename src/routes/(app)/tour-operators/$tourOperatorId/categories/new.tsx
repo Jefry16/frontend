@@ -12,7 +12,6 @@ export const Route = createFileRoute(
 	component: NewCategoryPage,
 });
 
-// Static "new" wins over the dynamic $categoryId sibling.
 function NewCategoryPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

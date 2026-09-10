@@ -4,8 +4,6 @@ import { Field, FieldLabel } from "#/components/ui/field";
 import { METAFIELD_TYPE_CODES, metafieldTypeLabel } from "../format";
 import { AppTypedValueInput } from "./AppTypedValueInput";
 
-// One live input per catalogue type — the single place the type→input
-// mapping renders.
 const AllTypes = () => {
 	const [values, setValues] = useState<Record<string, string>>({
 		single_line_text: "Moderate",

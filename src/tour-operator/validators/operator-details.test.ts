@@ -17,9 +17,6 @@ const valid = {
 };
 
 describe("operatorDetailsSchema", () => {
-	// PATCH /tour-operators/{id} clears an optional column on a BLANK string, not
-	// an absent field — so empty must survive parsing as "" rather than collapse
-	// to null the way every other optional field in this app does.
 	it("keeps an empty phone and email as blank, not null", () => {
 		const parsed = operatorDetailsSchema.parse(valid);
 		expect(parsed.phone).toBe("");

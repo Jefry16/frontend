@@ -5,9 +5,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on a single pickup location: delete (ADMIN+). Success
-// copy + navigation are left to the caller's per-call onSuccess (it navigates
-// back to the list); this invalidates the list and error-toasts.
 export const usePickupLocationActions = (
 	tourOperatorId: string,
 	pickupLocationId: string,

@@ -64,9 +64,6 @@ const put = (body: ReturnType<typeof vi.fn>) =>
 	});
 
 describe("usePageTranslationForm", () => {
-	// THE rule of every translation editor. An empty field is not a blank
-	// translation, it is NO translation — `null` is what makes the storefront
-	// fall back to the canonical text. Sending "" would publish an empty title.
 	it("sends null for an empty field, never an empty string", async () => {
 		const body = vi.fn();
 		server.use(put(body));
@@ -89,8 +86,6 @@ describe("usePageTranslationForm", () => {
 		});
 	});
 
-	// The PUT is a full replace, so a field the operator never touched has to
-	// ride along from the seeded overlay or it is silently cleared.
 	it("re-sends an untouched field rather than omitting it", async () => {
 		const body = vi.fn();
 		server.use(put(body));
@@ -140,8 +135,6 @@ describe("usePageTranslationForm", () => {
 		expect(body).not.toHaveBeenCalled();
 	});
 
-	// 409 here is a localized-handle collision, which the operator fixes by
-	// choosing another handle — distinct from any other save failure.
 	it("names a handle collision rather than reporting a generic failure", async () => {
 		server.use(http.put(URL, () => new HttpResponse(null, { status: 409 })));
 		const { result: conflict } = render();

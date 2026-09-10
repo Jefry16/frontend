@@ -20,8 +20,6 @@ export const Route = createFileRoute(
 	component: GeneralSettingsPage,
 });
 
-// Every card writes through an ADMIN+ endpoint while its read is member-visible,
-// so each takes `canWrite` and shows a read-only face to STAFF.
 function GeneralSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const operator = useCurrentTourOperator();

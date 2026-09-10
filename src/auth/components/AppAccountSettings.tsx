@@ -6,9 +6,6 @@ import { AppChangePasswordForm } from "./AppChangePasswordForm";
 import { AppLanguageCard } from "./AppLanguageCard";
 import { AppUserAvatarCard } from "./AppUserAvatarCard";
 
-// The signed-in user's own account settings (avatar + password) — a Settings
-// section. User-level, so it reads the profile from useAuth rather than an
-// operator-scoped query; `tourOperatorId` only scopes the Settings breadcrumb.
 export const AppAccountSettings = ({
 	tourOperatorId,
 }: {

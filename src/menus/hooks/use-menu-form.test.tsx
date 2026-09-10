@@ -17,10 +17,6 @@ vi.mock("@tanstack/react-router", async () => {
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
 
-// The POST used to be fired by the component, which awaited handleSubmit and
-// then checked form.state.isValid itself. Wiring useForm's onSubmit moves that
-// decision into form-core, so what these pin is the half that could regress
-// silently: an invalid form must not reach the network at all.
 const submit = (
 	form: {
 		setFieldValue: (n: "handle" | "title", v: string) => void;

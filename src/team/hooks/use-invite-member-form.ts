@@ -35,15 +35,12 @@ export const useInviteMemberForm = (tourOperatorId: string) => {
 				queryClient.invalidateQueries({
 					queryKey: queryKeys.activity(tourOperatorId),
 				});
-				// The new invitation's detail (create-navigates-to-detail rule) — it
-				// shows the pending status and carries the resend/revoke actions.
 				navigate({
 					to: "/tour-operators/$tourOperatorId/settings/invitations/$invitationId",
 					params: { tourOperatorId, invitationId },
 				});
 			},
 			onError: (error) => {
-				// 409 = the email is already a member or already has a pending invite.
 				setErrorMessage(
 					error.response?.status === 409 ? m.invitation_duplicate() : m.error(),
 				);

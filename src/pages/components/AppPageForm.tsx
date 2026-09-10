@@ -7,9 +7,6 @@ import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { usePageForm } from "../hooks/use-page-form";
 import type { Page } from "../types";
 
-// The page form — create (no `page`; includes the permanent handle) or edit
-// (content + SEO + template; the handle changes only through Rename on the
-// detail). Body is raw HTML in a plain textarea — stored exactly as written.
 export const AppPageForm = ({
 	tourOperatorId,
 	page,

@@ -25,9 +25,6 @@ import { useMetaobjectActions } from "../hooks/use-metaobject-actions";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
 import type { Metaobject } from "../types";
 
-// Entry detail: identity facts + every field's stored value (— when unset) +
-// Edit / Publish-Unpublish / Delete actions. The definition's entries table
-// links here.
 export const AppMetaobjectDetail = ({
 	tourOperatorId,
 	metaobjectId,
@@ -77,8 +74,6 @@ const MetaobjectView = ({
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
-	// The definition names the breadcrumb node (and its detail is the natural
-	// "up" destination for this entry).
 	const definition = useMetaobjectDefinition(
 		tourOperatorId,
 		entry.definitionId,

@@ -7,7 +7,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 import { AppPickupLocationForm } from "./AppPickupLocationForm";
 
-// The pickup-location edit page: fetches the record, renders the form pre-filled.
 export const AppPickupLocationEdit = ({
 	tourOperatorId,
 	pickupLocationId,

@@ -15,7 +15,6 @@ interface AcceptResponse {
 	id: string;
 	context: string;
 	operatorName: string;
-	// Present only when a new account was provisioned (auto-login).
 	accessToken: string | null;
 }
 
@@ -38,8 +37,6 @@ export const useAcceptInvitation = (token: string) => {
 		},
 		onSuccess: async (data) => {
 			setErrorMessage(null);
-			// New user → adopt the issued session; existing user → just refresh the
-			// profile so the newly-joined operator appears. Then land in it.
 			if (data.accessToken) await establishSession(data.accessToken);
 			else await refreshUser();
 			navigate({
@@ -63,7 +60,6 @@ export const useAcceptInvitation = (token: string) => {
 		onSubmit: ({ value }) => mutate(acceptInvitationSchema.parse(value)),
 	});
 
-	// undefined body = the authenticated one-click accept.
 	return {
 		form,
 		isPending,

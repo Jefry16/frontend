@@ -66,8 +66,6 @@ const submit = async (
 describe("useMetafieldDefinitionForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// The pinned metaobject type is meaningful for exactly one field type. For
-	// every other it must go over as null, not as whatever the select last held.
 	it("nulls the metaobject pin for a non-reference type", async () => {
 		const body = vi.fn();
 		server.use(
@@ -118,8 +116,6 @@ describe("useMetafieldDefinitionForm", () => {
 		expect(body.mock.calls[0][0].metaobjectDefinitionId).toBe("mo-1");
 	});
 
-	// namespace/key/type/ownerType are the identity every stored value is filed
-	// under, so an edit sends name and description ONLY.
 	it("sends only name and description on edit", async () => {
 		const body = vi.fn();
 		server.use(

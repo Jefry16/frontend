@@ -73,8 +73,6 @@ const created = (body: ReturnType<typeof vi.fn>) =>
 describe("useRecurringSlotForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// Unlike the single-slot form there is no composing: the weekday pattern and
-	// the date window go over as-is, and the BACKEND expands them into departures.
 	it("sends the pattern and window verbatim, with prices as numbers", async () => {
 		const body = vi.fn();
 		server.use(created(body));
@@ -92,8 +90,6 @@ describe("useRecurringSlotForm", () => {
 		});
 	});
 
-	// Many slots are minted at once and the response carries no Location, so this
-	// is the one create in the app that lands on the LIST rather than a detail.
 	it("navigates to the availability list, not to a detail page", async () => {
 		server.use(created(vi.fn()));
 		const { result } = render();

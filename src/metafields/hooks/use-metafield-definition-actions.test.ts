@@ -15,9 +15,6 @@ const ID = "def-1";
 const BASE = `${API}/tour-operators/${OP}/metafield-definitions/${ID}`;
 
 describe("useMetafieldDefinitionActions", () => {
-	// The delete cascades every stored value, on owners this hook knows nothing
-	// about — so it drops the whole `metafield-values` prefix rather than a key.
-	// Without that, an experience's editor keeps rendering a deleted field.
 	it("drops every owner's cached values, not just the definition list", async () => {
 		server.use(
 			http.delete(BASE, () => new HttpResponse(null, { status: 204 })),

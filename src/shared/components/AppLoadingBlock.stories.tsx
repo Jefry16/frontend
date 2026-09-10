@@ -19,5 +19,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// What a translation editor shows while the next locale's overlay loads.
 export const Default: Story = {};

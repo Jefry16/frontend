@@ -8,12 +8,9 @@ export const roleLabel = (role: MemberRole): string =>
 			? m.role_admin()
 			: m.role_staff();
 
-/** The owner stands out; the rest are neutral. */
 export const roleBadgeVariant = (role: MemberRole): "default" | "secondary" =>
 	role === "OWNER" ? "default" : "secondary";
 
-// A PENDING row past its window SHOWS as EXPIRED — the server flags `expired`
-// but leaves the stored status PENDING until a resend or accept moves it.
 export const effectiveStatus = (invitation: Invitation): InvitationStatus =>
 	invitation.status === "PENDING" && invitation.expired
 		? "EXPIRED"
@@ -28,7 +25,6 @@ export const statusLabel = (status: InvitationStatus): string =>
 				? m.status_revoked()
 				: m.status_expired();
 
-/** PENDING draws the eye; terminal states are muted. */
 export const statusBadgeVariant = (
 	status: InvitationStatus,
 ): "default" | "secondary" | "outline" =>

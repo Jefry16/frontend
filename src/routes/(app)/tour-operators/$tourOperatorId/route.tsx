@@ -16,14 +16,10 @@ export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({
 	component: TourOperatorLayout,
 });
 
-// Guards membership: the operator must be one the signed-in user belongs to,
-// and its summary rides the profile. The mobile strip exists only to hold the
-// SidebarTrigger — on desktop the sidebar is always visible.
 function TourOperatorLayout() {
 	const { isLoading } = useAuth();
 	const operator = useCurrentTourOperator();
 	const matchRoute = useMatchRoute();
-	// Everything under /settings swaps the operator sidebar for the settings rail.
 	const inSettings = !!matchRoute({
 		to: "/tour-operators/$tourOperatorId/settings",
 		fuzzy: true,

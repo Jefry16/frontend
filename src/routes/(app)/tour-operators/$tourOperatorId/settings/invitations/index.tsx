@@ -14,7 +14,6 @@ export const Route = createFileRoute(
 	component: InvitationsSettingsPage,
 });
 
-// The invite action reuses the members "new" page.
 function InvitationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

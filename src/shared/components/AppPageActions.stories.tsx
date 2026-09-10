@@ -12,15 +12,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// One action → a single button, no overflow menu.
 export const SingleAction: Story = {
 	args: {
 		actions: [{ id: "send", label: "Resend", icon: Send, onSelect: () => {} }],
 	},
 };
 
-// Several → primary button + a "…" overflow holding the rest. The destructive
-// action stays in the menu and gates behind a confirm dialog.
 export const PrimaryPlusOverflow: Story = {
 	args: {
 		actions: [
@@ -41,8 +38,6 @@ export const PrimaryPlusOverflow: Story = {
 	},
 };
 
-// A page whose actions span both tiers: editing is ADMIN+, reading the
-// translations is not.
 const MIXED_TIERS: AppAction[] = [
 	{ id: "edit", label: "Edit", icon: Copy, onSelect: () => {} },
 	{
@@ -65,7 +60,6 @@ export const MixedTiersAsAdmin: Story = {
 	args: { actions: MIXED_TIERS, canWrite: true },
 };
 
-// The `member` action survives alone, and takes the primary slot.
 export const MixedTiersAsStaff: Story = {
 	args: { actions: MIXED_TIERS, canWrite: false },
 };

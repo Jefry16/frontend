@@ -8,8 +8,6 @@ export const Route = createFileRoute(
 	component: MetaobjectDetailPage,
 });
 
-// Static "entries" wins over the dynamic $definitionId sibling; the flat
-// entry path keeps the audit table's entity links single-param.
 function MetaobjectDetailPage() {
 	const { tourOperatorId, metaobjectId } = Route.useParams();
 	return (

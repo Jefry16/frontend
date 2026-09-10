@@ -54,8 +54,6 @@ const submit = async (
 describe("useAudienceForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// paxPerUnit is a text input, so it arrives as a string; the column is an
-	// integer. The schema's transform is the only thing converting it.
 	it("posts the name and a NUMERIC paxPerUnit, then goes to the detail", async () => {
 		const body = vi.fn();
 		server.use(
@@ -117,7 +115,6 @@ describe("useAudienceForm", () => {
 		expect(body).not.toHaveBeenCalled();
 	});
 
-	// 409 here means the name is taken, which the operator can fix by renaming.
 	it("names a duplicate inline instead of a generic failure", async () => {
 		server.use(
 			http.post(BASE, () =>

@@ -9,9 +9,6 @@ import type { BrandImageSlot } from "../types";
 
 const MAX_BYTES = 25 * 1024 * 1024;
 
-// One of the brand's four image slots. Each is the same two-step — upload to
-// the media library, then point the slot at the new id — so this is the shape
-// four times rather than four near-copies.
 export const AppBrandImageSlot = ({
 	tourOperatorId,
 	slot,

@@ -27,11 +27,6 @@ import {
 import type { ExperienceTranslation } from "../types";
 import { AppExperienceTranslationForm } from "./AppExperienceTranslationForm";
 
-// The experience translations editor: a locale switcher (supported languages
-// minus the primary, which IS the canonical content) over a per-locale overlay
-// form. Owns the canonical fetch + the active-locale state; the form seeds from
-// the loaded overlay so it mounts only once that's in (keyed by locale to reseed
-// on switch).
 export const AppExperienceTranslations = ({
 	tourOperatorId,
 	experienceId,
@@ -62,8 +57,6 @@ export const AppExperienceTranslations = ({
 		"experience",
 		experienceId,
 	);
-	// A locale translated only in its metafields is still translated — the dot
-	// reads "has anything for this locale", not "has canonical fields".
 	const translated = new Set([
 		...(listQuery.data ?? []).map((t) => t.locale),
 		...(metafieldLocales.data ?? []),
@@ -173,7 +166,6 @@ export const AppExperienceTranslations = ({
 	);
 };
 
-// This resource's rows for AppTranslationSummary.
 const experienceFields = (t: ExperienceTranslation): TranslatedField[] => [
 	[m.name(), t.name],
 	[m.slug(), t.handle],

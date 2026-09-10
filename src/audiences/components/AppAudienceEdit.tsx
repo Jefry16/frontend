@@ -7,7 +7,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useAudience } from "../hooks/use-audience";
 import { AppAudienceForm } from "./AppAudienceForm";
 
-// The audience edit page: fetches the record, renders the form pre-filled.
 export const AppAudienceEdit = ({
 	tourOperatorId,
 	audienceId,

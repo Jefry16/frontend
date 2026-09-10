@@ -113,10 +113,6 @@ const DetailsForm = ({
 			className="space-y-4"
 			onSubmit={(e) => {
 				e.preventDefault();
-				// Moving the timezone reinterprets every stored departure: slots hold
-				// operator-local wall-clock times, so a 10:00 sailing stays "10:00" and
-				// silently means a different instant. The backend rewrites nothing, so
-				// this confirmation is the only warning there is.
 				const parsed = operatorDetailsSchema.safeParse(form.state.values);
 				if (parsed.success && parsed.data.timezoneId !== operator.timezoneId) {
 					setConfirmZone(parsed.data);

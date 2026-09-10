@@ -34,8 +34,6 @@ const USER: AuthUser = {
 	],
 };
 
-// Seed the profile in the query cache so useAuth resolves to a signed-in user
-// (React Query returns cached data even with the query disabled).
 const qc = storyQueryClient();
 qc.setQueryData(queryKeys.authProfile, USER);
 

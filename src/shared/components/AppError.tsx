@@ -3,10 +3,6 @@ import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppEmptyState } from "./AppEmptyState";
 
-// A transient-failure state for a load that errored (network / 5xx) — a title,
-// an optional detail, and a Retry. Distinct from AppNotFound: a 404 is a missing
-// record (no retry); this is "try again". Pass `onRetry` (e.g. the query's
-// refetch) to show the button.
 export function AppError({
 	title,
 	description,

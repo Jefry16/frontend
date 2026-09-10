@@ -7,10 +7,6 @@ import { queryKeys } from "#/lib/query-keys";
 import { type Locale, setLocale } from "#/paraglide/runtime";
 import type { AuthUser } from "../types";
 
-// Persists the user's admin-UI language (server-synced — follows the user across
-// devices), then applies it via Paraglide. setLocale reloads the page so every
-// message picks up the new catalog; the profile cache is updated first so the
-// post-reload bootstrap agrees with the cookie and doesn't flip back.
 export const useChangeUiLanguage = () => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();

@@ -20,8 +20,6 @@ const ENTRIES = ["metaobjects", OP];
 const TRAIL = ["activity", OP];
 
 describe("useMetaobjectDefinitionActions", () => {
-	// Deleting the blueprint takes its entries with it, so the entry list has to
-	// go even though this hook never touched an entry.
 	it("drops the entry list too when the definition goes", async () => {
 		server.use(
 			http.delete(BASE, () => new HttpResponse(null, { status: 204 })),
@@ -63,8 +61,6 @@ describe("useMetaobjectDefinitionActions", () => {
 		expect(invalidated()).toEqual([DETAIL, LIST, TRAIL]);
 	});
 
-	// Rename is the display name only — the key is the identity every stored
-	// value is filed under, so it addresses the field rather than being sent.
 	it("renames by key in the path and sends only the name", async () => {
 		const body = vi.fn();
 		server.use(
@@ -88,8 +84,6 @@ describe("useMetaobjectDefinitionActions", () => {
 		expect(body.mock.calls[0][0]).not.toHaveProperty("key");
 	});
 
-	// Removing a field cascades its values, so every entry's cached detail is
-	// stale — the entry list joins the usual definition set.
 	it("drops the entry list when a field is removed", async () => {
 		server.use(
 			http.delete(

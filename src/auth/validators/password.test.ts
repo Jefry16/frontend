@@ -13,13 +13,13 @@ describe("passwordSchema", () => {
 	});
 
 	it("requires upper, lower, number and special", () => {
-		expect(ok("password1!")).toBe(false); // no uppercase
-		expect(ok("PASSWORD1!")).toBe(false); // no lowercase
-		expect(ok("Password!!")).toBe(false); // no number
-		expect(ok("Password11")).toBe(false); // no special
+		expect(ok("password1!")).toBe(false);
+		expect(ok("PASSWORD1!")).toBe(false);
+		expect(ok("Password!!")).toBe(false);
+		expect(ok("Password11")).toBe(false);
 	});
 
 	it("rejects passwords over 72 UTF-8 bytes", () => {
-		expect(ok(`${"Aa1!".repeat(18)}x`)).toBe(false); // 73 chars
+		expect(ok(`${"Aa1!".repeat(18)}x`)).toBe(false);
 	});
 });

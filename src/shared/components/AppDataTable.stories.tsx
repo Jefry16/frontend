@@ -16,9 +16,6 @@ interface Row {
 const ENDPOINT = "/tour-operators/op-1/things";
 const KEY = ["things", "op-1"] as const;
 
-// useDataTable keys its infinite query by [...queryKey, endpoint, sorting,
-// columnFilters, baseParams] — seed that exact shape and the story renders
-// without a request.
 const seeded = (rows: Row[]) =>
 	storyQueryClient((qc) =>
 		qc.setQueryData([...KEY, ENDPOINT, [], [], undefined], listPage(rows)),
@@ -100,11 +97,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Sticky header, sortable columns (which announce via aria-sort), filter
-// popovers, and the timestamp column every list shares.
 export const Default: Story = {};
 
-// The first-run state: a genuinely empty list gets the CTA, not "No results".
 export const Empty: Story = {
 	decorators: [
 		(Story) => (

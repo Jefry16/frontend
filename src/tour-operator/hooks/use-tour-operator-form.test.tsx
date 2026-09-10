@@ -52,12 +52,6 @@ const fill = (form: {
 describe("useTourOperatorForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// The address is NESTED, and it carries five fields. It used to carry a sixth,
-	// `countryId`, which backend V17 deleted — the operator's country is its
-	// timezone's country now. Nothing failed when that happened: an unknown
-	// property is dropped on the floor by Jackson, so the create kept answering
-	// 201 while the country the operator picked went nowhere. Assert the whole
-	// body, not the fields we happen to remember.
 	it("posts the operator with a five-field address and no country", async () => {
 		const body = vi.fn();
 		server.use(

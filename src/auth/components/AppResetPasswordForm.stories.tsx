@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { AppResetPasswordForm } from "./AppResetPasswordForm";
 
-// Connected: submits a mutation + navigates (router + React Query from the
-// framework/preview; no useAuth). Two meaningful states: a valid link (the
-// form) and a link with no token (the invalid-link card).
 const meta = {
 	title: "Auth/AppResetPasswordForm",
 	component: AppResetPasswordForm,

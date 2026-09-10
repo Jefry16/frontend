@@ -4,8 +4,6 @@ import { AppLink } from "#/shared/components/AppLink";
 import type { VerifyState } from "../verify-token";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
 
-// Presentational: renders the verification outcome. The verify request runs in
-// the /auth/verify route loader (once per navigation); this just shows `state`.
 export const AppVerifyAccount = ({ state }: { state: VerifyState }) => {
 	if (state === "verifying") {
 		return (

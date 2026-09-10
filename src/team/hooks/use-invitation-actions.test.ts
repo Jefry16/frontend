@@ -39,8 +39,6 @@ describe("useInvitationActions", () => {
 		expect(invalidated()).toEqual(SET);
 	});
 
-	// Revoke keeps the detail in the set, unlike every other delete in the app:
-	// the row survives as REVOKED, so its page stays reachable.
 	it("revokes and still refreshes the detail", async () => {
 		server.use(
 			http.delete(BASE, () => new HttpResponse(null, { status: 204 })),

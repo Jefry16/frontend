@@ -8,11 +8,6 @@ import { renderWithProviders } from "#/test/test-utils";
 import { AppFormActions } from "./AppFormActions";
 import { AppFormCard } from "./AppFormCard";
 
-// Every converted form passes `form.handleSubmit` by reference rather than
-// wrapping it in a thunk. That only works because form-core binds it in the
-// FormApi constructor — a detail of the pinned version, not a language
-// guarantee — and nothing else in the suite submits a form, so a regression
-// here would take every create and edit page down while staying green.
 const Harness = ({
 	onSubmit,
 	errorMessage,
@@ -56,8 +51,6 @@ describe("AppFormCard", () => {
 		renderWithProviders(<Harness onSubmit={onSubmit} />);
 
 		const submitted = vi.fn();
-		// jsdom does not navigate, so a missed preventDefault surfaces as the
-		// event reaching the document undefaulted rather than as a reload.
 		document.addEventListener("submit", (e) => submitted(e.defaultPrevented));
 
 		await userEvent.click(screen.getByRole("button", { name: "Save" }));

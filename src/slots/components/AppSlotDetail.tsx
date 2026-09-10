@@ -37,9 +37,6 @@ import { useSlot } from "../hooks/use-slot";
 import { useSlotActions } from "../hooks/use-slot-actions";
 import { AppEditCapacityDialog } from "./AppEditCapacityDialog";
 
-// The departure detail: schedule facts + the per-tier pricing table, with the
-// slot actions — edit capacity (dialog) and cancel
-// (terminal, destructive confirm). A cancelled slot offers no actions.
 export const AppSlotDetail = ({
 	tourOperatorId,
 	slotId,

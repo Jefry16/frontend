@@ -23,9 +23,6 @@ export const Route = createFileRoute(
 	component: LanguagesSettingsPage,
 });
 
-// The operator's content languages. Reads are member-visible; editing is ADMIN+
-// (STAFF would 403 on save), so staff get a read-only summary rather than a dead
-// form — mirroring how the members section is visible to all members.
 function LanguagesSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
 	const operator = useCurrentTourOperator();
@@ -88,7 +85,6 @@ function LanguagesSettingsPage() {
 	);
 }
 
-// Read-only view for non-admins: the configured languages, no editing.
 function LanguagesSummary({ locales }: { locales: OperatorLocales }) {
 	return (
 		<Card>

@@ -7,9 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { mediaColumns } from "../columns";
 import { AppMediaUploadButton } from "./AppMediaUploadButton";
 
-// The operator's media library as the standard cursor-paginated table: preview
-// first, filter by type, sort by Added, infinite scroll. Upload lives in the
-// page header (AppMediaUploadButton); delete is on the detail page.
 export const AppMediaList = ({
 	tourOperatorId,
 }: {

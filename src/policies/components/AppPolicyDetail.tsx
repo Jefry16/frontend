@@ -22,12 +22,6 @@ import { policySlug, policyTypeLabel } from "../format";
 import { usePolicy } from "../hooks/use-policy";
 import { usePolicyActions } from "../hooks/use-policy-actions";
 
-// No activity card: the backend hangs policy entries off the OPERATOR, so a
-// policy-scoped timeline would query an entity with no entries. The writes show
-// in Operations → Activity.
-//
-// The body is shown as SOURCE, never rendered: it is operator-authored HTML, so
-// echoing it as markup would run their script in the operator's own session.
 export const AppPolicyDetail = ({
 	tourOperatorId,
 	policyId,
@@ -78,7 +72,6 @@ export const AppPolicyDetail = ({
 							}),
 					},
 					{
-						// ListPolicyTranslationsUseCase is ensureMember — STAFF may read them.
 						id: "translations",
 						label: m.translations(),
 						icon: Languages,

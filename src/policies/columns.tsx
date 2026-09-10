@@ -7,10 +7,6 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { POLICY_TYPE_OPTIONS, policySlug, policyTypeLabel } from "./format";
 import type { Policy } from "./types";
 
-// The policies columns: title (searchable, links to the detail), type (set
-// filter + badge), the storefront path it renders at, and last updated. The
-// backend's default sort is `type`, so the table opens in the document order an
-// operator thinks in rather than by recency.
 export const policyColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

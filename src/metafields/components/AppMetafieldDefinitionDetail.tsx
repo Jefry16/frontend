@@ -24,9 +24,6 @@ import { ownerTypeLabel, typeLabel } from "../format";
 import { useMetafieldDefinition } from "../hooks/use-metafield-definition";
 import { useMetafieldDefinitionActions } from "../hooks/use-metafield-definition-actions";
 
-// Definition detail: the identity facts (immutable) + name/description, with
-// Edit and Delete actions. Delete is destructive-confirmed with the cascade
-// warning — it removes every stored value for this field.
 export const AppMetafieldDefinitionDetail = ({
 	tourOperatorId,
 	definitionId,
@@ -43,10 +40,6 @@ export const AppMetafieldDefinitionDetail = ({
 		tourOperatorId,
 		definitionId,
 	);
-	// Names the pinned metaobject type on reference definitions. Drains the
-	// catalogue rather than fetching the one id: `metaobjects` imports
-	// `#/metafields`, so importing its hook back would be a cycle. Bounded, and
-	// the key is shared with AppMetafieldDefinitionForm's identical call.
 	const metaobjectTypes = useAllPages<{ id: string; name: string }>(
 		queryKeys.metaobjectDefinitions(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/metaobject-definitions`,

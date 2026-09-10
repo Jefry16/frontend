@@ -12,11 +12,6 @@ import * as m from "#/paraglide/messages";
 import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import type { MetafieldTypeCode } from "../types";
 
-// The chrome-less type-aware value input for the 8-type custom-data
-// catalogue — values are strings on the wire for every type; the backend
-// validates + normalizes. Consumers add their own Field/label chrome
-// (the metafields card and the metaobject entry form both render through
-// this so a new type is wired in exactly one place).
 export const AppTypedValueInput = ({
 	inputId,
 	type,

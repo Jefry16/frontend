@@ -10,9 +10,6 @@ import { Input } from "#/components/ui/input";
 import * as m from "#/paraglide/messages";
 import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
-// Renames the menu's title — the internal label. The handle (what the theme
-// references) never changes, which is why this is a dialog and not an edit
-// page.
 export const AppMenuRenameDialog = ({
 	open,
 	onOpenChange,
@@ -30,9 +27,6 @@ export const AppMenuRenameDialog = ({
 	const trimmed = title.trim();
 	const valid = trimmed.length >= 1 && trimmed.length <= 120;
 
-	// The dialog opens programmatically (no trigger), so onOpenChange never
-	// fires with `true` — without this, a cancelled edit leaks into the next
-	// open.
 	useEffect(() => {
 		if (open) setTitle(currentTitle);
 	}, [open, currentTitle]);

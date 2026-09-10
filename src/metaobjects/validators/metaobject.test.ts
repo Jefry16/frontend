@@ -9,9 +9,6 @@ const row = (key: string, name = "Label") => ({
 });
 
 describe("definitionCreateSchema", () => {
-	// This rule used to be a loop in the component that set one banner above the
-	// whole form. It reports per row now, so the offending key is the thing that
-	// goes red.
 	it("reports a duplicate key on the row that repeats it", () => {
 		const result = definitionCreateSchema.safeParse({
 			...base,

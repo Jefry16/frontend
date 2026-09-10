@@ -3,7 +3,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import type { PageTranslation } from "../types";
 
-/** The translated locales (one row each) — drives the switcher's dots. */
 export const usePageTranslations = (tourOperatorId: string, pageId: string) =>
 	useQuery({
 		queryKey: queryKeys.pageTranslations(tourOperatorId, pageId),
@@ -15,7 +14,6 @@ export const usePageTranslations = (tourOperatorId: string, pageId: string) =>
 		},
 	});
 
-/** One locale's overlay (empty overlay when untranslated) — seeds the form. */
 export const usePageTranslation = (
 	tourOperatorId: string,
 	pageId: string,

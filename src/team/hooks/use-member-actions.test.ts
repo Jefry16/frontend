@@ -38,8 +38,6 @@ describe("useMemberActions", () => {
 		expect(invalidated()).toEqual([MEMBER, ROSTER, TRAIL]);
 	});
 
-	// The transfer demotes the CALLER to admin, so their own profile is stale
-	// too — without this the sidebar would keep offering owner-only actions.
 	it("also refreshes the caller's own profile on an ownership transfer", async () => {
 		const body = vi.fn();
 		server.use(

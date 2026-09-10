@@ -1,7 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend value objects.
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 const slugField = (max: number) =>
@@ -32,8 +31,6 @@ export const fieldSchema = z.object({
 	name: nameField,
 });
 
-// The uniqueness rule lives here, not in the component, so a duplicate key
-// reports on the offending row instead of as a banner above the form.
 export const definitionCreateSchema = definitionSchema.extend({
 	fields: z
 		.array(fieldSchema.extend({ type: z.string().min(1) }))
@@ -55,8 +52,6 @@ export const definitionCreateSchema = definitionSchema.extend({
 		}),
 });
 
-// Same value shape so one form type serves both modes, but `fields` is unchecked
-// here: the field set is managed on the detail page.
 export const definitionEditSchema = definitionSchema.extend({
 	fields: z.array(fieldSchema.extend({ type: z.string() })),
 });
@@ -70,7 +65,6 @@ export const entrySchema = z.object({
 
 export type DefinitionFormData = z.input<typeof definitionSchema>;
 
-/** "Size chart" → "size-chart". */
 export const deriveSlug = (name: string): string =>
 	name
 		.toLowerCase()

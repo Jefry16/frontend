@@ -7,9 +7,6 @@ export const Route = createFileRoute("/(app)")({
 	component: AppLayout,
 });
 
-// The authenticated shell: everything under it requires a session. While the
-// session is resolving we show a spinner; an unauthenticated user is bounced
-// to login.
 function AppLayout() {
 	const { isAuthenticated, isLoading } = useAuth();
 	const navigate = useNavigate();

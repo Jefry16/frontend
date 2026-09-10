@@ -20,9 +20,6 @@ import { useContactMessage } from "../hooks/use-contact-message";
 import { useContactMessageActions } from "../hooks/use-contact-message-actions";
 import type { ContactMessage } from "../types";
 
-// No activity card, though CONTACT_MESSAGE is audited: delete is the context's
-// only audited action, so the one entry a message can have is the one that
-// removed it — by which point this page 404s. Deletions show in Activity.
 export const AppContactMessageDetail = ({
 	tourOperatorId,
 	messageId,
@@ -77,7 +74,6 @@ const MessageView = ({
 	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
 		{
-			// A mailto:, so there is no backend check to mirror.
 			id: "reply",
 			label: m.inbox_reply(),
 			icon: Mail,

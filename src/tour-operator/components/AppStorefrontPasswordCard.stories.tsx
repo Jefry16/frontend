@@ -36,7 +36,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-/** A STAFF member: the same settings, read-only. */
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 };

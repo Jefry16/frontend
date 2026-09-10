@@ -54,10 +54,6 @@ describe("AppPageActions", () => {
 		expect(screen.getByRole("button", { name: /more/i })).toBeInTheDocument();
 	});
 
-	// The case above cannot see this rule: its first action is already
-	// non-destructive, so "first non-destructive" and "first" agree and a broken
-	// pick still passes. Here the destructive one leads the array, so only the
-	// rule keeps it out of the primary slot.
 	it("skips a leading destructive action when picking the primary", () => {
 		renderWithProviders(
 			<AppPageActions
@@ -78,8 +74,6 @@ describe("AppPageActions", () => {
 		expect(screen.queryByRole("button", { name: "Delete" })).toBeNull();
 	});
 
-	// The fallback: nothing non-destructive to promote, so the first leads
-	// rather than the component rendering no primary button at all.
 	it("falls back to the first action when every one is destructive", () => {
 		renderWithProviders(
 			<AppPageActions

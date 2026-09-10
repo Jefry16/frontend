@@ -10,7 +10,6 @@ import { useExperienceForm } from "../hooks/use-experience-form";
 import type { Experience } from "../types";
 import { AppExperienceMediaSection } from "./AppExperienceMediaSection";
 
-// The experience content form — create (no `experience`) or edit (with one):
 export const AppExperienceForm = ({
 	tourOperatorId,
 	experience,

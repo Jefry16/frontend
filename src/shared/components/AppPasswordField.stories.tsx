@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { useForm } from "@tanstack/react-form";
 import { AppPasswordField } from "./AppPasswordField";
 
-// Binds to a live TanStack Form field, so the story renders it inside a
-// throwaway form. Click the eye toggle to show/hide the value.
 function PasswordDemo(props: { label: string; description?: string }) {
 	const form = useForm({ defaultValues: { demo: "Password1!" } });
 	return (

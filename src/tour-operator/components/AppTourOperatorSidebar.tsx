@@ -22,9 +22,6 @@ import { AppSignOutButton } from "./AppSignOutButton";
 import { AppTourOperatorSwitcher } from "./AppTourOperatorSwitcher";
 import { SidebarNavLeaf } from "./SidebarNavLeaf";
 
-// The operator workspace sidebar: switcher (header), the feature nav (content),
-// and the Settings leaf pinned in the footer. The frame every operator page
-// renders beside — see the `$tourOperatorId` layout route.
 export const AppTourOperatorSidebar = () => {
 	const operator = useCurrentTourOperator();
 	const items = operator ? tourOperatorNavItems(operator.id) : [];

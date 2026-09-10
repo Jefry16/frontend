@@ -39,8 +39,6 @@ describe("ThemeProvider", () => {
 		expect(getByTestId("theme").textContent).toBe("dark");
 	});
 
-	// An unset theme means "follow the OS", so nothing is written until the
-	// operator actually picks one — otherwise the first render would pin it.
 	it("writes nothing until a choice is made", () => {
 		mount();
 		expect(localStorage.getItem("theme")).toBeNull();

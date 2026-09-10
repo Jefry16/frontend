@@ -10,9 +10,6 @@ import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useOperatorLanguagesForm } from "../hooks/use-operator-languages-form";
 
-// The offerable set is the backend allowlist UNIONED with what the operator
-// already supports, so a language later dropped from the allowlist stays visible
-// and removable rather than vanishing from an operator still using it.
 export const AppOperatorLanguagesForm = ({
 	tourOperatorId,
 	locales,
@@ -26,7 +23,6 @@ export const AppOperatorLanguagesForm = ({
 	);
 	const { data: allowlist = [] } = useLanguages();
 
-	// The allowlist's own name is the fallback when CLDR does not know the code.
 	const options = [
 		...allowlist.map((l) => ({
 			code: l.code,
@@ -61,7 +57,6 @@ export const AppOperatorLanguagesForm = ({
 									label: locale.label,
 								}))}
 								onChanged={(next) => {
-									// Otherwise the select stays stuck on a now-hidden value.
 									if (
 										!next.includes(form.state.values.primaryLocale) &&
 										selected.includes(form.state.values.primaryLocale)

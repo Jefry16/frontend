@@ -17,9 +17,6 @@ const hasTranslation = (t: PageTranslation) =>
 	t.seoDescription !== null ||
 	t.handle !== null;
 
-// One locale's overlay form: every field optional (empty = fall back to the
-// canonical content, shown as each field's placeholder-style hint). Clear
-// removes the whole overlay.
 export const AppPageTranslationForm = ({
 	tourOperatorId,
 	pageId,

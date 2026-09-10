@@ -6,9 +6,6 @@ import { AppFormCard } from "#/shared/components/AppFormCard";
 import { useAudienceForm } from "../hooks/use-audience-form";
 import type { Audience } from "../types";
 
-// The audience form — create (no `audience`) or edit (with one): name + pax per
-// unit. Renaming / re-paxing an audience also updates existing departures'
-// pricing rows server-side (identity fields sync; prices stay frozen).
 export const AppAudienceForm = ({
 	tourOperatorId,
 	audience,

@@ -2,9 +2,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { authApi } from "#/lib/api";
 import type { MediaAsset } from "../types";
 
-// Images only — the media picker feeds experience thumbnails/galleries, which
-// are photos (the library also holds PDFs). Uses the list endpoint's set-filter
-// grammar (filter[field][op]=csv).
 const IMAGE_FILTER = "filter[contentType][in]=image/jpeg,image/png,image/webp";
 
 interface Page {
@@ -12,8 +9,6 @@ interface Page {
 	nextCursor: string | null;
 }
 
-// The image library as an infinite query, for the media picker grid. Enabled
-// only while the picker is open so a closed picker costs nothing.
 export const useMediaLibrary = (tourOperatorId: string, enabled: boolean) =>
 	useInfiniteQuery<Page>({
 		queryKey: ["media-library", tourOperatorId],

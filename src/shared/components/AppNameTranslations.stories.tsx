@@ -9,8 +9,6 @@ const AUD = "a-1";
 const BASE = `/tour-operators/${OP}/audiences/${AUD}/translations`;
 const KEY = queryKeys.audienceTranslations(OP, AUD);
 
-// Two translatable locales (es translated, fr not) — the wrapper normally
-// derives these from the operator's locales; the story passes them directly.
 function client() {
 	const qc = storyQueryClient();
 	qc.setQueryData([...KEY], [{ locale: "es", name: "Adultos" }]);
@@ -51,7 +49,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-/** A STAFF member: the stored translation, read-only — reads are member-level. */
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 };

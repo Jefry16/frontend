@@ -37,5 +37,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Rendered where it lives: pinned in the sidebar footer. */
 export const Default: Story = {};

@@ -52,8 +52,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Onboarding: an empty address, country unchosen. */
 export const Empty: Story = {};
 
-/** Settings → General: seeded from the stored address. */
 export const Filled: Story = { args: { filled: true } };

@@ -7,8 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { pageColumns } from "../columns";
 
-// The operator's CMS pages as the standard cursor table (bodies excluded
-// server-side — rows stay light).
 export const AppPagesList = ({
 	tourOperatorId,
 }: {

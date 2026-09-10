@@ -4,8 +4,6 @@ import { useOperatorDateTime } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { memberColumns } from "../columns";
 
-// The team roster as the standard cursor-paginated table: filter by role, sort
-// by joined date, infinite scroll. The first real consumer of AppDataTable.
 export const AppMembersList = ({
 	tourOperatorId,
 }: {

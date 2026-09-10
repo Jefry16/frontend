@@ -5,12 +5,9 @@ interface AppEmptyStateProps {
 	icon?: LucideIcon;
 	title: string;
 	description?: string;
-	// A node, so this shared component never imports a route or module.
 	action?: ReactNode;
 }
 
-// For a genuinely empty list. Filtered-to-nothing shows AppDataTable's terse
-// "No results" row instead.
 export function AppEmptyState({
 	icon: Icon,
 	title,

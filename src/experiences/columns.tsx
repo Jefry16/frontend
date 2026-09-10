@@ -8,8 +8,6 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { statusBadgeVariant, statusLabel } from "./format";
 import type { Experience } from "./types";
 
-// What the list schema supports drives the affordances. `published` stays
-// display-only: it filters by eq, which the set-filter component cannot speak.
 export const experienceColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,
@@ -48,8 +46,6 @@ export const experienceColumns = (
 			),
 		},
 		{
-			// Right-aligned with tabular figures so the decimal points line up —
-			// a price column read down a list is compared, not just read.
 			id: "startingPrice",
 			accessorKey: "startingPrice",
 			header: () => (

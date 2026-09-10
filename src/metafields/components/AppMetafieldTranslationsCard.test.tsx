@@ -94,7 +94,6 @@ describe("AppMetafieldTranslationsCard", () => {
 		renderCard({});
 		expect(screen.getByLabelText(/Difficulty/)).toBeInTheDocument();
 		expect(screen.getByLabelText(/Notes/)).toBeInTheDocument();
-		// A number reads the same in every locale; sending it would 422.
 		expect(screen.queryByLabelText(/Altitude/)).not.toBeInTheDocument();
 	});
 
@@ -110,8 +109,6 @@ describe("AppMetafieldTranslationsCard", () => {
 		await user.click(screen.getByRole("button", { name: /save/i }));
 
 		await waitFor(() => expect(body).toBeDefined());
-		// An absent key is left alone by the backend, so `custom.notes` must not
-		// ride along — and must not be resent as a value the operator never saw.
 		expect(body).toEqual({ values: { "custom.difficulty": "Fácil" } });
 	});
 
@@ -123,9 +120,6 @@ describe("AppMetafieldTranslationsCard", () => {
 		await user.click(screen.getByRole("button", { name: /save/i }));
 
 		await waitFor(() => expect(body).toBeDefined());
-		// THE trap: the endpoint clears a key with a blank value and ignores an
-		// absent one, so omitting the emptied box would silently keep the old
-		// translation — the opposite of what emptying it means.
 		expect(body).toEqual({ values: { "custom.difficulty": "" } });
 	});
 });

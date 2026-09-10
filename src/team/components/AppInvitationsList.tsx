@@ -7,9 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { invitationColumns } from "../invitation-columns";
 
-// The operator's invitations as the standard cursor-paginated table: all
-// statuses, filter by status/role, sort by invited-by or sent date, infinite
-// scroll. Read-only view (invite/resend/revoke are separate actions).
 export const AppInvitationsList = ({
 	tourOperatorId,
 }: {

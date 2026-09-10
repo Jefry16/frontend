@@ -5,8 +5,6 @@ import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
 import type { MenuListItem } from "./types";
 
-// The menus columns: title (links to the detail), handle (mono — what the
-// theme references), created.
 export const menuColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,

@@ -10,9 +10,6 @@ import { POLICY_TYPE_OPTIONS } from "../format";
 import { usePolicyForm } from "../hooks/use-policy-form";
 import type { Policy } from "../types";
 
-// The policy form — create (no `policy`) or edit (with one). The type picker
-// only appears on create: it is the storefront address, so changing it would
-// move a published URL, and the backend's update takes no type at all.
 export const AppPolicyForm = ({
 	tourOperatorId,
 	policy,

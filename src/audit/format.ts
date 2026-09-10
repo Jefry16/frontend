@@ -1,8 +1,5 @@
 import * as m from "#/paraglide/messages";
 
-// Keyed by the backend's dot-namespaced action strings. An unknown one falls
-// back to a humanized form, so a new backend action reads sensibly before this
-// map learns it.
 const ACTION_LABELS: Record<string, () => string> = {
 	"tour_operator.created": m.activity_action_tour_operator_created,
 	"tour_operator.locales_updated":
@@ -63,7 +60,6 @@ const ACTION_LABELS: Record<string, () => string> = {
 		m.activity_action_metafield_definition_updated,
 	"metafield_definition.deleted":
 		m.activity_action_metafield_definition_deleted,
-	// Value writes audit on the OWNER's timeline, namespaced per owner kind.
 	"metaobject_definition.created":
 		m.activity_action_metaobject_definition_created,
 	"metaobject_definition.updated":
@@ -93,8 +89,6 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"contact_message.deleted": m.activity_action_contact_message_deleted,
 };
 
-// Reuses the form labels where one exists; anything unmapped falls back to
-// spaced camelCase.
 const FIELD_LABELS: Record<string, () => string> = {
 	name: m.name,
 	description: m.description,
@@ -118,7 +112,6 @@ const FIELD_LABELS: Record<string, () => string> = {
 	value: m.value,
 };
 
-/** The frozen display name, or the per-type generic label. */
 export const formatAuditActor = (entry: {
 	actorType: "USER" | "SYSTEM";
 	actorName: string | null;
@@ -130,7 +123,6 @@ export const formatAuditActor = (entry: {
 export const formatAuditAction = (action: string): string => {
 	const known = ACTION_LABELS[action];
 	if (known) return known();
-	// "slot.rescheduled" → "rescheduled"; "foo.bar_baz" → "bar baz".
 	const local = action.includes(".")
 		? action.slice(action.indexOf(".") + 1)
 		: action;
@@ -140,12 +132,10 @@ export const formatAuditAction = (action: string): string => {
 export const formatAuditField = (field: string): string => {
 	const known = FIELD_LABELS[field];
 	if (known) return known();
-	// camelCase → "Camel case".
 	const spaced = field.replace(/([a-z0-9])([A-Z])/g, "$1 $2").toLowerCase();
 	return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 };
 
-/** null/undefined → em-dash; an ENUM_NAME → title case; arrays joined. */
 export const formatAuditValue = (value: unknown): string => {
 	if (value === null || value === undefined) return "—";
 	if (Array.isArray(value)) {
@@ -158,12 +148,10 @@ export const formatAuditValue = (value: unknown): string => {
 	return String(value);
 };
 
-/** Set-filter options for the action column. */
 export const ACTION_OPTIONS = Object.entries(ACTION_LABELS).map(
 	([value, label]) => ({ value, label: label() }),
 );
 
-// The route is absent where the entity has no detail page.
 interface EntityRoute {
 	to: string;
 	param?: string;
@@ -279,7 +267,6 @@ const ENTITY_TYPES: Record<
 export const formatEntityType = (entityType: string): string =>
 	ENTITY_TYPES[entityType]?.label() ?? formatAuditValue(entityType);
 
-/** The entity cell's link target, or null when no detail page exists. */
 export const entityRoute = (
 	entityType: string,
 	tourOperatorId: string,
@@ -292,7 +279,6 @@ export const entityRoute = (
 	return { to: route.to, params };
 };
 
-/** Set-filter options for the entity column. */
 export const ENTITY_TYPE_OPTIONS = Object.entries(ENTITY_TYPES).map(
 	([value, type]) => ({ value, label: type.label() }),
 );

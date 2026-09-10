@@ -67,8 +67,6 @@ export const AppInvitationDetail = ({
 			loading={<AppDetailSkeleton fields={4} variant="labelled" />}
 		>
 			{(invitation) => {
-				// An "Expired" row is still stored PENDING, so it can be resent or
-				// revoked; ACCEPTED and REVOKED are terminal and offer nothing.
 				const actions: AppAction[] =
 					invitation.status === "PENDING"
 						? [
@@ -107,7 +105,6 @@ export const AppInvitationDetail = ({
 	);
 };
 
-// Split out so it renders only once `invitation` is non-null.
 const InvitationFacts = ({
 	invitation,
 	tourOperatorId,

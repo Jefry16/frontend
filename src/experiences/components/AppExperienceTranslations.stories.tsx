@@ -40,7 +40,6 @@ const ES: ExperienceTranslation = {
 	seoDescription: null,
 };
 
-// One operator with three languages (en primary), Spanish already translated.
 function client() {
 	const qc = storyQueryClient();
 	qc.setQueryData(queryKeys.experience(OP, EXP), EXPERIENCE);
@@ -75,7 +74,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-/** A STAFF member: the stored overlay, read-only — reads are member-level. */
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 };

@@ -19,8 +19,6 @@ const LIST = ["menus", OP];
 const TRAIL = ["activity", OP];
 
 describe("useMenuActions", () => {
-	// Title only. The handle is what a theme references, so it is immutable —
-	// a rename that sent one would silently break the storefront.
 	it("renames the title and never the handle", async () => {
 		const body = vi.fn();
 		server.use(
@@ -66,9 +64,6 @@ describe("useMenuActions", () => {
 		expect(invalidated()).toEqual([LIST, TRAIL]);
 	});
 
-	// CLAUDE.md: a rename can 409 on a rule the operator can act on, so it shows
-	// the backend's reason. Delete either works or fails for reasons a toast
-	// can't help with, so it stays generic.
 	it("surfaces the backend reason on a rename conflict, not on a failed delete", async () => {
 		server.use(
 			http.patch(BASE, () =>

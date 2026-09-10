@@ -10,9 +10,6 @@ import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCategory } from "../hooks/use-category";
 
-// The category translations editor: the shared single-name editor bound to this
-// category's endpoints (name ≤80, mirroring the backend CategoryName). The
-// handle is not translatable — one category has one storefront address.
 export const AppCategoryTranslations = ({
 	tourOperatorId,
 	categoryId,

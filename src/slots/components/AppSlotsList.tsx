@@ -5,10 +5,6 @@ import * as m from "#/paraglide/messages";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { slotColumns } from "../columns";
 
-// The operator's departures across all experiences — soonest first (the
-// server's default sort), filterable by experience/day/status. `emptyAction`
-// is the first-run CTA (the route owns the experience-picker dialog, so the
-// button comes from there).
 export const AppSlotsList = ({
 	tourOperatorId,
 	emptyAction,

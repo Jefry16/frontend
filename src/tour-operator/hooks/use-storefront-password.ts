@@ -20,15 +20,6 @@ export const useStorefrontPassword = (tourOperatorId: string) =>
 		select: (operator) => operator.storefrontPassword,
 	});
 
-/**
- * A section of the operator's PATCH, and one key only — its siblings came back
- * on the same read and each would be replaced if sent.
- *
- * `enabled` is required: omit it and the write is a 422, which is what stops the
- * storefront being opened by an accidentally empty body. A blank password KEEPS
- * the stored one rather than clearing it, which is what lets the toggle and the
- * message save on their own. A blank message does clear.
- */
 const useStorefrontPasswordSave = (tourOperatorId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -39,6 +30,9 @@ const useStorefrontPasswordSave = (tourOperatorId: string) => {
 		{ enabled: boolean; password: string | null; message: string | null }
 	>({
 		mutationFn: (storefrontPassword) =>
+			// `enabled` is required — omitting it is a 422, which is what stops the
+			// storefront being opened by an empty body. A blank password KEEPS the stored
+			// one; only the message clears when blank.
 			authApi.patch(`/tour-operators/${tourOperatorId}`, {
 				storefrontPassword,
 			}),
@@ -54,7 +48,6 @@ const useStorefrontPasswordSave = (tourOperatorId: string) => {
 	});
 };
 
-// The schema owns the "enabled needs a password" rule.
 export const useStorefrontPasswordForm = (
 	tourOperatorId: string,
 	settings: StorefrontPasswordSettings,
@@ -74,9 +67,6 @@ export const useStorefrontPasswordForm = (
 			save.mutate(
 				{
 					enabled: v.enabled,
-					// Blank KEEPS the stored password — it does not clear it. So the
-					// gate can be changed but never emptied, and turning it back on
-					// without retyping works on purpose.
 					password: v.password || null,
 					message: v.message || null,
 				},

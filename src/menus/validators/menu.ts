@@ -1,8 +1,6 @@
 import { z } from "zod";
 import * as m from "#/paraglide/messages";
 
-// Mirrors the backend: handle is shared-Slug-shaped ≤170 and immutable after
-// create; titles 1–120 after trim.
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const menuSchema = z.object({
@@ -21,7 +19,6 @@ export const menuSchema = z.object({
 
 export type MenuFormData = z.input<typeof menuSchema>;
 
-/** Title → suggested handle: "Main menu" → "main-menu". */
 export const deriveHandle = (title: string): string =>
 	title
 		.toLowerCase()

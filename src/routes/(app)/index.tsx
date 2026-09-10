@@ -7,8 +7,6 @@ export const Route = createFileRoute("/(app)/")({
 	component: IndexRedirect,
 });
 
-// "/" is a redirect: send the user to their default operator, or to onboarding
-// if they have none. The real landing is the operator home.
 function IndexRedirect() {
 	const { user } = useAuth();
 	const navigate = useNavigate();

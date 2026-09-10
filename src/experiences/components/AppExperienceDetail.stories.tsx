@@ -37,7 +37,6 @@ qc.setQueryData(
 	queryKeys.activityTimeline(OP_ID, "EXPERIENCE", EXP_ID),
 	listPage([]),
 );
-// Empty definitions catalogue — the metafields card resolves and renders null.
 qc.setQueryData(
 	[...queryKeys.metafieldDefinitions(OP_ID), "all-pages"],
 	listPage([]),

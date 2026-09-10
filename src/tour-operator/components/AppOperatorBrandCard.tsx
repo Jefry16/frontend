@@ -23,9 +23,6 @@ import {
 import type { Brand, BrandImageSlot } from "../types";
 import { AppBrandImageSlot } from "./AppBrandImageSlot";
 
-// This card does not edit the palette or social links, but every write still
-// sends them: `PUT /brand` is a full replace, so a body without them clears
-// them. That is why useBrandActions spreads over the loaded brand.
 export const AppOperatorBrandCard = ({
 	tourOperatorId,
 	canWrite,

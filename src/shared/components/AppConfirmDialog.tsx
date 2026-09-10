@@ -12,18 +12,12 @@ interface Props {
 	onOpenChange: (open: boolean) => void;
 	title: string;
 	description?: string;
-	// The affirmative button label (e.g. "Revoke"); Cancel is always offered.
 	confirmLabel: string;
-	// Style the confirm button as destructive (irreversible actions).
 	destructive?: boolean;
-	// While the action runs: disables both buttons and spins the confirm.
 	pending?: boolean;
 	onConfirm: () => void;
 }
 
-// A modal confirmation gate for irreversible/destructive actions. Kept dumb: the
-// caller owns the open state and the mutation; this just asks and reports the
-// pending state. Pairs with AppPageActions (an action's `confirm` routes here).
 export function AppConfirmDialog({
 	open,
 	onOpenChange,

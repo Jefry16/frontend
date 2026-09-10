@@ -11,7 +11,6 @@ export const Route = createFileRoute(
 	component: ActivityPage,
 });
 
-// Read-only: entries are written by the mutations themselves.
 function ActivityPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

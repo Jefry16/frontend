@@ -13,9 +13,6 @@ import {
 	tourOperatorSchema,
 } from "../validators/tour-operator";
 
-// Create-only. Operator details are immutable after creation: the backend has
-// no PATCH /tour-operators/:id, by design — changing currency or timezone once
-// an operator has slots/bookings would corrupt frozen prices and slot times.
 export const useTourOperatorForm = () => {
 	const navigate = useNavigate();
 	const toast = useAppToast();
@@ -35,8 +32,6 @@ export const useTourOperatorForm = () => {
 		},
 		onSuccess: async (id) => {
 			setErrorMessage(null);
-			// Refetch the profile so the new operator (as OWNER, default) appears
-			// before we navigate into it.
 			await refreshUser();
 			toast.success(m.tour_operator_created());
 			navigate({

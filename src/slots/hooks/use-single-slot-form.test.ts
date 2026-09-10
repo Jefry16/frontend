@@ -25,8 +25,6 @@ const PRICES = [
 	{ _key: "k1", audienceId: "aud-1", price: "25.50", capacity: "8" },
 ];
 
-// Field names spelled out, not widened to `string`: a widened name still
-// compiles after a rename and quietly sets a field that no longer exists.
 type FieldName = "date" | "startTime" | "endTime" | "audiencePrices";
 
 const render = () => {
@@ -81,9 +79,6 @@ describe("useSingleSlotForm", () => {
 		});
 	});
 
-	// An end at or before the start is a departure that runs past midnight, not
-	// one that ends before it began. The END DATE moves; the form has no field
-	// for it, so this is the only thing that can get it right.
 	it("rolls the end date forward when the departure crosses midnight", async () => {
 		const body = vi.fn();
 		server.use(created(body));
@@ -102,9 +97,6 @@ describe("useSingleSlotForm", () => {
 		});
 	});
 
-	// `_key` is a client-side React list identity, minted with crypto.randomUUID.
-	// The backend has no such field; sending it would be inventing wire surface
-	// out of a rendering detail.
 	it("strips the row key and sends prices as numbers", async () => {
 		const body = vi.fn();
 		server.use(created(body));

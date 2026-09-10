@@ -15,7 +15,6 @@ export const Secondary: Story = { args: { variant: "secondary" } };
 export const Destructive: Story = { args: { variant: "destructive" } };
 export const Outline: Story = { args: { variant: "outline" } };
 
-// How feature code uses it — a row of status-style badges.
 export const Statuses: Story = {
 	render: () => (
 		<div className="flex gap-2">

@@ -7,9 +7,6 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import type { MenuItemInput } from "../types";
 
-// The menu's mutating actions (all ADMIN+): rename (title only — the handle
-// is immutable), delete (items cascade; success copy/navigation left to the
-// caller), and the wholesale item-tree replace (the editor's save).
 export const useMenuActions = (tourOperatorId: string, menuId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();

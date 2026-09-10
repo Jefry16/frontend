@@ -5,10 +5,6 @@ import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 
-// Resend the account-verification email (POST /auth/resend-verification).
-// Anti-enumeration: the backend responds the same whether or not the address is
-// registered or already verified, so success here means only "request accepted"
-// — never confirmation that an email exists. Public (in SKIP_AUTH_URLS).
 export const useResendVerification = () => {
 	const toast = useAppToast();
 

@@ -5,11 +5,6 @@ import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppEmptyState } from "./AppEmptyState";
 
-// The 404 state for a single by-id resource: "<Resource> not found", with a way
-// out. Distinct from AppError — a missing (or cross-tenant, tenant-isolated)
-// record, not a transient failure, so there is no retry. Pass `action` (e.g. a
-// back-to-list link); otherwise it falls back to browser-history back, which
-// covers every entry point (list, pasted URL, deep link).
 export function AppNotFound({
 	resource,
 	icon = FileQuestion,

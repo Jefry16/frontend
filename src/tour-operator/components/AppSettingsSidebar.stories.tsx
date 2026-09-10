@@ -28,9 +28,6 @@ const USER: AuthUser = {
 const qc = storyQueryClient();
 qc.setQueryData(queryKeys.authProfile, USER);
 
-// The current operator is resolved from the route param, which the framework's
-// memory router leaves empty at "/", so here the rail shows its back header; the
-// section list renders in the running app under a settings route.
 const meta = {
 	title: "TourOperator/AppSettingsSidebar",
 	component: AppSettingsSidebar,

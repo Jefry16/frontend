@@ -61,8 +61,6 @@ const submit = async (
 describe("useCategoryForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// The create answers 201 with an EMPTY body, so the Location header is the
-	// only source of the id the redirect needs.
 	it("posts the trimmed name, then goes to the detail built from Location", async () => {
 		const body = vi.fn();
 		server.use(
@@ -132,9 +130,6 @@ describe("useCategoryForm", () => {
 		]);
 	});
 
-	// Create can conflict on the name OR on the derived handle; edit can only
-	// conflict on the name, because the handle is never regenerated. Collapsing
-	// the two would tell a create it has a duplicate name when it may not.
 	it("words the conflict differently for create and for edit", async () => {
 		server.use(
 			http.post(BASE, conflict),

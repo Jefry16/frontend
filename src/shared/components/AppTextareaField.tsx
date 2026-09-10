@@ -17,8 +17,6 @@ interface AppTextareaFieldProps {
 	required?: boolean;
 }
 
-// The multi-line sibling of AppField: a shadcn Field wrapping a Textarea bound to
-// a TanStack Form field, with validation errors below.
 export const AppTextareaField = ({
 	field,
 	label,

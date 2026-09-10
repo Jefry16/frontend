@@ -17,12 +17,6 @@ import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { useBrand, useBrandColorsForm } from "../hooks/use-operator-brand";
 import type { Brand, BrandColor } from "../types";
 
-// A colour the operator chose, so the swatch is painted inline rather than from
-// a token — there is no token for it and there cannot be. COMPONENTS.md §4.
-//
-// The hex sits beside it rather than in a `title`: the swatch shows the pair is
-// readable, the text says what it actually is. A tooltip does neither for anyone
-// reading with a screen reader, and the value IS the setting.
 const Swatch = ({ color }: { color: BrandColor }) => (
 	<div className="flex items-center gap-2">
 		<span
@@ -108,8 +102,6 @@ const ColorsForm = ({
 							<div className="flex flex-col gap-3">
 								<FieldLabel>{role.label()}</FieldLabel>
 								{rows.map((_, index) => (
-									// Rows carry no id and both colours are editable, so the
-									// position is the only identity available.
 									// biome-ignore lint/suspicious/noArrayIndexKey: see above
 									<div key={index} className="flex items-end gap-2">
 										<div className="flex-1">
@@ -217,11 +209,6 @@ const ColorsSummary = ({ brand }: { brand: Brand }) => {
 					<FieldLabel>{group.label}</FieldLabel>
 					<div className="flex flex-col gap-2">
 						{group.colors.map((color, index) => (
-							// Keyed by position like the editor above, and for the same
-							// reason the backend keys on it: colour VALUES are not unique.
-							// The table's key is (operator, role, position), so a palette
-							// may legitimately hold the same pair twice — which a
-							// value-derived key would collide on.
 							// biome-ignore lint/suspicious/noArrayIndexKey: see above
 							<Swatch key={index} color={color} />
 						))}

@@ -29,9 +29,6 @@ export const useResetPasswordForm = (token: string) => {
 			navigate({ to: "/auth/login" });
 		},
 		onError: (error) => {
-			// 401 = invalid / expired / already-used token (needs a fresh link);
-			// 422 = the new password was rejected (the use case rejects reusing the
-			// current one — the policy itself is already enforced client-side).
 			const status = error.response?.status;
 			if (status === 401) {
 				setErrorMessage(m.reset_link_invalid());

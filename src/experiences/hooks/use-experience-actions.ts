@@ -5,12 +5,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on a single experience: publish / unpublish (both ADMIN+,
-// reversible — there is no delete; an experience is retired via unpublish since
-// it owns slots/bookings). Both toast + invalidate the detail and the list.
-//
-// One endpoint, not two verbs: publication is a sub-resource you PUT a boolean
-// to. Asking for the state it is already in is a silent no-op, not an error.
 export const useExperienceActions = (
 	tourOperatorId: string,
 	experienceId: string,

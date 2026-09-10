@@ -14,14 +14,10 @@ interface AppAuthFormWrapperProps {
 	title: string;
 	subtitle?: string;
 	submitLabel: string;
-	/** Server-error banner, rendered above the fields (inline, never a toast). */
 	errorMessage?: string | null;
 	isSubmitting: boolean;
 }
 
-// The shared shell for the auth pages (login, register, …): logo + heading,
-// a card with the inline error banner, the fields, a full-width pending-aware
-// submit button, and an optional footer of links.
 export const AppAuthFormWrapper = ({
 	children,
 	footer,

@@ -20,7 +20,6 @@ import type {
 import { AppMetaobjectEntrySelect } from "./AppMetaobjectEntrySelect";
 import { AppTypedValueInput } from "./AppTypedValueInput";
 
-// Renders nothing while the operator has no definitions for the owner kind.
 export const AppMetafieldsCard = ({
 	tourOperatorId,
 	ownerType,
@@ -35,10 +34,6 @@ export const AppMetafieldsCard = ({
 	const save = useMetafieldValueSave(tourOperatorId, ownerType, ownerId);
 	const [drafts, setDrafts] = useState<Record<string, string>>({});
 
-	// The header rides along in every state. Without it a failure renders an
-	// anonymous box: the operator sees that something on the page did not load
-	// but not WHICH thing, which is exactly what it looked like while this card
-	// was calling an endpoint that had moved.
 	const header = (
 		<CardHeader>
 			<CardTitle>{m.metafields()}</CardTitle>
@@ -77,7 +72,6 @@ export const AppMetafieldsCard = ({
 	const setDraft = (id: string, value: string) =>
 		setDrafts((prev) => ({ ...prev, [id]: value }));
 
-	// A whitespace-only draft clears: the backend 422s a blank PUT.
 	const effective = (raw: string) => (raw.trim() === "" ? "" : raw);
 	const changes = definitions
 		.filter((d) => {
@@ -98,8 +92,6 @@ export const AppMetafieldsCard = ({
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
-						// onSettled runs AFTER the hook's invalidation resolves, so the
-						// inputs land on the fresh cache. On error the drafts survive.
 						save.mutate(changes, {
 							onSettled: (_data, error) => {
 								if (!error) setDrafts({});
@@ -133,7 +125,6 @@ export const AppMetafieldsCard = ({
 	);
 };
 
-// Values are strings on the wire for every type; the backend normalizes them.
 const MetafieldInput = ({
 	tourOperatorId,
 	definition,

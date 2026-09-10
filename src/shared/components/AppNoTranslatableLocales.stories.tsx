@@ -18,10 +18,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The default copy — used by the page, operator and name editors. */
 export const Default: Story = {};
 
-/** A caller that names what would be translated (the experience editor). */
 export const ResourceSpecific: Story = {
 	args: { tourOperatorId: "op-1", message: m.translations_no_languages() },
 };

@@ -13,9 +13,6 @@ import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useTourOperatorForm } from "../hooks/use-tour-operator-form";
 import { AppOperatorAddressFields } from "./AppOperatorAddressFields";
 
-// Onboarding form (`/tour-operators/new`). Create-only: name/address + the
-// immutable currency + timezone. A user who already has an operator gets an
-// explicit way back out so they're not stranded here.
 export const AppTourOperatorForm = () => {
 	const { form, isPending, errorMessage } = useTourOperatorForm();
 	const { data: currencies = [] } = useCurrencies();
@@ -29,9 +26,6 @@ export const AppTourOperatorForm = () => {
 	};
 
 	const existingUser = user && user.tourOperators.length > 0 ? user : undefined;
-	// Onboarding = a user with no operators yet. Only they see the "wait for an
-	// invitation" hint: staff who registered expecting to join someone else's
-	// operator shouldn't create their own — they'll be invited by email.
 	const isOnboarding = !!user && user.tourOperators.length === 0;
 
 	return (

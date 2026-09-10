@@ -17,19 +17,13 @@ const COLORS: Record<AppAuthMessageTone, string> = {
 };
 
 interface AppAuthMessageCardProps {
-	/** Renders the matching result icon (CircleCheck / CircleX). */
 	tone?: AppAuthMessageTone;
-	/** Custom leading node when no tone fits (e.g. a Spinner while verifying). */
 	icon?: ReactNode;
 	title?: string;
 	description: string;
-	/** Action link(s) rendered under the message. */
 	children?: ReactNode;
 }
 
-// Centered, logo-topped card for the non-form auth states (verification result,
-// invalid-link, "check your email"). Mirrors AppAuthFormWrapper's frame so the
-// static and form screens look identical.
 export const AppAuthMessageCard = ({
 	tone,
 	icon,

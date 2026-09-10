@@ -5,10 +5,6 @@ import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on a single invitation: resend (fresh token + renewed
-// expiry, re-sends the email) and revoke (cancels a pending invite). Both
-// invalidate the invitation detail AND the operator's invitations list so the
-// status/expiry refresh everywhere. Both are ADMIN+ on the backend.
 export const useInvitationActions = (
 	tourOperatorId: string,
 	invitationId: string,

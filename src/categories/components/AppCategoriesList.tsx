@@ -7,8 +7,6 @@ import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { categoryColumns } from "../columns";
 
-// The operator's experience categories as the standard cursor-paginated table:
-// name searchable and sortable, handle read-only, created sortable.
 export const AppCategoriesList = ({
 	tourOperatorId,
 }: {

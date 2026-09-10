@@ -8,19 +8,6 @@ import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 
-/**
- * One locale's overlay on a canonical record: PUT upserts it, DELETE clears it
- * and the locale falls back to canonical.
- *
- * **The PUT is a full replace**, so the form seeds from the fetched overlay and
- * always submits every field — an omitted field is a *cleared* field. (The
- * metafield overlay that renders under three of these editors is the exception
- * and does NOT use this hook; see `use-metafield-translation-save.ts`.)
- *
- * Errors go to an inline `errorMessage` rather than a toast, because the reason
- * belongs beside the field that caused it — `conflictMessage` is for resources
- * whose 409 means one specific thing (a localized slug already taken).
- */
 export const useTranslationOverlayForm = <TValues, TPayload>({
 	endpoint,
 	schema,
@@ -31,10 +18,7 @@ export const useTranslationOverlayForm = <TValues, TPayload>({
 	endpoint: string;
 	schema: z.ZodType<TPayload, TValues>;
 	defaultValues: TValues;
-	/** Every key the save touches. Translation writes append audit entries, so
-	 * the activity trail is one of them at every call site. */
 	invalidateKeys: readonly (readonly unknown[])[];
-	/** Mapped from a 409 where the backend has exactly one reason to send one. */
 	conflictMessage?: string;
 }) => {
 	const queryClient = useQueryClient();

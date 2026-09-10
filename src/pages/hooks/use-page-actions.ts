@@ -6,11 +6,6 @@ import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
-// The mutating actions on a single page (all ADMIN+): publish/unpublish through
-// the one `published` sub-resource (PUT the boolean; asking for the state it is
-// already in is a silent no-op),
-// rename the handle (409 = taken), delete. Success copy + navigation for
-// delete are left to the caller; everything refreshes detail + list + trail.
 export const usePageActions = (tourOperatorId: string, pageId: string) => {
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -23,7 +18,6 @@ export const usePageActions = (tourOperatorId: string, pageId: string) => {
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.pages(tourOperatorId),
 		});
-		// Every action appends an audit entry — refresh the trail.
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});

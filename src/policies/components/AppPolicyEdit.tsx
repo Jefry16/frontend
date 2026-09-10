@@ -8,8 +8,6 @@ import { AppResourceView } from "#/shared/components/AppResourceView";
 import { usePolicy } from "../hooks/use-policy";
 import { AppPolicyForm } from "./AppPolicyForm";
 
-// The edit page: loads the record, then renders the form seeded with it. The
-// type is not editable — the form drops its picker once it has a policy.
 export const AppPolicyEdit = ({
 	tourOperatorId,
 	policyId,

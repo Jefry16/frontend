@@ -51,7 +51,6 @@ const submit = async (
 describe("useOperatorLanguagesForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	// A settings form: it saves in place and stays put, unlike every create.
 	it("patches the locales and does not navigate away", async () => {
 		const body = vi.fn();
 		server.use(
@@ -67,16 +66,12 @@ describe("useOperatorLanguagesForm", () => {
 			supportedLocales: ["en", "es"],
 		});
 
-		// One key, and BOTH fields. A partial `locales` is a 422, and the sibling
-		// sections must not ride along into a PATCH that replaces each one it gets.
 		expect(body).toHaveBeenCalledWith({
 			locales: { primaryLocale: "es", supportedLocales: ["en", "es"] },
 		});
 		expect(navigateMock).not.toHaveBeenCalled();
 	});
 
-	// A primary outside the supported set is a 422. Catching it here is what
-	// lets the message point at the primary field instead of the whole form.
 	it("blocks a primary that is not in the supported set", async () => {
 		const body = vi.fn();
 		server.use(

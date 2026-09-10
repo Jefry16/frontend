@@ -12,7 +12,6 @@ export const Route = createFileRoute(
 	component: NewPickupLocationPage,
 });
 
-// Static "new" wins over the dynamic $pickupLocationId sibling.
 function NewPickupLocationPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (

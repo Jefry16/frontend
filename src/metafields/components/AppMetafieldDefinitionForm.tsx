@@ -17,11 +17,6 @@ import { useMetafieldDefinitionForm } from "../hooks/use-metafield-definition-fo
 import type { MetafieldDefinition } from "../types";
 import { deriveKey } from "../validators/definition";
 
-// The definition form — create (no `definition`) or edit (with one). The
-// identity (applies-to, type, namespace, key) is immutable, so the edit form
-// shows it as a mono line and only submits name/description. On create, a
-// blurred name prefills an empty key with its slug (Shopify's derive), never
-// overwriting what the operator typed.
 export const AppMetafieldDefinitionForm = ({
 	tourOperatorId,
 	definition,
@@ -33,8 +28,6 @@ export const AppMetafieldDefinitionForm = ({
 		tourOperatorId,
 		definition,
 	);
-	// The pin select's options — the operator's metaobject types (a bounded
-	// catalogue; only rendered once the reference type is chosen).
 	const metaobjectTypes = useAllPages<{ id: string; name: string }>(
 		queryKeys.metaobjectDefinitions(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/metaobject-definitions`,

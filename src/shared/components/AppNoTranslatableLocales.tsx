@@ -3,9 +3,6 @@ import { Card, CardContent } from "#/components/ui/card";
 import * as m from "#/paraglide/messages";
 import { AppLink } from "./AppLink";
 
-// Not AppEmptyState: this is an unmet prerequisite with a way out, not an empty
-// resource list. `message` is the caller's so the copy can name what would be
-// translated ("…to translate this experience").
 export const AppNoTranslatableLocales = ({
 	tourOperatorId,
 	message = m.translations_no_languages_generic(),

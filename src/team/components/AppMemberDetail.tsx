@@ -76,13 +76,10 @@ export const AppMemberDetail = ({
 				const isSelf = user?.id === member.id;
 				const label = member.name ?? member.email ?? m.member();
 
-				// What is built here is shaped by the TARGET; the CALLER's tier is
-				// applied by AppPageActions. An owner cannot leave without transferring.
 				const actions: AppAction[] = [];
 				if (isSelf) {
 					if (member.role !== "OWNER") {
 						actions.push({
-							// RemoveTeamMemberUseCase gates self-removal on membership alone.
 							id: "leave",
 							label: m.leave_team(),
 							icon: LogOut,
@@ -100,7 +97,6 @@ export const AppMemberDetail = ({
 										queryClient.removeQueries({
 											queryKey: queryKeys.member(tourOperatorId, userId),
 										});
-										// Their memberships changed.
 										queryClient.invalidateQueries({
 											queryKey: queryKeys.authProfile,
 										});

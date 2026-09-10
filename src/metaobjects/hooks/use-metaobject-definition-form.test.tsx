@@ -30,13 +30,6 @@ const EXISTING: MetaobjectDefinition = {
 	updatedAt: "2026-01-01T00:00:00Z",
 };
 
-// The component used to await handleSubmit, check isValid, then mutate; that
-// decision moved into form-core, so what these pin is the half that could
-// regress silently — an invalid form must not reach the network at all. The
-// edit case asserts the PUT body, which is shaped by the mutationFn: it names
-// `name` and `description` and never forwards `fields`.
-// Field names spelled out rather than widened to `string`: widening would still
-// compile after a rename and quietly set a field that no longer exists.
 type FieldName = "type" | "name" | "description" | "fields";
 type FieldValue = string | MetaobjectField[];
 
@@ -48,8 +41,6 @@ const submit = (
 	values: Partial<Record<FieldName, FieldValue>>,
 ) => {
 	act(() => {
-		// Object.keys is typed string[] whatever the record says — the one cast
-		// TypeScript actually forces here.
 		for (const key of Object.keys(values) as FieldName[]) {
 			const value = values[key];
 			if (value !== undefined) form.setFieldValue(key, value);
@@ -97,7 +88,6 @@ describe("useMetaobjectDefinitionForm", () => {
 		expect(posted.mock.calls[0][0]).toEqual({
 			type: "size-chart",
 			name: "Size chart",
-			// a whitespace-only description collapses to null
 			description: null,
 			fields: [{ key: "waist", type: "single_line_text", name: "Waist" }],
 		});

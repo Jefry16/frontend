@@ -9,8 +9,6 @@ import { timestampColumn } from "#/shared/components/table-columns";
 import { roleBadgeVariant, roleLabel } from "./format";
 import type { Member } from "./types";
 
-// A factory, not a static array, so it can close over the operator's timezone
-// and id. The API default is owner-first.
 export const memberColumns = (
 	tourOperatorId: string,
 	formatDate: (iso: string) => string,
@@ -20,7 +18,6 @@ export const memberColumns = (
 		{ value: "ADMIN", label: roleLabel("ADMIN") },
 		{ value: "STAFF", label: roleLabel("STAFF") },
 	];
-	// Options are the members' own values; AppAsyncSetFilter dedupes them.
 	const endpoint = `/tour-operators/${tourOperatorId}/members`;
 	const optionsKey = queryKeys.members(tourOperatorId);
 

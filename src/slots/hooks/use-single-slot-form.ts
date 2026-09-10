@@ -16,10 +16,6 @@ import {
 	singleSlotSchema,
 } from "../validators/slot";
 
-// Creates one departure for an experience. The form holds date + wall-clock
-// times; the payload composes them into LocalDateTimes, rolling the end date to
-// the next day when the end time lands at/before the start (cross-midnight).
-// 201 + Location → the new slot's detail page (create-navigates-to-detail).
 export const useSingleSlotForm = (
 	tourOperatorId: string,
 	experienceId: string,

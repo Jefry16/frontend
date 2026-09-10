@@ -17,9 +17,6 @@ interface PolicyFormFields {
 	body: string;
 }
 
-// The type is sent on create only. The backend's update input has no field for
-// it, so an edit that sent one would be silently ignored rather than rejected —
-// keeping it out of the PUT is what makes that visible.
 export const usePolicyForm = (tourOperatorId: string, policy?: Policy) => {
 	const navigate = useNavigate();
 	const toast = useAppToast();
@@ -70,7 +67,6 @@ export const usePolicyForm = (tourOperatorId: string, policy?: Policy) => {
 				params: { tourOperatorId, policyId },
 			});
 		},
-		// 409 means the type is already written; the way out is editing that one.
 		onError: (error) =>
 			setErrorMessage(
 				error.response?.status === 409

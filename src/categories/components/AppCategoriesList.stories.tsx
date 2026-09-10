@@ -8,9 +8,6 @@ import { AppCategoriesList } from "./AppCategoriesList";
 
 const OP_ID = "op-1";
 
-// `boat-trips-2` is the point of the handle column: the third row asked for the
-// same name-derived address as the first and the backend appended a suffix, so
-// the value is not guessable from the name.
 const CATEGORIES: Category[] = [
 	{
 		id: "c-1",

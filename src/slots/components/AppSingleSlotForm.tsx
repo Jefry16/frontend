@@ -11,9 +11,6 @@ import { useSingleSlotForm } from "../hooks/use-single-slot-form";
 import { rollsToNextDay } from "../validators/slot";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";
 
-// The operator sets both times. An end at or before the start means the
-// departure runs past midnight: flagged inline, and the payload rolls the end
-// date forward.
 export const AppSingleSlotForm = ({
 	tourOperatorId,
 	experienceId,
@@ -28,8 +25,6 @@ export const AppSingleSlotForm = ({
 		tourOperatorId,
 		experienceId,
 	);
-	// Two primitive selectors, NOT one returning a tuple: a fresh array never
-	// compares equal, and the component would re-render forever.
 	const startTime = useStore(form.store, (s) => s.values.startTime);
 	const endTime = useStore(form.store, (s) => s.values.endTime);
 

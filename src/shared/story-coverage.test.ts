@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-// No `App*` component exists without a colocated story. KNOWN_MISSING holds the
-// backlog and may only shrink. Only the glob KEYS are read — nothing is
-// imported, which is what keeps this fast.
 const componentFiles = Object.keys(import.meta.glob("/src/**/App*.tsx")).filter(
 	(path) =>
 		!path.endsWith(".stories.tsx") &&
@@ -16,10 +13,8 @@ const storyFiles = new Set(
 const hasStory = (component: string) =>
 	storyFiles.has(component.replace(/\.tsx$/, ".stories.tsx"));
 
-// Add an entry only with a one-line justification. Prefer writing the story.
 const EXEMPT = new Set<string>([]);
 
-// Starts empty, and the gate is hard from the first commit. Never add an entry.
 const KNOWN_MISSING = new Set<string>([]);
 
 describe("story coverage ratchet", () => {

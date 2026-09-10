@@ -30,7 +30,6 @@ export const useExperienceForm = (
 		ExperienceFields
 	>({
 		mutationFn: async (fields) => {
-			// Every field comes from the form, so the parsed value IS the payload.
 			const payload = fields;
 			const base = `/tour-operators/${tourOperatorId}/experiences`;
 			if (experience) {

@@ -9,8 +9,6 @@ import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
 import type { Metaobject } from "../types";
 import { AppMetaobjectForm } from "./AppMetaobjectForm";
 
-// The entry edit page: fetches the entry, then its definition (the form is
-// generated from the field set), renders pre-filled.
 export const AppMetaobjectEdit = ({
 	tourOperatorId,
 	metaobjectId,

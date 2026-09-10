@@ -17,10 +17,6 @@ interface Preview {
 	email: string;
 }
 
-// The invitee's accept page (/invitations/accept?token=…). Loads the preview,
-// then forks on auth: a logged-in user gets one-click accept; an anonymous user
-// creates an account (name + password) and is auto-logged-in. Both land in the
-// operator they joined.
 export const AppAcceptInvitation = ({ token }: { token?: string }) => {
 	if (!token) {
 		return (
@@ -65,7 +61,6 @@ const AcceptFlow = ({ token }: { token: string }) => {
 
 	const operator = preview.data.operatorName;
 
-	// Logged in → one-click accept.
 	if (isAuthenticated) {
 		return (
 			<AppAuthMessageCard
@@ -83,7 +78,6 @@ const AcceptFlow = ({ token }: { token: string }) => {
 		);
 	}
 
-	// Anonymous → create an account to join.
 	return (
 		<AppAuthFormWrapper
 			form={form}

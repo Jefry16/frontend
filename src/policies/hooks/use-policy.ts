@@ -2,8 +2,6 @@ import { useResource } from "#/hooks/use-resource";
 import { queryKeys } from "#/lib/query-keys";
 import type { Policy } from "../types";
 
-// One policy with its body. Any member; an id from another operator → 404,
-// because the backend binds the id to the tenant in the path.
 export const usePolicy = (tourOperatorId: string, policyId: string) =>
 	useResource<Policy>(
 		queryKeys.policy(tourOperatorId, policyId),

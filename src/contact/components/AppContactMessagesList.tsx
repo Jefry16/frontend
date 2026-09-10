@@ -6,9 +6,6 @@ import { useOperatorDateTime } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
 import { contactMessageColumns } from "../columns";
 
-// The operator's contact inbox as the standard cursor table (Operations →
-// Inbox), newest first. No "new message" action — messages arrive from the
-// storefront's contact form.
 export const AppContactMessagesList = ({
 	tourOperatorId,
 }: {

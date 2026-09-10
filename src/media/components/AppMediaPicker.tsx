@@ -15,8 +15,6 @@ import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import { useMediaLibrary } from "../hooks/use-media-library";
 import type { MediaAsset } from "../types";
 
-// Returns the chosen assets as id + url, so the caller can preview without
-// re-fetching.
 export const AppMediaPicker = ({
 	tourOperatorId,
 	open,
@@ -35,7 +33,6 @@ export const AppMediaPicker = ({
 	const library = useMediaLibrary(tourOperatorId, open);
 	const [selected, setSelected] = useState<Map<string, MediaAsset>>(new Map());
 
-	// Re-seed the working selection each time the picker opens.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: seed once per open, not on every initialSelected identity change
 	useEffect(() => {
 		if (open) {

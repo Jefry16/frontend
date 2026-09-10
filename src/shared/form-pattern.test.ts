@@ -2,21 +2,11 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-// The gate for COMPONENTS.md §5: a component rendering a form must not render a
-// raw input control — every field goes through a renderer. If none fits, the
-// answer is a new renderer in shared/, which is how AppCheckboxGroupField came
-// to exist. <Label> is absent from the list on purpose: the SEO card labels an
-// image dropzone, which is not a field.
 const RAW_CONTROLS =
 	/<(Input|Textarea|Checkbox|Select|select|input|textarea|RadioGroup|Switch)[\s/>]/;
 
-// Must name AppFormCard as well as <form>: it renders one, and matching only
-// "<form" would silently blind this gate to every file that adopts it.
 const RENDERS_A_FORM = /<(form|AppFormCard)[\s>]/;
 
-// Nothing is frozen. Every form in the app renders its fields through a
-// renderer — the three row builders that used to sit here were converted once
-// their rows moved into TanStack array fields.
 const FROZEN = new Set<string>();
 
 const walk = (dir: string): string[] =>

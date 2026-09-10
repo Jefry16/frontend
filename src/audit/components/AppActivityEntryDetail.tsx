@@ -27,9 +27,6 @@ import {
 } from "../format";
 import { useAuditLogEntry } from "../hooks/use-audit-log-entry";
 
-// One audit entry in full: the facts (who/what/entity/when/request id), the
-// complete field-diff table, and the action's details payload. Read-only — an
-// audit entry has no actions, by design.
 export const AppActivityEntryDetail = ({
 	tourOperatorId,
 	entryId,

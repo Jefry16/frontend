@@ -83,9 +83,6 @@ describe("usePolicyForm", () => {
 		});
 	});
 
-	// The type IS the storefront address, so it is immutable. The backend's
-	// update input has no field for it — an edit that sent one would be ignored
-	// rather than rejected, which is exactly the failure a test has to catch.
 	it("never sends the type on edit, even though the form holds it", async () => {
 		const body = vi.fn();
 		server.use(
@@ -105,8 +102,6 @@ describe("usePolicyForm", () => {
 		expect(body.mock.calls[0][0]).not.toHaveProperty("type");
 	});
 
-	// One policy per type, so 409 means "you already wrote that one" — the way
-	// out is editing the existing policy, not retrying.
 	it("distinguishes the one-per-type conflict from other failures", async () => {
 		server.use(http.post(BASE, () => new HttpResponse(null, { status: 409 })));
 		const { result: dup } = render();

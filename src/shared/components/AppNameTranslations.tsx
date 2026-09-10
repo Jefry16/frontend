@@ -26,27 +26,16 @@ interface NameTranslation {
 
 interface Props {
 	tourOperatorId: string;
-	/** e.g. `/tour-operators/{op}/audiences/{id}/translations` */
 	endpointBase: string;
-	/** Query-key base for the translations of THIS resource. */
 	queryKeyBase: readonly unknown[];
-	/** Shown as the placeholder — what an empty translation falls back to. */
 	canonicalName: string;
 	maxLength: number;
-	/** Supported locales minus the primary. */
 	translatable: string[];
 	localesPending: boolean;
-	/** Code → display label (the wrapper passes its localeLabel). */
 	localeLabel: (code: string) => string;
-	/**
-	 * A prop because shared/ may not read usePermissions. False still shows the
-	 * stored translation — reads are member-level; only the form goes away.
-	 */
 	canWrite: boolean;
 }
 
-// For resources whose only translatable field is a name. Parameterized by
-// endpoint and query keys so each resource stays a thin wrapper.
 export const AppNameTranslations = ({
 	tourOperatorId,
 	endpointBase,
@@ -99,8 +88,6 @@ export const AppNameTranslations = ({
 						maxLength={maxLength}
 					/>
 				) : (
-					// The list query already carries every locale's name, so the
-					// read-only face needs no second fetch.
 					<AppTranslationSummary
 						fields={[
 							[
@@ -114,8 +101,6 @@ export const AppNameTranslations = ({
 	);
 };
 
-// Mounts once the overlay is loaded so the input seeds from the stored value;
-// the parent keys it by locale to reseed on switch.
 function LocaleNameForm({
 	locale,
 	tourOperatorId,
@@ -150,6 +135,7 @@ function LocaleNameForm({
 
 	const save = useMutation<void, AxiosError, string | null>({
 		mutationFn: async (name) => {
+			// A full replace: an omitted field is a cleared field.
 			await authApi.put(`${endpointBase}/${locale}`, { name });
 		},
 		onSuccess: () => {
@@ -191,7 +177,6 @@ function LocaleNameForm({
 	);
 }
 
-// A factory, not a module-level schema: the max length differs per resource.
 const nameSchema = (maxLength: number) =>
 	z.object({
 		name: z
@@ -224,7 +209,6 @@ function NameFormBody({
 	const form = useForm({
 		defaultValues: { name: initialName },
 		validators: { onSubmit: nameSchema(maxLength) },
-		// Blank → untranslated, so the storefront falls back to the canonical name.
 		onSubmit: ({ value }) => onSave(value.name.trim() || null),
 	});
 

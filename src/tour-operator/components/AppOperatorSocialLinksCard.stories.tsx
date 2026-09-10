@@ -48,13 +48,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Editable: Story = { decorators: withBrand(LINKS) };
 
-/** Nothing added yet. */
 export const Empty: Story = { decorators: withBrand([]) };
 
-/**
- * All eight platforms taken — Add is disabled, because a ninth row could only
- * duplicate one and the backend answers that with a 422.
- */
 export const AllPlatformsUsed: Story = {
 	decorators: withBrand([
 		{ platform: "FACEBOOK", url: "https://facebook.com/acme" },
@@ -68,7 +63,6 @@ export const AllPlatformsUsed: Story = {
 	]),
 };
 
-/** A STAFF member reads the links; writing them is ADMIN+. */
 export const ReadOnly: Story = {
 	args: { canWrite: false },
 	decorators: withBrand(LINKS),

@@ -24,11 +24,9 @@ interface AppDateFieldProps {
 	description?: string;
 	placeholder?: string;
 	required?: boolean;
-	/** A react-day-picker Matcher, e.g. `{ before: operatorToday }`. */
 	disabledDates?: ComponentProps<typeof Calendar>["disabled"];
 }
 
-/** Undefined when absent or malformed. */
 const parseIso = (value: string): Date | undefined => {
 	const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
 	if (!match) return undefined;
@@ -38,9 +36,6 @@ const parseIso = (value: string): Date | undefined => {
 const toIso = (date: Date): string =>
 	`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 
-// The field value is an ISO "YYYY-MM-DD" string, which is what the backend
-// parses; the trigger shows the viewer's locale format. Selecting blurs the
-// field, so touched-state validation fires. No date library.
 export const AppDateField = ({
 	field,
 	label,
@@ -91,7 +86,6 @@ export const AppDateField = ({
 					<Calendar
 						mode="single"
 						selected={date}
-						// DayPicker opens on today's month otherwise, even with a selection.
 						defaultMonth={date}
 						disabled={disabledDates}
 						onSelect={(d) => {

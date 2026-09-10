@@ -16,9 +16,6 @@ import {
 	pickupLocationSchema,
 } from "../validators/pickup-location";
 
-// Create (no `pickup`) or edit (with one). On success navigates to the detail
-// page (create-navigates-to-detail rule). A 409 is specifically a duplicate
-// name (unique per operator, case-insensitive).
 export const usePickupLocationForm = (
 	tourOperatorId: string,
 	pickup?: PickupLocation,
@@ -76,7 +73,6 @@ export const usePickupLocationForm = (
 	const form = useForm({
 		defaultValues: {
 			name: pickup?.name ?? "",
-			// The API serves "09:30:00"; the input works in HH:mm.
 			time: pickup ? formatTime(pickup.time) : "",
 		} as PickupLocationFormData,
 		validators: { onSubmit: pickupLocationSchema },
