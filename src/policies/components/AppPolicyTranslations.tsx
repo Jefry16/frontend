@@ -1,6 +1,7 @@
 import { Scale } from "lucide-react";
 import { useState } from "react";
 import { Skeleton } from "#/components/ui/skeleton";
+import { mergeQueryState } from "#/lib/query-state";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
@@ -10,6 +11,7 @@ import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import {
 	AppTranslationSummary,
@@ -100,34 +102,39 @@ export const AppPolicyTranslations = ({
 						}
 					/>
 
-					{localesQuery.isPending || listQuery.isPending ? (
-						<AppLoadingBlock />
-					) : translatable.length === 0 ? (
-						<AppNoTranslatableLocales tourOperatorId={tourOperatorId} />
-					) : (
-						<div className="flex flex-col gap-4">
-							<AppLocaleTabs
-								locales={translatable}
-								active={active}
-								onSelect={setPicked}
-								translated={translated}
-								label={(code) => localeLabel(code)}
-							/>
-							{active &&
-								(canWrite ? (
-									<AppPolicyTranslationForm
-										key={active}
-										tourOperatorId={tourOperatorId}
-										policyId={policyId}
-										locale={active}
-										canonical={policy}
-										translation={overlay}
+					<AppQueryState
+						query={mergeQueryState(localesQuery, listQuery, () => true)}
+						loading={<AppLoadingBlock />}
+					>
+						{() =>
+							translatable.length === 0 ? (
+								<AppNoTranslatableLocales tourOperatorId={tourOperatorId} />
+							) : (
+								<div className="flex flex-col gap-4">
+									<AppLocaleTabs
+										locales={translatable}
+										active={active}
+										onSelect={setPicked}
+										translated={translated}
+										label={(code) => localeLabel(code)}
 									/>
-								) : (
-									<AppTranslationSummary fields={policyFields(overlay)} />
-								))}
-						</div>
-					)}
+									{active &&
+										(canWrite ? (
+											<AppPolicyTranslationForm
+												key={active}
+												tourOperatorId={tourOperatorId}
+												policyId={policyId}
+												locale={active}
+												canonical={policy}
+												translation={overlay}
+											/>
+										) : (
+											<AppTranslationSummary fields={policyFields(overlay)} />
+										))}
+								</div>
+							)
+						}
+					</AppQueryState>
 				</>
 			)}
 		</AppResourceView>

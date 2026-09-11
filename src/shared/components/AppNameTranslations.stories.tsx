@@ -29,7 +29,12 @@ const meta = {
 		canonicalName: "Adults",
 		maxLength: 80,
 		translatable: ["es", "fr"],
-		localesPending: false,
+		localesQuery: {
+			data: {},
+			isPending: false,
+			error: null,
+			refetch: () => {},
+		},
 		localeLabel: (code: string) => LABELS[code] ?? code,
 		canWrite: true,
 	},

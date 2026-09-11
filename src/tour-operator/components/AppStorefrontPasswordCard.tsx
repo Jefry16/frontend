@@ -8,12 +8,12 @@ import {
 import { FieldGroup } from "#/components/ui/field";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
-import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
 	type StorefrontPasswordSettings,
@@ -37,7 +37,7 @@ export const AppStorefrontPasswordCard = ({
 				<CardDescription>{m.store_access_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody
+				<AppQueryState
 					query={query}
 					loading={<AppFormSkeleton rows={3} card={false} />}
 				>
@@ -51,7 +51,7 @@ export const AppStorefrontPasswordCard = ({
 							<StoreAccessSummary settings={settings} />
 						)
 					}
-				</AppCardBody>
+				</AppQueryState>
 			</CardContent>
 		</Card>
 	);

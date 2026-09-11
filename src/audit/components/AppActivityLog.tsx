@@ -1,6 +1,7 @@
 import { Button } from "#/components/ui/button";
 import { Skeleton } from "#/components/ui/skeleton";
 import { Spinner } from "#/components/ui/spinner";
+import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
 import { AppError } from "#/shared/components/AppError";
@@ -36,7 +37,13 @@ export const AppActivityLog = ({
 			</div>
 		);
 	}
-	if (log.isError) return <AppError onRetry={() => log.refetch()} />;
+	if (log.isError)
+		return (
+			<AppError
+				description={apiErrorMessage(log.error)}
+				onRetry={() => log.refetch()}
+			/>
+		);
 
 	const entries = log.data.pages.flatMap((page) => page.data);
 	if (entries.length === 0) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import {
 	Card,
 	CardContent,
@@ -9,8 +9,8 @@ import {
 import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
-import { AppError } from "#/shared/components/AppError";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useMetafieldValueSave } from "../hooks/use-metafield-value-save";
 import { useOwnerMetafields } from "../hooks/use-owner-metafields";
 import type {
@@ -29,99 +29,91 @@ export const AppMetafieldsCard = ({
 	ownerType: MetafieldOwnerTypeCode;
 	ownerId: string;
 }) => {
-	const { definitions, values, isPending, isError, refetch } =
-		useOwnerMetafields(tourOperatorId, ownerType, ownerId);
+	const query = useOwnerMetafields(tourOperatorId, ownerType, ownerId);
 	const save = useMetafieldValueSave(tourOperatorId, ownerType, ownerId);
 	const [drafts, setDrafts] = useState<Record<string, string>>({});
 
-	const header = (
-		<CardHeader>
-			<CardTitle>{m.metafields()}</CardTitle>
-			<CardDescription>{m.metafields_hint()}</CardDescription>
-		</CardHeader>
+	const chrome = (body: ReactNode) => (
+		<Card>
+			<CardHeader>
+				<CardTitle>{m.metafields()}</CardTitle>
+				<CardDescription>{m.metafields_hint()}</CardDescription>
+			</CardHeader>
+			<CardContent>{body}</CardContent>
+		</Card>
 	);
 
-	if (isError) {
-		return (
-			<Card>
-				{header}
-				<CardContent>
-					<AppError onRetry={refetch} />
-				</CardContent>
-			</Card>
-		);
-	}
-	if (isPending) {
-		return (
-			<Card>
-				{header}
-				<CardContent className="flex flex-col gap-4">
+	return (
+		<AppQueryState
+			query={query}
+			chrome={chrome}
+			loading={
+				<div className="flex flex-col gap-4">
 					{["a", "b"].map((k) => (
 						<Skeleton key={k} className="h-12 w-full" />
 					))}
-				</CardContent>
-			</Card>
-		);
-	}
-	if (definitions.length === 0) return null;
+				</div>
+			}
+		>
+			{({ definitions, values }) => {
+				if (definitions.length === 0) return null;
+				const stored = new Map(
+					values.map((v) => [`${v.namespace}.${v.key}`, v.value]),
+				);
+				const current = (id: string) => drafts[id] ?? stored.get(id) ?? "";
+				const setDraft = (id: string, value: string) =>
+					setDrafts((prev) => ({ ...prev, [id]: value }));
 
-	const stored = new Map(
-		values.map((v) => [`${v.namespace}.${v.key}`, v.value]),
-	);
-	const current = (id: string) => drafts[id] ?? stored.get(id) ?? "";
-	const setDraft = (id: string, value: string) =>
-		setDrafts((prev) => ({ ...prev, [id]: value }));
+				const effective = (raw: string) => (raw.trim() === "" ? "" : raw);
+				const changes = definitions
+					.filter((d) => {
+						const id = `${d.namespace}.${d.key}`;
+						const draft = drafts[id];
+						return (
+							draft !== undefined && effective(draft) !== (stored.get(id) ?? "")
+						);
+					})
+					.map((d) => ({
+						namespace: d.namespace,
+						key: d.key,
+						value: effective(drafts[`${d.namespace}.${d.key}`] ?? ""),
+					}));
 
-	const effective = (raw: string) => (raw.trim() === "" ? "" : raw);
-	const changes = definitions
-		.filter((d) => {
-			const id = `${d.namespace}.${d.key}`;
-			const draft = drafts[id];
-			return draft !== undefined && effective(draft) !== (stored.get(id) ?? "");
-		})
-		.map((d) => ({
-			namespace: d.namespace,
-			key: d.key,
-			value: effective(drafts[`${d.namespace}.${d.key}`] ?? ""),
-		}));
-
-	return (
-		<Card>
-			{header}
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						save.mutate(changes, {
-							onSettled: (_data, error) => {
-								if (!error) setDrafts({});
-							},
-						});
-					}}
-					className="space-y-4"
-				>
-					<FieldGroup>
-						{definitions.map((definition) => (
-							<MetafieldInput
-								key={definition.id}
-								tourOperatorId={tourOperatorId}
-								definition={definition}
-								value={current(`${definition.namespace}.${definition.key}`)}
-								onChange={(value) =>
-									setDraft(`${definition.namespace}.${definition.key}`, value)
-								}
+				return (
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							save.mutate(changes, {
+								onSettled: (_data, error) => {
+									if (!error) setDrafts({});
+								},
+							});
+						}}
+						className="space-y-4"
+					>
+						<FieldGroup>
+							{definitions.map((definition) => (
+								<MetafieldInput
+									key={definition.id}
+									tourOperatorId={tourOperatorId}
+									definition={definition}
+									value={current(`${definition.namespace}.${definition.key}`)}
+									onChange={(value) =>
+										setDraft(`${definition.namespace}.${definition.key}`, value)
+									}
+								/>
+							))}
+						</FieldGroup>
+						{changes.length > 0 && (
+							<AppFormActions
+								isPending={save.isPending}
+								submitLabel={m.save_changes()}
 							/>
-						))}
-					</FieldGroup>
-					{changes.length > 0 && (
-						<AppFormActions
-							isPending={save.isPending}
-							submitLabel={m.save_changes()}
-						/>
-					)}
-				</form>
-			</CardContent>
-		</Card>
+						)}
+					</form>
+				);
+			}}
+		</AppQueryState>
 	);
 };
 
