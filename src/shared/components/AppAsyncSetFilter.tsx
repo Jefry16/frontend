@@ -1,10 +1,7 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
 import type { HeaderContext } from "@tanstack/react-table";
-import { useEffect } from "react";
 import { Spinner } from "#/components/ui/spinner";
-import { authApi } from "#/lib/api";
-import { apiErrorMessage } from "#/lib/api-error";
-import { AppError } from "./AppError";
+import { useAllPages } from "#/hooks/use-all-pages";
+import { AppQueryState } from "./AppQueryState";
 import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 type AsyncRow = Record<string, unknown>;
@@ -35,61 +32,33 @@ export function AppAsyncSetFilter<TData>({
 	valueKey = "id",
 	labelKey = "name",
 }: Props<TData>) {
-	const {
-		data,
-		isPending,
-		isError,
-		error,
-		refetch,
-		fetchNextPage,
-		hasNextPage,
-		isFetchingNextPage,
-	} = useInfiniteQuery({
-		queryKey: [...queryKey, "set-filter-options"],
-		queryFn: async ({ pageParam }) => {
-			const params = new URLSearchParams();
-			if (pageParam) params.set("cursor", pageParam as string);
-			const qs = params.toString();
-			const res = await authApi.get<{
-				data: AsyncRow[];
-				nextCursor: string | null;
-			}>(qs ? `${endpoint}?${qs}` : endpoint);
-			return res.data;
-		},
-		initialPageParam: null as string | null,
-		getNextPageParam: (last) => last.nextCursor || null,
-	});
+	const options = useAllPages<AsyncRow>(queryKey, endpoint);
 
-	useEffect(() => {
-		if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-	}, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+	return (
+		<AppQueryState
+			query={options}
+			loading={
+				<div className="flex justify-center py-4">
+					<Spinner />
+				</div>
+			}
+		>
+			{(rows) => {
+				const seen = new Set<string>();
+				const items: SetFilterItem[] = [];
+				for (const row of rows) {
+					const value = String(readPath(row, valueKey) ?? "");
+					if (!value || seen.has(value)) continue;
+					seen.add(value);
+					items.push({
+						value,
+						label: String(readPath(row, labelKey) ?? value),
+					});
+				}
+				items.sort((a, b) => a.label.localeCompare(b.label));
 
-	if (isError) {
-		return (
-			<AppError
-				description={apiErrorMessage(error)}
-				onRetry={() => refetch()}
-			/>
-		);
-	}
-
-	if (isPending || hasNextPage) {
-		return (
-			<div className="flex justify-center py-4">
-				<Spinner />
-			</div>
-		);
-	}
-
-	const seen = new Set<string>();
-	const items: SetFilterItem[] = [];
-	for (const row of data?.pages.flatMap((p) => p.data) ?? []) {
-		const value = String(readPath(row, valueKey) ?? "");
-		if (!value || seen.has(value)) continue;
-		seen.add(value);
-		items.push({ value, label: String(readPath(row, labelKey) ?? value) });
-	}
-	items.sort((a, b) => a.label.localeCompare(b.label));
-
-	return <AppSetFilter headerContext={headerContext} items={items} />;
+				return <AppSetFilter headerContext={headerContext} items={items} />;
+			}}
+		</AppQueryState>
+	);
 }

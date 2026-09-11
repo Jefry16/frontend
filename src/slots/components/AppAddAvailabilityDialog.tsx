@@ -12,11 +12,10 @@ import {
 import { Input } from "#/components/ui/input";
 import { Spinner } from "#/components/ui/spinner";
 import { useAllPages } from "#/hooks/use-all-pages";
-import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppError } from "#/shared/components/AppError";
 import { AppLink } from "#/shared/components/AppLink";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 
 interface ExperienceRow {
 	id: string;
@@ -39,10 +38,6 @@ export const AppAddAvailabilityDialog = ({
 		`/tour-operators/${tourOperatorId}/experiences`,
 	);
 
-	const filtered = (experiences.data ?? []).filter((e) =>
-		e.name.toLowerCase().includes(search.trim().toLowerCase()),
-	);
-
 	return (
 		<Dialog
 			open={open}
@@ -56,60 +51,68 @@ export const AppAddAvailabilityDialog = ({
 					<DialogTitle>{m.choose_experience()}</DialogTitle>
 					<DialogDescription>{m.choose_experience_hint()}</DialogDescription>
 				</DialogHeader>
-				{experiences.isPending ? (
-					<div className="flex justify-center py-8">
-						<Spinner />
-					</div>
-				) : experiences.isError ? (
-					<AppError
-						description={apiErrorMessage(experiences.error)}
-						onRetry={() => experiences.refetch()}
-					/>
-				) : (experiences.data ?? []).length === 0 ? (
-					<div className="flex flex-col items-center gap-3 py-6 text-center">
-						<Compass className="size-8 opacity-40" />
-						<p className="text-sm text-muted-foreground">
-							{m.no_experiences()}
-						</p>
-						<Button asChild size="sm">
-							<AppLink
-								to="/tour-operators/$tourOperatorId/experiences/new"
-								params={{ tourOperatorId }}
-							>
-								<Plus />
-								{m.new_experience()}
-							</AppLink>
-						</Button>
-					</div>
-				) : (
-					<div className="flex flex-col gap-2">
-						<Input
-							autoFocus
-							placeholder={m.search()}
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-						/>
-						<div className="flex max-h-72 flex-col gap-1 overflow-y-auto">
-							{filtered.map((experience) => (
-								<Button
-									key={experience.id}
-									type="button"
-									variant="ghost"
-									className="justify-between"
-									onClick={() =>
-										navigate({
-											to: "/tour-operators/$tourOperatorId/availability/new/$experienceId",
-											params: { tourOperatorId, experienceId: experience.id },
-										})
-									}
-								>
-									<span className="truncate">{experience.name}</span>
-									<ChevronRight className="text-muted-foreground" />
-								</Button>
-							))}
+				<AppQueryState
+					query={experiences}
+					loading={
+						<div className="flex justify-center py-8">
+							<Spinner />
 						</div>
-					</div>
-				)}
+					}
+				>
+					{(rows) => {
+						const filtered = rows.filter((e) =>
+							e.name.toLowerCase().includes(search.trim().toLowerCase()),
+						);
+						return rows.length === 0 ? (
+							<div className="flex flex-col items-center gap-3 py-6 text-center">
+								<Compass className="size-8 opacity-40" />
+								<p className="text-sm text-muted-foreground">
+									{m.no_experiences()}
+								</p>
+								<Button asChild size="sm">
+									<AppLink
+										to="/tour-operators/$tourOperatorId/experiences/new"
+										params={{ tourOperatorId }}
+									>
+										<Plus />
+										{m.new_experience()}
+									</AppLink>
+								</Button>
+							</div>
+						) : (
+							<div className="flex flex-col gap-2">
+								<Input
+									autoFocus
+									placeholder={m.search()}
+									value={search}
+									onChange={(e) => setSearch(e.target.value)}
+								/>
+								<div className="flex max-h-72 flex-col gap-1 overflow-y-auto">
+									{filtered.map((experience) => (
+										<Button
+											key={experience.id}
+											type="button"
+											variant="ghost"
+											className="justify-between"
+											onClick={() =>
+												navigate({
+													to: "/tour-operators/$tourOperatorId/availability/new/$experienceId",
+													params: {
+														tourOperatorId,
+														experienceId: experience.id,
+													},
+												})
+											}
+										>
+											<span className="truncate">{experience.name}</span>
+											<ChevronRight className="text-muted-foreground" />
+										</Button>
+									))}
+								</div>
+							</div>
+						);
+					}}
+				</AppQueryState>
 			</DialogContent>
 		</Dialog>
 	);
