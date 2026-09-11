@@ -177,6 +177,19 @@ describe("useAllPages", () => {
 		expect(result.current.error).toBeTruthy();
 	});
 
+	it("treats an empty-string cursor as the last page, not a next one", async () => {
+		const { handler, cursors } = paginated([
+			{ data: [{ id: "a" }], nextCursor: "" },
+		]);
+		server.use(handler);
+
+		const { result } = render();
+
+		await waitFor(() => expect(result.current.isPending).toBe(false));
+		expect(result.current.data?.map((r) => r.id)).toEqual(["a"]);
+		expect(cursors).toEqual([null]);
+	});
+
 	it("surfaces a mid-pagination failure instead of loading forever", async () => {
 		let call = 0;
 		server.use(

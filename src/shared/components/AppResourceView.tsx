@@ -25,16 +25,15 @@ export function AppResourceView<TData>({
 	loading,
 	children,
 }: Props<TData>) {
-	if (query.isPending) {
-		return (
-			<>
-				<AppPageHeader title={resource} breadcrumb={breadcrumb} />
-				{loading}
-			</>
-		);
-	}
-
-	if (query.error || query.data === undefined) {
+	if (isNotFound(query.error) || query.data === undefined) {
+		if (query.isPending) {
+			return (
+				<>
+					<AppPageHeader title={resource} breadcrumb={breadcrumb} />
+					{loading}
+				</>
+			);
+		}
 		return (
 			<>
 				<AppPageHeader title={resource} breadcrumb={breadcrumb} />

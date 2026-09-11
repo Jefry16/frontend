@@ -27,7 +27,7 @@ export const useAllPages = <T>(
 			return res.data;
 		},
 		initialPageParam: null as string | null,
-		getNextPageParam: (last) => last.nextCursor,
+		getNextPageParam: (last) => last.nextCursor || null,
 	});
 
 	const nextCursor = data?.pages.at(-1)?.nextCursor;

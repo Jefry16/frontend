@@ -9,9 +9,11 @@ import {
 	DialogTitle,
 } from "#/components/ui/dialog";
 import { Spinner } from "#/components/ui/spinner";
+import { apiErrorMessage } from "#/lib/api-error";
 import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
 import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
+import { AppError } from "#/shared/components/AppError";
 import { useMediaLibrary } from "../hooks/use-media-library";
 import type { MediaAsset } from "../types";
 
@@ -65,7 +67,12 @@ export const AppMediaPicker = ({
 					<DialogDescription>{m.select_media_hint()}</DialogDescription>
 				</DialogHeader>
 
-				{library.isLoading ? (
+				{library.isError ? (
+					<AppError
+						description={apiErrorMessage(library.error)}
+						onRetry={() => library.refetch()}
+					/>
+				) : library.isLoading ? (
 					<div className="flex justify-center py-16">
 						<Spinner />
 					</div>

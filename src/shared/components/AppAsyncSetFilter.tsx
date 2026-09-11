@@ -57,7 +57,7 @@ export function AppAsyncSetFilter<TData>({
 			return res.data;
 		},
 		initialPageParam: null as string | null,
-		getNextPageParam: (last) => last.nextCursor,
+		getNextPageParam: (last) => last.nextCursor || null,
 	});
 
 	useEffect(() => {

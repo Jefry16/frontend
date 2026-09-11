@@ -7,7 +7,6 @@ import {
 	CardTitle,
 } from "#/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
-import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppQueryState } from "#/shared/components/AppQueryState";
@@ -33,28 +32,19 @@ export const AppMetafieldsCard = ({
 	const save = useMetafieldValueSave(tourOperatorId, ownerType, ownerId);
 	const [drafts, setDrafts] = useState<Record<string, string>>({});
 
-	const chrome = (body: ReactNode) => (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.metafields()}</CardTitle>
-				<CardDescription>{m.metafields_hint()}</CardDescription>
-			</CardHeader>
-			<CardContent>{body}</CardContent>
-		</Card>
-	);
+	const chrome = (body: ReactNode, phase: "pending" | "error" | "loaded") =>
+		phase === "pending" ? null : (
+			<Card>
+				<CardHeader>
+					<CardTitle>{m.metafields()}</CardTitle>
+					<CardDescription>{m.metafields_hint()}</CardDescription>
+				</CardHeader>
+				<CardContent>{body}</CardContent>
+			</Card>
+		);
 
 	return (
-		<AppQueryState
-			query={query}
-			chrome={chrome}
-			loading={
-				<div className="flex flex-col gap-4">
-					{["a", "b"].map((k) => (
-						<Skeleton key={k} className="h-12 w-full" />
-					))}
-				</div>
-			}
-		>
+		<AppQueryState query={query} chrome={chrome} loading={null}>
 			{({ definitions, values }) => {
 				if (definitions.length === 0) return null;
 				const stored = new Map(

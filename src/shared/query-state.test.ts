@@ -4,12 +4,12 @@ import { describe, expect, it } from "vitest";
 
 const GATE =
 	/if\s*\(([^)]*)\)\s*\{?\s*return\s*[(<]|\{\s*([^{}?]*?)\s*\?\s*\(?\s*</g;
-const PENDING_RECEIVER = /\b([A-Za-z_$][\w$]*)\.isPending\b/g;
+const PENDING_RECEIVER = /\b([A-Za-z_$][\w$]*)\.(?:isPending|isLoading)\b/g;
 const SPINNER = /<AppLoadingBlock\b/g;
 const SPINNER_AS_SLOT = /loading=\{\s*<AppLoadingBlock\b/g;
 const HAND_ROLLED_ERROR = /<AppError\b/;
 const BUILDS_A_CARD_HEADER = /<CardHeader\b/;
-const ERROR_WITHOUT_REASON = /<AppError\b(?![^>]*\bdescription=)/;
+const ERROR_TAG = /<AppError\b(?:(?!\/>)[\s\S])*\/>/g;
 
 const count = (src: string, pattern: RegExp) =>
 	[...src.matchAll(pattern)].length;
@@ -19,7 +19,8 @@ const unhandledPending = (src: string): string[] => {
 	for (const gate of src.matchAll(GATE)) {
 		const condition = gate[1] ?? gate[2] ?? "";
 		for (const [, receiver] of condition.matchAll(PENDING_RECEIVER)) {
-			const handled = new RegExp(`\\b${receiver}\\.(?:isError|error)\\b`);
+			const name = receiver.replace(/[$]/g, "\\$&");
+			const handled = new RegExp(`\\b${name}\\.(?:isError|error)\\b`);
 			if (!handled.test(src)) found.push(receiver);
 		}
 	}
@@ -32,7 +33,8 @@ const strandedSpinner = (src: string) =>
 const handRolledCardError = (src: string) =>
 	HAND_ROLLED_ERROR.test(src) && BUILDS_A_CARD_HEADER.test(src);
 
-const errorWithoutReason = (src: string) => ERROR_WITHOUT_REASON.test(src);
+const errorWithoutReason = (src: string) =>
+	[...src.matchAll(ERROR_TAG)].some((tag) => !/\bdescription=/.test(tag[0]));
 
 const walk = (dir: string): string[] =>
 	readdirSync(dir).flatMap((entry) => {
@@ -128,5 +130,25 @@ describe("the gate itself", () => {
 		);
 		expect(errorWithoutReason("<AppError onRetry={r} />")).toBe(true);
 		expect(errorWithoutReason("<AppError description={why} />")).toBe(false);
+	});
+
+	it("reads the whole error tag, so attribute order and arrows do not matter", () => {
+		expect(
+			errorWithoutReason(
+				"<AppError onRetry={() => refetch()} description={apiErrorMessage(e)} />",
+			),
+		).toBe(false);
+	});
+
+	it("treats isLoading as a pending branch too", () => {
+		expect(
+			unhandledPending("if (library.isLoading) return <Spinner />;"),
+		).toEqual(["library"]);
+	});
+
+	it("does not let a dollar sign in a receiver name break the matcher", () => {
+		expect(unhandledPending("if (q$.isPending) return <Spinner />;")).toEqual([
+			"q$",
+		]);
 	});
 });

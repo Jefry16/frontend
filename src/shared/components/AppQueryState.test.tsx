@@ -73,6 +73,58 @@ describe("AppQueryState", () => {
 		expect(refetch).toHaveBeenCalled();
 	});
 
+	it("keeps the loaded body when a refetch fails, rather than replacing it", () => {
+		renderWithProviders(
+			<AppQueryState
+				query={state<string>({
+					data: "draft in progress",
+					error: refused("blip"),
+				})}
+				chrome={chrome}
+				loading={<p>Loading</p>}
+			>
+				{(value) => <p>{value}</p>}
+			</AppQueryState>,
+		);
+
+		expect(screen.getByText("draft in progress")).toBeVisible();
+		expect(screen.queryByText("blip")).not.toBeInTheDocument();
+	});
+
+	it("tells the chrome which phase it is wrapping", () => {
+		const phases: string[] = [];
+		const spy = (body: React.ReactNode, phase: string) => {
+			phases.push(phase);
+			return body;
+		};
+		const view = (q: QueryState<string>) => (
+			<AppQueryState query={q} chrome={spy} loading={<p>Loading</p>}>
+				{(value) => <p>{value}</p>}
+			</AppQueryState>
+		);
+		const { rerender } = renderWithProviders(
+			view(state<string>({ isPending: true })),
+		);
+		rerender(view(state<string>({ error: refused("no") })));
+		rerender(view(state<string>({ data: "x" })));
+
+		expect(phases).toEqual(["pending", "error", "loaded"]);
+	});
+
+	it("renders nothing when the body is false, chrome included", () => {
+		const { container } = renderWithProviders(
+			<AppQueryState
+				query={state({ data: [] as string[] })}
+				chrome={chrome}
+				loading={<p>Loading</p>}
+			>
+				{(rows) => rows.length > 0 && <p>{rows.length}</p>}
+			</AppQueryState>,
+		);
+
+		expect(container).toBeEmptyDOMElement();
+	});
+
 	it("renders nothing at all when the body is null, chrome included", () => {
 		const { container } = renderWithProviders(
 			<AppQueryState
