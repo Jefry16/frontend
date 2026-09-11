@@ -35,7 +35,12 @@ const ALLOWED_ARBITRARY = (utility: string, value: string) =>
 	utility === "grid-cols" ||
 	utility === "grid-rows";
 
-const violationsIn = (source: string): string[] => {
+const INLINE_STYLE = /\bstyle=\{/g;
+const OPERATOR_TYPED_COLOURS = new Set([
+	"/src/tour-operator/components/AppOperatorColorsCard.tsx",
+]);
+
+const violationsIn = (path: string, source: string): string[] => {
 	const hits: string[] = [];
 	for (const match of source.matchAll(RAW_PALETTE)) hits.push(match[1]);
 	for (const match of source.matchAll(ARBITRARY)) {
@@ -44,6 +49,8 @@ const violationsIn = (source: string): string[] => {
 		if (ALLOWED_ARBITRARY(utility, value)) continue;
 		hits.push(cls);
 	}
+	if (!OPERATOR_TYPED_COLOURS.has(path))
+		for (const match of source.matchAll(INLINE_STYLE)) hits.push(match[0]);
 	return hits;
 };
 
@@ -52,7 +59,10 @@ const KNOWN_DRIFT: Record<string, number> = {};
 describe("token drift ratchet", () => {
 	const byFile = new Map<string, string[]>();
 	for (const path of scannable) {
-		const hits = violationsIn(readFileSync(join(ROOT, path.slice(1)), "utf8"));
+		const hits = violationsIn(
+			path,
+			readFileSync(join(ROOT, path.slice(1)), "utf8"),
+		);
 		if (hits.length > 0) byFile.set(path, hits);
 	}
 
@@ -60,15 +70,33 @@ describe("token drift ratchet", () => {
 		expect(scannable.length).toBeGreaterThan(0);
 	});
 
-	it("no raw palette classes or arbitrary values outside KNOWN_DRIFT", () => {
+	it("no raw palette classes, arbitrary values or inline styles outside KNOWN_DRIFT", () => {
 		const offenses = [...byFile.entries()]
 			.filter(([path, hits]) => hits.length > (KNOWN_DRIFT[path] ?? 0))
 			.map(([path, hits]) => `${path}: ${hits.join(" ")}`);
 		expect(
 			offenses,
-			"Raw palette class or arbitrary value in new code. Use a design token " +
-				"from src/styles.css (or add one, or a CVA variant) — see the styling " +
-				"rules in CLAUDE.md. Do NOT add to KNOWN_DRIFT; it only shrinks.",
+			"Raw palette class, arbitrary value or style={} in new code. Use a design " +
+				"token from src/styles.css (or add one, or a CVA variant). An inline " +
+				"style is allowed only where the colour is one the operator typed in " +
+				"(OPERATOR_TYPED_COLOURS). Do NOT add to KNOWN_DRIFT; it only shrinks.",
+		).toEqual([]);
+	});
+
+	it("every OPERATOR_TYPED_COLOURS file still needs its inline style", () => {
+		const stale = [...OPERATOR_TYPED_COLOURS].filter(
+			(path) =>
+				!scannable.includes(path) ||
+				[
+					...readFileSync(join(ROOT, path.slice(1)), "utf8").matchAll(
+						INLINE_STYLE,
+					),
+				].length === 0,
+		);
+		expect(
+			stale,
+			"Stale exception: the file no longer renders an operator-typed colour " +
+				"inline (or is gone) — remove it from OPERATOR_TYPED_COLOURS.",
 		).toEqual([]);
 	});
 
