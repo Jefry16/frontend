@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Experience } from "../types";
 import { AppExperiencesList } from "./AppExperiencesList";
@@ -52,15 +52,11 @@ const EXPERIENCES: Experience[] = [
 ];
 
 const qc = storyQueryClient();
-qc.setQueryData(
-	[
-		...queryKeys.experiences(OP_ID),
-		`/tour-operators/${OP_ID}/experiences`,
-		[],
-		[],
-		undefined,
-	],
-	listPage(EXPERIENCES),
+seedTable(
+	qc,
+	queryKeys.experiences(OP_ID),
+	`/tour-operators/${OP_ID}/experiences`,
+	EXPERIENCES,
 );
 
 const meta = {

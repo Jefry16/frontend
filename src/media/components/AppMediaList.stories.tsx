@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { MediaAsset } from "../types";
 import { AppMediaList } from "./AppMediaList";
@@ -57,16 +57,7 @@ const MEDIA: MediaAsset[] = [
 ];
 
 const qc = storyQueryClient();
-qc.setQueryData(
-	[
-		...queryKeys.media(OP_ID),
-		`/tour-operators/${OP_ID}/media`,
-		[],
-		[],
-		undefined,
-	],
-	listPage(MEDIA),
-);
+seedTable(qc, queryKeys.media(OP_ID), `/tour-operators/${OP_ID}/media`, MEDIA);
 
 const meta = {
 	title: "Media/AppMediaList",

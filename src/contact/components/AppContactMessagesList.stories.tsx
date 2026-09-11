@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { ContactMessageListItem } from "../types";
 import { AppContactMessagesList } from "./AppContactMessagesList";
@@ -36,15 +36,11 @@ const MESSAGES: ContactMessageListItem[] = [
 ];
 
 const qc = storyQueryClient((qc) =>
-	qc.setQueryData(
-		[
-			...queryKeys.contactMessages(OP),
-			`/tour-operators/${OP}/contact-messages`,
-			[],
-			[],
-			undefined,
-		],
-		listPage(MESSAGES),
+	seedTable(
+		qc,
+		queryKeys.contactMessages(OP),
+		`/tour-operators/${OP}/contact-messages`,
+		MESSAGES,
 	),
 );
 

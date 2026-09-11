@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { AppDataTable } from "./AppDataTable";
 import { AppDataTableHeader } from "./AppDataTableHeader";
 import { timestampColumn } from "./table-columns";
@@ -17,9 +17,7 @@ const ENDPOINT = "/tour-operators/op-1/things";
 const KEY = ["things", "op-1"] as const;
 
 const seeded = (rows: Row[]) =>
-	storyQueryClient((qc) =>
-		qc.setQueryData([...KEY, ENDPOINT, [], [], undefined], listPage(rows)),
-	);
+	storyQueryClient((qc) => seedTable(qc, KEY, ENDPOINT, rows));
 
 const columns: ColumnDef<Row, unknown>[] = [
 	{

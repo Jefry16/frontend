@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { listPage, seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Metaobject, MetaobjectDefinition } from "../types";
 import { AppMetaobjectDefinitionDetail } from "./AppMetaobjectDefinitionDetail";
@@ -61,16 +61,11 @@ const ENTRY: Metaobject = {
 
 const qc = storyQueryClient();
 qc.setQueryData(queryKeys.metaobjectDefinition(OP, DEF), DEFINITION);
-qc.setQueryData(
+seedTable(
+	qc,
+	queryKeys.metaobjectsOfDefinition(OP, DEF),
+	`/tour-operators/${OP}/metaobjects`,
 	[
-		...queryKeys.metaobjects(OP),
-		DEF,
-		`/tour-operators/${OP}/metaobjects`,
-		[],
-		[],
-		{ "filter[definitionId][in]": DEF },
-	],
-	listPage([
 		{
 			id: ENTRY.id,
 			context: "metaobjects",
@@ -80,7 +75,8 @@ qc.setQueryData(
 			published: ENTRY.published,
 			createdAt: ENTRY.createdAt,
 		},
-	]),
+	],
+	{ "filter[definitionId][in]": DEF },
 );
 qc.setQueryData(
 	queryKeys.activityTimeline(OP, "METAOBJECT_DEFINITION", DEF),

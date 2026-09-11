@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Slot } from "../types";
 import { AppSlotsList } from "./AppSlotsList";
@@ -86,16 +86,7 @@ const SLOTS: Slot[] = [
 ];
 
 const qc = storyQueryClient();
-qc.setQueryData(
-	[
-		...queryKeys.slots(OP_ID),
-		`/tour-operators/${OP_ID}/slots`,
-		[],
-		[],
-		undefined,
-	],
-	listPage(SLOTS),
-);
+seedTable(qc, queryKeys.slots(OP_ID), `/tour-operators/${OP_ID}/slots`, SLOTS);
 
 const meta = {
 	title: "Slots/AppSlotsList",

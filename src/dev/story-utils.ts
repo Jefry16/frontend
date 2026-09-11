@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { allPagesKey } from "#/hooks/use-all-pages";
+import { tableKey } from "#/shared/components/useDataTable";
 
 export const storyQueryClient = (
 	seed?: (qc: QueryClient) => void,
@@ -24,3 +25,15 @@ export const seedAllPages = <T>(
 	endpoint: string,
 	rows: T[],
 ) => qc.setQueryData(allPagesKey(queryKey, endpoint), rows);
+
+export const seedTable = <T>(
+	qc: QueryClient,
+	queryKey: readonly unknown[],
+	endpoint: string,
+	rows: T[],
+	baseParams?: Record<string, string>,
+) =>
+	qc.setQueryData(
+		tableKey(queryKey, endpoint, [], [], baseParams),
+		listPage(rows),
+	);

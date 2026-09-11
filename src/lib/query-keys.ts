@@ -1,5 +1,9 @@
+export const withLocale = (base: readonly unknown[], locale: string) =>
+	[...base, locale] as const;
+
 export const queryKeys = {
 	authProfile: ["auth", "profile"] as const,
+	invitationPreview: (token: string) => ["invitation-preview", token] as const,
 	timezones: ["timezones"] as const,
 	currencies: ["currencies"] as const,
 	languages: ["languages"] as const,
@@ -66,8 +70,11 @@ export const queryKeys = {
 		["metaobject-definitions", tourOperatorId, definitionId] as const,
 	metaobjects: (tourOperatorId: string) =>
 		["metaobjects", tourOperatorId] as const,
+	metaobjectsOfDefinition: (tourOperatorId: string, definitionId: string) =>
+		["metaobjects", tourOperatorId, definitionId] as const,
 	metaobject: (tourOperatorId: string, metaobjectId: string) =>
 		["metaobjects", tourOperatorId, metaobjectId] as const,
+	allMetafieldValues: ["metafield-values"] as const,
 	metafieldValues: (
 		tourOperatorId: string,
 		ownerType: string,
@@ -100,6 +107,8 @@ export const queryKeys = {
 			locale,
 		] as const,
 	media: (tourOperatorId: string) => ["media", tourOperatorId] as const,
+	mediaLibrary: (tourOperatorId: string) =>
+		["media-library", tourOperatorId] as const,
 	mediaAsset: (tourOperatorId: string, mediaId: string) =>
 		["media", tourOperatorId, mediaId] as const,
 	experiences: (tourOperatorId: string) =>

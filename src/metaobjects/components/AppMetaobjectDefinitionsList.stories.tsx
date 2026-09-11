@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { MetaobjectDefinitionListItem } from "../types";
 import { AppMetaobjectDefinitionsList } from "./AppMetaobjectDefinitionsList";
@@ -26,15 +26,11 @@ const DEFINITIONS: MetaobjectDefinitionListItem[] = [
 ];
 
 const qc = storyQueryClient((qc) =>
-	qc.setQueryData(
-		[
-			...queryKeys.metaobjectDefinitions(OP_ID),
-			`/tour-operators/${OP_ID}/metaobject-definitions`,
-			[],
-			[],
-			undefined,
-		],
-		listPage(DEFINITIONS),
+	seedTable(
+		qc,
+		queryKeys.metaobjectDefinitions(OP_ID),
+		`/tour-operators/${OP_ID}/metaobject-definitions`,
+		DEFINITIONS,
 	),
 );
 

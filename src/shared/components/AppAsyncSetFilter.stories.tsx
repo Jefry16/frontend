@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
-import { listPage, seedAllPages, storyQueryClient } from "#/dev/story-utils";
+import { seedAllPages, seedTable, storyQueryClient } from "#/dev/story-utils";
 import { AppDataTable } from "./AppDataTable";
 import { AppDataTableHeader } from "./AppDataTableHeader";
 
@@ -16,13 +16,10 @@ const OPTIONS_ENDPOINT = "/tour-operators/op-1/members";
 const OPTIONS_KEY = ["async-filter-options", "op-1"] as const;
 
 const client = storyQueryClient((qc) => {
-	qc.setQueryData(
-		[...KEY, ENDPOINT, [], [], undefined],
-		listPage<Row>([
-			{ id: "1", name: "Sunset kayak" },
-			{ id: "2", name: "Reef snorkel" },
-		]),
-	);
+	seedTable<Row>(qc, KEY, ENDPOINT, [
+		{ id: "1", name: "Sunset kayak" },
+		{ id: "2", name: "Reef snorkel" },
+	]);
 	seedAllPages(qc, OPTIONS_KEY, OPTIONS_ENDPOINT, [
 		{ id: "u1", name: "Ada Lovelace" },
 		{ id: "u2", name: "Grace Hopper" },

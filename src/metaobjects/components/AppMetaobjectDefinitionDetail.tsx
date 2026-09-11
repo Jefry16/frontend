@@ -231,7 +231,10 @@ const DefinitionView = ({
 					<AppDataTable
 						columns={entryColumns}
 						endpoint={`/tour-operators/${tourOperatorId}/metaobjects`}
-						queryKey={[...queryKeys.metaobjects(tourOperatorId), definition.id]}
+						queryKey={queryKeys.metaobjectsOfDefinition(
+							tourOperatorId,
+							definition.id,
+						)}
 						baseParams={{ "filter[definitionId][in]": definition.id }}
 						emptyState={{
 							title: m.no_metaobjects(),

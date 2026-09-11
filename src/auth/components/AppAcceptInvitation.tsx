@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "#/components/ui/button";
 import { Spinner } from "#/components/ui/spinner";
 import { authApi } from "#/lib/api";
+import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
 import { AppLink } from "#/shared/components/AppLink";
@@ -38,7 +39,7 @@ const AcceptFlow = ({ token }: { token: string }) => {
 		useAcceptInvitation(token);
 
 	const preview = useQuery<Preview>({
-		queryKey: ["invitation-preview", token],
+		queryKey: queryKeys.invitationPreview(token),
 		queryFn: async () =>
 			(await authApi.get<Preview>(`/invitations/${token}/preview`)).data,
 		retry: false,

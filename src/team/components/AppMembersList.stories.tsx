@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Member } from "../types";
 import { AppMembersList } from "./AppMembersList";
@@ -36,15 +36,11 @@ const MEMBERS: Member[] = [
 ];
 
 const qc = storyQueryClient();
-qc.setQueryData(
-	[
-		...queryKeys.members(OP_ID),
-		`/tour-operators/${OP_ID}/members`,
-		[],
-		[],
-		undefined,
-	],
-	listPage(MEMBERS),
+seedTable(
+	qc,
+	queryKeys.members(OP_ID),
+	`/tour-operators/${OP_ID}/members`,
+	MEMBERS,
 );
 
 const meta = {

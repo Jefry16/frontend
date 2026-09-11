@@ -27,6 +27,14 @@ interface CursorResponse<TData> {
 	nextCursor: string | null;
 }
 
+export const tableKey = (
+	queryKey: readonly unknown[],
+	endpoint: string,
+	sorting: SortingState = [],
+	columnFilters: ColumnFiltersState = [],
+	baseParams?: Record<string, string>,
+) => [...queryKey, endpoint, sorting, columnFilters, baseParams] as const;
+
 interface UseDataTableProps<TData> {
 	columns: ColumnDef<TData, unknown>[];
 	endpoint: string;
@@ -66,7 +74,7 @@ export function useDataTable<TData extends { id: string }>({
 		hasNextPage,
 		isFetchingNextPage,
 	} = useInfiniteQuery<CursorResponse<TData>>({
-		queryKey: [...queryKey, endpoint, sorting, columnFilters, baseParams],
+		queryKey: tableKey(queryKey, endpoint, sorting, columnFilters, baseParams),
 		queryFn: async ({ pageParam }) => {
 			const params = buildParams({
 				cursor: pageParam as string | null,

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { PageListItem } from "../types";
 import { AppPagesList } from "./AppPagesList";
@@ -30,15 +30,11 @@ const PAGES: PageListItem[] = [
 ];
 
 const qc = storyQueryClient((qc) =>
-	qc.setQueryData(
-		[
-			...queryKeys.pages(OP_ID),
-			`/tour-operators/${OP_ID}/pages`,
-			[],
-			[],
-			undefined,
-		],
-		listPage(PAGES),
+	seedTable(
+		qc,
+		queryKeys.pages(OP_ID),
+		`/tour-operators/${OP_ID}/pages`,
+		PAGES,
 	),
 );
 

@@ -8,7 +8,7 @@ import { Spinner } from "#/components/ui/spinner";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
-import { queryKeys } from "#/lib/query-keys";
+import { queryKeys, withLocale } from "#/lib/query-keys";
 import type { QueryState } from "#/lib/query-state";
 import * as m from "#/paraglide/messages";
 import { AppFormCard } from "#/shared/components/AppFormCard";
@@ -53,7 +53,7 @@ export const AppNameTranslations = ({
 	const active = picked ?? translatable[0];
 
 	const listQuery = useQuery({
-		queryKey: [...queryKeyBase],
+		queryKey: queryKeyBase,
 		queryFn: async () =>
 			(await authApi.get<NameTranslation[]>(endpointBase)).data,
 	});
@@ -124,13 +124,13 @@ function LocaleNameForm({
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const overlayQuery = useQuery({
-		queryKey: [...queryKeyBase, locale],
+		queryKey: withLocale(queryKeyBase, locale),
 		queryFn: async () =>
 			(await authApi.get<NameTranslation>(`${endpointBase}/${locale}`)).data,
 	});
 
 	const invalidate = () => {
-		queryClient.invalidateQueries({ queryKey: [...queryKeyBase] });
+		queryClient.invalidateQueries({ queryKey: queryKeyBase });
 		queryClient.invalidateQueries({
 			queryKey: queryKeys.activity(tourOperatorId),
 		});
