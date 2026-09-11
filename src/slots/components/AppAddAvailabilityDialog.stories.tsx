@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppAddAvailabilityDialog } from "./AppAddAvailabilityDialog";
 
@@ -14,7 +14,12 @@ const EXPERIENCES = [
 
 const clientWith = (rows: { id: string; name: string }[]) => {
 	const qc = storyQueryClient();
-	qc.setQueryData([...queryKeys.experiences(OP), "all-pages"], listPage(rows));
+	seedAllPages(
+		qc,
+		queryKeys.experiences(OP),
+		`/tour-operators/${OP}/experiences`,
+		rows,
+	);
 	return qc;
 };
 

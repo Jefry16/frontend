@@ -1,48 +1,41 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { authApi } from "#/lib/api";
+
+const FRESH_FOR = 60_000;
+
+interface Page<T> {
+	data: T[];
+	nextCursor: string | null;
+}
+
+export const allPagesKey = (queryKey: readonly unknown[], endpoint: string) =>
+	[...queryKey, "all-pages", endpoint] as const;
 
 export const useAllPages = <T>(
 	queryKey: readonly unknown[],
 	endpoint: string,
-) => {
-	const {
-		data,
-		isPending,
-		isError,
-		error,
-		refetch,
-		fetchNextPage,
-		hasNextPage,
-		isFetchingNextPage,
-	} = useInfiniteQuery({
-		queryKey: [...queryKey, "all-pages"],
-		queryFn: async ({ pageParam }) => {
-			const url = pageParam
-				? `${endpoint}?cursor=${encodeURIComponent(pageParam as string)}`
-				: endpoint;
-			const res = await authApi.get<{ data: T[]; nextCursor: string | null }>(
-				url,
-			);
-			return res.data;
+	{ enabled = true }: { enabled?: boolean } = {},
+) =>
+	useQuery({
+		enabled,
+		staleTime: FRESH_FOR,
+		queryKey: allPagesKey(queryKey, endpoint),
+		queryFn: async ({ signal }) => {
+			const rows: T[] = [];
+			const seen = new Set<string>();
+			let cursor: string | null = null;
+			do {
+				const join = endpoint.includes("?") ? "&" : "?";
+				const url: string = cursor
+					? `${endpoint}${join}cursor=${encodeURIComponent(cursor)}`
+					: endpoint;
+				const page: Page<T> = (await authApi.get<Page<T>>(url, { signal }))
+					.data;
+				rows.push(...page.data);
+				cursor = page.nextCursor || null;
+				if (cursor && seen.has(cursor)) break;
+				if (cursor) seen.add(cursor);
+			} while (cursor);
+			return rows;
 		},
-		initialPageParam: null as string | null,
-		getNextPageParam: (last) => last.nextCursor || null,
 	});
-
-	const nextCursor = data?.pages.at(-1)?.nextCursor;
-	useEffect(() => {
-		if (nextCursor && !isFetchingNextPage) fetchNextPage();
-	}, [nextCursor, isFetchingNextPage, fetchNextPage]);
-
-	const rows = data?.pages.flatMap((p) => p.data) ?? [];
-	const stillLoading = !isError && (isPending || hasNextPage === true);
-
-	return {
-		data: isError || stillLoading ? undefined : rows,
-		isPending: stillLoading,
-		isError,
-		error,
-		refetch,
-	};
-};

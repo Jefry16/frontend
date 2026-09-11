@@ -1,7 +1,7 @@
-import type { HeaderContext } from "@tanstack/react-table";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { stubColumn as stub } from "#/test/column";
 import { renderWithProviders } from "#/test/test-utils";
 import { AppTextFilter } from "./AppTextFilter";
 
@@ -9,17 +9,7 @@ interface Row {
 	name: string;
 }
 
-const stubColumn = () => {
-	let value: unknown;
-	const setFilterValue = vi.fn((next: unknown) => {
-		value = next;
-	});
-	const context = () =>
-		({
-			column: { getFilterValue: () => value, setFilterValue },
-		}) as unknown as HeaderContext<Row, unknown>;
-	return { context, setFilterValue };
-};
+const stubColumn = () => stub<Row>();
 
 const settled = { timeout: 2000 };
 

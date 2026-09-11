@@ -3,17 +3,16 @@ import { useState } from "react";
 import type { Audience } from "#/audiences";
 import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useExperience } from "#/experiences";
 import { useAllPages } from "#/hooks/use-all-pages";
-import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
+import { mergeQueryState } from "#/lib/query-state";
 import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppEmptyState } from "#/shared/components/AppEmptyState";
-import { AppError } from "#/shared/components/AppError";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
@@ -27,11 +26,15 @@ export const AppAvailabilityEditor = ({
 	tourOperatorId: string;
 	experienceId: string;
 }) => {
-	const query = useExperience(tourOperatorId, experienceId);
+	const experience = useExperience(tourOperatorId, experienceId);
 	const audiences = useAllPages<Audience>(
 		queryKeys.audiences(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/audiences`,
 	);
+	const query = mergeQueryState(experience, audiences, (record, rows) => ({
+		record,
+		rows,
+	}));
 	const [mode, setMode] = useState<"recurring" | "single">("recurring");
 	const { canWrite } = usePermissions();
 
@@ -55,37 +58,16 @@ export const AppAvailabilityEditor = ({
 			resource={m.add_availability()}
 			icon={CalendarDays}
 			breadcrumb={breadcrumb()}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-4">
-						{["a", "b", "c"].map((k) => (
-							<Skeleton key={k} className="h-12 w-full" />
-						))}
-					</CardContent>
-				</Card>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
-			{(experience) => (
+			{({ record, rows }) => (
 				<>
 					<AppPageHeader
 						title={m.add_availability()}
-						description={experience.name}
+						description={record.name}
 						breadcrumb={breadcrumb(m.add_availability())}
 					/>
-					{audiences.isPending ? (
-						<Card>
-							<CardContent className="flex flex-col gap-4">
-								{["a", "b", "c"].map((k) => (
-									<Skeleton key={k} className="h-12 w-full" />
-								))}
-							</CardContent>
-						</Card>
-					) : audiences.isError ? (
-						<AppError
-							description={apiErrorMessage(audiences.error)}
-							onRetry={() => audiences.refetch()}
-						/>
-					) : (audiences.data ?? []).length === 0 ? (
+					{rows.length === 0 ? (
 						<AppEmptyState
 							icon={UsersRound}
 							title={m.no_audiences_for_slots()}
@@ -137,13 +119,13 @@ export const AppAvailabilityEditor = ({
 									<AppRecurringSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										audiences={audiences.data ?? []}
+										audiences={rows}
 									/>
 								) : (
 									<AppSingleSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										audiences={audiences.data ?? []}
+										audiences={rows}
 									/>
 								)}
 							</CardContent>

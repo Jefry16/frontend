@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { listPage, seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { MetafieldDefinition } from "../types";
 import { AppMetafieldDefinitionDetail } from "./AppMetafieldDefinitionDetail";
@@ -25,9 +25,11 @@ const DEFINITION: MetafieldDefinition = {
 
 const qc = storyQueryClient();
 qc.setQueryData(queryKeys.metafieldDefinition(OP, DEF), DEFINITION);
-qc.setQueryData(
-	[...queryKeys.metaobjectDefinitions(OP), "all-pages"],
-	listPage([]),
+seedAllPages(
+	qc,
+	queryKeys.metaobjectDefinitions(OP),
+	`/tour-operators/${OP}/metaobject-definitions`,
+	[],
 );
 qc.setQueryData(
 	queryKeys.activityTimeline(OP, "METAFIELD_DEFINITION", DEF),

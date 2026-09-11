@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { listPage, seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Page } from "../types";
 import { AppPageDetail } from "./AppPageDetail";
@@ -29,9 +29,11 @@ const clientWith = (p: Page) =>
 			queryKeys.activityTimeline(OP, "PAGE", PAGE_ID),
 			listPage([]),
 		);
-		qc.setQueryData(
-			[...queryKeys.metafieldDefinitions(OP), "all-pages"],
-			listPage([]),
+		seedAllPages(
+			qc,
+			queryKeys.metafieldDefinitions(OP),
+			`/tour-operators/${OP}/metafield-definitions`,
+			[],
 		);
 		qc.setQueryData(queryKeys.metafieldValues(OP, "page", PAGE_ID), []);
 	});

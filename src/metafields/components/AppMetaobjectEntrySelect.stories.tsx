@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppMetaobjectEntrySelect } from "./AppMetaobjectEntrySelect";
 
@@ -8,9 +8,11 @@ const OP = "op-1";
 const PIN = "mo-1";
 
 const qc = storyQueryClient((qc) =>
-	qc.setQueryData(
-		[...queryKeys.metaobjects(OP), "all-pages"],
-		listPage([
+	seedAllPages(
+		qc,
+		queryKeys.metaobjects(OP),
+		`/tour-operators/${OP}/metaobjects`,
+		[
 			{
 				id: "e-1",
 				definitionId: PIN,
@@ -19,7 +21,7 @@ const qc = storyQueryClient((qc) =>
 			},
 			{ id: "e-2", definitionId: PIN, handle: "pro", name: "Pro chart" },
 			{ id: "e-3", definitionId: "mo-2", handle: "maria", name: "María" },
-		]),
+		],
 	),
 );
 
