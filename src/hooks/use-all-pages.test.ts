@@ -1,6 +1,7 @@
-import { renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { describe, expect, it, vi } from "vitest";
+import { paginatedHandler } from "#/test/pagination";
 import { server } from "#/test/server";
 import { wrapperWithProviders } from "#/test/test-utils";
 import { useAllPages } from "./use-all-pages";
@@ -12,22 +13,8 @@ interface Row {
 	id: string;
 }
 
-const paginated = (pages: { data: Row[]; nextCursor: string | null }[]) => {
-	const cursors: (string | null)[] = [];
-	return {
-		cursors,
-		handler: http.get(`${API}${ENDPOINT}`, ({ request }) => {
-			const cursor = new URL(request.url).searchParams.get("cursor");
-			cursors.push(cursor);
-			const index = cursor
-				? pages.findIndex(
-						(_, i) => i > 0 && pages[i - 1]?.nextCursor === cursor,
-					)
-				: 0;
-			return HttpResponse.json(pages[index] ?? { data: [], nextCursor: null });
-		}),
-	};
-};
+const paginated = (pages: { data: Row[]; nextCursor: string | null }[]) =>
+	paginatedHandler(`${API}${ENDPOINT}`, pages);
 
 const render = () => {
 	const { Wrapper } = wrapperWithProviders();
@@ -188,6 +175,52 @@ describe("useAllPages", () => {
 		await waitFor(() => expect(result.current.isPending).toBe(false));
 		expect(result.current.data?.map((r) => r.id)).toEqual(["a"]);
 		expect(cursors).toEqual([null]);
+	});
+
+	it("recovers fully from a mid-drain failure once retried", async () => {
+		let failOnce = true;
+		server.use(
+			http.get(`${API}${ENDPOINT}`, ({ request }) => {
+				const cursor = new URL(request.url).searchParams.get("cursor");
+				if (!cursor) {
+					return HttpResponse.json({ data: [{ id: "a" }], nextCursor: "c1" });
+				}
+				if (failOnce) {
+					failOnce = false;
+					return new HttpResponse(null, { status: 500 });
+				}
+				return HttpResponse.json({ data: [{ id: "b" }], nextCursor: null });
+			}),
+		);
+		const { result } = render();
+		await waitFor(() => expect(result.current.isError).toBe(true));
+
+		await act(async () => {
+			result.current.refetch();
+		});
+
+		await waitFor(() => expect(result.current.isPending).toBe(false));
+		expect(result.current.isError).toBe(false);
+		expect(result.current.data?.map((r) => r.id)).toEqual(["a", "b"]);
+	});
+
+	it("does not fetch at all until it is enabled", async () => {
+		const { handler, cursors } = paginated([
+			{ data: [{ id: "a" }], nextCursor: null },
+		]);
+		server.use(handler);
+		const { Wrapper } = wrapperWithProviders();
+
+		const { result } = renderHook(
+			() =>
+				useAllPages<Row>(["audiences", "op-1"], ENDPOINT, { enabled: false }),
+			{ wrapper: Wrapper },
+		);
+
+		await new Promise((r) => setTimeout(r, 150));
+		expect(cursors).toEqual([]);
+		expect(result.current.isPending).toBe(true);
+		expect(result.current.data).toBeUndefined();
 	});
 
 	it("surfaces a mid-pagination failure instead of loading forever", async () => {

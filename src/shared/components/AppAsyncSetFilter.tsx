@@ -1,6 +1,6 @@
 import type { HeaderContext } from "@tanstack/react-table";
-import { Spinner } from "#/components/ui/spinner";
 import { useAllPages } from "#/hooks/use-all-pages";
+import { AppLoadingBlock } from "./AppLoadingBlock";
 import { AppQueryState } from "./AppQueryState";
 import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
@@ -37,11 +37,7 @@ export function AppAsyncSetFilter<TData>({
 	return (
 		<AppQueryState
 			query={options}
-			loading={
-				<div className="flex justify-center py-4">
-					<Spinner />
-				</div>
-			}
+			loading={<AppLoadingBlock className="py-4" />}
 		>
 			{(rows) => {
 				const seen = new Set<string>();

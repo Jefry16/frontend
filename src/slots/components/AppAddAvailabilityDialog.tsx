@@ -10,11 +10,11 @@ import {
 	DialogTitle,
 } from "#/components/ui/dialog";
 import { Input } from "#/components/ui/input";
-import { Spinner } from "#/components/ui/spinner";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppLink } from "#/shared/components/AppLink";
+import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 
 interface ExperienceRow {
@@ -36,6 +36,7 @@ export const AppAddAvailabilityDialog = ({
 	const experiences = useAllPages<ExperienceRow>(
 		queryKeys.experiences(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/experiences`,
+		{ enabled: open },
 	);
 
 	return (
@@ -53,11 +54,7 @@ export const AppAddAvailabilityDialog = ({
 				</DialogHeader>
 				<AppQueryState
 					query={experiences}
-					loading={
-						<div className="flex justify-center py-8">
-							<Spinner />
-						</div>
-					}
+					loading={<AppLoadingBlock className="py-8" />}
 				>
 					{(rows) => {
 						const filtered = rows.filter((e) =>

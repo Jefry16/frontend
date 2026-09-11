@@ -5,6 +5,7 @@ import { authApi } from "#/lib/api";
 export const useAllPages = <T>(
 	queryKey: readonly unknown[],
 	endpoint: string,
+	{ enabled = true }: { enabled?: boolean } = {},
 ) => {
 	const {
 		data,
@@ -14,8 +15,10 @@ export const useAllPages = <T>(
 		refetch,
 		fetchNextPage,
 		hasNextPage,
-		isFetchingNextPage,
+		isFetching,
+		dataUpdatedAt,
 	} = useInfiniteQuery({
+		enabled,
 		queryKey: [...queryKey, "all-pages"],
 		queryFn: async ({ pageParam }) => {
 			const url = pageParam
@@ -31,9 +34,10 @@ export const useAllPages = <T>(
 	});
 
 	const nextCursor = data?.pages.at(-1)?.nextCursor;
+	// biome-ignore lint/correctness/useExhaustiveDependencies: nextCursor and dataUpdatedAt are the triggers — a page landing and a refetch settling each re-arm the drain, and neither changes a value the body reads
 	useEffect(() => {
-		if (nextCursor && !isFetchingNextPage) fetchNextPage();
-	}, [nextCursor, isFetchingNextPage, fetchNextPage]);
+		if (hasNextPage && !isFetching) fetchNextPage();
+	}, [nextCursor, dataUpdatedAt, hasNextPage, isFetching, fetchNextPage]);
 
 	const rows = data?.pages.flatMap((p) => p.data) ?? [];
 	const stillLoading = !isError && (isPending || hasNextPage === true);

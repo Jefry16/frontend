@@ -10,6 +10,7 @@ import { Skeleton } from "#/components/ui/skeleton";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 
 interface EntryRow {
 	id: string;
@@ -36,37 +37,39 @@ export const AppMetaobjectEntrySelect = ({
 		`/tour-operators/${tourOperatorId}/metaobjects`,
 	);
 
-	if (catalogue.isPending) {
-		return <Skeleton className="h-9 w-full" />;
-	}
-	if (catalogue.isError) {
-		return <p className="text-sm text-destructive">{m.error()}</p>;
-	}
-	const entries = (catalogue.data ?? []).filter(
-		(row) => row.definitionId === metaobjectDefinitionId,
-	);
-
 	return (
-		<Select
-			value={value || undefined}
-			onValueChange={(v) => onValueChange(v === "unset" ? "" : v)}
+		<AppQueryState
+			query={catalogue}
+			loading={<Skeleton className="h-9 w-full" />}
 		>
-			<SelectTrigger id={inputId} className="w-full">
-				<SelectValue placeholder={m.not_set()} />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectGroup>
-					<SelectItem value="unset">{m.not_set()}</SelectItem>
-					{entries.map((entry) => (
-						<SelectItem key={entry.id} value={entry.id}>
-							{entry.name}
-							<span className="ml-2 font-mono text-xs text-muted-foreground">
-								{entry.handle}
-							</span>
-						</SelectItem>
-					))}
-				</SelectGroup>
-			</SelectContent>
-		</Select>
+			{(rows) => {
+				const entries = rows.filter(
+					(row) => row.definitionId === metaobjectDefinitionId,
+				);
+				return (
+					<Select
+						value={value || undefined}
+						onValueChange={(v) => onValueChange(v === "unset" ? "" : v)}
+					>
+						<SelectTrigger id={inputId} className="w-full">
+							<SelectValue placeholder={m.not_set()} />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectGroup>
+								<SelectItem value="unset">{m.not_set()}</SelectItem>
+								{entries.map((entry) => (
+									<SelectItem key={entry.id} value={entry.id}>
+										{entry.name}
+										<span className="ml-2 font-mono text-xs text-muted-foreground">
+											{entry.handle}
+										</span>
+									</SelectItem>
+								))}
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+				);
+			}}
+		</AppQueryState>
 	);
 };
