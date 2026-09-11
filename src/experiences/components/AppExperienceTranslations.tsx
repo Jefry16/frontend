@@ -14,6 +14,7 @@ import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import {
 	AppTranslationSummary,
@@ -114,52 +115,59 @@ export const AppExperienceTranslations = ({
 						}
 					/>
 
-					{localesQuery.isPending ? (
-						<AppLoadingBlock />
-					) : translatable.length === 0 ? (
-						<AppNoTranslatableLocales
-							tourOperatorId={tourOperatorId}
-							message={m.translations_no_languages()}
-						/>
-					) : (
-						<div className="flex flex-col gap-4">
-							<AppLocaleTabs
-								locales={translatable}
-								active={active}
-								onSelect={setPicked}
-								translated={translated}
-								label={(code) => localeLabel(code)}
-							/>
-							{active && translationQuery.data ? (
-								canWrite ? (
-									<AppExperienceTranslationForm
-										key={active}
-										tourOperatorId={tourOperatorId}
-										experienceId={experienceId}
-										locale={active}
-										canonical={experience}
-										translation={translationQuery.data}
-									/>
-								) : (
-									<AppTranslationSummary
-										fields={experienceFields(translationQuery.data)}
-									/>
-								)
-							) : (
-								<AppLoadingBlock />
-							)}
-							{active && (
-								<AppMetafieldTranslationsCard
-									key={active}
+					<AppQueryState query={localesQuery} loading={<AppLoadingBlock />}>
+						{() =>
+							translatable.length === 0 ? (
+								<AppNoTranslatableLocales
 									tourOperatorId={tourOperatorId}
-									ownerType="experience"
-									ownerId={experienceId}
-									locale={active}
-									canWrite={canWrite}
+									message={m.translations_no_languages()}
 								/>
-							)}
-						</div>
-					)}
+							) : (
+								<div className="flex flex-col gap-4">
+									<AppLocaleTabs
+										locales={translatable}
+										active={active}
+										onSelect={setPicked}
+										translated={translated}
+										label={(code) => localeLabel(code)}
+									/>
+									{active && (
+										<AppQueryState
+											query={translationQuery}
+											loading={<AppLoadingBlock />}
+										>
+											{(translation) =>
+												canWrite ? (
+													<AppExperienceTranslationForm
+														key={active}
+														tourOperatorId={tourOperatorId}
+														experienceId={experienceId}
+														locale={active}
+														canonical={experience}
+														translation={translation}
+													/>
+												) : (
+													<AppTranslationSummary
+														fields={experienceFields(translation)}
+													/>
+												)
+											}
+										</AppQueryState>
+									)}
+									{active && (
+										<AppMetafieldTranslationsCard
+											key={active}
+											tourOperatorId={tourOperatorId}
+											ownerType="experience"
+											ownerId={experienceId}
+											locale={active}
+											canWrite={canWrite}
+										/>
+									)}
+								</div>
+							)
+						}
+					</AppQueryState>
 				</>
 			)}
 		</AppResourceView>

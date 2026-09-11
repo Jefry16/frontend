@@ -9,10 +9,10 @@ import { FieldGroup } from "#/components/ui/field";
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
-import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { EmptyValue } from "#/shared/components/EmptyValue";
 import {
@@ -39,7 +39,7 @@ export const AppOperatorBrandCard = ({
 				<CardDescription>{m.brand_description()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody
+				<AppQueryState
 					query={query}
 					loading={
 						<div className="flex flex-col gap-4">
@@ -55,7 +55,7 @@ export const AppOperatorBrandCard = ({
 							canWrite={canWrite}
 						/>
 					)}
-				</AppCardBody>
+				</AppQueryState>
 			</CardContent>
 		</Card>
 	);

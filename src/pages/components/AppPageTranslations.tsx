@@ -14,6 +14,7 @@ import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import {
 	AppTranslationSummary,
@@ -108,49 +109,56 @@ export const AppPageTranslations = ({
 						}
 					/>
 
-					{localesQuery.isPending ? (
-						<AppLoadingBlock />
-					) : translatable.length === 0 ? (
-						<AppNoTranslatableLocales tourOperatorId={tourOperatorId} />
-					) : (
-						<div className="flex flex-col gap-4">
-							<AppLocaleTabs
-								locales={translatable}
-								active={active}
-								onSelect={setPicked}
-								translated={translated}
-								label={(code) => localeLabel(code)}
-							/>
-							{active && translationQuery.data ? (
-								canWrite ? (
-									<AppPageTranslationForm
-										key={active}
-										tourOperatorId={tourOperatorId}
-										pageId={pageId}
-										locale={active}
-										canonical={page}
-										translation={translationQuery.data}
-									/>
-								) : (
-									<AppTranslationSummary
-										fields={pageFields(translationQuery.data)}
-									/>
-								)
+					<AppQueryState query={localesQuery} loading={<AppLoadingBlock />}>
+						{() =>
+							translatable.length === 0 ? (
+								<AppNoTranslatableLocales tourOperatorId={tourOperatorId} />
 							) : (
-								<AppLoadingBlock />
-							)}
-							{active && (
-								<AppMetafieldTranslationsCard
-									key={active}
-									tourOperatorId={tourOperatorId}
-									ownerType="page"
-									ownerId={pageId}
-									locale={active}
-									canWrite={canWrite}
-								/>
-							)}
-						</div>
-					)}
+								<div className="flex flex-col gap-4">
+									<AppLocaleTabs
+										locales={translatable}
+										active={active}
+										onSelect={setPicked}
+										translated={translated}
+										label={(code) => localeLabel(code)}
+									/>
+									{active && (
+										<AppQueryState
+											query={translationQuery}
+											loading={<AppLoadingBlock />}
+										>
+											{(translation) =>
+												canWrite ? (
+													<AppPageTranslationForm
+														key={active}
+														tourOperatorId={tourOperatorId}
+														pageId={pageId}
+														locale={active}
+														canonical={page}
+														translation={translation}
+													/>
+												) : (
+													<AppTranslationSummary
+														fields={pageFields(translation)}
+													/>
+												)
+											}
+										</AppQueryState>
+									)}
+									{active && (
+										<AppMetafieldTranslationsCard
+											key={active}
+											tourOperatorId={tourOperatorId}
+											ownerType="page"
+											ownerId={pageId}
+											locale={active}
+											canWrite={canWrite}
+										/>
+									)}
+								</div>
+							)
+						}
+					</AppQueryState>
 				</>
 			)}
 		</AppResourceView>

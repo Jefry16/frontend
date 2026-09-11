@@ -6,6 +6,8 @@ import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormCard } from "#/shared/components/AppFormCard";
+import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import {
 	OWNER_TYPE_OPTIONS,
@@ -85,22 +87,29 @@ export const AppMetafieldDefinitionForm = ({
 						<form.Subscribe selector={(state) => state.values.type}>
 							{(type) =>
 								type === "metaobject_reference" && (
-									<form.Field name="metaobjectDefinitionId">
-										{(field) => (
-											<AppSelectField
-												field={field}
-												label={m.metafield_references()}
-												description={m.metafield_reference_pin_hint()}
-												placeholder={m.metaobject_definition()}
-											>
-												{metaobjectTypes.rows.map((t) => (
-													<SelectItem key={t.id} value={t.id}>
-														{t.name}
-													</SelectItem>
-												))}
-											</AppSelectField>
+									<AppQueryState
+										query={metaobjectTypes}
+										loading={<AppFormSkeleton rows={1} card={false} />}
+									>
+										{(types) => (
+											<form.Field name="metaobjectDefinitionId">
+												{(field) => (
+													<AppSelectField
+														field={field}
+														label={m.metafield_references()}
+														description={m.metafield_reference_pin_hint()}
+														placeholder={m.metaobject_definition()}
+													>
+														{types.map((t) => (
+															<SelectItem key={t.id} value={t.id}>
+																{t.name}
+															</SelectItem>
+														))}
+													</AppSelectField>
+												)}
+											</form.Field>
 										)}
-									</form.Field>
+									</AppQueryState>
 								)
 							}
 						</form.Subscribe>

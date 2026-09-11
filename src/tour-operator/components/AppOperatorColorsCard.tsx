@@ -10,10 +10,10 @@ import {
 import { FieldLabel } from "#/components/ui/field";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
-import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppColorField } from "#/shared/components/AppColorField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useBrand, useBrandColorsForm } from "../hooks/use-operator-brand";
 import type { Brand, BrandColor } from "../types";
 
@@ -48,7 +48,7 @@ export const AppOperatorColorsCard = ({
 				<CardDescription>{m.brand_colors_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody
+				<AppQueryState
 					query={query}
 					loading={<AppFormSkeleton rows={2} card={false} />}
 				>
@@ -59,7 +59,7 @@ export const AppOperatorColorsCard = ({
 							<ColorsSummary brand={brand} />
 						)
 					}
-				</AppCardBody>
+				</AppQueryState>
 			</CardContent>
 		</Card>
 	);

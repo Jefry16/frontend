@@ -12,11 +12,11 @@ import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { useCurrencies, useTimezones } from "#/reference";
 import { AppAlert } from "#/shared/components/AppAlert";
-import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { EmptyValue } from "#/shared/components/EmptyValue";
 import { addressLines } from "../format";
@@ -47,7 +47,7 @@ export const AppOperatorDetailsCard = ({
 				<CardDescription>{m.operator_details_description()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody
+				<AppQueryState
 					query={query}
 					loading={
 						<div className="flex flex-col gap-4">
@@ -66,7 +66,7 @@ export const AppOperatorDetailsCard = ({
 							<DetailsSummary operator={operator} />
 						)
 					}
-				</AppCardBody>
+				</AppQueryState>
 			</CardContent>
 		</Card>
 	);

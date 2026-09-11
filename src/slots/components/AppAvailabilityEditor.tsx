@@ -6,6 +6,7 @@ import { Card, CardContent } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
 import { useExperience } from "#/experiences";
 import { useAllPages } from "#/hooks/use-all-pages";
+import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
@@ -80,8 +81,11 @@ export const AppAvailabilityEditor = ({
 							</CardContent>
 						</Card>
 					) : audiences.isError ? (
-						<AppError onRetry={() => audiences.refetch()} />
-					) : audiences.rows.length === 0 ? (
+						<AppError
+							description={apiErrorMessage(audiences.error)}
+							onRetry={() => audiences.refetch()}
+						/>
+					) : (audiences.data ?? []).length === 0 ? (
 						<AppEmptyState
 							icon={UsersRound}
 							title={m.no_audiences_for_slots()}
@@ -133,13 +137,13 @@ export const AppAvailabilityEditor = ({
 									<AppRecurringSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										audiences={audiences.rows}
+										audiences={audiences.data ?? []}
 									/>
 								) : (
 									<AppSingleSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										audiences={audiences.rows}
+										audiences={audiences.data ?? []}
 									/>
 								)}
 							</CardContent>

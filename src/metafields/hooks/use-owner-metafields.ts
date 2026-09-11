@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
+import { mergeQueryState } from "#/lib/query-state";
 import type {
 	MetafieldDefinitionListItem,
 	MetafieldOwnerTypeCode,
@@ -44,21 +45,13 @@ export const useOwnerMetafields = (
 		},
 	});
 
-	const definitions = catalogue.rows
-		.filter((d) => d.ownerType === ownerType)
-		.sort(
-			(a, b) =>
-				a.namespace.localeCompare(b.namespace) || a.key.localeCompare(b.key),
-		);
-
-	return {
-		definitions,
-		values: values.data ?? [],
-		isPending: catalogue.isPending || values.isPending,
-		isError: catalogue.isError || values.isError,
-		refetch: () => {
-			catalogue.refetch();
-			values.refetch();
-		},
-	};
+	return mergeQueryState(catalogue, values, (rows, stored) => ({
+		definitions: rows
+			.filter((d) => d.ownerType === ownerType)
+			.sort(
+				(a, b) =>
+					a.namespace.localeCompare(b.namespace) || a.key.localeCompare(b.key),
+			),
+		values: stored,
+	}));
 };

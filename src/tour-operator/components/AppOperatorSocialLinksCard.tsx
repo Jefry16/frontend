@@ -10,11 +10,11 @@ import {
 import { SelectItem } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
-import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useBrand, useBrandSocialLinksForm } from "../hooks/use-operator-brand";
 import { SOCIAL_PLATFORMS, socialPlatformLabel } from "../social-platforms";
@@ -36,7 +36,7 @@ export const AppOperatorSocialLinksCard = ({
 				<CardDescription>{m.brand_social_links_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody
+				<AppQueryState
 					query={query}
 					loading={<AppFormSkeleton rows={2} card={false} />}
 				>
@@ -47,7 +47,7 @@ export const AppOperatorSocialLinksCard = ({
 							<SocialLinksSummary brand={brand} />
 						)
 					}
-				</AppCardBody>
+				</AppQueryState>
 			</CardContent>
 		</Card>
 	);

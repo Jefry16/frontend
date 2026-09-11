@@ -42,7 +42,7 @@ export const AppMetaobjectEntrySelect = ({
 	if (catalogue.isError) {
 		return <p className="text-sm text-destructive">{m.error()}</p>;
 	}
-	const entries = catalogue.rows.filter(
+	const entries = (catalogue.data ?? []).filter(
 		(row) => row.definitionId === metaobjectDefinitionId,
 	);
 

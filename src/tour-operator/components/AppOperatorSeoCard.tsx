@@ -12,12 +12,12 @@ import { FieldDescription, FieldGroup } from "#/components/ui/field";
 import { Label } from "#/components/ui/label";
 import { useMedia } from "#/media";
 import * as m from "#/paraglide/messages";
-import { AppCardBody } from "#/shared/components/AppCardBody";
 import { AppDetailField } from "#/shared/components/AppDetailField";
 import { AppField } from "#/shared/components/AppField";
 import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
 	useOperatorSeo,
@@ -48,7 +48,7 @@ export const AppOperatorSeoCard = ({
 				<CardDescription>{m.seo_hint()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody
+				<AppQueryState
 					query={query}
 					loading={<AppFormSkeleton rows={3} card={false} />}
 				>
@@ -59,7 +59,7 @@ export const AppOperatorSeoCard = ({
 							<SeoSummary tourOperatorId={tourOperatorId} seo={seo} />
 						)
 					}
-				</AppCardBody>
+				</AppQueryState>
 			</CardContent>
 		</Card>
 	);

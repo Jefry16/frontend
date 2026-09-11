@@ -10,6 +10,7 @@ export const useAllPages = <T>(
 		data,
 		isPending,
 		isError,
+		error,
 		refetch,
 		fetchNextPage,
 		hasNextPage,
@@ -26,7 +27,7 @@ export const useAllPages = <T>(
 			return res.data;
 		},
 		initialPageParam: null as string | null,
-		getNextPageParam: (last) => last.nextCursor,
+		getNextPageParam: (last) => last.nextCursor || null,
 	});
 
 	const nextCursor = data?.pages.at(-1)?.nextCursor;
@@ -34,10 +35,14 @@ export const useAllPages = <T>(
 		if (nextCursor && !isFetchingNextPage) fetchNextPage();
 	}, [nextCursor, isFetchingNextPage, fetchNextPage]);
 
+	const rows = data?.pages.flatMap((p) => p.data) ?? [];
+	const stillLoading = !isError && (isPending || hasNextPage === true);
+
 	return {
-		rows: data?.pages.flatMap((p) => p.data) ?? [],
-		isPending: !isError && (isPending || hasNextPage === true),
+		data: isError || stillLoading ? undefined : rows,
+		isPending: stillLoading,
 		isError,
+		error,
 		refetch,
 	};
 };

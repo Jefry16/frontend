@@ -3,6 +3,8 @@ import type { HeaderContext } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { Spinner } from "#/components/ui/spinner";
 import { authApi } from "#/lib/api";
+import { apiErrorMessage } from "#/lib/api-error";
+import { AppError } from "./AppError";
 import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 type AsyncRow = Record<string, unknown>;
@@ -33,26 +35,43 @@ export function AppAsyncSetFilter<TData>({
 	valueKey = "id",
 	labelKey = "name",
 }: Props<TData>) {
-	const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		useInfiniteQuery({
-			queryKey: [...queryKey, "set-filter-options"],
-			queryFn: async ({ pageParam }) => {
-				const params = new URLSearchParams();
-				if (pageParam) params.set("cursor", pageParam as string);
-				const qs = params.toString();
-				const res = await authApi.get<{
-					data: AsyncRow[];
-					nextCursor: string | null;
-				}>(qs ? `${endpoint}?${qs}` : endpoint);
-				return res.data;
-			},
-			initialPageParam: null as string | null,
-			getNextPageParam: (last) => last.nextCursor,
-		});
+	const {
+		data,
+		isPending,
+		isError,
+		error,
+		refetch,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+	} = useInfiniteQuery({
+		queryKey: [...queryKey, "set-filter-options"],
+		queryFn: async ({ pageParam }) => {
+			const params = new URLSearchParams();
+			if (pageParam) params.set("cursor", pageParam as string);
+			const qs = params.toString();
+			const res = await authApi.get<{
+				data: AsyncRow[];
+				nextCursor: string | null;
+			}>(qs ? `${endpoint}?${qs}` : endpoint);
+			return res.data;
+		},
+		initialPageParam: null as string | null,
+		getNextPageParam: (last) => last.nextCursor || null,
+	});
 
 	useEffect(() => {
 		if (hasNextPage && !isFetchingNextPage) fetchNextPage();
 	}, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+	if (isError) {
+		return (
+			<AppError
+				description={apiErrorMessage(error)}
+				onRetry={() => refetch()}
+			/>
+		);
+	}
 
 	if (isPending || hasNextPage) {
 		return (

@@ -12,6 +12,7 @@ import {
 import { Input } from "#/components/ui/input";
 import { Spinner } from "#/components/ui/spinner";
 import { useAllPages } from "#/hooks/use-all-pages";
+import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppError } from "#/shared/components/AppError";
@@ -38,7 +39,7 @@ export const AppAddAvailabilityDialog = ({
 		`/tour-operators/${tourOperatorId}/experiences`,
 	);
 
-	const filtered = experiences.rows.filter((e) =>
+	const filtered = (experiences.data ?? []).filter((e) =>
 		e.name.toLowerCase().includes(search.trim().toLowerCase()),
 	);
 
@@ -60,8 +61,11 @@ export const AppAddAvailabilityDialog = ({
 						<Spinner />
 					</div>
 				) : experiences.isError ? (
-					<AppError onRetry={() => experiences.refetch()} />
-				) : experiences.rows.length === 0 ? (
+					<AppError
+						description={apiErrorMessage(experiences.error)}
+						onRetry={() => experiences.refetch()}
+					/>
+				) : (experiences.data ?? []).length === 0 ? (
 					<div className="flex flex-col items-center gap-3 py-6 text-center">
 						<Compass className="size-8 opacity-40" />
 						<p className="text-sm text-muted-foreground">

@@ -16,7 +16,7 @@ import {
 import { Skeleton } from "#/components/ui/skeleton";
 import * as m from "#/paraglide/messages";
 import { getLocale, type Locale } from "#/paraglide/runtime";
-import { AppCardBody } from "#/shared/components/AppCardBody";
+import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useChangeUiLanguage } from "../hooks/use-change-ui-language";
 import { useUiLanguages } from "../hooks/use-ui-languages";
 
@@ -37,7 +37,7 @@ export const AppLanguageCard = () => {
 				<CardDescription>{m.interface_language_description()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<AppCardBody
+				<AppQueryState
 					query={languages}
 					loading={<Skeleton className="h-9 w-full sm:max-w-xs" />}
 				>
@@ -61,7 +61,7 @@ export const AppLanguageCard = () => {
 							</SelectContent>
 						</Select>
 					)}
-				</AppCardBody>
+				</AppQueryState>
 			</CardContent>
 		</Card>
 	);

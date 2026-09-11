@@ -9,6 +9,7 @@ import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
+import type { QueryState } from "#/lib/query-state";
 import * as m from "#/paraglide/messages";
 import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppField } from "./AppField";
@@ -16,6 +17,7 @@ import { AppFormActions } from "./AppFormActions";
 import { AppLoadingBlock } from "./AppLoadingBlock";
 import { AppLocaleTabs } from "./AppLocaleTabs";
 import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
+import { AppQueryState } from "./AppQueryState";
 import { AppTranslationNotice } from "./AppTranslationNotice";
 import { AppTranslationSummary } from "./AppTranslationSummary";
 
@@ -31,7 +33,7 @@ interface Props {
 	canonicalName: string;
 	maxLength: number;
 	translatable: string[];
-	localesPending: boolean;
+	localesQuery: QueryState<unknown>;
 	localeLabel: (code: string) => string;
 	canWrite: boolean;
 }
@@ -43,7 +45,7 @@ export const AppNameTranslations = ({
 	canonicalName,
 	maxLength,
 	translatable,
-	localesPending,
+	localesQuery,
 	localeLabel,
 	canWrite,
 }: Props) => {
@@ -59,45 +61,46 @@ export const AppNameTranslations = ({
 		(listQuery.data ?? []).filter((t) => t.name).map((t) => t.locale),
 	);
 
-	if (localesPending) {
-		return <AppLoadingBlock />;
-	}
-
-	if (translatable.length === 0) {
-		return <AppNoTranslatableLocales tourOperatorId={tourOperatorId} />;
-	}
-
 	return (
-		<div className="flex flex-col gap-4">
-			<AppLocaleTabs
-				locales={translatable}
-				active={active}
-				onSelect={setPicked}
-				translated={translated}
-				label={localeLabel}
-			/>
-			{active &&
-				(canWrite ? (
-					<LocaleNameForm
-						key={active}
-						locale={active}
-						tourOperatorId={tourOperatorId}
-						endpointBase={endpointBase}
-						queryKeyBase={queryKeyBase}
-						canonicalName={canonicalName}
-						maxLength={maxLength}
-					/>
+		<AppQueryState query={localesQuery} loading={<AppLoadingBlock />}>
+			{() =>
+				translatable.length === 0 ? (
+					<AppNoTranslatableLocales tourOperatorId={tourOperatorId} />
 				) : (
-					<AppTranslationSummary
-						fields={[
-							[
-								m.name(),
-								listQuery.data?.find((t) => t.locale === active)?.name ?? null,
-							],
-						]}
-					/>
-				))}
-		</div>
+					<div className="flex flex-col gap-4">
+						<AppLocaleTabs
+							locales={translatable}
+							active={active}
+							onSelect={setPicked}
+							translated={translated}
+							label={localeLabel}
+						/>
+						{active &&
+							(canWrite ? (
+								<LocaleNameForm
+									key={active}
+									locale={active}
+									tourOperatorId={tourOperatorId}
+									endpointBase={endpointBase}
+									queryKeyBase={queryKeyBase}
+									canonicalName={canonicalName}
+									maxLength={maxLength}
+								/>
+							) : (
+								<AppTranslationSummary
+									fields={[
+										[
+											m.name(),
+											listQuery.data?.find((t) => t.locale === active)?.name ??
+												null,
+										],
+									]}
+								/>
+							))}
+					</div>
+				)
+			}
+		</AppQueryState>
 	);
 };
 
@@ -158,22 +161,22 @@ function LocaleNameForm({
 		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});
 
-	if (!overlayQuery.data) {
-		return <AppLoadingBlock />;
-	}
-
 	return (
-		<NameFormBody
-			initialName={overlayQuery.data.name ?? ""}
-			hasTranslation={Boolean(overlayQuery.data.name)}
-			canonicalName={canonicalName}
-			maxLength={maxLength}
-			errorMessage={errorMessage}
-			isSaving={save.isPending}
-			isClearing={clear.isPending}
-			onSave={(name) => save.mutate(name)}
-			onClear={() => clear.mutate()}
-		/>
+		<AppQueryState query={overlayQuery} loading={<AppLoadingBlock />}>
+			{(overlay) => (
+				<NameFormBody
+					initialName={overlay.name ?? ""}
+					hasTranslation={Boolean(overlay.name)}
+					canonicalName={canonicalName}
+					maxLength={maxLength}
+					errorMessage={errorMessage}
+					isSaving={save.isPending}
+					isClearing={clear.isPending}
+					onSave={(name) => save.mutate(name)}
+					onClear={() => clear.mutate()}
+				/>
+			)}
+		</AppQueryState>
 	);
 }
 

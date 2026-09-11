@@ -48,7 +48,7 @@ describe("useAllPages", () => {
 		const { result } = render();
 
 		await waitFor(() => expect(result.current.isPending).toBe(false));
-		expect(result.current.rows.map((r) => r.id)).toEqual(["a", "b", "c", "d"]);
+		expect(result.current.data?.map((r) => r.id)).toEqual(["a", "b", "c", "d"]);
 	});
 
 	it("never reports settled while pages remain", async () => {
@@ -59,14 +59,14 @@ describe("useAllPages", () => {
 		]);
 		server.use(handler);
 
-		const renders: { pending: boolean; rows: number }[] = [];
+		const renders: { pending: boolean; rows: number | null }[] = [];
 		const { Wrapper } = wrapperWithProviders();
 		const { result } = renderHook(
 			() => {
 				const value = useAllPages<Row>(["audiences", "op-1"], ENDPOINT);
 				renders.push({
 					pending: value.isPending,
-					rows: value.rows.length,
+					rows: value.data?.length ?? null,
 				});
 				return value;
 			},
@@ -109,7 +109,7 @@ describe("useAllPages", () => {
 		await waitFor(() => expect(result.current.isPending).toBe(false), {
 			timeout: 3000,
 		});
-		expect(result.current.rows.map((r) => r.id)).toEqual([
+		expect(result.current.data?.map((r) => r.id)).toEqual([
 			"r0",
 			"r1",
 			"r2",
@@ -132,6 +132,62 @@ describe("useAllPages", () => {
 
 		await waitFor(() => expect(result.current.isPending).toBe(false));
 		expect(calls).toHaveBeenCalledTimes(1);
+	});
+
+	it("never hands back a half-drained list as if it were complete", async () => {
+		const { handler } = paginated([
+			{ data: [{ id: "a" }], nextCursor: "c1" },
+			{ data: [{ id: "b" }], nextCursor: "c2" },
+			{ data: [{ id: "c" }], nextCursor: null },
+		]);
+		server.use(handler);
+		const seen: { pending: boolean; rows: number | null }[] = [];
+		const { Wrapper } = wrapperWithProviders();
+
+		const { result } = renderHook(
+			() => {
+				const state = useAllPages<Row>(["audiences", "op-1"], ENDPOINT);
+				seen.push({
+					pending: state.isPending,
+					rows: state.data?.length ?? null,
+				});
+				return state;
+			},
+			{ wrapper: Wrapper },
+		);
+
+		await waitFor(() => expect(result.current.isPending).toBe(false));
+
+		expect(seen.filter((s) => s.pending && s.rows !== null)).toEqual([]);
+		expect(result.current.data?.map((r) => r.id)).toEqual(["a", "b", "c"]);
+	});
+
+	it("carries no data, and the reason, when a page fails", async () => {
+		server.use(
+			http.get(
+				`${API}${ENDPOINT}`,
+				() => new HttpResponse(null, { status: 500 }),
+			),
+		);
+
+		const { result } = render();
+
+		await waitFor(() => expect(result.current.isError).toBe(true));
+		expect(result.current.data).toBeUndefined();
+		expect(result.current.error).toBeTruthy();
+	});
+
+	it("treats an empty-string cursor as the last page, not a next one", async () => {
+		const { handler, cursors } = paginated([
+			{ data: [{ id: "a" }], nextCursor: "" },
+		]);
+		server.use(handler);
+
+		const { result } = render();
+
+		await waitFor(() => expect(result.current.isPending).toBe(false));
+		expect(result.current.data?.map((r) => r.id)).toEqual(["a"]);
+		expect(cursors).toEqual([null]);
 	});
 
 	it("surfaces a mid-pagination failure instead of loading forever", async () => {

@@ -1,13 +1,13 @@
-import type { UseQueryResult } from "@tanstack/react-query";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { apiErrorMessage, isNotFound } from "#/lib/api-error";
+import type { QueryState } from "#/lib/query-state";
 import { AppError } from "./AppError";
 import { AppNotFound } from "./AppNotFound";
 import { AppPageHeader } from "./AppPageHeader";
 
 interface Props<TData> {
-	query: UseQueryResult<TData>;
+	query: QueryState<TData>;
 	resource: string;
 	icon?: LucideIcon;
 	breadcrumb?: ReactNode;
@@ -25,22 +25,19 @@ export function AppResourceView<TData>({
 	loading,
 	children,
 }: Props<TData>) {
-	const { data, isPending, error, refetch } = query;
-
-	if (isPending) {
+	if (isNotFound(query.error) || query.data === undefined) {
+		if (query.isPending) {
+			return (
+				<>
+					<AppPageHeader title={resource} breadcrumb={breadcrumb} />
+					{loading}
+				</>
+			);
+		}
 		return (
 			<>
 				<AppPageHeader title={resource} breadcrumb={breadcrumb} />
-				{loading}
-			</>
-		);
-	}
-
-	if (error || data === undefined) {
-		return (
-			<>
-				<AppPageHeader title={resource} breadcrumb={breadcrumb} />
-				{isNotFound(error) ? (
+				{isNotFound(query.error) ? (
 					<AppNotFound
 						resource={resource}
 						icon={icon}
@@ -48,13 +45,13 @@ export function AppResourceView<TData>({
 					/>
 				) : (
 					<AppError
-						description={apiErrorMessage(error)}
-						onRetry={() => refetch()}
+						description={apiErrorMessage(query.error)}
+						onRetry={() => query.refetch()}
 					/>
 				)}
 			</>
 		);
 	}
 
-	return <>{children(data)}</>;
+	return <>{children(query.data)}</>;
 }

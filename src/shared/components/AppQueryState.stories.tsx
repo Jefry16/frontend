@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { Skeleton } from "#/components/ui/skeleton";
-import { AppCardBody } from "./AppCardBody";
+import { AppQueryState } from "./AppQueryState";
 
 const result = (
 	over: Partial<UseQueryResult<string>>,
@@ -16,8 +16,8 @@ const result = (
 	}) as UseQueryResult<string>;
 
 const meta = {
-	title: "Shared/AppCardBody",
-	component: AppCardBody,
+	title: "Shared/AppQueryState",
+	component: AppQueryState,
 	args: {
 		loading: <Skeleton className="h-9 w-full" />,
 		children: (v: string) => <p className="text-sm">{v}</p>,
@@ -34,7 +34,7 @@ const meta = {
 			</Card>
 		),
 	],
-} satisfies Meta<typeof AppCardBody<string>>;
+} satisfies Meta<typeof AppQueryState<string>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

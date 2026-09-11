@@ -154,7 +154,7 @@ export const AppMetafieldDefinitionDetail = ({
 													definitionId: definition.metaobjectDefinitionId,
 												}}
 											>
-												{metaobjectTypes.rows.find(
+												{metaobjectTypes.data?.find(
 													(t) => t.id === definition.metaobjectDefinitionId,
 												)?.name ?? m.metaobject_definition()}
 											</AppResourceLink>

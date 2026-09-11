@@ -79,7 +79,7 @@ export const AppAudienceTranslations = ({
 						canonicalName={audience.name}
 						maxLength={80}
 						translatable={translatable}
-						localesPending={localesQuery.isPending}
+						localesQuery={localesQuery}
 						localeLabel={localeLabel}
 						canWrite={canWrite}
 					/>
