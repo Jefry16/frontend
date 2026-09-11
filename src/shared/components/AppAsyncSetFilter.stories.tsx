@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { listPage, seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { AppDataTable } from "./AppDataTable";
 import { AppDataTableHeader } from "./AppDataTableHeader";
 
@@ -23,14 +23,11 @@ const client = storyQueryClient((qc) => {
 			{ id: "2", name: "Reef snorkel" },
 		]),
 	);
-	qc.setQueryData(
-		[...OPTIONS_KEY, "all-pages"],
-		listPage([
-			{ id: "u1", name: "Ada Lovelace" },
-			{ id: "u2", name: "Grace Hopper" },
-			{ id: "u3", name: "Katherine Johnson" },
-		]),
-	);
+	seedAllPages(qc, OPTIONS_KEY, OPTIONS_ENDPOINT, [
+		{ id: "u1", name: "Ada Lovelace" },
+		{ id: "u2", name: "Grace Hopper" },
+		{ id: "u3", name: "Katherine Johnson" },
+	]);
 });
 
 function AsyncFilterDemo() {

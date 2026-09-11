@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { MetafieldDefinitionListItem, MetafieldValue } from "../types";
 import { AppMetafieldTranslationsCard } from "./AppMetafieldTranslationsCard";
@@ -66,9 +66,11 @@ const VALUES: MetafieldValue[] = [
 
 const seed = (overlay: Record<string, string>) =>
 	storyQueryClient((qc) => {
-		qc.setQueryData(
-			[...queryKeys.metafieldDefinitions(OP), "all-pages"],
-			listPage(DEFINITIONS),
+		seedAllPages(
+			qc,
+			queryKeys.metafieldDefinitions(OP),
+			`/tour-operators/${OP}/metafield-definitions`,
+			DEFINITIONS,
 		);
 		qc.setQueryData(queryKeys.metafieldValues(OP, "experience", OWNER), VALUES);
 		qc.setQueryData(

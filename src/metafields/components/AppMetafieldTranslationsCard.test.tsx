@@ -2,6 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it } from "vitest";
+import { allPagesKey } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import { server } from "#/test/server";
 import { createTestQueryClient, renderWithProviders } from "#/test/test-utils";
@@ -50,10 +51,13 @@ const VALUES: MetafieldValue[] = [
 
 const renderCard = (overlay: Record<string, string>) => {
 	const qc = createTestQueryClient();
-	qc.setQueryData([...queryKeys.metafieldDefinitions(OP), "all-pages"], {
-		pages: [{ data: DEFINITIONS, nextCursor: null }],
-		pageParams: [null],
-	});
+	qc.setQueryData(
+		allPagesKey(
+			queryKeys.metafieldDefinitions(OP),
+			`/tour-operators/${OP}/metafield-definitions`,
+		),
+		DEFINITIONS,
+	);
 	qc.setQueryData(queryKeys.metafieldValues(OP, "experience", OWNER), VALUES);
 	qc.setQueryData(
 		queryKeys.metafieldTranslation(OP, "experience", OWNER, LOCALE),

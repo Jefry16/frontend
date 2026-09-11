@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { Audience } from "#/audiences";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppAvailabilityEditor } from "./AppAvailabilityEditor";
 
@@ -34,9 +34,11 @@ const AUDIENCES: Audience[] = [
 const clientWith = (audiences: Audience[]) => {
 	const qc = storyQueryClient();
 	qc.setQueryData(queryKeys.experience(OP, EXPERIENCE_ID), EXPERIENCE);
-	qc.setQueryData(
-		[...queryKeys.audiences(OP), "all-pages"],
-		listPage(audiences),
+	seedAllPages(
+		qc,
+		queryKeys.audiences(OP),
+		`/tour-operators/${OP}/audiences`,
+		audiences,
 	);
 	return qc;
 };

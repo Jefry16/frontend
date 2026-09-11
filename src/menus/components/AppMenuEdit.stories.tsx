@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedAllPages, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { Menu } from "../types";
 import { AppMenuEdit } from "./AppMenuEdit";
@@ -36,14 +36,15 @@ const qc = storyQueryClient((qc) => {
 			supportedLocales: ["en"],
 		},
 	});
-	qc.setQueryData(
-		[...queryKeys.experiences(OP), "all-pages"],
-		listPage([{ id: "e-1", name: "Sunset Sailing Tour" }]),
+	seedAllPages(
+		qc,
+		queryKeys.experiences(OP),
+		`/tour-operators/${OP}/experiences`,
+		[{ id: "e-1", name: "Sunset Sailing Tour" }],
 	);
-	qc.setQueryData(
-		[...queryKeys.pages(OP), "all-pages"],
-		listPage([{ id: "p-1", title: "Contact", handle: "contact" }]),
-	);
+	seedAllPages(qc, queryKeys.pages(OP), `/tour-operators/${OP}/pages`, [
+		{ id: "p-1", title: "Contact", handle: "contact" },
+	]);
 });
 
 const meta = {
