@@ -5,10 +5,10 @@ import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
 import {
+	metafieldTypeLabel,
 	OWNER_TYPE_FILTER_OPTIONS,
 	ownerTypeLabel,
 	TYPE_FILTER_OPTIONS,
-	typeLabel,
 } from "./format";
 import type { MetafieldDefinitionListItem } from "./types";
 
@@ -81,7 +81,7 @@ export const metafieldDefinitionColumns = (
 				items={TYPE_FILTER_OPTIONS}
 			/>
 		),
-		cell: ({ row }) => typeLabel(row.original.type),
+		cell: ({ row }) => metafieldTypeLabel(row.original.type),
 	},
 	timestampColumn("createdAt", m.created(), formatDate),
 ];

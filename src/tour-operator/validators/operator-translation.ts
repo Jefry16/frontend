@@ -22,6 +22,3 @@ export const operatorTranslationSchema = z.object({
 export type OperatorTranslationFormData = z.input<
 	typeof operatorTranslationSchema
 >;
-export type OperatorTranslationPayload = z.output<
-	typeof operatorTranslationSchema
->;

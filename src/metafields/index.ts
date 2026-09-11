@@ -7,8 +7,4 @@ export { AppMetafieldTranslationsCard } from "./components/AppMetafieldTranslati
 export { AppTypedValueInput } from "./components/AppTypedValueInput";
 export { METAOBJECT_FIELD_TYPE_CODES, metafieldTypeLabel } from "./format";
 export { useMetafieldTranslationLocales } from "./hooks/use-metafield-translations";
-export type {
-	MetafieldDefinition,
-	MetafieldDefinitionListItem,
-	MetafieldTypeCode,
-} from "./types";
+export type { MetafieldTypeCode } from "./types";

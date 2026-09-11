@@ -9,5 +9,3 @@ export { AppSettingsSidebar } from "./components/AppSettingsSidebar";
 export { AppStorefrontPasswordCard } from "./components/AppStorefrontPasswordCard";
 export { AppTourOperatorForm } from "./components/AppTourOperatorForm";
 export { AppTourOperatorSidebar } from "./components/AppTourOperatorSidebar";
-export { useOperatorSeo } from "./hooks/use-operator-seo";
-export type { OperatorSeo, OperatorTranslation } from "./types";

@@ -17,7 +17,7 @@ const nameField = z
 	.min(1, m.validation_required())
 	.max(120, m.validation_max_length({ count: 120 }));
 
-export const definitionSchema = z.object({
+const definitionSchema = z.object({
 	type: slugField(64),
 	name: nameField,
 	description: z
@@ -62,8 +62,6 @@ export const entrySchema = z.object({
 	handle: slugField(170),
 	name: nameField,
 });
-
-export type DefinitionFormData = z.input<typeof definitionSchema>;
 
 export const deriveSlug = (name: string): string =>
 	name

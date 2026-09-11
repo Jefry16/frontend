@@ -20,7 +20,7 @@ import {
 import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { ownerTypeLabel, typeLabel } from "../format";
+import { metafieldTypeLabel, ownerTypeLabel } from "../format";
 import { useMetafieldDefinition } from "../hooks/use-metafield-definition";
 import { useMetafieldDefinitionActions } from "../hooks/use-metafield-definition-actions";
 
@@ -143,7 +143,7 @@ export const AppMetafieldDefinitionDetail = ({
 										</AppBadge>
 									</AppDetailField>
 									<AppDetailField label={m.metafield_type()}>
-										{typeLabel(definition.type)}
+										{metafieldTypeLabel(definition.type)}
 									</AppDetailField>
 									{definition.metaobjectDefinitionId && (
 										<AppDetailField label={m.metafield_references()}>
