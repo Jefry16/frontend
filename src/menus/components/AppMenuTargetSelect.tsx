@@ -56,8 +56,8 @@ export const AppMenuTargetSelect = ({
 
 	const options =
 		kind === "EXPERIENCE"
-			? experiences.rows.map((row) => ({ id: row.id, label: row.name }))
-			: pages.rows.map((row) => ({ id: row.id, label: row.title }));
+			? (experiences.data ?? []).map((row) => ({ id: row.id, label: row.name }))
+			: (pages.data ?? []).map((row) => ({ id: row.id, label: row.title }));
 
 	const invalid = (errors?.length ?? 0) > 0;
 

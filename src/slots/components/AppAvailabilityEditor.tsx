@@ -85,7 +85,7 @@ export const AppAvailabilityEditor = ({
 							description={apiErrorMessage(audiences.error)}
 							onRetry={() => audiences.refetch()}
 						/>
-					) : audiences.rows.length === 0 ? (
+					) : (audiences.data ?? []).length === 0 ? (
 						<AppEmptyState
 							icon={UsersRound}
 							title={m.no_audiences_for_slots()}
@@ -137,13 +137,13 @@ export const AppAvailabilityEditor = ({
 									<AppRecurringSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										audiences={audiences.rows}
+										audiences={audiences.data ?? []}
 									/>
 								) : (
 									<AppSingleSlotForm
 										tourOperatorId={tourOperatorId}
 										experienceId={experienceId}
-										audiences={audiences.rows}
+										audiences={audiences.data ?? []}
 									/>
 								)}
 							</CardContent>

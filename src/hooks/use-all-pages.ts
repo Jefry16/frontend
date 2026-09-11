@@ -39,7 +39,6 @@ export const useAllPages = <T>(
 	const stillLoading = !isError && (isPending || hasNextPage === true);
 
 	return {
-		rows,
 		data: isError || stillLoading ? undefined : rows,
 		isPending: stillLoading,
 		isError,

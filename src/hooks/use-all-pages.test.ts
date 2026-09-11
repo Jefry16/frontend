@@ -48,7 +48,7 @@ describe("useAllPages", () => {
 		const { result } = render();
 
 		await waitFor(() => expect(result.current.isPending).toBe(false));
-		expect(result.current.rows.map((r) => r.id)).toEqual(["a", "b", "c", "d"]);
+		expect(result.current.data?.map((r) => r.id)).toEqual(["a", "b", "c", "d"]);
 	});
 
 	it("never reports settled while pages remain", async () => {
@@ -59,14 +59,14 @@ describe("useAllPages", () => {
 		]);
 		server.use(handler);
 
-		const renders: { pending: boolean; rows: number }[] = [];
+		const renders: { pending: boolean; rows: number | null }[] = [];
 		const { Wrapper } = wrapperWithProviders();
 		const { result } = renderHook(
 			() => {
 				const value = useAllPages<Row>(["audiences", "op-1"], ENDPOINT);
 				renders.push({
 					pending: value.isPending,
-					rows: value.rows.length,
+					rows: value.data?.length ?? null,
 				});
 				return value;
 			},
@@ -109,7 +109,7 @@ describe("useAllPages", () => {
 		await waitFor(() => expect(result.current.isPending).toBe(false), {
 			timeout: 3000,
 		});
-		expect(result.current.rows.map((r) => r.id)).toEqual([
+		expect(result.current.data?.map((r) => r.id)).toEqual([
 			"r0",
 			"r1",
 			"r2",

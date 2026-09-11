@@ -39,7 +39,7 @@ export const AppAddAvailabilityDialog = ({
 		`/tour-operators/${tourOperatorId}/experiences`,
 	);
 
-	const filtered = experiences.rows.filter((e) =>
+	const filtered = (experiences.data ?? []).filter((e) =>
 		e.name.toLowerCase().includes(search.trim().toLowerCase()),
 	);
 
@@ -65,7 +65,7 @@ export const AppAddAvailabilityDialog = ({
 						description={apiErrorMessage(experiences.error)}
 						onRetry={() => experiences.refetch()}
 					/>
-				) : experiences.rows.length === 0 ? (
+				) : (experiences.data ?? []).length === 0 ? (
 					<div className="flex flex-col items-center gap-3 py-6 text-center">
 						<Compass className="size-8 opacity-40" />
 						<p className="text-sm text-muted-foreground">
