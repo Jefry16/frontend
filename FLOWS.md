@@ -57,7 +57,7 @@ scope: these flows end at the admin app's own screens.
   1. Write one → `POST /tour-operators/{id}/policies`; read it back → `GET .../policies/{policyId}`
   2. Change or remove it → `PUT` / `DELETE .../policies/{policyId}`
   3. Translate it → `GET .../policies/{policyId}/translations`, `PUT` / `DELETE .../translations/{locale}`
-  - Gap: the policies list screen calls `GET .../policies`, which the backend does not serve. Either the list is read from somewhere else or the backend grows the endpoint; the round decides with the backend.
+  - Waiting on the backend: there is no way to list an operator's policies. The list screen calls `GET .../policies`, which answers `405`, so after creating a policy an admin can find it again only through its URL. Needs `GET /tour-operators/{id}/policies`, at most four rows, one per type. Until then the list screen shows the refusal and a retry; everything else in the flow was walked and works.
 
 - [ ] **F9 Build the storefront menu.** Admin.
   1. Create a menu and its items → `GET` / `POST /tour-operators/{id}/menus`, `GET` / `PATCH` / `DELETE .../menus/{menuId}`

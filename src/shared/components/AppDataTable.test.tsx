@@ -47,6 +47,38 @@ const renderTable = () => {
 	);
 };
 
+describe("AppDataTable when the list is refused", () => {
+	it("shows the backend's sentence with a retry, and asks again on retry", async () => {
+		let calls = 0;
+		server.use(
+			http.get(`${API}/things`, () => {
+				calls += 1;
+				return calls === 1
+					? HttpResponse.json(
+							{ status: 405, message: "Method not allowed here" },
+							{ status: 405 },
+						)
+					: HttpResponse.json({ data: [], nextCursor: null });
+			}),
+		);
+		renderWithProviders(
+			<AppDataTable<Row>
+				columns={columns}
+				endpoint="/things"
+				queryKey={["things"]}
+				emptyState={{ title: "Nothing", description: "" }}
+			/>,
+		);
+
+		expect(await screen.findByText("Method not allowed here")).toBeVisible();
+
+		await userEvent.click(screen.getByRole("button", { name: /try again/i }));
+
+		expect(await screen.findByText("Nothing")).toBeVisible();
+		expect(calls).toBe(2);
+	});
+});
+
 describe("AppDataTable sorting semantics", () => {
 	it("announces the sort state, and only on sortable columns", async () => {
 		renderTable();

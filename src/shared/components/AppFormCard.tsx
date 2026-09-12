@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Card, CardContent } from "#/components/ui/card";
-import * as m from "#/paraglide/messages";
 import { AppAlert } from "./AppAlert";
 
 interface AppFormCardProps {
@@ -28,9 +27,7 @@ export const AppFormCard = ({
 				className="space-y-4"
 			>
 				{notice}
-				{errorMessage && (
-					<AppAlert title={m.error()} description={errorMessage} />
-				)}
+				{errorMessage && <AppAlert description={errorMessage} />}
 				{children}
 				{actions}
 			</form>

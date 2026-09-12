@@ -11,9 +11,11 @@ import {
 	TableHeader,
 	TableRow,
 } from "#/components/ui/table";
+import { apiErrorMessage } from "#/lib/api-error";
 import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
 import { AppEmptyState } from "./AppEmptyState";
+import { AppError } from "./AppError";
 import { useDataTable } from "./useDataTable";
 
 const SKELETON_ROW_KEYS = ["s0", "s1", "s2", "s3", "s4", "s5"];
@@ -50,6 +52,7 @@ export function AppDataTable<TData extends { id: string }>({
 		table,
 		isLoading,
 		error,
+		refetch,
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
@@ -113,8 +116,11 @@ export function AppDataTable<TData extends { id: string }>({
 					<TableBody>
 						{error ? (
 							<TableRow>
-								<TableCell colSpan={colSpan} className="text-center">
-									{error.message}
+								<TableCell colSpan={colSpan}>
+									<AppError
+										description={apiErrorMessage(error)}
+										onRetry={() => refetch()}
+									/>
 								</TableCell>
 							</TableRow>
 						) : isLoading ? (
