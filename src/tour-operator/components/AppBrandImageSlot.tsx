@@ -8,6 +8,7 @@ import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
 import type { BrandImageSlot } from "../types";
 
 const MAX_BYTES = 25 * 1024 * 1024;
+const IMAGE_TYPES = "image/jpeg,image/png,image/webp";
 
 export const AppBrandImageSlot = ({
 	tourOperatorId,
@@ -59,7 +60,7 @@ export const AppBrandImageSlot = ({
 				<AppImageDropzone
 					className="size-24 min-h-0 shrink-0"
 					previewUrl={url}
-					accept="image/*"
+					accept={IMAGE_TYPES}
 					maxBytes={MAX_BYTES}
 					pending={pending}
 					disabled={pending}

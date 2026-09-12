@@ -67,8 +67,6 @@ function GeneralSettingsPage() {
 						tourOperatorId={operator.id}
 						canWrite={canWrite}
 					/>
-					{/* The operator is its own owner, so ownerId is the operator's id.
-					    Renders nothing until a tour-operator metafield is defined. */}
 					<AppMetafieldsCard
 						tourOperatorId={operator.id}
 						ownerType="tour_operator"

@@ -121,9 +121,7 @@ const DetailsForm = ({
 				form.handleSubmit();
 			}}
 		>
-			{errorMessage && (
-				<AppAlert title={m.error()} description={errorMessage} />
-			)}
+			{errorMessage && <AppAlert description={errorMessage} />}
 			<FieldGroup>
 				<form.Field name="name">
 					{(field) => <AppField field={field} label={m.shop_name()} required />}
