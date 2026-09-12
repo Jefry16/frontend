@@ -146,10 +146,6 @@ module.exports = {
 				"^src/paraglide/",
 				"^src/routeTree\\.gen\\.ts$",
 				"\\.test\\.(ts|tsx)$",
-				// Dev-only, same rationale as tests: the /_dev gallery and colocated
-				// stories import components across the tree; they never ship to prod.
-				"\\.stories\\.(tsx?)$",
-				"^src/dev/",
 			],
 		},
 		reporterOptions: {

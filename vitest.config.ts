@@ -31,12 +31,9 @@ export default defineConfig({
 			reporter: ["text-summary", "html"],
 			include: ["src/**/*.ts", "src/**/*.tsx"],
 			exclude: [
-				"src/components/ui/**",
 				"src/paraglide/**",
-				"src/dev/**",
 				"src/test/**",
 				"src/routeTree.gen.ts",
-				"**/*.stories.tsx",
 				"**/*.test.*",
 			],
 		},
