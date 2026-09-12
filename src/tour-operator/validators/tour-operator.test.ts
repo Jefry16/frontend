@@ -56,4 +56,24 @@ describe("tourOperatorSchema", () => {
 			}).success,
 		).toBe(true);
 	});
+
+	it.each([
+		["name", 150],
+		["address.address1", 255],
+		["address.address2", 255],
+		["address.city", 120],
+		["address.province", 120],
+		["address.zip", 20],
+	])("refuses %s one past the backend's %i-character bound, and takes it at the bound", (path, max) => {
+		const withLength = (n: number) => {
+			const value = "x".repeat(n);
+			return path.startsWith("address.")
+				? { ...valid, address: { ...valid.address, [path.slice(8)]: value } }
+				: { ...valid, [path]: value };
+		};
+		expect(tourOperatorSchema.safeParse(withLength(max)).success).toBe(true);
+		expect(tourOperatorSchema.safeParse(withLength(max + 1)).success).toBe(
+			false,
+		);
+	});
 });
