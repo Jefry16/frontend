@@ -14,8 +14,6 @@ const optional = (max: number) =>
 		.trim()
 		.max(max, m.validation_max_length({ count: max }));
 
-// No country: the backend dropped the column, because a timezone already
-// carries one and the address copy was free to disagree with it.
 export const addressSchema = z.object({
 	address1: required(255),
 	address2: optional(255),
