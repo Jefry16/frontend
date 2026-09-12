@@ -114,9 +114,6 @@ importers:
       msw:
         specifier: ^2.13.6
         version: 2.15.0(@types/node@22.20.1)(typescript@5.9.3)
-      playwright:
-        specifier: 1.61.1
-        version: 1.61.1
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -8685,13 +8682,15 @@ snapshots:
     dependencies:
       find-up: 3.0.0
 
-  playwright-core@1.61.1: {}
+  playwright-core@1.61.1:
+    optional: true
 
   playwright@1.61.1:
     dependencies:
       playwright-core: 1.61.1
     optionalDependencies:
       fsevents: 2.3.2
+    optional: true
 
   postcss-selector-parser@7.1.4:
     dependencies:

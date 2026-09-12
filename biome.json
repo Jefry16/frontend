@@ -14,7 +14,6 @@
 			"**/vitest.config.ts",
 			"**/vitest.setup.ts",
 			"**/.dependency-cruiser.cjs",
-			"**/smoke/**/*",
 			"!**/dist",
 			"!**/coverage",
 			"!**/src/routeTree.gen.ts",

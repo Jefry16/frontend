@@ -7,5 +7,3 @@ dist
 __unconfig*
 todos.json
 coverage
-
-.smoke-token
