@@ -10,7 +10,7 @@ const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 describe("useUiLanguages", () => {
 	it("offers only the languages this app can show, whatever the backend lists", async () => {
 		server.use(
-			http.get(`${API}/ui-languages`, () => HttpResponse.json(["en", "es"])),
+			http.get(`${API}/ui-languages`, () => HttpResponse.json(["es", "en", "fr"])),
 		);
 		const { result } = renderHook(() => useUiLanguages(), {
 			wrapper: wrapperWithProviders({ withAuth: true }).Wrapper,
