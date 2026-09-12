@@ -73,9 +73,7 @@ const SocialLinksForm = ({
 				form.handleSubmit();
 			}}
 		>
-			{errorMessage && (
-				<AppAlert title={m.error()} description={errorMessage} />
-			)}
+			{errorMessage && <AppAlert description={errorMessage} />}
 
 			<form.Field name="socialLinks" mode="array">
 				{(links) => {
@@ -95,9 +93,6 @@ const SocialLinksForm = ({
 													label={m.social_platform()}
 													hideLabel={index > 0}
 												>
-													{/* Only what is still free, plus this row's own
-													    pick — otherwise reopening the select on an
-													    existing row would show it as unavailable. */}
 													{SOCIAL_PLATFORMS.filter(
 														(p) => !taken.has(p) || p === row.platform,
 													).map((platform) => (

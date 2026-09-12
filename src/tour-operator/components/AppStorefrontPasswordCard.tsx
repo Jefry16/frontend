@@ -77,9 +77,7 @@ const StoreAccessForm = ({
 			}}
 			className="space-y-6"
 		>
-			{errorMessage && (
-				<AppAlert title={m.error()} description={errorMessage} />
-			)}
+			{errorMessage && <AppAlert description={errorMessage} />}
 			<FieldGroup>
 				<form.Field name="enabled">
 					{(field) => (

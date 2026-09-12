@@ -31,6 +31,7 @@ import {
 } from "../validators/operator-seo";
 
 const MAX_IMAGE_BYTES = 25 * 1024 * 1024;
+const IMAGE_TYPES = "image/jpeg,image/png,image/webp";
 
 export const AppOperatorSeoCard = ({
 	tourOperatorId,
@@ -129,7 +130,7 @@ const SeoForm = ({
 						<AppImageDropzone
 							className="size-28 min-h-0 shrink-0"
 							previewUrl={image.data?.url ?? null}
-							accept="image/*"
+							accept={IMAGE_TYPES}
 							maxBytes={MAX_IMAGE_BYTES}
 							pending={upload.isPending}
 							disabled={upload.isPending || save.isPending}

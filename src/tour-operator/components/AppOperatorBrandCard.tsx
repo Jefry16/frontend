@@ -106,9 +106,7 @@ const BrandBody = ({
 						form.handleSubmit();
 					}}
 				>
-					{errorMessage && (
-						<AppAlert title={m.error()} description={errorMessage} />
-					)}
+					{errorMessage && <AppAlert description={errorMessage} />}
 					<FieldGroup>
 						<form.Field name="slogan">
 							{(field) => (

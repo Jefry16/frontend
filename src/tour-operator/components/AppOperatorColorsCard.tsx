@@ -90,9 +90,7 @@ const ColorsForm = ({
 				form.handleSubmit();
 			}}
 		>
-			{errorMessage && (
-				<AppAlert title={m.error()} description={errorMessage} />
-			)}
+			{errorMessage && <AppAlert description={errorMessage} />}
 
 			{ROLES.map((role) => (
 				<form.Field key={role.name} name={role.name} mode="array">
@@ -102,7 +100,7 @@ const ColorsForm = ({
 							<div className="flex flex-col gap-3">
 								<FieldLabel>{role.label()}</FieldLabel>
 								{rows.map((_, index) => (
-									// biome-ignore lint/suspicious/noArrayIndexKey: see above
+									// biome-ignore lint/suspicious/noArrayIndexKey: a colour row has no identity but its position
 									<div key={index} className="flex items-end gap-2">
 										<div className="flex-1">
 											<form.Field name={`${role.name}[${index}].background`}>
@@ -209,7 +207,7 @@ const ColorsSummary = ({ brand }: { brand: Brand }) => {
 					<FieldLabel>{group.label}</FieldLabel>
 					<div className="flex flex-col gap-2">
 						{group.colors.map((color, index) => (
-							// biome-ignore lint/suspicious/noArrayIndexKey: see above
+							// biome-ignore lint/suspicious/noArrayIndexKey: a colour row has no identity but its position
 							<Swatch key={index} color={color} />
 						))}
 					</div>

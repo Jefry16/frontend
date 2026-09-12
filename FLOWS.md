@@ -44,7 +44,7 @@ scope: these flows end at the admin app's own screens.
   2. Create it → `POST /tour-operators`, answered with its URL in `Location`
   3. Land on its dashboard → the profile is re-read (`GET /auth/profile`) and the new membership carries what the dashboard shows; `GET /tour-operators/{id}` is first read by F6
 
-- [ ] **F6 Fill in the operator's details and brand.** Admin.
+- [x] **F6 Fill in the operator's details and brand.** Admin.
   1. Details, address, contact → `PATCH /tour-operators/{id}` (one section per save, whole-replace)
   2. Logo and favicon → `POST /tour-operators/{id}/media`, then the brand section
   3. Colours, social links, SEO defaults, storefront password → the same `PATCH`, one section each

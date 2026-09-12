@@ -7,11 +7,11 @@ export const storefrontPasswordSchema = z
 		password: z
 			.string()
 			.trim()
-			.max(72, m.validation_max_length({ count: 72 })),
+			.max(100, m.validation_max_length({ count: 100 })),
 		message: z
 			.string()
 			.trim()
-			.max(500, m.validation_max_length({ count: 500 })),
+			.max(1000, m.validation_max_length({ count: 1000 })),
 	})
 	.refine((v) => !v.enabled || v.password.length > 0, {
 		path: ["password"],
