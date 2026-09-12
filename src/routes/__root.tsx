@@ -7,12 +7,15 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import {
+	ThemeProvider,
+	Toaster,
+	TooltipProvider,
+	UiLabelsProvider,
+	useTheme,
+} from "@vointika/ui";
 import { AuthProvider } from "#/auth";
-import { Toaster } from "#/components/ui/sonner";
-import { TooltipProvider } from "#/components/ui/tooltip";
 import { queryClient } from "#/router";
-import { UiLabelsProvider } from "#/shared/labels";
-import { ThemeProvider, useTheme } from "#/shared/theme";
 import { appUiLabels } from "#/ui-labels";
 
 import appCss from "../styles.css?url";

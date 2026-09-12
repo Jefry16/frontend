@@ -1,18 +1,18 @@
-import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
-import { Button } from "#/components/ui/button";
 import {
+	AppAlert,
+	AppColorField,
+	AppFormActions,
+	AppFormSkeleton,
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import { FieldLabel } from "#/components/ui/field";
+	FieldLabel,
+} from "@vointika/ui";
+import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppColorField } from "#/shared/components/AppColorField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useBrand, useBrandColorsForm } from "../hooks/use-operator-brand";
 import type { Brand, BrandColor } from "../types";

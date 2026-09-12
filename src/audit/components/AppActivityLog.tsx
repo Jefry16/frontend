@@ -1,10 +1,7 @@
-import { Button } from "#/components/ui/button";
-import { Skeleton } from "#/components/ui/skeleton";
-import { Spinner } from "#/components/ui/spinner";
+import { AppError, Button, Skeleton, Spinner } from "@vointika/ui";
 import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
-import { AppError } from "#/shared/components/AppError";
 import {
 	formatAuditAction,
 	formatAuditActor,

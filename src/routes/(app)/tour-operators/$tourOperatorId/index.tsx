@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppDetailField, AppPageHeader, AppPageShell } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator } from "#/session";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId/")({
 	component: TourOperatorDashboard,

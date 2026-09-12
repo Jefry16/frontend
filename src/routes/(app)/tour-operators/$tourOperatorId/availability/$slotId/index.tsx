@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppPageShell } from "#/shared/components/AppPageShell";
+import { AppPageShell } from "@vointika/ui";
 import { AppSlotDetail } from "#/slots";
 
 export const Route = createFileRoute(

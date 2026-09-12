@@ -1,19 +1,19 @@
-import { Check, Images } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
+	AppDialogFooter,
+	AppError,
+	Button,
+	cn,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "#/components/ui/dialog";
-import { Spinner } from "#/components/ui/spinner";
+	Spinner,
+} from "@vointika/ui";
+import { Check, Images } from "lucide-react";
+import { useEffect, useState } from "react";
 import { apiErrorMessage } from "#/lib/api-error";
-import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
-import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
-import { AppError } from "#/shared/components/AppError";
 import { useMediaLibrary } from "../hooks/use-media-library";
 import type { MediaAsset } from "../types";
 

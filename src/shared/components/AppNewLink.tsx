@@ -1,6 +1,6 @@
+import { Button } from "@vointika/ui";
 import { Plus } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
-import { Button } from "#/components/ui/button";
 import { AppLink } from "./AppLink";
 
 const AppNewLinkImpl = ({

@@ -1,21 +1,21 @@
-import { Plus, X } from "lucide-react";
-import { Button } from "#/components/ui/button";
 import {
+	AppAlert,
+	AppDetailField,
+	AppField,
+	AppFormActions,
+	AppFormSkeleton,
+	AppSelectField,
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import { SelectItem } from "#/components/ui/select";
+	SelectItem,
+} from "@vointika/ui";
+import { Plus, X } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppQueryState } from "#/shared/components/AppQueryState";
-import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useBrand, useBrandSocialLinksForm } from "../hooks/use-operator-brand";
 import { SOCIAL_PLATFORMS, socialPlatformLabel } from "../social-platforms";
 import type { Brand } from "../types";

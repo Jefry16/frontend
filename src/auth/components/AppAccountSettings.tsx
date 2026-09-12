@@ -1,6 +1,6 @@
+import { AppPageHeader } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { useAuth } from "../AuthProvider";
 import { AppChangePasswordForm } from "./AppChangePasswordForm";
 import { AppLanguageCard } from "./AppLanguageCard";

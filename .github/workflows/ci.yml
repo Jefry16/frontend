@@ -31,6 +31,15 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      # `@vointika/ui` is a private git dependency. pnpm clones it with git, so
+      # git needs a token that can read that repository (secret UI_REPO_TOKEN).
+      - name: Let git read the ui repository
+        run: |
+          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "git@github.com:"
+          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "https://github.com/"
+        env:
+          UI_REPO_TOKEN: ${{ secrets.UI_REPO_TOKEN }}
+
       - run: pnpm install --frozen-lockfile
 
       # paraglide/ is generated (not committed) — compile it so the i18n imports

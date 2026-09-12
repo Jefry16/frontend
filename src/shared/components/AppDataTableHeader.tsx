@@ -1,15 +1,16 @@
 import type { HeaderContext } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ArrowUpDown, Filter } from "lucide-react";
-import { Button } from "#/components/ui/button";
 import {
+	AppSetFilter,
+	AppTextFilter,
+	Button,
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from "#/components/ui/popover";
+	type SetFilterItem,
+} from "@vointika/ui";
+import { ArrowDown, ArrowUp, ArrowUpDown, Filter } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { AppAsyncSetFilter } from "./AppAsyncSetFilter";
-import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
-import { AppTextFilter } from "./AppTextFilter";
 
 interface BaseProps<TData> {
 	label: string;

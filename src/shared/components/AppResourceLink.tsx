@@ -1,5 +1,5 @@
+import { cn } from "@vointika/ui";
 import type { ComponentProps } from "react";
-import { cn } from "#/lib/utils";
 import { AppLink } from "./AppLink";
 
 const AppResourceLinkImpl = ({

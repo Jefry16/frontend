@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
+import { Field, FieldLabel } from "@vointika/ui";
 import { useState } from "react";
-import { Field, FieldLabel } from "#/components/ui/field";
 import { METAFIELD_TYPE_CODES, metafieldTypeLabel } from "../format";
 import { AppTypedValueInput } from "./AppTypedValueInput";
 

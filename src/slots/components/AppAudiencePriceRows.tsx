@@ -1,19 +1,20 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
-import { Plus, Trash2 } from "lucide-react";
-import type { Audience } from "#/audiences";
-import { Button } from "#/components/ui/button";
-import { FieldError, FieldLabel } from "#/components/ui/field";
 import {
+	AppNumericInput,
+	Button,
+	FieldError,
+	FieldLabel,
+	RequiredMark,
 	Select,
 	SelectContent,
 	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "#/components/ui/select";
+} from "@vointika/ui";
+import { Plus, Trash2 } from "lucide-react";
+import type { Audience } from "#/audiences";
 import * as m from "#/paraglide/messages";
-import { AppNumericInput } from "#/shared/components/AppNumericInput";
-import { RequiredMark } from "#/shared/components/RequiredMark";
 import type { AudiencePriceRow } from "../validators/slot";
 import { emptyPriceRow } from "../validators/slot";
 

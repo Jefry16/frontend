@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
+	AppConfirmDialog,
+	AppImageDropzone,
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
+} from "@vointika/ui";
+import { useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
-import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
 import { useUserAvatar } from "../hooks/use-user-avatar";
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024;

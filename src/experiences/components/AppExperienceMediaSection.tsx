@@ -1,10 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
+import {
+	cn,
+	FieldDescription,
+	FieldLegend,
+	FieldSet,
+	Skeleton,
+} from "@vointika/ui";
 import { ImageOff, Plus, Star, X } from "lucide-react";
 import { useState } from "react";
-import { FieldDescription, FieldLegend, FieldSet } from "#/components/ui/field";
-import { Skeleton } from "#/components/ui/skeleton";
 import { queryKeys } from "#/lib/query-keys";
-import { cn } from "#/lib/utils";
 import { AppMediaPicker, type MediaAsset, useMediaByIds } from "#/media";
 import * as m from "#/paraglide/messages";
 

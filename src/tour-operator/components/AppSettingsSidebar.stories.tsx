@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { SidebarProvider } from "@vointika/ui";
 import { AuthProvider, type AuthUser } from "#/auth";
-import { SidebarProvider } from "#/components/ui/sidebar";
 import { storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import { AppSettingsSidebar } from "./AppSettingsSidebar";

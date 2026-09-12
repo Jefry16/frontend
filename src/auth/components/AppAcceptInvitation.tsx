@@ -1,9 +1,6 @@
-import { Button } from "#/components/ui/button";
-import { Spinner } from "#/components/ui/spinner";
+import { AppField, AppPasswordField, Button, Spinner } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useAuth } from "../AuthProvider";
 import { useAcceptInvitation } from "../hooks/use-accept-invitation";
 import { useInvitationPreview } from "../hooks/use-invitation-preview";

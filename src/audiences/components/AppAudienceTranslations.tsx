@@ -1,12 +1,10 @@
+import { AppPageHeader, Card, CardContent, Skeleton } from "@vointika/ui";
 import { UsersRound } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppNameTranslations } from "#/shared/components/AppNameTranslations";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useAudience } from "../hooks/use-audience";
 

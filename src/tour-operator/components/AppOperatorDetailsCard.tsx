@@ -1,24 +1,24 @@
-import { useState } from "react";
 import {
+	AppAlert,
+	AppConfirmDialog,
+	AppDetailField,
+	AppField,
+	AppFormActions,
+	AppSelectField,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import { FieldGroup } from "#/components/ui/field";
-import { SelectItem } from "#/components/ui/select";
-import { Skeleton } from "#/components/ui/skeleton";
+	EmptyValue,
+	FieldGroup,
+	SelectItem,
+	Skeleton,
+} from "@vointika/ui";
+import { useState } from "react";
 import * as m from "#/paraglide/messages";
 import { useCurrencies, useTimezones } from "#/reference";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppQueryState } from "#/shared/components/AppQueryState";
-import { AppSelectField } from "#/shared/components/AppSelectField";
-import { EmptyValue } from "#/shared/components/EmptyValue";
 import { addressLines } from "../format";
 import {
 	useOperatorDetails,

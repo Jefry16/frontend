@@ -1,14 +1,16 @@
-import { type ReactNode, useState } from "react";
 import {
+	AppFormActions,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
+	Field,
+	FieldGroup,
+	FieldLabel,
+} from "@vointika/ui";
+import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useMetafieldValueSave } from "../hooks/use-metafield-value-save";
 import { useOwnerMetafields } from "../hooks/use-owner-metafields";

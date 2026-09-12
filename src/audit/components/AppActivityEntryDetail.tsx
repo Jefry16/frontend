@@ -1,21 +1,24 @@
-import { History } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import {
+	AppDetailField,
+	AppDetailSkeleton,
+	AppPageHeader,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "#/components/ui/table";
+} from "@vointika/ui";
+import { History } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import {
 	entityRoute,

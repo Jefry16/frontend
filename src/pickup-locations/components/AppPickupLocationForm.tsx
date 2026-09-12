@@ -1,9 +1,11 @@
-import { FieldGroup } from "#/components/ui/field";
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppTimeField,
+	FieldGroup,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppTimeField } from "#/shared/components/AppTimeField";
 import { usePickupLocationForm } from "../hooks/use-pickup-location-form";
 import type { PickupLocation } from "../types";
 

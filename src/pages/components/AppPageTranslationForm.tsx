@@ -1,12 +1,14 @@
-import { Button } from "#/components/ui/button";
-import { FieldGroup } from "#/components/ui/field";
-import { Spinner } from "#/components/ui/spinner";
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppTextareaField,
+	AppTranslationNotice,
+	Button,
+	FieldGroup,
+	Spinner,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppTextareaField } from "#/shared/components/AppTextareaField";
-import { AppTranslationNotice } from "#/shared/components/AppTranslationNotice";
 import { usePageTranslationForm } from "../hooks/use-page-translation-form";
 import type { Page, PageTranslation } from "../types";
 

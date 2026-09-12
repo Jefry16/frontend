@@ -1,9 +1,7 @@
 import type { Decorator, Preview } from "@storybook/tanstack-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider, TooltipProvider, UiLabelsProvider } from "@vointika/ui";
 import { AuthProvider } from "#/auth";
-import { TooltipProvider } from "#/components/ui/tooltip";
-import { UiLabelsProvider } from "#/shared/labels";
-import { ThemeProvider } from "#/shared/theme";
 import { appUiLabels } from "#/ui-labels";
 import "../src/styles.css";
 

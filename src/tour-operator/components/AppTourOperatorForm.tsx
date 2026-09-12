@@ -1,15 +1,18 @@
 import { useNavigate } from "@tanstack/react-router";
+import {
+	AppAlert,
+	AppField,
+	AppSelectField,
+	Button,
+	Card,
+	CardContent,
+	FieldGroup,
+	SelectItem,
+	Spinner,
+} from "@vointika/ui";
 import { AppAuthShell, getPostLoginPath, useAuth } from "#/auth";
-import { Button } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
-import { FieldGroup } from "#/components/ui/field";
-import { SelectItem } from "#/components/ui/select";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { useCurrencies, useTimezones } from "#/reference";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppField } from "#/shared/components/AppField";
-import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useTourOperatorForm } from "../hooks/use-tour-operator-form";
 import { AppOperatorAddressFields } from "./AppOperatorAddressFields";
 

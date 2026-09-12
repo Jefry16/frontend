@@ -1,24 +1,25 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import {
+	type AppAction,
+	AppDetailField,
+	AppPageActions,
+	AppPageHeader,
+	Card,
+	CardContent,
+	EmptyValue,
+	Skeleton,
+} from "@vointika/ui";
 import { FileText, Images, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
-import { Card, CardContent } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { EmptyValue } from "#/shared/components/EmptyValue";
 import { formatBytes, isImage, mimeLabel } from "../format";
 import { useMedia } from "../hooks/use-media";
 import { useMediaActions } from "../hooks/use-media-actions";

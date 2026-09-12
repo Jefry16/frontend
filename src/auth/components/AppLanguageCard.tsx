@@ -4,16 +4,14 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import {
 	Select,
 	SelectContent,
 	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "#/components/ui/select";
-import { Skeleton } from "#/components/ui/skeleton";
+	Skeleton,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { getLocale, type Locale } from "#/paraglide/runtime";
 import { AppQueryState } from "#/shared/components/AppQueryState";

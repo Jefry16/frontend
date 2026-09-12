@@ -1,15 +1,15 @@
-import { useState } from "react";
 import {
+	AppDialogFooter,
+	AppNumericInput,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "#/components/ui/dialog";
-import { Label } from "#/components/ui/label";
+	Label,
+} from "@vointika/ui";
+import { useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
-import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import type { SlotAudiencePrice } from "../types";
 
 export const AppEditCapacityDialog = ({

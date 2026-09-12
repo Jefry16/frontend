@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { useForm } from "@tanstack/react-form";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { FieldGroup } from "#/components/ui/field";
+import { FieldGroup } from "@vointika/ui";
 import { storyQueryClient } from "#/dev/story-utils";
 import { AppOperatorAddressFields } from "./AppOperatorAddressFields";
 

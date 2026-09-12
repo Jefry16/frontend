@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { Card, CardContent } from "#/components/ui/card";
+import { Card, CardContent } from "@vointika/ui";
 import { AppWriteGate } from "./AppWriteGate";
 
 const meta = {

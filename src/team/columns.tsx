@@ -1,10 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import { AppBadge, EmptyValue } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
-import { EmptyValue } from "#/shared/components/EmptyValue";
 import { timestampColumn } from "#/shared/components/table-columns";
 import { roleBadgeVariant, roleLabel } from "./format";
 import type { Member } from "./types";

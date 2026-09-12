@@ -1,8 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
+import { SidebarMenuButton, SidebarMenuItem } from "@vointika/ui";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "#/auth";
-import { SidebarMenuButton, SidebarMenuItem } from "#/components/ui/sidebar";
 import * as m from "#/paraglide/messages";
 
 export const AppSignOutButton = () => {

@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppContactMessagesList } from "#/contact";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/inbox/",

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import type { UseQueryResult } from "@tanstack/react-query";
+import { Skeleton } from "@vointika/ui";
 import { Compass } from "lucide-react";
-import { Skeleton } from "#/components/ui/skeleton";
 import { AppResourceView } from "./AppResourceView";
 
 const query = (over: Partial<UseQueryResult<string>>): UseQueryResult<string> =>

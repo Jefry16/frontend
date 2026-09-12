@@ -1,20 +1,23 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import {
+	type AppAction,
+	AppDetailField,
+	AppFormSkeleton,
+	AppPageActions,
+	AppPageHeader,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@vointika/ui";
 import { Inbox, Mail, Trash2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useContactMessage } from "../hooks/use-contact-message";
 import { useContactMessageActions } from "../hooks/use-contact-message-actions";

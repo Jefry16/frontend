@@ -1,12 +1,14 @@
-import { Button } from "#/components/ui/button";
-import { FieldGroup } from "#/components/ui/field";
-import { SelectItem } from "#/components/ui/select";
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppSelectField,
+	Button,
+	FieldGroup,
+	SelectItem,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppSelectField } from "#/shared/components/AppSelectField";
 import { roleLabel } from "../format";
 import { useInviteMemberForm } from "../hooks/use-invite-member-form";
 

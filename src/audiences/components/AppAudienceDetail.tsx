@@ -1,18 +1,19 @@
 import { useNavigate } from "@tanstack/react-router";
+import {
+	type AppAction,
+	AppDetailField,
+	AppDetailSkeleton,
+	AppPageActions,
+	AppPageHeader,
+	Card,
+	CardContent,
+} from "@vointika/ui";
 import { Languages, Pencil, UsersRound } from "lucide-react";
 import { AppActivityCard } from "#/audit";
-import { Card, CardContent } from "#/components/ui/card";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useAudience } from "../hooks/use-audience";
 

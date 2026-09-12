@@ -8,7 +8,7 @@ import {
 	SidebarMenu,
 	SidebarMenuItem,
 	SidebarRail,
-} from "#/components/ui/sidebar";
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator } from "#/session";
 import {

@@ -1,9 +1,8 @@
 import { useRouter } from "@tanstack/react-router";
+import { AppEmptyState, Button } from "@vointika/ui";
 import { ArrowLeft, FileQuestion, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
-import { AppEmptyState } from "./AppEmptyState";
 
 export function AppNotFound({
 	resource,

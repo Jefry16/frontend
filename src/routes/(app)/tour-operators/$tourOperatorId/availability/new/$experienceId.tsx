@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageShell } from "@vointika/ui";
 import { AppWriteGate } from "#/session";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppAvailabilityEditor } from "#/slots";
 
 export const Route = createFileRoute(

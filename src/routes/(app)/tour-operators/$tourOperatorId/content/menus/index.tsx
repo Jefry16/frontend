@@ -1,12 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
 import { Plus } from "lucide-react";
-import { Button } from "#/components/ui/button";
 import { AppMenusList } from "#/menus";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/menus/",

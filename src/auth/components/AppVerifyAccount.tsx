@@ -1,4 +1,4 @@
-import { Spinner } from "#/components/ui/spinner";
+import { Spinner } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppLink } from "#/shared/components/AppLink";
 import type { VerifyState } from "../verify-token";

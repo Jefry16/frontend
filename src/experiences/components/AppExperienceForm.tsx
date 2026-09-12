@@ -1,11 +1,13 @@
-import { FieldGroup } from "#/components/ui/field";
+import {
+	AppCheckboxField,
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppNumberField,
+	AppTextareaField,
+	FieldGroup,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppCheckboxField } from "#/shared/components/AppCheckboxField";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppNumberField } from "#/shared/components/AppNumberField";
-import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { useExperienceForm } from "../hooks/use-experience-form";
 import type { Experience } from "../types";
 import { AppExperienceMediaSection } from "./AppExperienceMediaSection";

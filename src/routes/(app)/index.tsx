@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { AppRoutePending } from "@vointika/ui";
 import { useEffect } from "react";
 import { getPostLoginPath, useAuth } from "#/auth";
-import { AppRoutePending } from "#/shared/components/AppRoutePending";
 
 export const Route = createFileRoute("/(app)/")({
 	component: IndexRedirect,

@@ -1,29 +1,30 @@
-import { Ban, CalendarDays, Pencil } from "lucide-react";
-import { useState } from "react";
-import { AppActivityCard } from "#/audit";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import {
+	type AppAction,
+	AppBadge,
+	AppDetailField,
+	AppDetailSkeleton,
+	AppPageActions,
+	AppPageHeader,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "#/components/ui/table";
+} from "@vointika/ui";
+import { Ban, CalendarDays, Pencil } from "lucide-react";
+import { useState } from "react";
+import { AppActivityCard } from "#/audit";
 import { formatMoney } from "#/lib/money";
 import * as m from "#/paraglide/messages";
 import { useOperatorCurrency, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
-import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import { AppLink } from "#/shared/components/AppLink";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import {
 	formatBookedCapacity,

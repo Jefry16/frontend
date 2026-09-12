@@ -1,21 +1,21 @@
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronRight, Compass, Plus } from "lucide-react";
-import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
+	AppEmptyState,
+	AppLoadingBlock,
+	Button,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "#/components/ui/dialog";
-import { Input } from "#/components/ui/input";
+	Input,
+} from "@vointika/ui";
+import { ChevronRight, Compass, Plus } from "lucide-react";
+import { useState } from "react";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppEmptyState } from "#/shared/components/AppEmptyState";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 
 interface ExperienceRow {

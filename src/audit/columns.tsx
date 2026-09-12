@@ -1,9 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import { EmptyValue } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
-import { EmptyValue } from "#/shared/components/EmptyValue";
 import { timestampColumn } from "#/shared/components/table-columns";
 import {
 	ACTION_OPTIONS,

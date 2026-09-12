@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppExperiencesList } from "#/experiences";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/experiences/",

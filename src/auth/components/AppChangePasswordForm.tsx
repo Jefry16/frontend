@@ -1,15 +1,15 @@
 import {
+	AppAlert,
+	AppFormActions,
+	AppPasswordField,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import { FieldGroup } from "#/components/ui/field";
+	FieldGroup,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useChangePasswordForm } from "../hooks/use-change-password-form";
 
 export const AppChangePasswordForm = () => {

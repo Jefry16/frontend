@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "@tanstack/react-router";
+import { cn } from "@vointika/ui";
 import type { ComponentProps } from "react";
-import { cn } from "#/lib/utils";
 
 const AppLinkImpl = ({
 	className,

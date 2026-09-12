@@ -1,5 +1,17 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
+	type AppAction,
+	AppBadge,
+	AppDetailField,
+	AppPageActions,
+	AppPageHeader,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	Skeleton,
+} from "@vointika/ui";
+import {
 	CalendarDays,
 	Compass,
 	Eye,
@@ -8,8 +20,6 @@ import {
 	Pencil,
 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
 import { formatMoney } from "#/lib/money";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
@@ -19,14 +29,7 @@ import {
 	usePermissions,
 } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
-import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";

@@ -1,14 +1,16 @@
-import { FieldGroup } from "#/components/ui/field";
-import { SelectItem } from "#/components/ui/select";
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppFormSkeleton,
+	AppSelectField,
+	FieldGroup,
+	SelectItem,
+} from "@vointika/ui";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppQueryState } from "#/shared/components/AppQueryState";
-import { AppSelectField } from "#/shared/components/AppSelectField";
 import {
 	METAFIELD_TYPE_CODES,
 	metafieldTypeLabel,

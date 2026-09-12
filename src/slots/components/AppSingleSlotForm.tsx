@@ -1,12 +1,14 @@
 import { useStore } from "@tanstack/react-form";
+import {
+	AppAlert,
+	AppDateField,
+	AppFormActions,
+	AppTimeField,
+	FieldGroup,
+} from "@vointika/ui";
 import type { Audience } from "#/audiences";
-import { FieldGroup } from "#/components/ui/field";
 import * as m from "#/paraglide/messages";
 import { useOperatorToday } from "#/session";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppDateField } from "#/shared/components/AppDateField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppTimeField } from "#/shared/components/AppTimeField";
 import { useSingleSlotForm } from "../hooks/use-single-slot-form";
 import { rollsToNextDay } from "../validators/slot";
 import { AppAudiencePriceRows } from "./AppAudiencePriceRows";

@@ -1,4 +1,3 @@
-import { ArrowLeft } from "lucide-react";
 import {
 	Sidebar,
 	SidebarContent,
@@ -9,7 +8,8 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarRail,
-} from "#/components/ui/sidebar";
+} from "@vointika/ui";
+import { ArrowLeft } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator } from "#/session";
 import { AppLink } from "#/shared/components/AppLink";

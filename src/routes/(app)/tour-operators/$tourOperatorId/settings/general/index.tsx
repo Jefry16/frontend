@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator, usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 import {
 	AppOperatorBrandCard,
 	AppOperatorColorsCard,

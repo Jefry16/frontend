@@ -1,25 +1,27 @@
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppLoadingBlock,
+	AppLocaleTabs,
+	AppTranslationNotice,
+	AppTranslationSummary,
+	Button,
+	Spinner,
+} from "@vointika/ui";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { z } from "zod";
-import { Button } from "#/components/ui/button";
-import { Spinner } from "#/components/ui/spinner";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys, withLocale } from "#/lib/query-keys";
 import type { QueryState } from "#/lib/query-state";
 import * as m from "#/paraglide/messages";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppField } from "./AppField";
-import { AppFormActions } from "./AppFormActions";
-import { AppLoadingBlock } from "./AppLoadingBlock";
-import { AppLocaleTabs } from "./AppLocaleTabs";
 import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
 import { AppQueryState } from "./AppQueryState";
-import { AppTranslationNotice } from "./AppTranslationNotice";
-import { AppTranslationSummary } from "./AppTranslationSummary";
 
 interface NameTranslation {
 	locale: string;

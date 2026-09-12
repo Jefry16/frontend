@@ -1,8 +1,10 @@
-import { FieldGroup } from "#/components/ui/field";
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	FieldGroup,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
 import { useCategoryForm } from "../hooks/use-category-form";
 import type { Category } from "../types";
 

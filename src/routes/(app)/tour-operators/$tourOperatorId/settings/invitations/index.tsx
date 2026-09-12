@@ -1,11 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
 import { UserPlus } from "lucide-react";
-import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppInvitationsList } from "#/team";
 
 export const Route = createFileRoute(
