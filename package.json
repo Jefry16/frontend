@@ -40,7 +40,7 @@
     "@tanstack/react-router-devtools": "1.167.0",
     "@tanstack/react-start": "1.168.32",
     "@tanstack/react-table": "^8.21.3",
-    "@vointika/ui": "github:Jefry16/ui#3e13a07",
+    "@vointika/ui": "github:Jefry16/ui#v0.1.0",
     "axios": "^1.14.0",
     "lucide-react": "^0.545.0",
     "react": "^19.2.0",

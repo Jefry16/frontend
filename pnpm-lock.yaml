@@ -36,8 +36,8 @@ importers:
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@vointika/ui':
-        specifier: github:Jefry16/ui#3e13a07
-        version: git+https://git@github.com:Jefry16/ui.git#3e13a0765bdcb87166de41439e4d4801bbaa81bd(@tanstack/react-form@1.33.2(@tanstack/react-start@1.168.32(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rollup@4.62.2)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0)))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)
+        specifier: github:Jefry16/ui#v0.1.0
+        version: git+https://git@github.com:Jefry16/ui.git#b503286ed8b77b47f18232d191f36179700f27d7(@tanstack/react-form@1.33.2(@tanstack/react-start@1.168.32(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rollup@4.62.2)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0)))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)
       axios:
         specifier: ^1.14.0
         version: 1.18.1
@@ -2792,8 +2792,8 @@ packages:
   '@vitest/utils@3.2.7':
     resolution: {integrity: sha512-x6BDOd7dyo3PFLY3I9/HJ25X/6OurhGXk2/B9gOZNPF7XDVjeBK4k01lQE5uvDpbuheErh91qYuE1E2OEjK3Rw==}
 
-  '@vointika/ui@git+https://git@github.com:Jefry16/ui.git#3e13a0765bdcb87166de41439e4d4801bbaa81bd':
-    resolution: {commit: 3e13a0765bdcb87166de41439e4d4801bbaa81bd, repo: git@github.com:Jefry16/ui.git, type: git}
+  '@vointika/ui@git+https://git@github.com:Jefry16/ui.git#b503286ed8b77b47f18232d191f36179700f27d7':
+    resolution: {commit: b503286ed8b77b47f18232d191f36179700f27d7, repo: git@github.com:Jefry16/ui.git, type: git}
     version: 0.0.0
     peerDependencies:
       '@tanstack/react-form': ^1.28.6
@@ -7833,7 +7833,7 @@ snapshots:
       loupe: 3.2.1
       tinyrainbow: 2.0.0
 
-  '@vointika/ui@git+https://git@github.com:Jefry16/ui.git#3e13a0765bdcb87166de41439e4d4801bbaa81bd(@tanstack/react-form@1.33.2(@tanstack/react-start@1.168.32(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rollup@4.62.2)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0)))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)':
+  '@vointika/ui@git+https://git@github.com:Jefry16/ui.git#b503286ed8b77b47f18232d191f36179700f27d7(@tanstack/react-form@1.33.2(@tanstack/react-start@1.168.32(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rollup@4.62.2)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0)))(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)':
     dependencies:
       '@fontsource-variable/geist': 5.3.0
       '@tanstack/react-form': 1.33.2(@tanstack/react-start@1.168.32(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rollup@4.62.2)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0)))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
