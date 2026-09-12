@@ -6,4 +6,3 @@ dist
 .tanstack
 __unconfig*
 todos.json
-coverage
