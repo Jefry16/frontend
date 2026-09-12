@@ -10,8 +10,8 @@ round: every admin endpoint there appears in at least one flow here.
 backend as the role named, every step landing on the endpoint it names, the
 gaps below closed, and the round's PR merged. Nothing is checked yet.
 
-Endpoints are relative to `/api`. "Storefront" means the customer-facing HTML
-the backend serves; it is not built here, it is how a flow proves it worked.
+Endpoints are relative to `/api`. The customer-facing storefront is out of
+scope: these flows end at the admin app's own screens.
 
 ## Getting in
 
@@ -48,24 +48,20 @@ the backend serves; it is not built here, it is how a flow proves it worked.
   1. Details, address, contact → `PATCH /tour-operators/{id}` (one section per save, whole-replace)
   2. Logo and favicon → `POST /tour-operators/{id}/media`, then the brand section
   3. Colours, social links, SEO defaults, storefront password → the same `PATCH`, one section each
-  4. Storefront shows the brand → storefront `GET /`, and `GET /password` when the password is on
 
 - [ ] **F7 Choose the storefront's languages and translate the operator.** Admin.
   1. Pick a primary and supported locales → `GET /languages`, `PATCH /tour-operators/{id}` (locales section)
   2. Translate the operator's own texts per locale → `GET /tour-operators/{id}/translations`, `GET` / `PUT` / `DELETE /tour-operators/{id}/translations/{locale}`
-  3. Storefront serves the locale → storefront `GET /{locale}`
 
 - [ ] **F8 Publish the policies.** Admin.
   1. Write one → `POST /tour-operators/{id}/policies`; read it back → `GET .../policies/{policyId}`
   2. Change or remove it → `PUT` / `DELETE .../policies/{policyId}`
   3. Translate it → `GET .../policies/{policyId}/translations`, `PUT` / `DELETE .../translations/{locale}`
-  4. Storefront shows it → storefront `GET /policies/{type}`
   - Gap: the policies list screen calls `GET .../policies`, which the backend does not serve. Either the list is read from somewhere else or the backend grows the endpoint; the round decides with the backend.
 
 - [ ] **F9 Build the storefront menu.** Admin.
   1. Create a menu and its items → `GET` / `POST /tour-operators/{id}/menus`, `GET` / `PATCH` / `DELETE .../menus/{menuId}`
   2. Link an item to the home page, the experience list, one experience, one category, one page, or a URL
-  3. Storefront renders it → storefront `GET /`
   - Gap: the `HOME` and `CATEGORY` link types exist on the backend and not here.
   - Gap: item saves go to `PUT .../menus/{menuId}/items`, which does not exist; items are part of the menu `PATCH`.
 
@@ -93,7 +89,6 @@ the backend serves; it is not built here, it is how a flow proves it worked.
   3. Fill in its custom fields (F15) → `GET` / `PUT .../metafields/experience/{experienceId}`
   4. Translate it → `GET .../experiences/{experienceId}/translations`, `GET` / `PUT` / `DELETE .../translations/{locale}`, and its custom fields → `.../metafield-translations/experience/{experienceId}[/{locale}]`
   5. Publish it → `PUT .../experiences/{experienceId}/published`
-  6. Storefront lists and shows it → storefront `GET /experiences`, `GET /experiences/{handle}`
   - Gap: the experience form has no category picker; the backend stores `categoryId` and nothing here sends it.
 
 - [ ] **F15 Add custom fields to experiences, pages and the operator.** Admin.
@@ -115,7 +110,6 @@ the backend serves; it is not built here, it is how a flow proves it worked.
   3. Fill in its custom fields (F15) → `.../metafields/page/{pageId}`
   4. Translate it → `GET .../pages/{pageId}/translations`, `GET` / `PUT` / `DELETE .../translations/{locale}`
   5. Publish it → `PUT .../pages/{pageId}/published`; remove it → `DELETE .../pages/{pageId}`
-  6. Storefront shows it → storefront `GET /pages/{handle}`
 
 ## Selling
 
@@ -129,8 +123,7 @@ the backend serves; it is not built here, it is how a flow proves it worked.
 ## Running the business
 
 - [ ] **F19 Read messages from customers.** Any member.
-  1. Customer writes → storefront `GET /contact`
-  2. Inbox → `GET /tour-operators/{id}/contact-messages`, `GET .../contact-messages/{messageId}`
+  1. Inbox → `GET /tour-operators/{id}/contact-messages`, `GET .../contact-messages/{messageId}`
 
 - [ ] **F20 See what changed and who did it.** Any member.
   1. The log → `GET /tour-operators/{id}/audit-log`; one entry with its diff → `GET .../audit-log/{entryId}`
@@ -140,10 +133,3 @@ the backend serves; it is not built here, it is how a flow proves it worked.
   1. Invite → `GET` / `POST /tour-operators/{id}/invitations`, `GET` / `DELETE .../invitations/{invitationId}`, `POST .../resend`
   2. Members and roles → `GET .../members`, `GET` / `PATCH` / `DELETE .../members/{userId}`
   3. Signed in as a viewer, every write control in F6 to F18 is absent and every write request is refused → `403`
-
-## The storefront, as the proof
-
-Served by the backend, bare and under a locale prefix: `/`, `/experiences`,
-`/experiences/{handle}`, `/pages/{handle}`, `/policies/{type}`, `/contact`,
-`/password` (`GET` and `POST`), `/robots.txt`, `/sitemap.xml`. A flow that
-ends on the storefront is done when the storefront shows the change.
