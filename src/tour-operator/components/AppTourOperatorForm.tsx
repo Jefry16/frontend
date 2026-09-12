@@ -43,9 +43,7 @@ export const AppTourOperatorForm = () => {
 						}}
 						className="space-y-4"
 					>
-						{errorMessage && (
-							<AppAlert title={m.error()} description={errorMessage} />
-						)}
+						{errorMessage && <AppAlert description={errorMessage} />}
 						<FieldGroup>
 							<form.Field name="name">
 								{(field) => <AppField field={field} label={m.name()} />}
@@ -117,8 +115,6 @@ export const AppTourOperatorForm = () => {
 						title={m.join_existing_team_title()}
 						description={m.join_existing_team_body()}
 					/>
-					{/* The onboarding user has no shell (and no operator to go back
-					    to), so this is their only exit off the create page. */}
 					<div className="mt-4 flex justify-center">
 						<Button type="button" variant="ghost" onClick={signOut}>
 							{m.sign_out()}

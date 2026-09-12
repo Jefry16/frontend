@@ -7,7 +7,7 @@ export const AppOperatorAddressFields = ({
 	form,
 }: {
 	form: {
-		// biome-ignore lint/suspicious/noExplicitAny: no shared FieldComponent type — see above
+		// biome-ignore lint/suspicious/noExplicitAny: TanStack Form exports no FieldComponent type to name here
 		Field: (props: any) => ReactNode | Promise<ReactNode>;
 	};
 }) => {

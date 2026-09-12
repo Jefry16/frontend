@@ -39,10 +39,10 @@ scope: these flows end at the admin app's own screens.
 
 ## Setting up an operator
 
-- [ ] **F5 Create an operator.** A signed-in user.
-  1. Fill in the name, timezone and currency → `GET /timezones`, `GET /currencies`
-  2. Create it → `POST /tour-operators`
-  3. Land on its dashboard → `GET /tour-operators/{id}`
+- [x] **F5 Create an operator.** A signed-in user.
+  1. Fill in the name, address, timezone and currency → `GET /timezones`, `GET /currencies`
+  2. Create it → `POST /tour-operators`, answered with its URL in `Location`
+  3. Land on its dashboard → the profile is re-read (`GET /auth/profile`) and the new membership carries what the dashboard shows; `GET /tour-operators/{id}` is first read by F6
 
 - [ ] **F6 Fill in the operator's details and brand.** Admin.
   1. Details, address, contact → `PATCH /tour-operators/{id}` (one section per save, whole-replace)
