@@ -1,21 +1,21 @@
 import { type ColumnDef, flexRender } from "@tanstack/react-table";
-import { Inbox, type LucideIcon } from "lucide-react";
-import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
-import { Skeleton } from "#/components/ui/skeleton";
-import { Spinner } from "#/components/ui/spinner";
 import {
+	AppEmptyState,
+	AppError,
+	cn,
+	Skeleton,
+	Spinner,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "#/components/ui/table";
+} from "@vointika/ui";
+import { Inbox, type LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import { apiErrorMessage } from "#/lib/api-error";
-import { cn } from "#/lib/utils";
 import * as m from "#/paraglide/messages";
-import { AppEmptyState } from "./AppEmptyState";
-import { AppError } from "./AppError";
 import { useDataTable } from "./useDataTable";
 
 const SKELETON_ROW_KEYS = ["s0", "s1", "s2", "s3", "s4", "s5"];

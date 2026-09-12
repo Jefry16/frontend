@@ -1,15 +1,15 @@
-import { useState } from "react";
 import {
+	AppAlert,
+	AppDialogFooter,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "#/components/ui/dialog";
-import { Input } from "#/components/ui/input";
+	Input,
+} from "@vointika/ui";
+import { useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

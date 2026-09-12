@@ -1,7 +1,6 @@
+import { Button, Spinner } from "@vointika/ui";
 import { Upload } from "lucide-react";
 import { useRef } from "react";
-import { Button } from "#/components/ui/button";
-import { Spinner } from "#/components/ui/spinner";
 import * as m from "#/paraglide/messages";
 import { MEDIA_ACCEPT, useMediaUpload } from "../hooks/use-media-upload";
 

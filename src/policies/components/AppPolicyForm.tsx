@@ -1,11 +1,13 @@
-import { FieldGroup } from "#/components/ui/field";
-import { SelectItem } from "#/components/ui/select";
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppSelectField,
+	AppTextareaField,
+	FieldGroup,
+	SelectItem,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppSelectField } from "#/shared/components/AppSelectField";
-import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import { POLICY_TYPE_OPTIONS } from "../format";
 import { usePolicyForm } from "../hooks/use-policy-form";
 import type { Policy } from "../types";

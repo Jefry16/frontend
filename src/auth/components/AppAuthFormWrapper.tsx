@@ -1,9 +1,12 @@
+import {
+	AppAlert,
+	Button,
+	Card,
+	CardContent,
+	FieldGroup,
+	Spinner,
+} from "@vointika/ui";
 import type { ReactNode } from "react";
-import { Button } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
-import { FieldGroup } from "#/components/ui/field";
-import { Spinner } from "#/components/ui/spinner";
-import { AppAlert } from "#/shared/components/AppAlert";
 import { AppAuthShell } from "./AppAuthShell";
 
 interface AppAuthFormWrapperProps {

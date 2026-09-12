@@ -1,11 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import * as m from "#/paraglide/messages";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppAddAvailabilityDialog, AppSlotsList } from "#/slots";
 
 export const Route = createFileRoute(

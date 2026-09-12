@@ -1,5 +1,5 @@
+import { Card, CardContent } from "@vointika/ui";
 import { Languages } from "lucide-react";
-import { Card, CardContent } from "#/components/ui/card";
 import * as m from "#/paraglide/messages";
 import { AppLink } from "./AppLink";
 

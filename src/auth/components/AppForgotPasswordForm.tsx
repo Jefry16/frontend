@@ -1,5 +1,5 @@
+import { AppField } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
 import { AppLink } from "#/shared/components/AppLink";
 import { useForgotPasswordForm } from "../hooks/use-forgot-password-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";

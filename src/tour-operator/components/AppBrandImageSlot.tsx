@@ -1,10 +1,12 @@
+import {
+	AppConfirmDialog,
+	AppImageDropzone,
+	Button,
+	Label,
+} from "@vointika/ui";
 import { useState } from "react";
-import { Button } from "#/components/ui/button";
-import { Label } from "#/components/ui/label";
 import { useMedia } from "#/media";
 import * as m from "#/paraglide/messages";
-import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
-import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
 import type { BrandImageSlot } from "../types";
 
 const MAX_BYTES = 25 * 1024 * 1024;

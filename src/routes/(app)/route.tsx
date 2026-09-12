@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import { AppRoutePending } from "@vointika/ui";
 import { useEffect } from "react";
 import { useAuth } from "#/auth";
-import { AppRoutePending } from "#/shared/components/AppRoutePending";
 
 export const Route = createFileRoute("/(app)")({
 	component: AppLayout,

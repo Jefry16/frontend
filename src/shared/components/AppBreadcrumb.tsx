@@ -1,5 +1,4 @@
 import type { LinkProps } from "@tanstack/react-router";
-import { Fragment, type ReactNode } from "react";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -7,7 +6,8 @@ import {
 	BreadcrumbList,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
-} from "#/components/ui/breadcrumb";
+} from "@vointika/ui";
+import { Fragment, type ReactNode } from "react";
 import { AppLink } from "./AppLink";
 
 type BreadcrumbCrumb = {

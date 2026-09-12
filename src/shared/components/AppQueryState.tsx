@@ -1,7 +1,7 @@
+import { AppError } from "@vointika/ui";
 import type { ReactNode } from "react";
 import { apiErrorMessage } from "#/lib/api-error";
 import type { QueryState } from "#/lib/query-state";
-import { AppError } from "./AppError";
 
 type Phase = "pending" | "error" | "loaded";
 

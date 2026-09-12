@@ -1,15 +1,15 @@
-import { Input } from "#/components/ui/input";
 import {
+	AppNumericInput,
+	Input,
 	Select,
 	SelectContent,
 	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "#/components/ui/select";
-import { Textarea } from "#/components/ui/textarea";
+	Textarea,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppNumericInput } from "#/shared/components/AppNumericInput";
 import type { MetafieldTypeCode } from "../types";
 
 export const AppTypedValueInput = ({

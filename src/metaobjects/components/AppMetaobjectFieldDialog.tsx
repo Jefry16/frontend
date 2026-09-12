@@ -1,29 +1,28 @@
-import { useState } from "react";
 import {
+	AppAlert,
+	AppDialogFooter,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "#/components/ui/dialog";
-import { Field, FieldLabel } from "#/components/ui/field";
-import { Input } from "#/components/ui/input";
-import {
+	Field,
+	FieldLabel,
+	Input,
 	Select,
 	SelectContent,
 	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "#/components/ui/select";
+} from "@vointika/ui";
+import { useState } from "react";
 import {
 	METAOBJECT_FIELD_TYPE_CODES,
 	type MetafieldTypeCode,
 	metafieldTypeLabel,
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
-import { AppAlert } from "#/shared/components/AppAlert";
-import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 import type { MetaobjectField } from "../types";
 import { deriveSlug, fieldSchema } from "../validators/metaobject";
 

@@ -1,8 +1,11 @@
 import type { HeaderContext } from "@tanstack/react-table";
+import {
+	AppLoadingBlock,
+	AppSetFilter,
+	type SetFilterItem,
+} from "@vointika/ui";
 import { useAllPages } from "#/hooks/use-all-pages";
-import { AppLoadingBlock } from "./AppLoadingBlock";
 import { AppQueryState } from "./AppQueryState";
-import { AppSetFilter, type SetFilterItem } from "./AppSetFilter";
 
 type AsyncRow = Record<string, unknown>;
 

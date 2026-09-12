@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
 import {
+	AppDialogFooter,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "#/components/ui/dialog";
-import { Input } from "#/components/ui/input";
+	Input,
+} from "@vointika/ui";
+import { useEffect, useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 export const AppMenuRenameDialog = ({
 	open,

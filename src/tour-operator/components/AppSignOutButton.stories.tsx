@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "#/auth";
 import {
 	Sidebar,
 	SidebarFooter,
 	SidebarMenu,
 	SidebarProvider,
-} from "#/components/ui/sidebar";
+} from "@vointika/ui";
+import { AuthProvider } from "#/auth";
 import { storyQueryClient } from "#/dev/story-utils";
 import { AppSignOutButton } from "./AppSignOutButton";
 

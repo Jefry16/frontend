@@ -1,10 +1,14 @@
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	Field,
+	FieldGroup,
+	FieldLabel,
+} from "@vointika/ui";
 import type { ReactNode } from "react";
-import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
 import { AppTypedValueInput, metafieldTypeLabel } from "#/metafields";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
 import { useMetaobjectForm } from "../hooks/use-metaobject-form";
 import type { Metaobject, MetaobjectDefinition } from "../types";
 import { deriveSlug } from "../validators/metaobject";

@@ -7,7 +7,7 @@
  *      Cross-module deep imports (e.g. `#/auth/components/Foo` from outside `auth/`) are forbidden.
  *   3. Non-module importers (routes / lib / hooks) may import a module only via its barrel —
  *      `#/<module>`, never `#/<module>/internals`.
- *   4. shared/ and components/ui/ must not depend on any business module at all.
+ *   4. shared/ must not depend on any business module at all.
  *
  * `MODULES` lists the top-level domain folder names — it must stay in sync with the actual
  * `src/<module>/` folders. Add a new module here when one is created, or its boundaries go
@@ -110,14 +110,6 @@ module.exports = {
 				"dependency the other direction — a shared component RECEIVES `canWrite`, it " +
 				"never calls usePermissions (which is also what keeps it storyable in both states).",
 			from: { path: "^src/shared/" },
-			to: { path: `^src/(${MODULES.join("|")}|session)/` },
-		},
-		{
-			name: "ui-cant-import-modules",
-			severity: "error",
-			comment:
-				"components/ui/ (shadcn primitives) must not depend on business modules or session/.",
-			from: { path: "^src/components/ui/" },
 			to: { path: `^src/(${MODULES.join("|")}|session)/` },
 		},
 		{

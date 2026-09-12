@@ -1,3 +1,9 @@
+import {
+	AppLoadingBlock,
+	AppLocaleTabs,
+	AppTranslationSummary,
+	type TranslatedField,
+} from "@vointika/ui";
 import { useState } from "react";
 import {
 	AppMetafieldTranslationsCard,
@@ -5,14 +11,8 @@ import {
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
-import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
-import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppQueryState } from "#/shared/components/AppQueryState";
-import {
-	AppTranslationSummary,
-	type TranslatedField,
-} from "#/shared/components/AppTranslationSummary";
 import {
 	useOperatorTranslation,
 	useOperatorTranslations,

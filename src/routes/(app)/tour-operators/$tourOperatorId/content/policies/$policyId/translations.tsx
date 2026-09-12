@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageShell } from "@vointika/ui";
 import { AppPolicyTranslations } from "#/policies";
 import { usePermissions } from "#/session";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/policies/$policyId/translations",

@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
 import {
+	AppDialogFooter,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "#/components/ui/dialog";
-import { Textarea } from "#/components/ui/textarea";
+	Textarea,
+} from "@vointika/ui";
+import { useEffect, useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppDialogFooter } from "#/shared/components/AppDialogFooter";
 
 const MAX = 255;
 

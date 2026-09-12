@@ -1,5 +1,5 @@
+import type { AppBadgeProps } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import type { AppBadgeProps } from "#/shared/components/AppBadge";
 import {
 	SLOT_STATUSES,
 	type SlotAudiencePrice,

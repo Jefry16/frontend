@@ -1,21 +1,22 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import {
+	type AppAction,
+	AppDetailField,
+	AppDetailSkeleton,
+	AppPageActions,
+	AppPageHeader,
+	Card,
+	CardContent,
+} from "@vointika/ui";
 import { Languages, Pencil, Tags, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
-import { Card, CardContent } from "#/components/ui/card";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { useCategory } from "../hooks/use-category";
 import { useCategoryActions } from "../hooks/use-category-actions";

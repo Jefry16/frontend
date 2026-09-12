@@ -1,13 +1,13 @@
-import { FieldError } from "#/components/ui/field";
 import {
+	FieldError,
 	Select,
 	SelectContent,
 	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "#/components/ui/select";
-import { Skeleton } from "#/components/ui/skeleton";
+	Skeleton,
+} from "@vointika/ui";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import type { QueryState } from "#/lib/query-state";

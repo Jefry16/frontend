@@ -1,16 +1,18 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
-import { useAuth } from "#/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "#/components/ui/avatar";
 import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "#/components/ui/dropdown-menu";
-import { SidebarMenuButton } from "#/components/ui/sidebar";
+	SidebarMenuButton,
+} from "@vointika/ui";
+import { Check, ChevronsUpDown, Plus } from "lucide-react";
+import { useAuth } from "#/auth";
 import * as m from "#/paraglide/messages";
 
 interface AppTourOperatorSwitcherProps {

@@ -1,7 +1,6 @@
+import { Card, CardContent, cn } from "@vointika/ui";
 import { CircleCheck, CircleX, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { Card, CardContent } from "#/components/ui/card";
-import { cn } from "#/lib/utils";
 import { AppAuthShell } from "./AppAuthShell";
 
 type AppAuthMessageTone = "success" | "destructive";

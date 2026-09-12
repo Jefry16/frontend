@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageShell } from "@vointika/ui";
 import { AppPickupLocationDetail } from "#/pickup-locations";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/pickup-locations/$pickupLocationId/",

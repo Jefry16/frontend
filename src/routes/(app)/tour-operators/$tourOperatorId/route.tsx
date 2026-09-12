@@ -1,15 +1,15 @@
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
-import { useAuth } from "#/auth";
-import { Button } from "#/components/ui/button";
 import {
+	AppRoutePending,
+	Button,
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
-} from "#/components/ui/sidebar";
+} from "@vointika/ui";
+import { useAuth } from "#/auth";
 import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator } from "#/session";
 import { AppLink } from "#/shared/components/AppLink";
-import { AppRoutePending } from "#/shared/components/AppRoutePending";
 import { AppSettingsSidebar, AppTourOperatorSidebar } from "#/tour-operator";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({

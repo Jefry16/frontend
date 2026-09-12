@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
-import { Spinner } from "#/components/ui/spinner";
+import { Spinner } from "@vointika/ui";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
 
 const meta = {

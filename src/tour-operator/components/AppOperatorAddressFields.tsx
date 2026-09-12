@@ -1,7 +1,7 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
+import { AppField } from "@vointika/ui";
 import type { ReactNode } from "react";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
 
 export const AppOperatorAddressFields = ({
 	form,

@@ -1,8 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import { AppRoutePending } from "@vointika/ui";
 import { transientFailureRetry } from "./lib/query-retry";
 import { routeTree } from "./routeTree.gen";
-import { AppRoutePending } from "./shared/components/AppRoutePending";
 
 export const queryClient = new QueryClient({
 	defaultOptions: { queries: { retry: transientFailureRetry } },

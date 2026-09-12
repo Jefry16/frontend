@@ -1,24 +1,25 @@
 import { useForm } from "@tanstack/react-form";
-import { useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
+	AppDetailField,
+	AppField,
+	AppFormActions,
+	AppFormSkeleton,
+	AppImageDropzone,
+	AppTextareaField,
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import { FieldDescription, FieldGroup } from "#/components/ui/field";
-import { Label } from "#/components/ui/label";
+	FieldDescription,
+	FieldGroup,
+	Label,
+} from "@vointika/ui";
+import { useState } from "react";
 import { useMedia } from "#/media";
 import * as m from "#/paraglide/messages";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
-import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
 import { AppQueryState } from "#/shared/components/AppQueryState";
-import { AppTextareaField } from "#/shared/components/AppTextareaField";
 import {
 	useOperatorSeo,
 	useOperatorSeoImageUpload,

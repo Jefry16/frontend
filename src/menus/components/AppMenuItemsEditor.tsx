@@ -1,5 +1,14 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
 import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppSelectField,
+	Badge,
+	Button,
+	SelectItem,
+} from "@vointika/ui";
+import {
 	ArrowDown,
 	ArrowUp,
 	CornerDownRight,
@@ -7,15 +16,8 @@ import {
 	Trash2,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { Badge } from "#/components/ui/badge";
-import { Button } from "#/components/ui/button";
-import { SelectItem } from "#/components/ui/select";
 import * as m from "#/paraglide/messages";
 import { useOperatorLocales } from "#/session";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppSelectField } from "#/shared/components/AppSelectField";
 import { isResourceLink, MENU_LINK_TYPES, menuLinkTypeLabel } from "../format";
 import { emptyMenuItem, useMenuItemsForm } from "../hooks/use-menu-items-form";
 import type { Menu, MenuLinkType } from "../types";

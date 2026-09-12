@@ -1,24 +1,27 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import {
+	type AppAction,
+	AppBadge,
+	AppDetailField,
+	AppDetailSkeleton,
+	AppPageActions,
+	AppPageHeader,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	EmptyValue,
+} from "@vointika/ui";
 import { Eye, EyeOff, Pencil, Shapes, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
-import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import { EmptyValue } from "#/shared/components/EmptyValue";
 import { metaobjectStatusBadgeVariant, metaobjectStatusLabel } from "../format";
 import { useMetaobject } from "../hooks/use-metaobject";
 import { useMetaobjectActions } from "../hooks/use-metaobject-actions";

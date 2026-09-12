@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
+import { SidebarProvider } from "@vointika/ui";
 import { LayoutDashboard } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
-import { SidebarProvider } from "#/components/ui/sidebar";
 import { renderWithProviders } from "#/test/test-utils";
 import type { NavLeaf } from "../nav-items";
 import { SidebarNavLeaf } from "./SidebarNavLeaf";

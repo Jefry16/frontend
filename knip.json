@@ -1,4 +1,4 @@
 {
 	"$schema": "https://unpkg.com/knip@6/schema.json",
-	"ignore": ["src/components/ui/**", "src/paraglide/**", "src/routeTree.gen.ts"]
+	"ignore": ["src/paraglide/**", "src/routeTree.gen.ts"]
 }

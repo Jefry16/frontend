@@ -1,13 +1,15 @@
-import { FieldGroup } from "#/components/ui/field";
-import { SelectItem } from "#/components/ui/select";
+import {
+	AppCheckboxGroupField,
+	AppFormActions,
+	AppFormCard,
+	AppSelectField,
+	FieldGroup,
+	SelectItem,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { useLanguages } from "#/reference";
 import type { OperatorLocales } from "#/session";
 import { localeLabel } from "#/session";
-import { AppCheckboxGroupField } from "#/shared/components/AppCheckboxGroupField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useOperatorLanguagesForm } from "../hooks/use-operator-languages-form";
 
 export const AppOperatorLanguagesForm = ({

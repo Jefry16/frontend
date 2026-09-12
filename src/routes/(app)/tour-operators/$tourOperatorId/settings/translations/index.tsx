@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 import { AppOperatorTranslations } from "#/tour-operator";
 
 export const Route = createFileRoute(

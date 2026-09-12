@@ -5,8 +5,8 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "#/components/ui/select";
-import { Skeleton } from "#/components/ui/skeleton";
+	Skeleton,
+} from "@vointika/ui";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";

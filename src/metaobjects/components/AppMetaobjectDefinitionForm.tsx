@@ -1,13 +1,16 @@
+import {
+	AppField,
+	AppFormActions,
+	AppFormCard,
+	AppSelectField,
+	Button,
+	FieldGroup,
+	FieldLabel,
+	SelectItem,
+} from "@vointika/ui";
 import { Plus, Trash2 } from "lucide-react";
-import { Button } from "#/components/ui/button";
-import { FieldGroup, FieldLabel } from "#/components/ui/field";
-import { SelectItem } from "#/components/ui/select";
 import { METAOBJECT_FIELD_TYPE_CODES, metafieldTypeLabel } from "#/metafields";
 import * as m from "#/paraglide/messages";
-import { AppField } from "#/shared/components/AppField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
-import { AppFormCard } from "#/shared/components/AppFormCard";
-import { AppSelectField } from "#/shared/components/AppSelectField";
 import { useMetaobjectDefinitionForm } from "../hooks/use-metaobject-definition-form";
 import type { MetaobjectDefinition } from "../types";
 import { deriveSlug } from "../validators/metaobject";

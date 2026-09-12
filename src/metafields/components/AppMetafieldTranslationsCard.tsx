@@ -1,18 +1,20 @@
-import { type ReactNode, useState } from "react";
-import { Button } from "#/components/ui/button";
 import {
+	AppDetailField,
+	AppFormActions,
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "#/components/ui/card";
-import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
-import { Skeleton } from "#/components/ui/skeleton";
-import { Spinner } from "#/components/ui/spinner";
+	Field,
+	FieldGroup,
+	FieldLabel,
+	Skeleton,
+	Spinner,
+} from "@vointika/ui";
+import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppFormActions } from "#/shared/components/AppFormActions";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useMetafieldTranslationSave } from "../hooks/use-metafield-translation-save";
 import { useMetafieldTranslation } from "../hooks/use-metafield-translations";

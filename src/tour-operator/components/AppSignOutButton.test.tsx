@@ -1,9 +1,9 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { SidebarProvider } from "@vointika/ui";
 import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { AuthUser } from "#/auth";
-import { SidebarProvider } from "#/components/ui/sidebar";
 import { getAccessToken } from "#/lib/tokens";
 import { server } from "#/test/server";
 import { renderWithProviders } from "#/test/test-utils";

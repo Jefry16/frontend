@@ -1,6 +1,14 @@
+import {
+	AppFormSkeleton,
+	AppLoadingBlock,
+	AppLocaleTabs,
+	AppPageHeader,
+	AppTranslationSummary,
+	Skeleton,
+	type TranslatedField,
+} from "@vointika/ui";
 import { Languages } from "lucide-react";
 import { useState } from "react";
-import { Skeleton } from "#/components/ui/skeleton";
 import {
 	AppMetafieldTranslationsCard,
 	useMetafieldTranslationLocales,
@@ -9,17 +17,9 @@ import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
-import { AppLoadingBlock } from "#/shared/components/AppLoadingBlock";
-import { AppLocaleTabs } from "#/shared/components/AppLocaleTabs";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppResourceView } from "#/shared/components/AppResourceView";
-import {
-	AppTranslationSummary,
-	type TranslatedField,
-} from "#/shared/components/AppTranslationSummary";
 import { useExperience } from "../hooks/use-experience";
 import {
 	useExperienceTranslation,

@@ -1,10 +1,21 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import {
+	type AppAction,
+	AppConfirmDialog,
+	AppDetailField,
+	AppDetailSkeleton,
+	AppPageActions,
+	AppPageHeader,
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@vointika/ui";
 import { Pencil, Shapes, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { AppActivityCard } from "#/audit";
-import { Button } from "#/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
@@ -13,16 +24,8 @@ import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink } from "#/shared/components/AppBackLink";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { AppDetailField } from "#/shared/components/AppDetailField";
-import { AppDetailSkeleton } from "#/shared/components/AppDetailSkeleton";
 import { AppNewLink } from "#/shared/components/AppNewLink";
-import {
-	type AppAction,
-	AppPageActions,
-} from "#/shared/components/AppPageActions";
-import { AppPageHeader } from "#/shared/components/AppPageHeader";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { metaobjectEntryColumns } from "../columns";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";

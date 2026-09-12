@@ -1,10 +1,9 @@
+import { AppError, AppPageHeader } from "@vointika/ui";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import type { QueryState } from "#/lib/query-state";
-import { AppError } from "./AppError";
 import { AppNotFound } from "./AppNotFound";
-import { AppPageHeader } from "./AppPageHeader";
 
 interface Props<TData> {
 	query: QueryState<TData>;

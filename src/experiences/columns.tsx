@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import { AppBadge } from "@vointika/ui";
 import { formatMoney } from "#/lib/money";
 import * as m from "#/paraglide/messages";
-import { AppBadge } from "#/shared/components/AppBadge";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";

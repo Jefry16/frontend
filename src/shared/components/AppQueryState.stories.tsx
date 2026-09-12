@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import type { UseQueryResult } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { Skeleton } from "#/components/ui/skeleton";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	Skeleton,
+} from "@vointika/ui";
 import { AppQueryState } from "./AppQueryState";
 
 const result = (

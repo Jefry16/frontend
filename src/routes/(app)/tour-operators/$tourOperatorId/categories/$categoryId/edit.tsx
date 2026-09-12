@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AppPageShell } from "@vointika/ui";
 import { AppCategoryEdit } from "#/categories";
 import { AppWriteGate } from "#/session";
-import { AppPageShell } from "#/shared/components/AppPageShell";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/categories/$categoryId/edit",

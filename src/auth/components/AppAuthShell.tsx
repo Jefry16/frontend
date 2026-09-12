@@ -1,5 +1,5 @@
+import { cn } from "@vointika/ui";
 import type { ReactNode } from "react";
-import { cn } from "#/lib/utils";
 
 export const AppAuthShell = ({
 	width = "sm",

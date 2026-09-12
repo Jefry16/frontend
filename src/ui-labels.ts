@@ -1,5 +1,5 @@
+import type { UiLabels } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import type { UiLabels } from "#/shared/labels";
 
 export const appUiLabels: UiLabels = {
 	cancel: m.cancel(),
