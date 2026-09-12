@@ -28,7 +28,6 @@
     "machine-translate": "inlang machine translate --project project.inlang",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "check-storybook-index": "node .storybook/check-index.mjs",
     "pin-ui": "node scripts/pin-ui.mjs",
     "knip": "knip"
   },
