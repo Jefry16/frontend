@@ -53,6 +53,21 @@ describe("useTranslationOverlayForm invalidation", () => {
 		]);
 	});
 
+	it("empties every field after clearing, so stale typing does not outlive the overlay", async () => {
+		server.use(http.delete(URL, () => new HttpResponse(null, { status: 204 })));
+		const { result } = render();
+		await fire(async () =>
+			result.current.form.setFieldValue("title", "typed but never saved"),
+		);
+		expect(result.current.form.state.values).toEqual({
+			title: "typed but never saved",
+		});
+
+		await fire(async () => result.current.clear());
+
+		expect(result.current.form.state.values).toEqual({ title: "" });
+	});
+
 	it("invalidates nothing when the save fails", async () => {
 		server.use(http.put(URL, () => new HttpResponse(null, { status: 422 })));
 		const { result, invalidated } = render();
