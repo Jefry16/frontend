@@ -12,7 +12,8 @@ import { AppConfirmDialog } from "#/shared/components/AppConfirmDialog";
 import { AppImageDropzone } from "#/shared/components/AppImageDropzone";
 import { useUserAvatar } from "../hooks/use-user-avatar";
 
-const MAX_AVATAR_BYTES = 10 * 1024 * 1024;
+const MAX_AVATAR_BYTES = 5 * 1024 * 1024;
+const AVATAR_TYPES = "image/jpeg,image/png,image/webp";
 
 export const AppUserAvatarCard = ({
 	avatarUrl,
@@ -34,7 +35,7 @@ export const AppUserAvatarCard = ({
 					<AppImageDropzone
 						className="size-28 min-h-0 shrink-0 rounded-full"
 						previewUrl={avatarUrl}
-						accept="image/*"
+						accept={AVATAR_TYPES}
 						maxBytes={MAX_AVATAR_BYTES}
 						pending={isSetting}
 						disabled={isSetting || isClearing}

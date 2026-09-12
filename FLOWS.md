@@ -26,7 +26,7 @@ scope: these flows end at the admin app's own screens.
   2. Set the new one from the link → `POST /auth/reset-password`
   3. Sign in with it → `POST /auth/login`
 
-- [ ] **F3 Manage my own account.** Any member.
+- [x] **F3 Manage my own account.** Any member.
   1. See who I am → `GET /auth/profile`
   2. Change my avatar → `POST` / `DELETE /auth/profile/avatar`
   3. Change the app language → `GET /ui-languages`, `POST /auth/profile/language`

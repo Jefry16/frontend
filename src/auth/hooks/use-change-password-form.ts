@@ -1,11 +1,13 @@
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
+import { useAuth } from "../AuthProvider";
 import {
 	type ChangePasswordFormData,
 	changePasswordSchema,
@@ -13,6 +15,8 @@ import {
 
 export const useChangePasswordForm = () => {
 	const toast = useAppToast();
+	const navigate = useNavigate();
+	const { logout } = useAuth();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const { mutate, isPending } = useMutation<
@@ -26,10 +30,11 @@ export const useChangePasswordForm = () => {
 				newPassword,
 			});
 		},
-		onSuccess: () => {
+		onSuccess: async () => {
 			setErrorMessage(null);
 			toast.success(m.password_changed());
-			form.reset();
+			await logout();
+			navigate({ to: "/auth/login" });
 		},
 		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});

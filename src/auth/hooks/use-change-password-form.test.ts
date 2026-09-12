@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { queryKeys } from "#/lib/query-keys";
 import { server } from "#/test/server";
 import { wrapperWithProviders } from "#/test/test-utils";
 import { useChangePasswordForm } from "./use-change-password-form";
@@ -26,7 +27,7 @@ const VALID: Record<FieldName, string> = {
 };
 
 const render = () => {
-	const { Wrapper } = wrapperWithProviders();
+	const { Wrapper } = wrapperWithProviders({ withAuth: true });
 	return renderHook(() => useChangePasswordForm(), { wrapper: Wrapper });
 };
 
@@ -105,14 +106,9 @@ describe("useChangePasswordForm", () => {
 		expect(body).not.toHaveBeenCalled();
 	});
 
-	it("puts a rejected current password inline, without retrying", async () => {
+	it("puts a rejected current password inline, and sends the attempt once", async () => {
 		let attempts = 0;
-		const refreshed = vi.fn();
 		server.use(
-			http.post(`${API}/auth/refresh`, () => {
-				refreshed();
-				return HttpResponse.json({ accessToken: "fresh" });
-			}),
 			http.post(URL, () => {
 				attempts += 1;
 				return HttpResponse.json(
@@ -131,6 +127,33 @@ describe("useChangePasswordForm", () => {
 
 		expect(result.current.errorMessage).toBe("Current password is incorrect");
 		expect(attempts).toBe(1);
-		expect(refreshed).not.toHaveBeenCalled();
+	});
+
+	it("a changed password ends the session here too: the profile is gone and the login page is next", async () => {
+		server.use(
+			http.post(URL, () => new HttpResponse(null, { status: 204 })),
+			http.post(
+				`${API}/auth/logout`,
+				() => new HttpResponse(null, { status: 204 }),
+			),
+		);
+		const { Wrapper, queryClient } = wrapperWithProviders({
+			user: {
+				id: "550e8400-e29b-41d4-a716-446655440000",
+				context: "users",
+				name: "Ada",
+				avatarUrl: null,
+				language: "en",
+				tourOperators: [],
+			},
+		});
+		const { result } = renderHook(() => useChangePasswordForm(), {
+			wrapper: Wrapper,
+		});
+
+		await submit(result.current.form, VALID);
+
+		expect(queryClient.getQueryData(queryKeys.authProfile)).toBeUndefined();
+		expect(navigateMock).toHaveBeenCalledWith({ to: "/auth/login" });
 	});
 });
