@@ -1,6 +1,6 @@
 import { type LucideIcon, RotateCw, TriangleAlert } from "lucide-react";
 import { Button } from "#/components/ui/button";
-import * as m from "#/paraglide/messages";
+import { useUiLabels } from "../labels";
 import { AppEmptyState } from "./AppEmptyState";
 
 export function AppError({
@@ -14,16 +14,17 @@ export function AppError({
 	icon?: LucideIcon;
 	onRetry?: () => void;
 }) {
+	const labels = useUiLabels();
 	return (
 		<AppEmptyState
 			icon={icon}
-			title={title ?? m.load_failed()}
+			title={title ?? labels.loadFailed}
 			description={description}
 			action={
 				onRetry ? (
 					<Button variant="outline" onClick={onRetry}>
 						<RotateCw className="size-4" />
-						{m.retry()}
+						{labels.retry}
 					</Button>
 				) : undefined
 			}

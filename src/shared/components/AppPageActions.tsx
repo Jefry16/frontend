@@ -10,7 +10,7 @@ import {
 } from "#/components/ui/dropdown-menu";
 import { Spinner } from "#/components/ui/spinner";
 import { cn } from "#/lib/utils";
-import * as m from "#/paraglide/messages";
+import { useUiLabels } from "../labels";
 import { AppConfirmDialog } from "./AppConfirmDialog";
 
 export interface AppAction {
@@ -32,6 +32,7 @@ export function AppPageActions({
 	actions: AppAction[];
 	canWrite: boolean;
 }) {
+	const labels = useUiLabels();
 	const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
 	const visible = actions.filter((action) => canWrite || action.member);
@@ -72,7 +73,7 @@ export function AppPageActions({
 						<Button
 							variant="outline"
 							size="icon"
-							aria-label={m.more_actions()}
+							aria-label={labels.moreActions}
 							className="bg-card dark:bg-card"
 						>
 							<MoreHorizontal />

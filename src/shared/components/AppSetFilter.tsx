@@ -4,7 +4,7 @@ import { Button } from "#/components/ui/button";
 import { Checkbox } from "#/components/ui/checkbox";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
-import * as m from "#/paraglide/messages";
+import { useUiLabels } from "../labels";
 
 export interface SetFilterItem {
 	value: string;
@@ -25,6 +25,7 @@ export function AppSetFilter<TData>({
 	headerContext: HeaderContext<TData, unknown>;
 	items: readonly SetFilterItem[];
 }) {
+	const labels = useUiLabels();
 	const { column } = headerContext;
 	const current = column.getFilterValue() as SetFilterValue | undefined;
 	const selected = new Set(current?.values ?? []);
@@ -52,7 +53,7 @@ export function AppSetFilter<TData>({
 			{selected.size > 0 && (
 				<div className="flex items-center justify-between gap-2">
 					<span className="text-xs text-muted-foreground">
-						{m.n_selected({ count: selected.size })}
+						{labels.nSelected(selected.size)}
 					</span>
 					<Button
 						type="button"
@@ -61,13 +62,13 @@ export function AppSetFilter<TData>({
 						className="h-auto p-0 text-xs"
 						onClick={() => column.setFilterValue(undefined)}
 					>
-						{m.clear()}
+						{labels.clear}
 					</Button>
 				</div>
 			)}
 			{showSearch && (
 				<Input
-					placeholder={m.search()}
+					placeholder={labels.search}
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
 					className="h-8"
@@ -76,7 +77,7 @@ export function AppSetFilter<TData>({
 			<div className="flex max-h-60 flex-col gap-1.5 overflow-auto">
 				{filtered.length === 0 ? (
 					<p className="py-2 text-center text-sm text-muted-foreground">
-						{m.no_results()}
+						{labels.noResults}
 					</p>
 				) : (
 					filtered.map((item) => (

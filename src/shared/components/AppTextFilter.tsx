@@ -8,16 +8,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "#/components/ui/select";
-import * as m from "#/paraglide/messages";
+import { type TextOperator, useUiLabels } from "../labels";
 import { AppFilterInput } from "./AppFilterInput";
-
-type TextOperator =
-	| "eq"
-	| "neq"
-	| "contains"
-	| "not_contains"
-	| "starts_with"
-	| "ends_with";
 
 interface TextFilterValue {
 	operator: TextOperator;
@@ -33,28 +25,12 @@ const OPERATORS: TextOperator[] = [
 	"ends_with",
 ];
 
-const operatorLabel = (op: TextOperator): string => {
-	switch (op) {
-		case "eq":
-			return m.op_eq();
-		case "neq":
-			return m.op_neq();
-		case "contains":
-			return m.op_contains();
-		case "not_contains":
-			return m.op_not_contains();
-		case "starts_with":
-			return m.op_starts_with();
-		case "ends_with":
-			return m.op_ends_with();
-	}
-};
-
 export function AppTextFilter<TData>({
 	headerContext,
 }: {
 	headerContext: HeaderContext<TData, unknown>;
 }) {
+	const labels = useUiLabels();
 	const { column } = headerContext;
 	const current = column.getFilterValue() as TextFilterValue | undefined;
 
@@ -88,14 +64,14 @@ export function AppTextFilter<TData>({
 					<SelectGroup>
 						{OPERATORS.map((o) => (
 							<SelectItem key={o} value={o}>
-								{operatorLabel(o)}
+								{labels.textOperators[o]}
 							</SelectItem>
 						))}
 					</SelectGroup>
 				</SelectContent>
 			</Select>
 			<AppFilterInput
-				placeholder={m.search()}
+				placeholder={labels.search}
 				value={text}
 				onChange={(e) => setText(e.target.value)}
 			/>

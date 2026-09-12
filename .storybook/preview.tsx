@@ -2,7 +2,9 @@ import type { Decorator, Preview } from "@storybook/tanstack-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
 import { TooltipProvider } from "#/components/ui/tooltip";
+import { UiLabelsProvider } from "#/shared/labels";
 import { ThemeProvider } from "#/shared/theme";
+import { appUiLabels } from "#/ui-labels";
 import "../src/styles.css";
 
 // Stories render inside the app's global providers (theme tokens, React Query,
@@ -25,13 +27,15 @@ const queryClient = new QueryClient({
 // the state these stories were written for.
 const withProviders: Decorator = (Story) => (
 	<ThemeProvider>
-		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<TooltipProvider>
-					<Story />
-				</TooltipProvider>
-			</AuthProvider>
-		</QueryClientProvider>
+		<UiLabelsProvider labels={appUiLabels}>
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TooltipProvider>
+						<Story />
+					</TooltipProvider>
+				</AuthProvider>
+			</QueryClientProvider>
+		</UiLabelsProvider>
 	</ThemeProvider>
 );
 

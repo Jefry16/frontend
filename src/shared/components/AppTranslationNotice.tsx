@@ -1,10 +1,13 @@
-import * as m from "#/paraglide/messages";
+import { useUiLabels } from "../labels";
 import { AppAlert } from "./AppAlert";
 
-export const AppTranslationNotice = () => (
-	<AppAlert
-		variant="info"
-		title={m.translation()}
-		description={m.translation_fallback_help()}
-	/>
-);
+export const AppTranslationNotice = () => {
+	const labels = useUiLabels();
+	return (
+		<AppAlert
+			variant="info"
+			title={labels.translation}
+			description={labels.translationFallbackHelp}
+		/>
+	);
+};

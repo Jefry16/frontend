@@ -8,7 +8,7 @@ import {
 	FieldLabel,
 } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
-import * as m from "#/paraglide/messages";
+import { useUiLabels } from "../labels";
 
 interface AppPasswordFieldProps {
 	field: AnyFieldApi;
@@ -23,6 +23,7 @@ export const AppPasswordField = ({
 	description,
 	autoComplete,
 }: AppPasswordFieldProps) => {
+	const labels = useUiLabels();
 	const [show, setShow] = useState(false);
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
@@ -45,7 +46,7 @@ export const AppPasswordField = ({
 					type="button"
 					onClick={() => setShow((s) => !s)}
 					tabIndex={-1}
-					aria-label={show ? m.hide_password() : m.show_password()}
+					aria-label={show ? labels.hidePassword : labels.showPassword}
 					className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground"
 				>
 					{show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
