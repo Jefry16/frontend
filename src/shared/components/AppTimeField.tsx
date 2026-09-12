@@ -22,7 +22,7 @@ import {
 	SelectValue,
 } from "#/components/ui/select";
 import { cn } from "#/lib/utils";
-import * as m from "#/paraglide/messages";
+import { useUiLabels } from "../labels";
 import { RequiredMark } from "./RequiredMark";
 
 interface AppTimeFieldProps {
@@ -55,6 +55,7 @@ export const AppTimeField = ({
 	placeholder,
 	required,
 }: AppTimeFieldProps) => {
+	const labels = useUiLabels();
 	const [open, setOpen] = useState(false);
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
@@ -98,13 +99,17 @@ export const AppTimeField = ({
 						aria-required={required || undefined}
 					>
 						<Clock />
-						{display ?? placeholder ?? m.pick_a_time()}
+						{display ?? placeholder ?? labels.pickATime}
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="w-auto p-2" align="start">
 					<div className="flex items-center gap-2">
 						<Select value={hour} onValueChange={(h) => update(h, minute)}>
-							<SelectTrigger size="sm" className="w-20" aria-label={m.hour()}>
+							<SelectTrigger
+								size="sm"
+								className="w-20"
+								aria-label={labels.hour}
+							>
 								<SelectValue placeholder="HH" />
 							</SelectTrigger>
 							<SelectContent>
@@ -119,7 +124,11 @@ export const AppTimeField = ({
 						</Select>
 						<span className="text-muted-foreground">:</span>
 						<Select value={minute} onValueChange={(mn) => update(hour, mn)}>
-							<SelectTrigger size="sm" className="w-20" aria-label={m.minute()}>
+							<SelectTrigger
+								size="sm"
+								className="w-20"
+								aria-label={labels.minute}
+							>
 								<SelectValue placeholder="MM" />
 							</SelectTrigger>
 							<SelectContent>

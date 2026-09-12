@@ -1,0 +1,33 @@
+import * as m from "#/paraglide/messages";
+import type { UiLabels } from "#/shared/labels";
+
+export const appUiLabels: UiLabels = {
+	cancel: m.cancel(),
+	saveChanges: m.save_changes(),
+	clear: m.clear(),
+	search: m.search(),
+	noResults: m.no_results(),
+	nSelected: (count) => m.n_selected({ count }),
+	textOperators: {
+		eq: m.op_eq(),
+		neq: m.op_neq(),
+		contains: m.op_contains(),
+		not_contains: m.op_not_contains(),
+		starts_with: m.op_starts_with(),
+		ends_with: m.op_ends_with(),
+	},
+	moreActions: m.more_actions(),
+	loadFailed: m.load_failed(),
+	retry: m.retry(),
+	noPermission: m.no_permission_body(),
+	pickADate: m.pick_a_date(),
+	pickATime: m.pick_a_time(),
+	hour: m.hour(),
+	minute: m.minute(),
+	showPassword: m.show_password(),
+	hidePassword: m.hide_password(),
+	translated: m.translated(),
+	notTranslated: m.not_translated(),
+	translation: m.translation(),
+	translationFallbackHelp: m.translation_fallback_help(),
+};

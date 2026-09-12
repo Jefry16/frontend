@@ -15,7 +15,7 @@ import {
 	PopoverTrigger,
 } from "#/components/ui/popover";
 import { cn } from "#/lib/utils";
-import * as m from "#/paraglide/messages";
+import { useUiLabels } from "../labels";
 import { RequiredMark } from "./RequiredMark";
 
 interface AppDateFieldProps {
@@ -44,6 +44,7 @@ export const AppDateField = ({
 	required,
 	disabledDates,
 }: AppDateFieldProps) => {
+	const labels = useUiLabels();
 	const [open, setOpen] = useState(false);
 	const isInvalid =
 		field.state.meta.isTouched && field.state.meta.errors.length > 0;
@@ -79,7 +80,7 @@ export const AppDateField = ({
 						aria-required={required || undefined}
 					>
 						<CalendarIcon />
-						{display ?? placeholder ?? m.pick_a_date()}
+						{display ?? placeholder ?? labels.pickADate}
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="w-auto p-0" align="start">

@@ -11,7 +11,9 @@ import { AuthProvider } from "#/auth";
 import { Toaster } from "#/components/ui/sonner";
 import { TooltipProvider } from "#/components/ui/tooltip";
 import { queryClient } from "#/router";
+import { UiLabelsProvider } from "#/shared/labels";
 import { ThemeProvider, useTheme } from "#/shared/theme";
+import { appUiLabels } from "#/ui-labels";
 
 import appCss from "../styles.css?url";
 
@@ -50,14 +52,16 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
 				<ThemeProvider>
-					<QueryClientProvider client={queryClient}>
-						<AuthProvider>
-							<TooltipProvider>
-								{children}
-								<ThemedToaster />
-							</TooltipProvider>
-						</AuthProvider>
-					</QueryClientProvider>
+					<UiLabelsProvider labels={appUiLabels}>
+						<QueryClientProvider client={queryClient}>
+							<AuthProvider>
+								<TooltipProvider>
+									{children}
+									<ThemedToaster />
+								</TooltipProvider>
+							</AuthProvider>
+						</QueryClientProvider>
+					</UiLabelsProvider>
 				</ThemeProvider>
 				<TanStackDevtools
 					config={{ position: "bottom-right" }}

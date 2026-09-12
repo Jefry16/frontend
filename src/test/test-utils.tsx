@@ -5,6 +5,8 @@ import { AuthProvider, type AuthUser } from "#/auth";
 import { TooltipProvider } from "#/components/ui/tooltip";
 import { queryKeys } from "#/lib/query-keys";
 import { setAccessToken } from "#/lib/tokens";
+import { UiLabelsProvider } from "#/shared/labels";
+import { appUiLabels } from "#/ui-labels";
 
 interface ProvidersOptions {
 	queryClient?: QueryClient;
@@ -29,9 +31,11 @@ const seedAuth = (qc: QueryClient, user?: AuthUser) => {
 const wrap = (qc: QueryClient, auth: boolean, children: ReactNode) => {
 	const inner = <TooltipProvider>{children}</TooltipProvider>;
 	return (
-		<QueryClientProvider client={qc}>
-			{auth ? <AuthProvider>{inner}</AuthProvider> : inner}
-		</QueryClientProvider>
+		<UiLabelsProvider labels={appUiLabels}>
+			<QueryClientProvider client={qc}>
+				{auth ? <AuthProvider>{inner}</AuthProvider> : inner}
+			</QueryClientProvider>
+		</UiLabelsProvider>
 	);
 };
 
