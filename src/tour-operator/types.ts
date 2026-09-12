@@ -19,7 +19,7 @@ export interface BrandColor {
 	foreground: string;
 }
 
-export interface BrandSocialLink {
+interface BrandSocialLink {
 	platform: string;
 	url: string;
 }

@@ -14,4 +14,3 @@ export const policyTranslationSchema = z.object({
 });
 
 export type PolicyTranslationFormData = z.input<typeof policyTranslationSchema>;
-export type PolicyTranslationPayload = z.output<typeof policyTranslationSchema>;

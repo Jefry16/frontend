@@ -10,4 +10,4 @@ export { AppVerifyAccount } from "./components/AppVerifyAccount";
 export { AppVerifyEmailNotice } from "./components/AppVerifyEmailNotice";
 export type { AuthUser, TourOperatorSummary } from "./types";
 export { getPostLoginPath } from "./utils";
-export { type VerifyState, verifyToken } from "./verify-token";
+export { verifyToken } from "./verify-token";

@@ -10,10 +10,10 @@ import { AppFormSkeleton } from "#/shared/components/AppFormSkeleton";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppSelectField } from "#/shared/components/AppSelectField";
 import {
+	METAFIELD_TYPE_CODES,
+	metafieldTypeLabel,
 	OWNER_TYPE_OPTIONS,
 	ownerTypeLabel,
-	TYPE_CODES,
-	typeLabel,
 } from "../format";
 import { useMetafieldDefinitionForm } from "../hooks/use-metafield-definition-form";
 import type { MetafieldDefinition } from "../types";
@@ -48,8 +48,8 @@ export const AppMetafieldDefinitionForm = ({
 		>
 			{isEdit && definition && (
 				<p className="text-sm text-muted-foreground">
-					{ownerTypeLabel(definition.ownerType)} · {typeLabel(definition.type)}{" "}
-					·{" "}
+					{ownerTypeLabel(definition.ownerType)} ·{" "}
+					{metafieldTypeLabel(definition.type)} ·{" "}
 					<span className="font-mono">
 						{definition.namespace}.{definition.key}
 					</span>
@@ -76,9 +76,9 @@ export const AppMetafieldDefinitionForm = ({
 									label={m.metafield_type()}
 									description={m.metafield_type_hint()}
 								>
-									{TYPE_CODES.map((code) => (
+									{METAFIELD_TYPE_CODES.map((code) => (
 										<SelectItem key={code} value={code}>
-											{typeLabel(code)}
+											{metafieldTypeLabel(code)}
 										</SelectItem>
 									))}
 								</AppSelectField>

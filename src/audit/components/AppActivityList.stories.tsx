@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "#/auth";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { queryKeys } from "#/lib/query-keys";
 import type { AuditLogEntry } from "../types";
 import { AppActivityList } from "./AppActivityList";
@@ -58,15 +58,11 @@ const ENTRIES: AuditLogEntry[] = [
 ];
 
 const qc = storyQueryClient();
-qc.setQueryData(
-	[
-		...queryKeys.activity(OP_ID),
-		`/tour-operators/${OP_ID}/audit-log`,
-		[],
-		[],
-		undefined,
-	],
-	listPage(ENTRIES),
+seedTable(
+	qc,
+	queryKeys.activity(OP_ID),
+	`/tour-operators/${OP_ID}/audit-log`,
+	ENTRIES,
 );
 
 const meta = {

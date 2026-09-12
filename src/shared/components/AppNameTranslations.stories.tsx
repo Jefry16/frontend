@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { storyQueryClient } from "#/dev/story-utils";
-import { queryKeys } from "#/lib/query-keys";
+import { queryKeys, withLocale } from "#/lib/query-keys";
 import { AppNameTranslations } from "./AppNameTranslations";
 
 const OP = "op-1";
@@ -11,9 +11,9 @@ const KEY = queryKeys.audienceTranslations(OP, AUD);
 
 function client() {
 	const qc = storyQueryClient();
-	qc.setQueryData([...KEY], [{ locale: "es", name: "Adultos" }]);
-	qc.setQueryData([...KEY, "es"], { locale: "es", name: "Adultos" });
-	qc.setQueryData([...KEY, "fr"], { locale: "fr", name: null });
+	qc.setQueryData(KEY, [{ locale: "es", name: "Adultos" }]);
+	qc.setQueryData(withLocale(KEY, "es"), { locale: "es", name: "Adultos" });
+	qc.setQueryData(withLocale(KEY, "fr"), { locale: "fr", name: null });
 	return qc;
 }
 

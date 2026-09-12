@@ -6,4 +6,3 @@ export { AppMetaobjectDetail } from "./components/AppMetaobjectDetail";
 export { AppMetaobjectEdit } from "./components/AppMetaobjectEdit";
 export { AppMetaobjectForm } from "./components/AppMetaobjectForm";
 export { useMetaobjectDefinition } from "./hooks/use-metaobject-definition";
-export type { Metaobject, MetaobjectDefinition } from "./types";

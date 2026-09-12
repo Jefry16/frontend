@@ -33,6 +33,3 @@ export const experienceTranslationSchema = z.object({
 export type ExperienceTranslationFormData = z.input<
 	typeof experienceTranslationSchema
 >;
-export type ExperienceTranslationPayload = z.output<
-	typeof experienceTranslationSchema
->;

@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { authApi } from "#/lib/api";
+import { queryKeys } from "#/lib/query-keys";
 import type { MediaAsset } from "../types";
 
 const IMAGE_FILTER = "filter[contentType][in]=image/jpeg,image/png,image/webp";
@@ -11,7 +12,7 @@ interface Page {
 
 export const useMediaLibrary = (tourOperatorId: string, enabled: boolean) =>
 	useInfiniteQuery<Page>({
-		queryKey: ["media-library", tourOperatorId],
+		queryKey: queryKeys.mediaLibrary(tourOperatorId),
 		enabled,
 		queryFn: async ({ pageParam }) => {
 			const base = `/tour-operators/${tourOperatorId}/media`;

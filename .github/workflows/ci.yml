@@ -40,6 +40,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm check
       - run: pnpm depcheck
+      - run: pnpm knip
       - run: pnpm test
       - run: pnpm build
 

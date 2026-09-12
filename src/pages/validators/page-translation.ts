@@ -32,4 +32,3 @@ export const pageTranslationSchema = z.object({
 });
 
 export type PageTranslationFormData = z.input<typeof pageTranslationSchema>;
-export type PageTranslationPayload = z.output<typeof pageTranslationSchema>;

@@ -13,7 +13,7 @@ export interface Language {
 	name: string;
 }
 
-export interface Country {
+interface Country {
 	id: string;
 	context: "countries";
 	code: string;

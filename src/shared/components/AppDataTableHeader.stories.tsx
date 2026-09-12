@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { ColumnDef, HeaderContext } from "@tanstack/react-table";
 import type { ReactNode } from "react";
-import { listPage, storyQueryClient } from "#/dev/story-utils";
+import { seedTable, storyQueryClient } from "#/dev/story-utils";
 import { AppDataTable } from "./AppDataTable";
 import { AppDataTableHeader } from "./AppDataTableHeader";
 
@@ -15,10 +15,7 @@ const ENDPOINT = "/tour-operators/op-1/things";
 const KEY = ["header-story", "op-1"] as const;
 
 const client = storyQueryClient((qc) =>
-	qc.setQueryData(
-		[...KEY, ENDPOINT, [], [], undefined],
-		listPage<Row>([{ id: "1", name: "Sunset kayak" }]),
-	),
+	seedTable<Row>(qc, KEY, ENDPOINT, [{ id: "1", name: "Sunset kayak" }]),
 );
 
 function HeaderDemo({

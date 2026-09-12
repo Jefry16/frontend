@@ -21,7 +21,9 @@ export const useMetafieldDefinitionActions = (
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.metafieldDefinitions(tourOperatorId),
 			});
-			queryClient.invalidateQueries({ queryKey: ["metafield-values"] });
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.allMetafieldValues,
+			});
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.activity(tourOperatorId),
 			});

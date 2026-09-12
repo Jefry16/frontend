@@ -31,10 +31,12 @@ const TYPE_LABELS: Record<MetafieldTypeCode, () => string> = {
 	metaobject_reference: m.metafield_type_metaobject_reference,
 };
 
-export const typeLabel = (code: MetafieldTypeCode): string =>
+export const metafieldTypeLabel = (code: MetafieldTypeCode): string =>
 	TYPE_LABELS[code]();
 
-export const TYPE_CODES = Object.keys(TYPE_LABELS) as MetafieldTypeCode[];
+export const METAFIELD_TYPE_CODES = Object.keys(
+	TYPE_LABELS,
+) as MetafieldTypeCode[];
 
 const filterValue = (code: string) => code.toUpperCase();
 
@@ -43,14 +45,11 @@ export const OWNER_TYPE_FILTER_OPTIONS = METAFIELD_OWNER_TYPES.map((code) => ({
 	label: ownerTypeLabel(code),
 }));
 
-export const TYPE_FILTER_OPTIONS = TYPE_CODES.map((code) => ({
+export const TYPE_FILTER_OPTIONS = METAFIELD_TYPE_CODES.map((code) => ({
 	value: filterValue(code),
 	label: TYPE_LABELS[code](),
 }));
 
-export const metafieldTypeLabel = typeLabel;
-export const METAFIELD_TYPE_CODES = TYPE_CODES;
-
-export const METAOBJECT_FIELD_TYPE_CODES = TYPE_CODES.filter(
+export const METAOBJECT_FIELD_TYPE_CODES = METAFIELD_TYPE_CODES.filter(
 	(code) => code !== "metaobject_reference",
 );
