@@ -15,7 +15,7 @@ scope: these flows end at the admin app's own screens.
 
 ## Getting in
 
-- [ ] **F1 Register and sign in.** Anyone.
+- [x] **F1 Register and sign in.** Anyone.
   1. Register → `POST /auth/register`
   2. Open the verification link → `GET /auth/verify`; ask for another → `POST /auth/resend-verification`
   3. Sign in → `POST /auth/login`; stay signed in across a reload → `POST /auth/refresh`

@@ -24,7 +24,7 @@ const COLORS: Record<AppAlertVariant, string> = {
 
 interface AppAlertProps {
 	variant?: AppAlertVariant;
-	title: string;
+	title?: string;
 	description: string;
 	className?: string;
 }
@@ -39,7 +39,7 @@ export const AppAlert = ({
 	return (
 		<Alert className={cn(COLORS[variant], className)}>
 			<Icon />
-			<AlertTitle>{title}</AlertTitle>
+			{title && <AlertTitle>{title}</AlertTitle>}
 			<AlertDescription>{description}</AlertDescription>
 		</Alert>
 	);

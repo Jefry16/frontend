@@ -3,7 +3,6 @@ import { Button } from "#/components/ui/button";
 import { Card, CardContent } from "#/components/ui/card";
 import { FieldGroup } from "#/components/ui/field";
 import { Spinner } from "#/components/ui/spinner";
-import * as m from "#/paraglide/messages";
 import { AppAlert } from "#/shared/components/AppAlert";
 import { AppAuthShell } from "./AppAuthShell";
 
@@ -39,9 +38,7 @@ export const AppAuthFormWrapper = ({
 						}}
 						className="space-y-4"
 					>
-						{errorMessage && (
-							<AppAlert title={m.error()} description={errorMessage} />
-						)}
+						{errorMessage && <AppAlert description={errorMessage} />}
 						<FieldGroup>{children}</FieldGroup>
 						<Button type="submit" disabled={isSubmitting} className="w-full">
 							{isSubmitting && <Spinner />}

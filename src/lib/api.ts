@@ -8,7 +8,7 @@ export const authApi = axios.create({
 
 type RetriableRequest = InternalAxiosRequestConfig & { _retry?: boolean };
 
-const SKIP_AUTH_URLS = new Set([
+const PUBLIC_AUTH_URLS = new Set([
 	"/auth/login",
 	"/auth/register",
 	"/auth/refresh",
@@ -16,8 +16,10 @@ const SKIP_AUTH_URLS = new Set([
 	"/auth/resend-verification",
 	"/auth/request-password-reset",
 	"/auth/reset-password",
-	// A 401 here means the CURRENT password was wrong, not that the session
-	// expired. Refreshing and retrying would send the attempt twice.
+]);
+
+const URLS_WHERE_401_IS_THE_ANSWER = new Set([
+	...PUBLIC_AUTH_URLS,
 	"/auth/change-password",
 ]);
 
@@ -45,7 +47,7 @@ const refreshAccessToken = async (): Promise<string> => {
 
 authApi.interceptors.request.use((config) => {
 	const url = config.url ?? "";
-	if (!SKIP_AUTH_URLS.has(url)) {
+	if (!PUBLIC_AUTH_URLS.has(url)) {
 		const token = getAccessToken();
 		if (token) {
 			config.headers.set("Authorization", `Bearer ${token}`);
@@ -65,7 +67,7 @@ authApi.interceptors.response.use(
 			status !== 401 ||
 			!original ||
 			original._retry ||
-			SKIP_AUTH_URLS.has(url)
+			URLS_WHERE_401_IS_THE_ANSWER.has(url)
 		) {
 			return Promise.reject(error);
 		}
