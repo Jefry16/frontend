@@ -114,6 +114,16 @@ describe("useAcceptInvitation", () => {
 		expect(body).toHaveBeenCalledWith(VALID);
 	});
 
+	it("is marked accepted on success, so the preview stops asking after the cache is cleared", async () => {
+		server.use(accepts("fresh-token"));
+		const { result } = render();
+		expect(result.current.accepted).toBe(false);
+
+		await submitForm(result.current.form, VALID);
+
+		expect(result.current.accepted).toBe(true);
+	});
+
 	it("navigates into the operator it just joined", async () => {
 		server.use(accepts("fresh-token"));
 		const { result } = render();
@@ -126,8 +136,8 @@ describe("useAcceptInvitation", () => {
 		});
 	});
 
-	it.each([409, 403, 410, 404])("gives %i its own message", async (status) => {
-		server.use(http.post(URL_, () => new HttpResponse(null, { status })));
+	it("a refusal stays on the page", async () => {
+		server.use(http.post(URL_, () => new HttpResponse(null, { status: 403 })));
 		const { result } = render();
 
 		await submitForm(result.current.form, VALID);
@@ -136,9 +146,30 @@ describe("useAcceptInvitation", () => {
 		expect(navigateMock).not.toHaveBeenCalled();
 	});
 
-	it("keeps the four rejections distinct from each other", async () => {
+	it("a 409 shows the backend's sentence, since it means two different things", async () => {
+		server.use(
+			http.post(URL_, () =>
+				HttpResponse.json(
+					{
+						status: 409,
+						message: "This invitation has already been accepted",
+					},
+					{ status: 409 },
+				),
+			),
+		);
+		const { result } = render();
+
+		await submitForm(result.current.form, VALID);
+
+		expect(result.current.errorMessage).toBe(
+			"This invitation has already been accepted",
+		);
+	});
+
+	it("keeps the app's own three rejections distinct from each other and from the fallback", async () => {
 		const messages = new Set<string>();
-		for (const status of [409, 403, 410, 404, 500]) {
+		for (const status of [403, 410, 404, 500]) {
 			server.resetHandlers();
 			server.use(http.post(URL_, () => new HttpResponse(null, { status })));
 			const { result } = render();
@@ -146,7 +177,7 @@ describe("useAcceptInvitation", () => {
 			messages.add(result.current.errorMessage ?? "");
 		}
 
-		expect(messages.size).toBe(5);
+		expect(messages.size).toBe(4);
 	});
 
 	it("does not reach the network when the form is invalid", async () => {

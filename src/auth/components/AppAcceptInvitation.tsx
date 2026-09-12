@@ -1,22 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
 import { Button } from "#/components/ui/button";
 import { Spinner } from "#/components/ui/spinner";
-import { authApi } from "#/lib/api";
-import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppField } from "#/shared/components/AppField";
 import { AppLink } from "#/shared/components/AppLink";
 import { AppPasswordField } from "#/shared/components/AppPasswordField";
 import { useAuth } from "../AuthProvider";
 import { useAcceptInvitation } from "../hooks/use-accept-invitation";
+import { useInvitationPreview } from "../hooks/use-invitation-preview";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
-
-interface Preview {
-	context: string;
-	operatorName: string;
-	email: string;
-}
 
 export const AppAcceptInvitation = ({ token }: { token?: string }) => {
 	if (!token) {
@@ -35,15 +27,10 @@ export const AppAcceptInvitation = ({ token }: { token?: string }) => {
 
 const AcceptFlow = ({ token }: { token: string }) => {
 	const { isAuthenticated, isLoading: authLoading } = useAuth();
-	const { form, isPending, errorMessage, acceptAsCurrentUser } =
+	const { form, isPending, errorMessage, accepted, acceptAsCurrentUser } =
 		useAcceptInvitation(token);
 
-	const preview = useQuery<Preview>({
-		queryKey: queryKeys.invitationPreview(token),
-		queryFn: async () =>
-			(await authApi.get<Preview>(`/invitations/${token}/preview`)).data,
-		retry: false,
-	});
+	const preview = useInvitationPreview(token, !accepted);
 
 	if (authLoading || preview.isPending) {
 		return <AppAuthMessageCard icon={<Spinner />} description={m.loading()} />;
@@ -60,13 +47,13 @@ const AcceptFlow = ({ token }: { token: string }) => {
 		);
 	}
 
-	const operator = preview.data.operatorName;
+	const { operatorName: operator, email } = preview.data;
 
 	if (isAuthenticated) {
 		return (
 			<AppAuthMessageCard
 				title={m.accept_invitation_title()}
-				description={m.accept_invitation_body({ operator })}
+				description={m.accept_invitation_body({ operator, email })}
 			>
 				{errorMessage && (
 					<p className="text-sm text-destructive">{errorMessage}</p>
@@ -85,7 +72,7 @@ const AcceptFlow = ({ token }: { token: string }) => {
 			isSubmitting={isPending}
 			errorMessage={errorMessage}
 			title={m.accept_invitation_title()}
-			subtitle={m.accept_invitation_signup({ operator })}
+			subtitle={m.accept_invitation_signup({ operator, email })}
 			submitLabel={m.accept_invitation()}
 			footer={<AppLink to="/auth/login">{m.invitation_have_account()}</AppLink>}
 		>
