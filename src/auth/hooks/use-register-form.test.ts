@@ -51,7 +51,7 @@ const submit = async (
 describe("useRegisterForm", () => {
 	beforeEach(() => navigateMock.mockReset());
 
-	it("strips the confirmation and trims the name", async () => {
+	it("strips the confirmation, trims the name, and carries the UI language", async () => {
 		const body = vi.fn();
 		server.use(
 			http.post(URL, async ({ request }) => {
@@ -67,6 +67,7 @@ describe("useRegisterForm", () => {
 			name: "Ada Lovelace",
 			email: "ada@example.com",
 			password: "Passw0rd!23",
+			language: "en",
 		});
 	});
 

@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 import { useState } from "react";
 import { authApi } from "#/lib/api";
 import * as m from "#/paraglide/messages";
+import { getLocale } from "#/paraglide/runtime";
 import { type RegisterFormData, registerSchema } from "../validators/register";
 
 export const useRegisterForm = () => {
@@ -17,7 +18,7 @@ export const useRegisterForm = () => {
 		RegisterFormData
 	>({
 		mutationFn: ({ confirmPassword: _confirm, ...data }) =>
-			authApi.post("/auth/register", data),
+			authApi.post("/auth/register", { ...data, language: getLocale() }),
 		onSuccess: (_data, variables) => {
 			setErrorMessage(null);
 			navigate({

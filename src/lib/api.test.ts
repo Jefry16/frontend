@@ -54,6 +54,21 @@ describe("authApi request interceptor", () => {
 
 		expect(data.authorization).toBeNull();
 	});
+
+	it("sends the bearer to change-password, which needs a session", async () => {
+		setAccessToken("tok-1");
+		server.use(
+			http.post(`${API}/auth/change-password`, ({ request }) =>
+				HttpResponse.json({
+					authorization: request.headers.get("authorization"),
+				}),
+			),
+		);
+
+		const { data } = await authApi.post("/auth/change-password");
+
+		expect(data.authorization).toBe("Bearer tok-1");
+	});
 });
 
 describe("authApi 401 handling", () => {
@@ -123,6 +138,25 @@ describe("authApi 401 handling", () => {
 		});
 
 		expect(refreshed).not.toHaveBeenCalled();
+	});
+
+	it("does not refresh when change-password 401s: that is the wrong current password", async () => {
+		setAccessToken("tok-1");
+		const refreshed = vi.fn();
+		server.use(
+			http.post(
+				`${API}/auth/change-password`,
+				() => new HttpResponse(null, { status: 401 }),
+			),
+			refreshHandler("fresh", refreshed),
+		);
+
+		await expect(authApi.post("/auth/change-password")).rejects.toMatchObject({
+			response: { status: 401 },
+		});
+
+		expect(refreshed).not.toHaveBeenCalled();
+		expect(getAccessToken()).toBe("tok-1");
 	});
 
 	it("leaves any other status alone", async () => {
