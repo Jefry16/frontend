@@ -21,7 +21,7 @@ scope: these flows end at the admin app's own screens.
   3. Sign in → `POST /auth/login`; stay signed in across a reload → `POST /auth/refresh`
   4. Sign out → `POST /auth/logout`
 
-- [ ] **F2 Recover a password.** Anyone.
+- [x] **F2 Recover a password.** Anyone.
   1. Ask for a reset → `POST /auth/request-password-reset`
   2. Set the new one from the link → `POST /auth/reset-password`
   3. Sign in with it → `POST /auth/login`

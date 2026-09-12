@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 import { useState } from "react";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
+import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import {
 	type ResetPasswordFormData,
@@ -33,7 +34,7 @@ export const useResetPasswordForm = (token: string) => {
 			if (status === 401) {
 				setErrorMessage(m.reset_link_invalid());
 			} else if (status === 422) {
-				setErrorMessage(m.reset_password_same());
+				setErrorMessage(apiErrorMessage(error));
 			} else {
 				setErrorMessage(m.error());
 			}

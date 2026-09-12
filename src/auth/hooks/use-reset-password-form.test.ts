@@ -72,32 +72,35 @@ describe("useResetPasswordForm", () => {
 		expect(navigateMock).toHaveBeenCalledWith({ to: "/auth/login" });
 	});
 
-	it.each([
-		[401, "expired or already-used link"],
-		[422, "password rejected"],
-	])("gives %i its own message (%s)", async (status) => {
-		server.use(failing(status));
+	it("an unknown token is the app's own sentence, and stays on the form", async () => {
+		server.use(failing(401));
 		const { result } = render();
 
 		await submit(result.current.form, VALID);
 
-		expect(result.current.errorMessage).toBeTruthy();
-		expect(result.current.errorMessage).not.toBe(null);
+		expect(result.current.errorMessage).toBe(
+			"This reset link is invalid or has expired. Request a new one.",
+		);
 		expect(navigateMock).not.toHaveBeenCalled();
 	});
 
-	it("tells 401 and 422 apart rather than sharing one string", async () => {
-		server.use(failing(401));
-		const { result: a } = render();
-		await submit(a.current.form, VALID);
-		const unauthorized = a.current.errorMessage;
+	it("a 422 shows the backend's sentence, which names which rule the reset broke", async () => {
+		server.use(
+			http.post(URL, () =>
+				HttpResponse.json(
+					{ status: 422, message: "Password reset token has expired" },
+					{ status: 422 },
+				),
+			),
+		);
+		const { result } = render();
 
-		server.resetHandlers();
-		server.use(failing(422));
-		const { result: b } = render();
-		await submit(b.current.form, VALID);
+		await submit(result.current.form, VALID);
 
-		expect(b.current.errorMessage).not.toBe(unauthorized);
+		expect(result.current.errorMessage).toBe(
+			"Password reset token has expired",
+		);
+		expect(navigateMock).not.toHaveBeenCalled();
 	});
 
 	it("blocks a mismatched confirmation before the network", async () => {
