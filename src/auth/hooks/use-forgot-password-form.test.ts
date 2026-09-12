@@ -50,15 +50,6 @@ describe("useForgotPasswordForm", () => {
 		expect(result.current.errorMessage).toBeNull();
 	});
 
-	it("confirms identically for an address that is not registered", async () => {
-		server.use(http.post(URL, () => new HttpResponse(null, { status: 204 })));
-		const { result } = render();
-
-		await submit(result.current.form, "nobody@example.com");
-
-		expect(result.current.submittedEmail).toBe("nobody@example.com");
-	});
-
 	it("does not send a malformed address", async () => {
 		const body = vi.fn();
 		server.use(

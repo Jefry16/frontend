@@ -48,7 +48,6 @@
 	"new_password": "New password",
 	"reset_password_submit": "Reset password",
 	"reset_password_success": "Password updated. You can now sign in.",
-	"reset_password_same": "Your new password must be different from your current one.",
 	"reset_link_invalid": "This reset link is invalid or has expired. Request a new one.",
 	"reset_link_invalid_title": "Invalid link",
 	"reset_link_missing_token": "This password reset link is missing its token.",
