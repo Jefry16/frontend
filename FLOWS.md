@@ -32,7 +32,7 @@ scope: these flows end at the admin app's own screens.
   3. Change the app language → `GET /ui-languages`, `POST /auth/profile/language`
   4. Change my password → `POST /auth/change-password`
 
-- [ ] **F4 Join an operator I was invited to.** Anyone with a link.
+- [x] **F4 Join an operator I was invited to.** Anyone with a link.
   1. See what I was invited to → `GET /invitations/{token}/preview`
   2. Accept, as an existing user or by creating one → `POST /invitations/{token}/accept`
   3. Land inside that operator → `GET /tour-operators/{id}`
