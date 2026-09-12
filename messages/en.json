@@ -162,7 +162,7 @@
 	"confirm_new_password": "Confirm new password",
 	"password_changed": "Password changed. Sign in again with the new one.",
 	"logo_too_large": "That image is too large. Maximum size is 25 MB.",
-	"logo_wrong_type": "That file type isn't supported. Please choose an image.",
+	"logo_wrong_type": "Choose a PNG, JPG or WEBP image.",
 	"members": "Members",
 	"member": "Member",
 	"invite_member": "Invite member",
