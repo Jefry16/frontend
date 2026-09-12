@@ -6,8 +6,8 @@ import * as m from "#/paraglide/messages";
 import {
 	localeLabel,
 	type OperatorLocales,
-	useCurrentTourOperator,
 	useOperatorLocales,
+	usePermissions,
 } from "#/session";
 import { AppBadge } from "#/shared/components/AppBadge";
 import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
@@ -25,8 +25,7 @@ export const Route = createFileRoute(
 
 function LanguagesSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
-	const operator = useCurrentTourOperator();
-	const canManage = operator?.role === "OWNER" || operator?.role === "ADMIN";
+	const { canWrite } = usePermissions();
 	const query = useOperatorLocales(tourOperatorId);
 
 	const breadcrumb = (
@@ -70,7 +69,7 @@ function LanguagesSettingsPage() {
 							description={m.languages_description()}
 							breadcrumb={breadcrumb}
 						/>
-						{canManage ? (
+						{canWrite ? (
 							<AppOperatorLanguagesForm
 								tourOperatorId={tourOperatorId}
 								locales={locales}

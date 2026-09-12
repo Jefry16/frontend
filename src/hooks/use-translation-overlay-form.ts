@@ -48,12 +48,17 @@ export const useTranslationOverlayForm = <TValues, TPayload>({
 			),
 	});
 
+	const blankValues = Object.fromEntries(
+		Object.keys(defaultValues as object).map((field) => [field, ""]),
+	) as TValues;
+
 	const clear = useMutation<void, AxiosError, void>({
 		mutationFn: async () => {
 			await authApi.delete(endpoint);
 		},
 		onSuccess: () => {
 			setErrorMessage(null);
+			form.reset(blankValues, { keepDefaultValues: true });
 			toast.deleted(m.translation());
 			invalidate();
 		},

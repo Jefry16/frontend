@@ -49,7 +49,7 @@ scope: these flows end at the admin app's own screens.
   2. Logo and favicon → `POST /tour-operators/{id}/media`, then the brand section
   3. Colours, social links, SEO defaults, storefront password → the same `PATCH`, one section each
 
-- [ ] **F7 Choose the storefront's languages and translate the operator.** Admin.
+- [x] **F7 Choose the storefront's languages and translate the operator.** Admin.
   1. Pick a primary and supported locales → `GET /languages`, `PATCH /tour-operators/{id}` (locales section)
   2. Translate the operator's own texts per locale → `GET /tour-operators/{id}/translations`, `GET` / `PUT` / `DELETE /tour-operators/{id}/translations/{locale}`
 
