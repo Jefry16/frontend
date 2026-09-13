@@ -15,6 +15,7 @@ import {
 	useTheme,
 } from "@vointika/ui";
 import { AuthProvider } from "#/auth";
+import { getLocale } from "#/paraglide/runtime";
 import { queryClient } from "#/router";
 import { appUiLabels } from "#/ui-labels";
 
@@ -45,7 +46,7 @@ function ThemedToaster() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang={getLocale()} suppressHydrationWarning>
 			<head>
 				<script
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: pre-paint FOUC guard, static string
