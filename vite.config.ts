@@ -11,6 +11,7 @@ const config = defineConfig({
 		paraglideVitePlugin({
 			project: "./project.inlang",
 			outdir: "./src/paraglide",
+			strategy: ["cookie", "globalVariable", "preferredLanguage", "baseLocale"],
 		}),
 		devtools(),
 		tsconfigPaths({ projects: ["./tsconfig.json"] }),
