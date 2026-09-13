@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "typecheck": "tsc --noEmit",
-    "paraglide:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide",
+    "paraglide:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --strategy cookie globalVariable preferredLanguage baseLocale",
     "build": "vite build",
     "test": "vitest run",
     "check": "biome check",

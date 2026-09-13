@@ -14,7 +14,9 @@ import {
 	UiLabelsProvider,
 	useTheme,
 } from "@vointika/ui";
+import { useEffect } from "react";
 import { AuthProvider } from "#/auth";
+import { getLocale } from "#/paraglide/runtime";
 import { queryClient } from "#/router";
 import { appUiLabels } from "#/ui-labels";
 
@@ -44,8 +46,14 @@ function ThemedToaster() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+	// The shell is rendered once, before any browser has said which language it
+	// wants, and hydration keeps the shell's attributes. The locale is known only
+	// in the browser, so the attribute is set there.
+	useEffect(() => {
+		document.documentElement.lang = getLocale();
+	}, []);
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang={getLocale()} suppressHydrationWarning>
 			<head>
 				<script
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: pre-paint FOUC guard, static string
