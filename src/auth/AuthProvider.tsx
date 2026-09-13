@@ -6,6 +6,7 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
+	useRef,
 	useState,
 } from "react";
 import { authApi, setOnAuthExpired } from "#/lib/api";
@@ -40,29 +41,42 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const [bootstrapped, setBootstrapped] = useState(false);
+	const [hasToken, setHasToken] = useState(() => !!getAccessToken());
 
+	const holdToken = useCallback((accessToken: string) => {
+		setAccessToken(accessToken);
+		setHasToken(true);
+	}, []);
+
+	const dropToken = useCallback(() => {
+		clearAccessToken();
+		setHasToken(false);
+	}, []);
+
+	// One refresh per provider instance: the backend rotates the refresh
+	// cookie, so a second call with the same cookie is refused, and an effect
+	// can run twice for one mount.
+	const startupRefresh = useRef<Promise<string | null> | null>(null);
 	useEffect(() => {
+		startupRefresh.current ??= authApi
+			.post<{ accessToken: string }>("/auth/refresh")
+			.then(({ data }) => data.accessToken)
+			.catch(() => null);
 		let cancelled = false;
-		(async () => {
-			try {
-				const { data } = await authApi.post<{ accessToken: string }>(
-					"/auth/refresh",
-				);
-				if (!cancelled) setAccessToken(data.accessToken);
-			} catch {
-			} finally {
-				if (!cancelled) setBootstrapped(true);
-			}
-		})();
+		startupRefresh.current.then((accessToken) => {
+			if (cancelled) return;
+			if (accessToken) holdToken(accessToken);
+			setBootstrapped(true);
+		});
 		return () => {
 			cancelled = true;
 		};
-	}, []);
+	}, [holdToken]);
 
 	const profileQuery = useQuery({
 		queryKey: queryKeys.authProfile,
 		queryFn: fetchProfile,
-		enabled: bootstrapped && !!getAccessToken(),
+		enabled: bootstrapped && hasToken,
 		staleTime: Number.POSITIVE_INFINITY,
 		retry: false,
 	});
@@ -80,13 +94,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		setOnAuthExpired(() => {
+			dropToken();
 			queryClient.clear();
 			navigate({ to: "/auth/login" });
 		});
 		return () => {
 			setOnAuthExpired(null);
 		};
-	}, [navigate, queryClient]);
+	}, [dropToken, navigate, queryClient]);
 
 	const clearSessionCache = useCallback(() => {
 		queryClient.clear();
@@ -99,7 +114,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				{ email, password },
 			);
 			clearSessionCache();
-			setAccessToken(tokens.accessToken);
+			holdToken(tokens.accessToken);
 			const profile = await queryClient.fetchQuery({
 				queryKey: queryKeys.authProfile,
 				queryFn: fetchProfile,
@@ -107,29 +122,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			});
 			return profile;
 		},
-		[clearSessionCache, queryClient],
+		[clearSessionCache, holdToken, queryClient],
 	);
 
 	const establishSession = useCallback(
 		async (accessToken: string) => {
 			clearSessionCache();
-			setAccessToken(accessToken);
+			holdToken(accessToken);
 			return queryClient.fetchQuery({
 				queryKey: queryKeys.authProfile,
 				queryFn: fetchProfile,
 				staleTime: Number.POSITIVE_INFINITY,
 			});
 		},
-		[clearSessionCache, queryClient],
+		[clearSessionCache, holdToken, queryClient],
 	);
 
 	const logout = useCallback(async () => {
 		try {
 			await authApi.post("/auth/logout");
 		} catch {}
-		clearAccessToken();
+		dropToken();
 		clearSessionCache();
-	}, [clearSessionCache]);
+	}, [clearSessionCache, dropToken]);
 
 	const refreshUser = useCallback(async () => {
 		await queryClient.refetchQueries({ queryKey: queryKeys.authProfile });
@@ -138,7 +153,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const user = profileQuery.data ?? null;
 	const isAuthenticated = user !== null;
-	const hasToken = !!getAccessToken();
 	const isLoading =
 		!bootstrapped || (hasToken && !profileQuery.data && !profileQuery.isError);
 
