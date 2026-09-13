@@ -55,7 +55,7 @@ module.exports = {
 				orphan: true,
 				pathNot: [
 					"^src/routeTree\\.gen\\.ts$",
-					"^src/router\\.tsx$",
+					"^src/main\\.tsx$", // the entry index.html loads
 					"^src/routes/", // Tanstack discovers these by filesystem
 					"^src/styles\\.css$",
 					"\\.d\\.ts$",
