@@ -27,7 +27,7 @@ interface CursorResponse<TData> {
 	nextCursor: string | null;
 }
 
-export const tableKey = (
+const tableKey = (
 	queryKey: readonly unknown[],
 	endpoint: string,
 	sorting: SortingState = [],

@@ -13,15 +13,10 @@ const walk = (dir: string): string[] =>
 	readdirSync(dir).flatMap((entry) => {
 		const path = join(dir, entry);
 		if (statSync(path).isDirectory()) return walk(path);
-		return path.endsWith(".tsx") &&
-			!path.includes(".stories.") &&
-			!path.includes(".test.") &&
-			!path.includes("/components/ui/")
-			? [path]
-			: [];
+		return path.endsWith(".tsx") && !path.includes(".test.") ? [path] : [];
 	});
 
-describe("COMPONENTS.md §5 — forms use the field renderers", () => {
+describe("forms use the field renderers", () => {
 	it("no form renders a raw control instead of a field renderer", () => {
 		const offenders = walk("src")
 			.map((path) => ({ path, src: readFileSync(path, "utf8") }))

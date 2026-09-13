@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Verify (typecheck · check · depcheck · tests · build · storybook)
+    name: Verify (typecheck · check · depcheck · knip · tests · build)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

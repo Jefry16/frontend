@@ -41,9 +41,7 @@ const walk = (dir: string): string[] =>
 		const path = join(dir, entry);
 		if (statSync(path).isDirectory()) return walk(path);
 		return path.endsWith(".tsx") &&
-			!path.includes(".stories.") &&
 			!path.includes(".test.") &&
-			!path.includes("/components/ui/") &&
 			!path.includes("/paraglide/")
 			? [path]
 			: [];

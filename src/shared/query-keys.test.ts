@@ -76,8 +76,8 @@ describe("query keys come from one place", () => {
 			"A query key is never written as an array at the point of use. It comes " +
 				"from queryKeys in src/lib/query-keys.ts, or from a helper beside the " +
 				"hook that owns the shape (allPagesKey, tableKey, withLocale). A " +
-				"hand-written array is a key that invalidation and story seeds cannot " +
-				"share, so one of them silently misses when the shape changes.",
+				"hand-written array is a key that invalidation cannot share, so it " +
+				"silently misses when the shape changes.",
 		).toEqual([]);
 	});
 });

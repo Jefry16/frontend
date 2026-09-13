@@ -6,28 +6,14 @@
   "engines": {
     "node": ">=22"
   },
-  "imports": {
-    "#/*": "./src/*"
-  },
   "scripts": {
     "dev": "vite dev --port 3000",
     "typecheck": "tsc --noEmit",
     "paraglide:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide",
     "build": "vite build",
-    "build:staging": "vite build --mode staging",
-    "build:production": "vite build --mode production",
-    "preview": "vite preview",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui",
-    "smoke": "node smoke/smoke.mjs",
-    "format": "biome format",
-    "lint": "biome lint",
     "check": "biome check",
     "depcheck": "depcruise --config .dependency-cruiser.cjs src",
-    "machine-translate": "inlang machine translate --project project.inlang",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
     "knip": "knip"
   },
   "dependencies": {
@@ -51,10 +37,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.5",
-    "@inlang/cli": "^3.0.0",
-    "@storybook/addon-a11y": "^10.5.3",
-    "@storybook/addon-docs": "^10.5.3",
-    "@storybook/tanstack-react": "^10.5.3",
     "@tanstack/devtools-vite": "0.8.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -64,15 +46,11 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.1.4",
-    "@vitest/coverage-v8": "^3.2.4",
-    "@vitest/ui": "^3.2.7",
     "axe-core": "4.13.0",
     "dependency-cruiser": "^17.3.10",
     "jsdom": "^28.1.0",
     "knip": "6.35.1",
     "msw": "^2.13.6",
-    "playwright": "1.61.1",
-    "storybook": "^10.5.3",
     "typescript": "^5.7.2",
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^5.1.4",
