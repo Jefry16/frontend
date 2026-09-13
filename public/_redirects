@@ -1,4 +1,0 @@
-# Cloudflare Pages SPA fallback: serve index.html for client-side routes
-# (TanStack Router paths) so a deep-link / refresh doesn't 404. Real static
-# assets are served directly and never hit this rule.
-/*    /index.html   200
