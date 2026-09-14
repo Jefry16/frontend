@@ -1,9 +1,13 @@
 import { useRouter } from "@tanstack/react-router";
-import { AppError, AppNotFound, AppPageHeader } from "@vointika/ui";
+import {
+	AppError,
+	AppNotFound,
+	AppPageHeader,
+	type QueryState,
+} from "@vointika/ui";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { apiErrorMessage, isNotFound } from "#/lib/api-error";
-import type { QueryState } from "#/lib/query-state";
 
 interface Props<TData> {
 	query: QueryState<TData>;

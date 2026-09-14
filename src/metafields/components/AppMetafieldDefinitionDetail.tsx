@@ -9,10 +9,10 @@ import {
 	AppPageHeader,
 	Card,
 	CardContent,
+	useAllPages,
 } from "@vointika/ui";
 import { Database, Pencil, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
-import { useAllPages } from "#/hooks/use-all-pages";
 import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";

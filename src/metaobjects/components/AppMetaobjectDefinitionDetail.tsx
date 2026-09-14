@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppConfirmDialog,
+	AppDataTable,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
@@ -22,7 +23,6 @@ import { queryKeys } from "#/lib/query-keys";
 import { metafieldTypeLabel } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
-import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb, AppNewLink } from "#/shared/links";
 import { metaobjectEntryColumns } from "../columns";

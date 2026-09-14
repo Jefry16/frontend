@@ -1,7 +1,7 @@
+import { AppDataTable } from "@vointika/ui";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import { useOperatorDateTime } from "#/session";
-import { AppDataTable } from "#/shared/components/AppDataTable";
 import { memberColumns } from "../columns";
 
 export const AppMembersList = ({

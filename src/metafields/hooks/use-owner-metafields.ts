@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAllPages } from "#/hooks/use-all-pages";
+import { mergeQueryState, useAllPages } from "@vointika/ui";
 import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
-import { mergeQueryState } from "#/lib/query-state";
 import type {
 	MetafieldDefinitionListItem,
 	MetafieldOwnerTypeCode,

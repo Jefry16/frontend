@@ -1,8 +1,8 @@
+import { AppDataTable } from "@vointika/ui";
 import { CalendarDays } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppDataTable } from "#/shared/components/AppDataTable";
 import { slotColumns } from "../columns";
 
 export const AppSlotsList = ({

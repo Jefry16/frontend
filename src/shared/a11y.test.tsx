@@ -1,9 +1,11 @@
 import { screen } from "@testing-library/react";
+import {
+	AppDataTable,
+	AppDataTableHeader,
+	timestampColumn,
+} from "@vointika/ui";
 import { HttpResponse, http } from "msw";
 import { describe, it } from "vitest";
-import { AppDataTable } from "#/shared/components/AppDataTable";
-import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
-import { timestampColumn } from "#/shared/components/table-columns";
 import { expectNoA11yViolations } from "#/test/a11y";
 import { server } from "#/test/server";
 import { renderWithProviders } from "#/test/test-utils";

@@ -7,11 +7,13 @@ import {
 	ThemeProvider,
 	Toaster,
 	TooltipProvider,
+	UiDataProvider,
 	UiLabelsProvider,
 	useTheme,
 } from "@vointika/ui";
 import { AuthProvider } from "#/auth";
 import { queryClient } from "#/router";
+import { appUiData } from "#/ui-data";
 import { appUiLabels } from "#/ui-labels";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
@@ -30,12 +32,14 @@ function RootLayout() {
 		<ThemeProvider>
 			<UiLabelsProvider labels={appUiLabels}>
 				<QueryClientProvider client={queryClient}>
-					<AuthProvider>
-						<TooltipProvider>
-							<Outlet />
-							<ThemedToaster />
-						</TooltipProvider>
-					</AuthProvider>
+					<UiDataProvider client={appUiData}>
+						<AuthProvider>
+							<TooltipProvider>
+								<Outlet />
+								<ThemedToaster />
+							</TooltipProvider>
+						</AuthProvider>
+					</UiDataProvider>
 				</QueryClientProvider>
 			</UiLabelsProvider>
 			<TanStackDevtools

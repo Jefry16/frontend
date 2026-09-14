@@ -3,17 +3,17 @@ import {
 	AppLoadingBlock,
 	AppLocaleTabs,
 	AppPageHeader,
+	AppQueryState,
 	AppTranslationSummary,
+	mergeQueryState,
 	Skeleton,
 	type TranslatedField,
 } from "@vointika/ui";
 import { Scale } from "lucide-react";
 import { useState } from "react";
-import { mergeQueryState } from "#/lib/query-state";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { usePolicy } from "../hooks/use-policy";

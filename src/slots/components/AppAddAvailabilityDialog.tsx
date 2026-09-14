@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	AppEmptyState,
 	AppLoadingBlock,
+	AppQueryState,
 	Button,
 	Dialog,
 	DialogContent,
@@ -9,13 +10,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 	Input,
+	useAllPages,
 } from "@vointika/ui";
 import { ChevronRight, Compass, Plus } from "lucide-react";
 import { useState } from "react";
-import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppLink } from "#/shared/links";
 
 interface ExperienceRow {

@@ -1,5 +1,5 @@
+import { buildParams } from "@vointika/ui";
 import { describe, expect, it } from "vitest";
-import { buildParams } from "./useDataTable";
 
 const params = (over: Partial<Parameters<typeof buildParams>[0]> = {}) =>
 	buildParams({

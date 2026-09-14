@@ -3,6 +3,7 @@ import {
 	AppLoadingBlock,
 	AppLocaleTabs,
 	AppPageHeader,
+	AppQueryState,
 	AppTranslationSummary,
 	Skeleton,
 	type TranslatedField,
@@ -16,7 +17,6 @@ import {
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { usePage } from "../hooks/use-page";

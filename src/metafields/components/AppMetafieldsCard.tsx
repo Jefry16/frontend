@@ -1,5 +1,6 @@
 import {
 	AppFormActions,
+	AppQueryState,
 	Card,
 	CardContent,
 	CardDescription,
@@ -11,7 +12,6 @@ import {
 } from "@vointika/ui";
 import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useMetafieldValueSave } from "../hooks/use-metafield-value-save";
 import { useOwnerMetafields } from "../hooks/use-owner-metafields";
 import type {

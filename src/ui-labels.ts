@@ -33,4 +33,5 @@ export const appUiLabels: UiLabels = {
 	notFound: (resource) => m.not_found_resource({ resource }),
 	resourceNotFound: m.resource_not_found(),
 	goBack: m.go_back(),
+	filterColumn: (column) => m.filter_column({ column }),
 };

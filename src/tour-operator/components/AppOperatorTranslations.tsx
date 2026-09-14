@@ -1,6 +1,7 @@
 import {
 	AppLoadingBlock,
 	AppLocaleTabs,
+	AppQueryState,
 	AppTranslationSummary,
 	type TranslatedField,
 } from "@vointika/ui";
@@ -12,7 +13,6 @@ import {
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import {
 	useOperatorTranslation,
 	useOperatorTranslations,
