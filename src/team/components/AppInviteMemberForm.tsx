@@ -8,7 +8,7 @@ import {
 	SelectItem,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppLink } from "#/shared/links";
 import { roleLabel } from "../format";
 import { useInviteMemberForm } from "../hooks/use-invite-member-form";
 

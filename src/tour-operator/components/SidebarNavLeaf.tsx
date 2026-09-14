@@ -1,6 +1,6 @@
 import { useMatchRoute } from "@tanstack/react-router";
 import { SidebarMenuButton, SidebarMenuItem } from "@vointika/ui";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppLink } from "#/shared/links";
 import type { NavLeaf } from "../nav-items";
 
 export const SidebarNavLeaf = ({ item }: { item: NavLeaf }) => {

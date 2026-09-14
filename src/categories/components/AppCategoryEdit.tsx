@@ -1,8 +1,8 @@
 import { AppFormSkeleton, AppPageHeader } from "@vointika/ui";
 import { Tags } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBreadcrumb } from "#/shared/links";
 import { useCategory } from "../hooks/use-category";
 import { AppCategoryForm } from "./AppCategoryForm";
 

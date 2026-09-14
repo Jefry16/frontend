@@ -3,8 +3,7 @@ import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppPickupLocationsList } from "#/pickup-locations";
 import { usePermissions } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppNewLink } from "#/shared/components/AppNewLink";
+import { AppBreadcrumb, AppNewLink } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/pickup-locations/",

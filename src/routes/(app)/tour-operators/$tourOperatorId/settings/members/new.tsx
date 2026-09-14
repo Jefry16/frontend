@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppWriteGate } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppBreadcrumb } from "#/shared/links";
 import { AppInviteMemberForm } from "#/team";
 
 export const Route = createFileRoute(

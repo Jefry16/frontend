@@ -16,8 +16,8 @@ import {
 	useOperatorLocales,
 	usePermissions,
 } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBreadcrumb } from "#/shared/links";
 import { AppOperatorLanguagesForm } from "#/tour-operator";
 
 export const Route = createFileRoute(

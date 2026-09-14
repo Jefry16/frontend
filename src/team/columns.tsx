@@ -3,8 +3,8 @@ import { AppBadge, EmptyValue } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
-import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
+import { AppResourceLink } from "#/shared/links";
 import { roleBadgeVariant, roleLabel } from "./format";
 import type { Member } from "./types";
 

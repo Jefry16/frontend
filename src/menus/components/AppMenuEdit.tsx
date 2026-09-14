@@ -1,8 +1,8 @@
 import { AppFormSkeleton, AppPageHeader } from "@vointika/ui";
 import { ListTree } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBreadcrumb } from "#/shared/links";
 import { useMenu } from "../hooks/use-menu";
 import { AppMenuItemsEditor } from "./AppMenuItemsEditor";
 

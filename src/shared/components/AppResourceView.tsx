@@ -1,9 +1,9 @@
-import { AppError, AppPageHeader } from "@vointika/ui";
+import { useRouter } from "@tanstack/react-router";
+import { AppError, AppNotFound, AppPageHeader } from "@vointika/ui";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { apiErrorMessage, isNotFound } from "#/lib/api-error";
 import type { QueryState } from "#/lib/query-state";
-import { AppNotFound } from "./AppNotFound";
 
 interface Props<TData> {
 	query: QueryState<TData>;
@@ -24,6 +24,7 @@ export function AppResourceView<TData>({
 	loading,
 	children,
 }: Props<TData>) {
+	const router = useRouter();
 	if (isNotFound(query.error) || query.data === undefined) {
 		if (query.isPending) {
 			return (
@@ -41,6 +42,7 @@ export function AppResourceView<TData>({
 						resource={resource}
 						icon={icon}
 						action={notFoundAction}
+						onBack={() => router.history.back()}
 					/>
 				) : (
 					<AppError

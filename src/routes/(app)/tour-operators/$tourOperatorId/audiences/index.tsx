@@ -3,8 +3,7 @@ import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppAudiencesList } from "#/audiences";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppNewLink } from "#/shared/components/AppNewLink";
+import { AppBreadcrumb, AppNewLink } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/audiences/",

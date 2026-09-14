@@ -3,9 +3,9 @@ import { UsersRound } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppNameTranslations } from "#/shared/components/AppNameTranslations";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBreadcrumb } from "#/shared/links";
 import { useAudience } from "../hooks/use-audience";
 
 export const AppAudienceTranslations = ({

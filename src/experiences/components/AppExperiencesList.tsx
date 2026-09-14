@@ -8,7 +8,7 @@ import {
 	usePermissions,
 } from "#/session";
 import { AppDataTable } from "#/shared/components/AppDataTable";
-import { AppNewLink } from "#/shared/components/AppNewLink";
+import { AppNewLink } from "#/shared/links";
 import { experienceColumns } from "../columns";
 
 export const AppExperiencesList = ({

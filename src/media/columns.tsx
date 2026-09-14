@@ -3,8 +3,8 @@ import { EmptyValue } from "@vointika/ui";
 import { FileText } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
-import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
+import { AppResourceLink } from "#/shared/links";
 import { formatBytes, isImage, mimeLabel } from "./format";
 import type { MediaAsset } from "./types";
 

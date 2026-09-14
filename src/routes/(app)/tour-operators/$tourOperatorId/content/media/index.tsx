@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppMediaList, AppMediaUploadButton } from "#/media";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppBreadcrumb } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/media/",

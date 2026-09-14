@@ -9,7 +9,7 @@ import {
 import { useAuth } from "#/auth";
 import * as m from "#/paraglide/messages";
 import { useCurrentTourOperator } from "#/session";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppLink } from "#/shared/links";
 import { AppSettingsSidebar, AppTourOperatorSidebar } from "#/tour-operator";
 
 export const Route = createFileRoute("/(app)/tour-operators/$tourOperatorId")({

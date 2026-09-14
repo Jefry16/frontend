@@ -3,7 +3,7 @@ import { AppBadge } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
-import { AppResourceLink } from "#/shared/components/AppResourceLink";
+import { AppResourceLink } from "#/shared/links";
 import {
 	DAY_OPTIONS,
 	formatBookedCapacity,

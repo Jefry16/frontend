@@ -1,8 +1,8 @@
 import { AppFormSkeleton, AppPageHeader } from "@vointika/ui";
 import { Database } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBreadcrumb } from "#/shared/links";
 import { useMetafieldDefinition } from "../hooks/use-metafield-definition";
 import { AppMetafieldDefinitionForm } from "./AppMetafieldDefinitionForm";
 

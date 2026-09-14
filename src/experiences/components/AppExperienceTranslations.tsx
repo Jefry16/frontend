@@ -15,11 +15,10 @@ import {
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
-import { AppBackLink } from "#/shared/components/AppBackLink";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppQueryState } from "#/shared/components/AppQueryState";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useExperience } from "../hooks/use-experience";
 import {
 	useExperienceTranslation,
