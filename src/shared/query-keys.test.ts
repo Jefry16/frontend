@@ -15,7 +15,6 @@ const scannable = walk(join(ROOT, "src"))
 	.map((file) => `/${relative(ROOT, file)}`)
 	.filter(
 		(path) =>
-			!path.startsWith("/src/components/ui/") &&
 			!path.startsWith("/src/paraglide/") &&
 			path !== "/src/routeTree.gen.ts" &&
 			!/\.test\.tsx?$/.test(path),
