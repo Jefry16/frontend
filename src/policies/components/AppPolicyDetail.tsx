@@ -7,6 +7,7 @@ import {
 	AppFormSkeleton,
 	AppPageActions,
 	AppPageHeader,
+	AppResourceView,
 	AppSourceBlock,
 	Card,
 	CardContent,
@@ -16,7 +17,6 @@ import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { policySlug, policyTypeLabel } from "../format";
 import { usePolicy } from "../hooks/use-policy";

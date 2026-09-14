@@ -4,6 +4,7 @@ import {
 	TooltipProvider,
 	UiDataProvider,
 	UiLabelsProvider,
+	UiNavigationProvider,
 } from "@vointika/ui";
 import type { ReactElement, ReactNode } from "react";
 import { AuthProvider, type AuthUser } from "#/auth";
@@ -38,7 +39,9 @@ const wrap = (qc: QueryClient, auth: boolean, children: ReactNode) => {
 		<UiLabelsProvider labels={appUiLabels}>
 			<QueryClientProvider client={qc}>
 				<UiDataProvider client={appUiData}>
-					{auth ? <AuthProvider>{inner}</AuthProvider> : inner}
+					<UiNavigationProvider navigation={{ back: () => {} }}>
+						{auth ? <AuthProvider>{inner}</AuthProvider> : inner}
+					</UiNavigationProvider>
 				</UiDataProvider>
 			</QueryClientProvider>
 		</UiLabelsProvider>

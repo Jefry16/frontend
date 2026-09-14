@@ -2,6 +2,7 @@ import {
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageHeader,
+	AppResourceView,
 	Card,
 	CardContent,
 	CardHeader,
@@ -16,7 +17,6 @@ import {
 import { History } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb, AppLink } from "#/shared/links";
 import {
 	entityRoute,

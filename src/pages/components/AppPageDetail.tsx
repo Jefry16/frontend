@@ -7,6 +7,7 @@ import {
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
+	AppResourceView,
 	AppSourceBlock,
 	Card,
 	CardContent,
@@ -31,7 +32,6 @@ import { queryKeys } from "#/lib/query-keys";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { pageStatusBadgeVariant, pageStatusLabel } from "../format";
 import { usePage } from "../hooks/use-page";

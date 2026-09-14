@@ -1,7 +1,6 @@
-import { AppFormSkeleton, AppPageHeader } from "@vointika/ui";
+import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { Scale } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { usePolicy } from "../hooks/use-policy";
 import { AppPolicyForm } from "./AppPolicyForm";

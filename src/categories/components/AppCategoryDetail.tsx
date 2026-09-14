@@ -6,6 +6,7 @@ import {
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
+	AppResourceView,
 	Card,
 	CardContent,
 } from "@vointika/ui";
@@ -15,7 +16,6 @@ import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useCategory } from "../hooks/use-category";
 import { useCategoryActions } from "../hooks/use-category-actions";

@@ -1,7 +1,11 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
+import {
+	createRootRouteWithContext,
+	Outlet,
+	useRouter,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import {
 	ThemeProvider,
@@ -9,6 +13,7 @@ import {
 	TooltipProvider,
 	UiDataProvider,
 	UiLabelsProvider,
+	UiNavigationProvider,
 	useTheme,
 } from "@vointika/ui";
 import { AuthProvider } from "#/auth";
@@ -28,17 +33,22 @@ function ThemedToaster() {
 }
 
 function RootLayout() {
+	const router = useRouter();
 	return (
 		<ThemeProvider>
 			<UiLabelsProvider labels={appUiLabels}>
 				<QueryClientProvider client={queryClient}>
 					<UiDataProvider client={appUiData}>
-						<AuthProvider>
-							<TooltipProvider>
-								<Outlet />
-								<ThemedToaster />
-							</TooltipProvider>
-						</AuthProvider>
+						<UiNavigationProvider
+							navigation={{ back: () => router.history.back() }}
+						>
+							<AuthProvider>
+								<TooltipProvider>
+									<Outlet />
+									<ThemedToaster />
+								</TooltipProvider>
+							</AuthProvider>
+						</UiNavigationProvider>
 					</UiDataProvider>
 				</QueryClientProvider>
 			</UiLabelsProvider>

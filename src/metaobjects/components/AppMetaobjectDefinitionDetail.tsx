@@ -8,6 +8,7 @@ import {
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
+	AppResourceView,
 	Button,
 	Card,
 	CardContent,
@@ -23,7 +24,6 @@ import { queryKeys } from "#/lib/query-keys";
 import { metafieldTypeLabel } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb, AppNewLink } from "#/shared/links";
 import { metaobjectEntryColumns } from "../columns";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
