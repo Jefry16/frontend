@@ -3,6 +3,7 @@ import {
 	AppDetailField,
 	AppField,
 	AppFormActions,
+	AppQueryState,
 	AppTextareaField,
 	Card,
 	CardContent,
@@ -14,7 +15,6 @@ import {
 	Skeleton,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import {
 	useBrand,
 	useBrandActions,

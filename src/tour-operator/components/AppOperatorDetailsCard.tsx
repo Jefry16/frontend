@@ -4,6 +4,7 @@ import {
 	AppDetailField,
 	AppField,
 	AppFormActions,
+	AppQueryState,
 	AppSelectField,
 	Card,
 	CardContent,
@@ -18,7 +19,6 @@ import {
 import { useState } from "react";
 import * as m from "#/paraglide/messages";
 import { useCurrencies, useTimezones } from "#/reference";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { addressLines } from "../format";
 import {
 	useOperatorDetails,

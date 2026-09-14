@@ -1,4 +1,5 @@
 import {
+	AppQueryState,
 	Card,
 	CardContent,
 	CardDescription,
@@ -14,7 +15,6 @@ import {
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { getLocale, type Locale } from "#/paraglide/runtime";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useChangeUiLanguage } from "../hooks/use-change-ui-language";
 import { useUiLanguages } from "../hooks/use-ui-languages";
 

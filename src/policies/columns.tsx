@@ -1,8 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { AppBadge } from "@vointika/ui";
+import { AppBadge, AppDataTableHeader, timestampColumn } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
-import { timestampColumn } from "#/shared/components/table-columns";
 import { AppResourceLink } from "#/shared/links";
 import { POLICY_TYPE_OPTIONS, policySlug, policyTypeLabel } from "./format";
 import type { Policy } from "./types";

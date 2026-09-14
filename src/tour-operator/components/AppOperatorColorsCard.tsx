@@ -3,6 +3,7 @@ import {
 	AppColorField,
 	AppFormActions,
 	AppFormSkeleton,
+	AppQueryState,
 	Button,
 	Card,
 	CardContent,
@@ -13,7 +14,6 @@ import {
 } from "@vointika/ui";
 import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useBrand, useBrandColorsForm } from "../hooks/use-operator-brand";
 import type { Brand, BrandColor } from "../types";
 

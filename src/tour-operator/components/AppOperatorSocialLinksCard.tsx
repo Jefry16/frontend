@@ -4,6 +4,7 @@ import {
 	AppField,
 	AppFormActions,
 	AppFormSkeleton,
+	AppQueryState,
 	AppSelectField,
 	Button,
 	Card,
@@ -15,7 +16,6 @@ import {
 } from "@vointika/ui";
 import { Plus, X } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import { useBrand, useBrandSocialLinksForm } from "../hooks/use-operator-brand";
 import { SOCIAL_PLATFORMS, socialPlatformLabel } from "../social-platforms";
 import type { Brand } from "../types";

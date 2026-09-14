@@ -1,8 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { AppBadge } from "@vointika/ui";
+import { AppBadge, AppDataTableHeader } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
 import { AppResourceLink } from "#/shared/links";
 import {
 	DAY_OPTIONS,

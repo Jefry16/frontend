@@ -5,6 +5,7 @@ import {
 	AppFormActions,
 	AppFormSkeleton,
 	AppImageDropzone,
+	AppQueryState,
 	AppTextareaField,
 	Button,
 	Card,
@@ -19,7 +20,6 @@ import {
 import { useState } from "react";
 import { useMedia } from "#/media";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import {
 	useOperatorSeo,
 	useOperatorSeoImageUpload,

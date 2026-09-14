@@ -5,6 +5,7 @@ import {
 	AppFormActions,
 	AppFormSkeleton,
 	AppPasswordField,
+	AppQueryState,
 	AppTextareaField,
 	Card,
 	CardContent,
@@ -14,7 +15,6 @@ import {
 	FieldGroup,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import {
 	type StorefrontPasswordSettings,
 	useStorefrontPassword,

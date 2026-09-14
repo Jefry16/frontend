@@ -3,14 +3,14 @@ import {
 	AppFormActions,
 	AppFormCard,
 	AppFormSkeleton,
+	AppQueryState,
 	AppSelectField,
 	FieldGroup,
 	SelectItem,
+	useAllPages,
 } from "@vointika/ui";
-import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppQueryState } from "#/shared/components/AppQueryState";
 import {
 	METAFIELD_TYPE_CODES,
 	metafieldTypeLabel,

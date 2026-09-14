@@ -1,9 +1,9 @@
+import { AppDataTable } from "@vointika/ui";
 import { History } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
-import { AppDataTable } from "#/shared/components/AppDataTable";
 import { activityColumns } from "../columns";
 
 export const AppActivityList = ({

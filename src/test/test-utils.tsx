@@ -1,10 +1,15 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type RenderOptions, render } from "@testing-library/react";
-import { TooltipProvider, UiLabelsProvider } from "@vointika/ui";
+import {
+	TooltipProvider,
+	UiDataProvider,
+	UiLabelsProvider,
+} from "@vointika/ui";
 import type { ReactElement, ReactNode } from "react";
 import { AuthProvider, type AuthUser } from "#/auth";
 import { queryKeys } from "#/lib/query-keys";
 import { setAccessToken } from "#/lib/tokens";
+import { appUiData } from "#/ui-data";
 import { appUiLabels } from "#/ui-labels";
 
 interface ProvidersOptions {
@@ -32,7 +37,9 @@ const wrap = (qc: QueryClient, auth: boolean, children: ReactNode) => {
 	return (
 		<UiLabelsProvider labels={appUiLabels}>
 			<QueryClientProvider client={qc}>
-				{auth ? <AuthProvider>{inner}</AuthProvider> : inner}
+				<UiDataProvider client={appUiData}>
+					{auth ? <AuthProvider>{inner}</AuthProvider> : inner}
+				</UiDataProvider>
 			</QueryClientProvider>
 		</UiLabelsProvider>
 	);

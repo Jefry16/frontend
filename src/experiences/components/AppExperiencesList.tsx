@@ -1,3 +1,4 @@
+import { AppDataTable } from "@vointika/ui";
 import { Compass } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
@@ -7,7 +8,6 @@ import {
 	useOperatorDateTime,
 	usePermissions,
 } from "#/session";
-import { AppDataTable } from "#/shared/components/AppDataTable";
 import { AppNewLink } from "#/shared/links";
 import { experienceColumns } from "../columns";
 

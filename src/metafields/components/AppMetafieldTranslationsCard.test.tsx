@@ -1,8 +1,8 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { allPagesKey } from "@vointika/ui";
 import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it } from "vitest";
-import { allPagesKey } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import { server } from "#/test/server";
 import { createTestQueryClient, renderWithProviders } from "#/test/test-utils";
