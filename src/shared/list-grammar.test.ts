@@ -1,30 +1,63 @@
 import { buildParams } from "@vointika/ui";
 import { describe, expect, it } from "vitest";
 
-describe("the list grammar the backend parses", () => {
-	it("is what the package sends: sort, -field for descending, cursor, filter[field][op]", () => {
-		const params = buildParams({
-			cursor: "c1",
-			sorting: [
-				{ id: "name", desc: false },
-				{ id: "created", desc: true },
-			],
-			filters: [
-				{ id: "status", value: { operator: "in", values: ["a", "b"] } },
-				{ id: "name", value: { operator: "contains", value: "kay" } },
-				{ id: "empty", value: { operator: "eq", value: "" } },
-			],
-			baseParams: { ownerId: "op-1" },
-			fieldMap: { created: { sortField: "createdAt" } },
-		});
+const params = (over: Partial<Parameters<typeof buildParams>[0]> = {}) =>
+	buildParams({
+		cursor: null,
+		sorting: [],
+		filters: [],
+		fieldMap: {},
+		...over,
+	}).toString();
 
+describe("the list grammar the package sends is the one the backend parses", () => {
+	it("sends a filter under the column id", () => {
 		expect(
-			params.toString(),
-			"backend ListQueryParser accepts sort, cursor and filter[field][op]; " +
-				"a leading minus on sort means descending; an empty value is not sent",
-		).toBe(
-			"ownerId=op-1&cursor=c1&sort=name&sort=-createdAt" +
-				"&filter%5Bstatus%5D%5Bin%5D=a%2Cb&filter%5Bname%5D%5Bcontains%5D=kay",
+			params({
+				filters: [{ id: "name", value: { operator: "like", value: "ada" } }],
+			}),
+		).toBe("filter%5Bname%5D%5Blike%5D=ada");
+	});
+
+	it("joins a multi-value filter with commas", () => {
+		expect(
+			params({
+				filters: [
+					{ id: "role", value: { operator: "in", values: ["OWNER", "ADMIN"] } },
+				],
+			}),
+		).toBe("filter%5Brole%5D%5Bin%5D=OWNER%2CADMIN");
+	});
+
+	it("drops empty filters rather than sending a blank one", () => {
+		expect(
+			params({
+				filters: [
+					{ id: "name", value: { operator: "like", value: "" } },
+					{ id: "role", value: { operator: "in", values: [] } },
+				],
+			}),
+		).toBe("");
+	});
+
+	it("maps sort through the column's sortField override", () => {
+		expect(
+			params({
+				sorting: [{ id: "experience", desc: false }],
+				fieldMap: { experience: { sortField: "experienceName" } },
+			}),
+		).toBe("sort=experienceName");
+	});
+
+	it("prefixes a descending sort with a minus", () => {
+		expect(params({ sorting: [{ id: "startAt", desc: true }] })).toBe(
+			"sort=-startAt",
+		);
+	});
+
+	it("carries baseParams and the cursor", () => {
+		expect(params({ cursor: "c1", baseParams: { experienceId: "e1" } })).toBe(
+			"experienceId=e1&cursor=c1",
 		);
 	});
 });
