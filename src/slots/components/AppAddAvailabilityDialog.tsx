@@ -15,8 +15,8 @@ import { useState } from "react";
 import { useAllPages } from "#/hooks/use-all-pages";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppLink } from "#/shared/components/AppLink";
 import { AppQueryState } from "#/shared/components/AppQueryState";
+import { AppLink } from "#/shared/links";
 
 interface ExperienceRow {
 	id: string;

@@ -3,8 +3,7 @@ import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
 import { Plus } from "lucide-react";
 import { AppMetaobjectDefinitionsList } from "#/metaobjects";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppBreadcrumb, AppLink } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metaobjects/",

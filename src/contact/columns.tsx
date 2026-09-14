@@ -1,8 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
-import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
+import { AppResourceLink } from "#/shared/links";
 import type { ContactMessageListItem } from "./types";
 
 export const contactMessageColumns = (

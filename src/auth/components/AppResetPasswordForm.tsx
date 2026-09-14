@@ -1,6 +1,6 @@
 import { AppPasswordField } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppLink } from "#/shared/links";
 import { useResetPasswordForm } from "../hooks/use-reset-password-form";
 import { AppAuthFormWrapper } from "./AppAuthFormWrapper";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";

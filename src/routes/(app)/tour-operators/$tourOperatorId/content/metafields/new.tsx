@@ -3,7 +3,7 @@ import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppMetafieldDefinitionForm } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import { AppWriteGate } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppBreadcrumb } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metafields/new",

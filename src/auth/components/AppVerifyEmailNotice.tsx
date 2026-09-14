@@ -2,7 +2,7 @@ import { Button, Spinner } from "@vointika/ui";
 import { MailCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppLink } from "#/shared/components/AppLink";
+import { AppLink } from "#/shared/links";
 import { useResendVerification } from "../hooks/use-resend-verification";
 import { AppAuthMessageCard } from "./AppAuthMessageCard";
 

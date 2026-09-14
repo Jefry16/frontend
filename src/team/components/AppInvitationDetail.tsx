@@ -12,9 +12,8 @@ import { Mail, Send, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
-import { AppBackLink } from "#/shared/components/AppBackLink";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import {
 	effectiveStatus,
 	roleBadgeVariant,

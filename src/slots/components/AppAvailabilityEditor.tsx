@@ -16,9 +16,8 @@ import { queryKeys } from "#/lib/query-keys";
 import { mergeQueryState } from "#/lib/query-state";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppNewLink } from "#/shared/components/AppNewLink";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBreadcrumb, AppNewLink } from "#/shared/links";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
 import { AppSingleSlotForm } from "./AppSingleSlotForm";
 

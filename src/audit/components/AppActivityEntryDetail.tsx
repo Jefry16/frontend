@@ -16,10 +16,8 @@ import {
 import { History } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
-import { AppBackLink } from "#/shared/components/AppBackLink";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
-import { AppLink } from "#/shared/components/AppLink";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBackLink, AppBreadcrumb, AppLink } from "#/shared/links";
 import {
 	entityRoute,
 	formatAuditAction,

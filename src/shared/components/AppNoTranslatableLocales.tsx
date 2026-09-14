@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@vointika/ui";
 import { Languages } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppLink } from "./AppLink";
+import { AppLink } from "#/shared/links";
 
 export const AppNoTranslatableLocales = ({
 	tourOperatorId,

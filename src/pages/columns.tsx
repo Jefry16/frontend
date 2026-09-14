@@ -2,8 +2,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { AppBadge } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppDataTableHeader } from "#/shared/components/AppDataTableHeader";
-import { AppResourceLink } from "#/shared/components/AppResourceLink";
 import { timestampColumn } from "#/shared/components/table-columns";
+import { AppResourceLink } from "#/shared/links";
 import { pageStatusBadgeVariant, pageStatusLabel } from "./format";
 import type { PageListItem } from "./types";
 

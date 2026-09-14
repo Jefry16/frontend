@@ -30,4 +30,7 @@ export const appUiLabels: UiLabels = {
 	notTranslated: m.not_translated(),
 	translation: m.translation(),
 	translationFallbackHelp: m.translation_fallback_help(),
+	notFound: (resource) => m.not_found_resource({ resource }),
+	resourceNotFound: m.resource_not_found(),
+	goBack: m.go_back(),
 };

@@ -1,8 +1,8 @@
 import { AppFormSkeleton, AppPageHeader } from "@vointika/ui";
 import { UsersRound } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBreadcrumb } from "#/shared/links";
 import { useAudience } from "../hooks/use-audience";
 import { AppAudienceForm } from "./AppAudienceForm";
 

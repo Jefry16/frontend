@@ -3,7 +3,7 @@ import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppPolicyForm } from "#/policies";
 import { AppWriteGate } from "#/session";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppBreadcrumb } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/policies/new",

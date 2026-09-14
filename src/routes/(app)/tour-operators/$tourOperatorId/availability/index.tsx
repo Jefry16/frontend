@@ -3,7 +3,7 @@ import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
+import { AppBreadcrumb } from "#/shared/links";
 import { AppAddAvailabilityDialog, AppSlotsList } from "#/slots";
 
 export const Route = createFileRoute(

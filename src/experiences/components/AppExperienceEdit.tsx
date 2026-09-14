@@ -1,9 +1,8 @@
 import { AppFormSkeleton, AppPageHeader } from "@vointika/ui";
 import { Compass } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBackLink } from "#/shared/components/AppBackLink";
-import { AppBreadcrumb } from "#/shared/components/AppBreadcrumb";
 import { AppResourceView } from "#/shared/components/AppResourceView";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useExperience } from "../hooks/use-experience";
 import { AppExperienceForm } from "./AppExperienceForm";
 
