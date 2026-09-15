@@ -12,11 +12,11 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	useAppToast,
 } from "@vointika/ui";
 import { ListTree, Pencil, TextCursorInput, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
-import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";

@@ -13,10 +13,10 @@ import {
 	CardHeader,
 	CardTitle,
 	EmptyValue,
+	useAppToast,
 } from "@vointika/ui";
 import { Eye, EyeOff, Pencil, Shapes, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
-import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";

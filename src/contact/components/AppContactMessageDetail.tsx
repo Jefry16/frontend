@@ -11,9 +11,9 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	useAppToast,
 } from "@vointika/ui";
 import { Inbox, Mail, Trash2 } from "lucide-react";
-import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";

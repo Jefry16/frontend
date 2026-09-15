@@ -1,4 +1,4 @@
-import { useResource } from "#/hooks/use-resource";
+import { useResource } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
 import type { Experience } from "../types";
 

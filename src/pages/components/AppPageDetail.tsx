@@ -14,6 +14,7 @@ import {
 	CardHeader,
 	CardTitle,
 	EmptyValue,
+	useAppToast,
 } from "@vointika/ui";
 import {
 	Eye,
@@ -26,7 +27,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
-import { useAppToast } from "#/hooks/use-app-toast";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import { AppMetafieldsCard } from "#/metafields";

@@ -1,13 +1,9 @@
+import { screen } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { describe, expect, it, vi } from "vitest";
 import { fire, renderActions } from "#/test/actions";
 import { server } from "#/test/server";
 import { useMetaobjectActions } from "./use-metaobject-actions";
-
-const { toastMock } = vi.hoisted(() => ({
-	toastMock: { success: vi.fn(), error: vi.fn() },
-}));
-vi.mock("sonner", () => ({ toast: toastMock }));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
@@ -61,9 +57,9 @@ describe("useMetaobjectActions", () => {
 
 		await fire(() => result.current.publish.mutateAsync());
 
-		expect(toastMock.error).toHaveBeenCalledWith(
-			"This action requires ADMIN privileges",
-		);
+		expect(
+			await screen.findByText("This action requires ADMIN privileges"),
+		).toBeInTheDocument();
 		expect(invalidated()).toEqual([]);
 	});
 

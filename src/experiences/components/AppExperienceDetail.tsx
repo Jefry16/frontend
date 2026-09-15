@@ -10,6 +10,7 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	formatMoney,
 	Skeleton,
 } from "@vointika/ui";
 import {
@@ -21,7 +22,6 @@ import {
 	Pencil,
 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
-import { formatMoney } from "#/lib/money";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import {
