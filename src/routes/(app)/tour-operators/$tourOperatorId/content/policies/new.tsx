@@ -15,23 +15,23 @@ function NewPolicyPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageHeader
-				title={m.new_policy()}
-				breadcrumb={
-					<AppBreadcrumb
-						items={[
-							{ label: m.content() },
-							{
-								label: m.policies(),
-								to: "/tour-operators/$tourOperatorId/content/policies",
-								params: { tourOperatorId },
-							},
-							{ label: m.new_policy() },
-						]}
-					/>
-				}
-			/>
 			<AppWriteGate>
+				<AppPageHeader
+					title={m.new_policy()}
+					breadcrumb={
+						<AppBreadcrumb
+							items={[
+								{ label: m.content() },
+								{
+									label: m.policies(),
+									to: "/tour-operators/$tourOperatorId/content/policies",
+									params: { tourOperatorId },
+								},
+								{ label: m.new_policy() },
+							]}
+						/>
+					}
+				/>
 				<AppPolicyForm tourOperatorId={tourOperatorId} />
 			</AppWriteGate>
 		</AppPageShell>

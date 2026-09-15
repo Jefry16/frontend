@@ -15,23 +15,23 @@ function NewCategoryPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageHeader
-				title={m.new_category()}
-				breadcrumb={
-					<AppBreadcrumb
-						items={[
-							{ label: m.catalog() },
-							{
-								label: m.categories(),
-								to: "/tour-operators/$tourOperatorId/categories",
-								params: { tourOperatorId },
-							},
-							{ label: m.new_category() },
-						]}
-					/>
-				}
-			/>
 			<AppWriteGate>
+				<AppPageHeader
+					title={m.new_category()}
+					breadcrumb={
+						<AppBreadcrumb
+							items={[
+								{ label: m.catalog() },
+								{
+									label: m.categories(),
+									to: "/tour-operators/$tourOperatorId/categories",
+									params: { tourOperatorId },
+								},
+								{ label: m.new_category() },
+							]}
+						/>
+					}
+				/>
 				<AppCategoryForm tourOperatorId={tourOperatorId} />
 			</AppWriteGate>
 		</AppPageShell>

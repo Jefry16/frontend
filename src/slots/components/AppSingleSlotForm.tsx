@@ -1,8 +1,8 @@
 import { useStore } from "@tanstack/react-form";
 import {
-	AppAlert,
 	AppDateField,
 	AppFormActions,
+	AppFormCard,
 	AppTimeField,
 	FieldGroup,
 } from "@vointika/ui";
@@ -31,16 +31,13 @@ export const AppSingleSlotForm = ({
 	const endTime = useStore(form.store, (s) => s.values.endTime);
 
 	return (
-		<form
-			onSubmit={(e) => {
-				e.preventDefault();
-				form.handleSubmit();
-			}}
-			className="space-y-4"
+		<AppFormCard
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions isPending={isPending} submitLabel={m.create()} />
+			}
 		>
-			{errorMessage && (
-				<AppAlert title={m.error()} description={errorMessage} />
-			)}
 			<FieldGroup>
 				<div className="grid gap-4 sm:grid-cols-2">
 					<div className="sm:col-span-2">
@@ -81,7 +78,6 @@ export const AppSingleSlotForm = ({
 					)}
 				</form.Field>
 			</FieldGroup>
-			<AppFormActions isPending={isPending} submitLabel={m.create()} />
-		</form>
+		</AppFormCard>
 	);
 };

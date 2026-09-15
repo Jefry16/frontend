@@ -1,8 +1,8 @@
 import {
-	AppAlert,
 	AppCheckboxGroupField,
 	AppDateField,
 	AppFormActions,
+	AppFormCard,
 	AppTimeField,
 	FieldGroup,
 } from "@vointika/ui";
@@ -29,16 +29,13 @@ export const AppRecurringSlotForm = ({
 	);
 
 	return (
-		<form
-			onSubmit={(e) => {
-				e.preventDefault();
-				form.handleSubmit();
-			}}
-			className="space-y-4"
+		<AppFormCard
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions isPending={isPending} submitLabel={m.create()} />
+			}
 		>
-			{errorMessage && (
-				<AppAlert title={m.error()} description={errorMessage} />
-			)}
 			<FieldGroup>
 				<form.Field name="days">
 					{(field) => (
@@ -91,7 +88,6 @@ export const AppRecurringSlotForm = ({
 					)}
 				</form.Field>
 			</FieldGroup>
-			<AppFormActions isPending={isPending} submitLabel={m.create()} />
-		</form>
+		</AppFormCard>
 	);
 };

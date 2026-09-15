@@ -15,23 +15,23 @@ function NewPagePage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageHeader
-				title={m.new_page()}
-				breadcrumb={
-					<AppBreadcrumb
-						items={[
-							{ label: m.content() },
-							{
-								label: m.pages(),
-								to: "/tour-operators/$tourOperatorId/content/pages",
-								params: { tourOperatorId },
-							},
-							{ label: m.new_page() },
-						]}
-					/>
-				}
-			/>
 			<AppWriteGate>
+				<AppPageHeader
+					title={m.new_page()}
+					breadcrumb={
+						<AppBreadcrumb
+							items={[
+								{ label: m.content() },
+								{
+									label: m.pages(),
+									to: "/tour-operators/$tourOperatorId/content/pages",
+									params: { tourOperatorId },
+								},
+								{ label: m.new_page() },
+							]}
+						/>
+					}
+				/>
 				<AppPageForm tourOperatorId={tourOperatorId} />
 			</AppWriteGate>
 		</AppPageShell>

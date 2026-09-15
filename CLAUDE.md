@@ -38,6 +38,14 @@ the list never pretends.
    around an `AppLink` is `AppNewLink` written by hand. Gate:
    `src/shared/list-page.test.ts`. That there is only one action is by
    review; the gate reads the gating, not the count.
+9. **A create or edit page is the write gate first, then one breadcrumb
+   header, then one `AppFormCard` whose actions are `AppFormActions` with
+   nothing beside submit.** `AppWriteGate` is the first child of the shell
+   so a viewer sees Not Permitted and nothing else; the breadcrumb is the
+   way back, so no cancel button; an edit loads its record through
+   `AppResourceView`. The gate follows the route into every `App` component
+   it renders, so the rule holds wherever the form lives. Gate:
+   `src/shared/form-page.test.ts`.
 
 ## Page patterns
 
@@ -50,14 +58,19 @@ lands.
 | --- | --- |
 | list | `AppPageShell variant="list"`, `AppPageHeader` with a breadcrumb and one action behind `canWrite`, `AppDataTable` with an `emptyState` |
 | detail | `AppPageShell variant="detail"`, `AppResourceView` with a back link on not-found, `AppPageHeader` with breadcrumb and `AppPageActions`, detail fields in cards |
-| create | `AppPageShell variant="form"`, `AppPageHeader` with breadcrumb, `AppFormCard` with `AppFormActions` |
+| create | `AppPageShell variant="form"`, `AppWriteGate` first, `AppPageHeader` with breadcrumb, `AppFormCard` with `AppFormActions` and no second button |
 | edit | the create pattern inside `AppResourceView` |
 | translations | the edit pattern with `AppLocaleTabs`, or `AppNameTranslations` when the name is the only translatable field |
 | settings card | a stack of self-saving cards under one header |
 
 Named variants: a read-only list has no action; a list whose create is a
 dialog has a button where the others have a link; a read-only detail has no
-page actions.
+page actions; a create that needs a parent record (a metaobject entry, a
+slot for an experience) loads it through `AppResourceView` the way an edit
+does; availability picks recurring or one-time with a toggle above the
+card, one form card per mode; the first-run create-operator page is the
+auth shell with a card, not a form page, because there is no operator to
+frame it yet.
 
 ## Gates
 
