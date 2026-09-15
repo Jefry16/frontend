@@ -10,7 +10,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppNameTranslations } from "#/shared/components/AppNameTranslations";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useCategory } from "../hooks/use-category";
 
 export const AppCategoryTranslations = ({
@@ -29,6 +29,14 @@ export const AppCategoryTranslations = ({
 		(code) => code !== primary,
 	);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/categories"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_categories()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -39,6 +47,7 @@ export const AppCategoryTranslations = ({
 					items={[{ label: m.catalog() }, { label: m.categories() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={
 				<Card>
 					<CardContent className="flex flex-col gap-4">

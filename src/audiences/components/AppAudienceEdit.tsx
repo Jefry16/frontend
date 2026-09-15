@@ -1,7 +1,7 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { UsersRound } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useAudience } from "../hooks/use-audience";
 import { AppAudienceForm } from "./AppAudienceForm";
 
@@ -14,6 +14,14 @@ export const AppAudienceEdit = ({
 }) => {
 	const query = useAudience(tourOperatorId, audienceId);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/audiences"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_audiences()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -24,6 +32,7 @@ export const AppAudienceEdit = ({
 					items={[{ label: m.catalog() }, { label: m.audiences() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(audience) => (

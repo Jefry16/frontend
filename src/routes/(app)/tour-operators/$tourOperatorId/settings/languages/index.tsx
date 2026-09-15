@@ -17,7 +17,7 @@ import {
 	useOperatorLocales,
 	usePermissions,
 } from "#/session";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { AppOperatorLanguagesForm } from "#/tour-operator";
 
 export const Route = createFileRoute(
@@ -44,6 +44,15 @@ function LanguagesSettingsPage() {
 		/>
 	);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/settings"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_settings()}
+		</AppBackLink>
+	);
+
 	return (
 		<AppPageShell variant="form">
 			<AppResourceView
@@ -51,6 +60,7 @@ function LanguagesSettingsPage() {
 				resource={m.languages()}
 				icon={Languages}
 				breadcrumb={breadcrumb}
+				notFoundAction={backLink}
 				loading={
 					<Card>
 						<CardContent className="flex flex-col gap-4">

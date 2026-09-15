@@ -1,7 +1,7 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { ListTree } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useMenu } from "../hooks/use-menu";
 import { AppMenuItemsEditor } from "./AppMenuItemsEditor";
 
@@ -14,6 +14,14 @@ export const AppMenuEdit = ({
 }) => {
 	const query = useMenu(tourOperatorId, menuId);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/content/menus"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_menus()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -22,6 +30,7 @@ export const AppMenuEdit = ({
 			breadcrumb={
 				<AppBreadcrumb items={[{ label: m.content() }, { label: m.menus() }]} />
 			}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(menu) => (
