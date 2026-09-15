@@ -156,4 +156,38 @@ describe("AppMetafieldTranslationsCard", () => {
 		await waitFor(() => expect(body).toBeDefined());
 		expect(body).toEqual({ values: { "custom.difficulty": "" } });
 	});
+
+	it("keeps a refused save's reason above the fields until the clear succeeds", async () => {
+		const user = userEvent.setup();
+		server.use(
+			http.put(ENDPOINT, () =>
+				HttpResponse.json(
+					{
+						status: 422,
+						error: "Unprocessable Entity",
+						message: "Translation is too long",
+					},
+					{ status: 422 },
+				),
+			),
+			http.delete(ENDPOINT, () => new HttpResponse(null, { status: 204 })),
+			http.get(ENDPOINT, () =>
+				HttpResponse.json({ "custom.difficulty": "Moderado" }),
+			),
+		);
+		renderCard({ "custom.difficulty": "Moderado" });
+
+		await user.type(screen.getByLabelText(/Difficulty/), "!");
+		await user.click(screen.getByRole("button", { name: /save/i }));
+
+		expect(await screen.findByRole("alert")).toHaveTextContent(
+			"Translation is too long",
+		);
+
+		await user.click(screen.getByRole("button", { name: /clear/i }));
+
+		await waitFor(() =>
+			expect(screen.queryByRole("alert")).not.toBeInTheDocument(),
+		);
+	});
 });
