@@ -4,11 +4,10 @@ import {
 	AppFormCard,
 	AppTextareaField,
 	AppTranslationNotice,
-	Button,
 	FieldGroup,
-	Spinner,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
+import { AppClearTranslationButton } from "#/shared/components/AppClearTranslationButton";
 import { useExperienceTranslationForm } from "../hooks/use-experience-translation-form";
 import type { Experience, ExperienceTranslation } from "../types";
 
@@ -48,15 +47,11 @@ export const AppExperienceTranslationForm = ({
 					submitLabel={m.save_translation()}
 					secondary={
 						hasTranslation(translation) && (
-							<Button
-								type="button"
-								variant="outline"
-								disabled={isPending || isClearing}
+							<AppClearTranslationButton
+								isClearing={isClearing}
+								disabled={isPending}
 								onClick={() => clear()}
-							>
-								{isClearing && <Spinner className="size-4" />}
-								{m.clear_translation()}
-							</Button>
+							/>
 						)
 					}
 				/>

@@ -11,7 +11,7 @@ import {
 	useMetafieldTranslationLocales,
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
-import { localeLabel, useOperatorLocales } from "#/session";
+import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import {
 	useOperatorTranslation,
@@ -22,11 +22,10 @@ import { AppOperatorTranslationForm } from "./AppOperatorTranslationForm";
 
 export const AppOperatorTranslations = ({
 	tourOperatorId,
-	canWrite,
 }: {
 	tourOperatorId: string;
-	canWrite: boolean;
 }) => {
+	const { canWrite } = usePermissions();
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const listQuery = useOperatorTranslations(tourOperatorId);
 
@@ -60,7 +59,7 @@ export const AppOperatorTranslations = ({
 							active={active}
 							onSelect={setPicked}
 							translated={translated}
-							label={(code) => localeLabel(code)}
+							label={localeLabel}
 						/>
 						{active && (
 							<AppQueryState
@@ -90,7 +89,6 @@ export const AppOperatorTranslations = ({
 								ownerType="tour_operator"
 								ownerId={tourOperatorId}
 								locale={active}
-								canWrite={canWrite}
 							/>
 						)}
 					</div>

@@ -6,7 +6,6 @@ import {
 	AppQueryState,
 	AppResourceView,
 	AppTranslationSummary,
-	Skeleton,
 	type TranslatedField,
 } from "@vointika/ui";
 import { Languages } from "lucide-react";
@@ -16,7 +15,7 @@ import {
 	useMetafieldTranslationLocales,
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
-import { localeLabel, useOperatorLocales } from "#/session";
+import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { usePage } from "../hooks/use-page";
@@ -30,12 +29,11 @@ import { AppPageTranslationForm } from "./AppPageTranslationForm";
 export const AppPageTranslations = ({
 	tourOperatorId,
 	pageId,
-	canWrite,
 }: {
 	tourOperatorId: string;
 	pageId: string;
-	canWrite: boolean;
 }) => {
+	const { canWrite } = usePermissions();
 	const pageQuery = usePage(tourOperatorId, pageId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const listQuery = usePageTranslations(tourOperatorId, pageId);
@@ -76,18 +74,13 @@ export const AppPageTranslations = ({
 				<AppBreadcrumb items={[{ label: m.content() }, { label: m.pages() }]} />
 			}
 			notFoundAction={backLink}
-			loading={
-				<div className="flex flex-col gap-4">
-					<Skeleton className="h-9 w-64" />
-					<AppFormSkeleton rows={3} />
-				</div>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(page) => (
 				<>
 					<AppPageHeader
 						title={m.translations()}
-						description={m.name_translations_description()}
+						description={m.translations_description()}
 						breadcrumb={
 							<AppBreadcrumb
 								items={[
@@ -119,7 +112,7 @@ export const AppPageTranslations = ({
 										active={active}
 										onSelect={setPicked}
 										translated={translated}
-										label={(code) => localeLabel(code)}
+										label={localeLabel}
 									/>
 									{active && (
 										<AppQueryState
@@ -151,7 +144,6 @@ export const AppPageTranslations = ({
 											ownerType="page"
 											ownerId={pageId}
 											locale={active}
-											canWrite={canWrite}
 										/>
 									)}
 								</div>

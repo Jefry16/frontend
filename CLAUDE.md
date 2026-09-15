@@ -46,6 +46,12 @@ the list never pretends.
    `AppResourceView`. The gate follows the route into every `App` component
    it renders, so the rule holds wherever the form lives. Gate:
    `src/shared/form-page.test.ts`.
+10. **A translations page is the one write pattern a viewer may open.** No
+    write gate; an editor gets the form and a viewer gets
+    `AppTranslationSummary`; one breadcrumb header; the one-language state
+    is `AppNoTranslatableLocales`; every form card carries
+    `AppTranslationNotice`; the only button beside Save is
+    `AppClearTranslationButton`. Gate: `src/shared/translations-page.test.ts`.
 
 ## Page patterns
 
@@ -60,7 +66,7 @@ lands.
 | detail | `AppPageShell variant="detail"`, `AppResourceView` with a back link on not-found, `AppPageHeader` with breadcrumb and `AppPageActions`, detail fields in cards |
 | create | `AppPageShell variant="form"`, `AppWriteGate` first, `AppPageHeader` with breadcrumb, `AppFormCard` with `AppFormActions` and no second button |
 | edit | the create pattern inside `AppResourceView` |
-| translations | the edit pattern with `AppLocaleTabs`, or `AppNameTranslations` when the name is the only translatable field |
+| translations | `AppPageShell variant="form"` with no gate, `AppPageHeader` with breadcrumb, `AppLocaleTabs` over one `AppFormCard` per locale (`AppTranslationSummary` for a viewer, `AppNoTranslatableLocales` with one language); `AppNameTranslations` when the name is the only translatable field |
 | settings card | a stack of self-saving cards under one header |
 
 Named variants: a read-only list has no action; a list whose create is a
@@ -70,7 +76,10 @@ slot for an experience) loads it through `AppResourceView` the way an edit
 does; availability picks recurring or one-time with a toggle above the
 card, one form card per mode; the first-run create-operator page is the
 auth shell with a card, not a form page, because there is no operator to
-frame it yet.
+frame it yet; the operator's own translations page has no record to load,
+so its header sits in the route rather than inside `AppResourceView`;
+`AppNameTranslations` lives in `shared/`, which cannot import a module, so
+its caller reads `usePermissions()` and passes `canWrite` in.
 
 ## Gates
 

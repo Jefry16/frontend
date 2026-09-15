@@ -2,7 +2,8 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { allPagesKey } from "@vointika/ui";
 import { HttpResponse, http } from "msw";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { AuthUser } from "#/auth";
 import { queryKeys } from "#/lib/query-keys";
 import { server } from "#/test/server";
 import { createTestQueryClient, renderWithProviders } from "#/test/test-utils";
@@ -15,6 +16,36 @@ const OWNER = "e-1";
 const LOCALE = "es";
 const OWNER_PATH = `${API}/tour-operators/${OP}/metafield-translations/experience/${OWNER}`;
 const ENDPOINT = `${OWNER_PATH}/${LOCALE}`;
+
+vi.mock("@tanstack/react-router", async () => {
+	const actual = await vi.importActual<typeof import("@tanstack/react-router")>(
+		"@tanstack/react-router",
+	);
+	return {
+		...actual,
+		useParams: () => ({ tourOperatorId: OP }),
+		useNavigate: () => vi.fn(),
+	};
+});
+
+const owner: AuthUser = {
+	id: "u-1",
+	context: "users",
+	name: "Ada",
+	avatarUrl: null,
+	language: "en",
+	tourOperators: [
+		{
+			id: OP,
+			name: "Acme Tours",
+			logoUrl: null,
+			timezone: "Europe/Madrid",
+			currency: "EUR",
+			isDefault: true,
+			role: "OWNER",
+		},
+	],
+};
 
 const definition = (
 	key: string,
@@ -69,9 +100,8 @@ const renderCard = (overlay: Record<string, string>) => {
 			ownerType="experience"
 			ownerId={OWNER}
 			locale={LOCALE}
-			canWrite
 		/>,
-		{ queryClient: qc },
+		{ queryClient: qc, user: owner },
 	);
 };
 

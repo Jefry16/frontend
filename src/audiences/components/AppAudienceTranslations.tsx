@@ -1,14 +1,8 @@
-import {
-	AppPageHeader,
-	AppResourceView,
-	Card,
-	CardContent,
-	Skeleton,
-} from "@vointika/ui";
+import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { UsersRound } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { localeLabel, useOperatorLocales } from "#/session";
+import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
 import { AppNameTranslations } from "#/shared/components/AppNameTranslations";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useAudience } from "../hooks/use-audience";
@@ -16,12 +10,11 @@ import { useAudience } from "../hooks/use-audience";
 export const AppAudienceTranslations = ({
 	tourOperatorId,
 	audienceId,
-	canWrite,
 }: {
 	tourOperatorId: string;
 	audienceId: string;
-	canWrite: boolean;
 }) => {
+	const { canWrite } = usePermissions();
 	const query = useAudience(tourOperatorId, audienceId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const primary = localesQuery.data?.primaryLocale;
@@ -48,14 +41,7 @@ export const AppAudienceTranslations = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-4">
-						<Skeleton className="h-9 w-64" />
-						<Skeleton className="h-9 w-full" />
-					</CardContent>
-				</Card>
-			}
+			loading={<AppFormSkeleton rows={1} />}
 		>
 			{(audience) => (
 				<>
