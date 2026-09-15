@@ -1,4 +1,4 @@
-import { act, renderHook, screen } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { describe, expect, it } from "vitest";
 import { server } from "#/test/server";
@@ -27,11 +27,15 @@ const render = (
 };
 
 const save = async (
-	result: { current: { mutateAsync: (c: never) => Promise<unknown> } },
+	result: {
+		current: { save: { mutateAsync: (c: never) => Promise<unknown> } };
+	},
 	changes: unknown[],
 ) => {
 	await act(async () => {
-		await result.current.mutateAsync(changes as never).catch(() => undefined);
+		await result.current.save
+			.mutateAsync(changes as never)
+			.catch(() => undefined);
 	});
 };
 
@@ -92,7 +96,7 @@ describe("useMetafieldValueSave", () => {
 		expect(seen[0].path).toBe(path);
 	});
 
-	it("surfaces the backend's reason when the write is refused", async () => {
+	it("keeps the backend's reason beside the form when the write is refused", async () => {
 		server.use(
 			http.put(`${API}/tour-operators/:op/metafields/:ownerType/:ownerId`, () =>
 				HttpResponse.json(
@@ -109,10 +113,8 @@ describe("useMetafieldValueSave", () => {
 
 		await save(result, [change("difficulty", "hard")]);
 
-		expect(
-			await screen.findByText(
-				"A number_integer metafield value must be a whole number",
-			),
-		).toBeInTheDocument();
+		expect(result.current.errorMessage).toBe(
+			"A number_integer metafield value must be a whole number",
+		);
 	});
 });

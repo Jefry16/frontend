@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppToast } from "@vointika/ui";
 import type { AxiosError } from "axios";
+import { useState } from "react";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
@@ -22,8 +23,9 @@ export const useMetafieldValueSave = (
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
 	const endpoint = ownerMetafieldsEndpoint(tourOperatorId, ownerType, ownerId);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	return useMutation<void, AxiosError, MetafieldValueChange[]>({
+	const save = useMutation<void, AxiosError, MetafieldValueChange[]>({
 		mutationFn: async (changes) => {
 			const values = Object.fromEntries(
 				changes.map((c) => [`${c.namespace}.${c.key}`, c.value]),
@@ -45,7 +47,12 @@ export const useMetafieldValueSave = (
 					queryKey: queryKeys.activity(tourOperatorId),
 				}),
 			]),
-		onSuccess: () => toast.success(m.metafields_saved()),
-		onError: (error) => toast.error(apiErrorMessage(error)),
+		onSuccess: () => {
+			setErrorMessage(null);
+			toast.success(m.metafields_saved());
+		},
+		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});
+
+	return { save, errorMessage };
 };

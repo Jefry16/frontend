@@ -26,7 +26,7 @@ describe("useOperatorSeoSave", () => {
 		});
 
 		await act(async () => {
-			await result.current.mutateAsync({
+			await result.current.save.mutateAsync({
 				seoTitle: "Sail the coast",
 				seoDescription: null,
 				ogImageMediaId: "m-og",
@@ -51,7 +51,7 @@ describe("useOperatorSeoSave", () => {
 		});
 
 		await act(async () => {
-			await result.current.mutateAsync({
+			await result.current.save.mutateAsync({
 				seoTitle: null,
 				seoDescription: null,
 				ogImageMediaId: null,
@@ -62,5 +62,36 @@ describe("useOperatorSeoSave", () => {
 			queryKeys.operatorDetails(OP),
 			queryKeys.activity(OP),
 		]);
+	});
+
+	it("keeps the refusal beside the form and clears it on the next save", async () => {
+		server.use(
+			http.patch(URL_, () =>
+				HttpResponse.json(
+					{
+						status: 422,
+						error: "Unprocessable Entity",
+						message: "SEO title is too long",
+					},
+					{ status: 422 },
+				),
+			),
+		);
+		const { Wrapper } = wrapperWithProviders();
+		const { result } = renderHook(() => useOperatorSeoSave(OP), {
+			wrapper: Wrapper,
+		});
+		const seo = { seoTitle: "x", seoDescription: null, ogImageMediaId: null };
+
+		await act(async () => {
+			await result.current.save.mutateAsync(seo).catch(() => undefined);
+		});
+		expect(result.current.errorMessage).toBe("SEO title is too long");
+
+		server.use(patching(vi.fn()));
+		await act(async () => {
+			await result.current.save.mutateAsync(seo);
+		});
+		expect(result.current.errorMessage).toBeNull();
 	});
 });

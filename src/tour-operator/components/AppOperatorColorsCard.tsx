@@ -1,11 +1,13 @@
 import {
 	AppColorField,
+	AppDetailField,
 	AppForm,
 	AppFormActions,
 	AppFormSkeleton,
 	AppQueryState,
 	AppSettingsCard,
 	Button,
+	EmptyValue,
 	FieldLabel,
 } from "@vointika/ui";
 import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
@@ -177,31 +179,24 @@ const ColorsForm = ({
 	);
 };
 
-const ColorsSummary = ({ brand }: { brand: Brand }) => {
-	const groups = ROLES.map((role) => ({
-		label: role.label(),
-		colors: brand.colors[role.name],
-	})).filter((g) => g.colors.length > 0);
-
-	if (groups.length === 0) {
-		return (
-			<p className="text-muted-foreground text-sm">{m.brand_colors_empty()}</p>
-		);
-	}
-
-	return (
-		<div className="flex flex-col gap-4">
-			{groups.map((group) => (
-				<div key={group.label} className="flex flex-col gap-2">
-					<FieldLabel>{group.label}</FieldLabel>
-					<div className="flex flex-col gap-2">
-						{group.colors.map((color, index) => (
-							// biome-ignore lint/suspicious/noArrayIndexKey: a colour row has no identity but its position
-							<Swatch key={index} color={color} />
-						))}
-					</div>
-				</div>
-			))}
-		</div>
-	);
-};
+const ColorsSummary = ({ brand }: { brand: Brand }) => (
+	<dl className="flex flex-col gap-6">
+		{ROLES.map((role) => {
+			const colors = brand.colors[role.name];
+			return (
+				<AppDetailField key={role.name} label={role.label()}>
+					{colors.length === 0 ? (
+						<EmptyValue />
+					) : (
+						<div className="flex flex-col gap-2">
+							{colors.map((color, index) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: a colour row has no identity but its position
+								<Swatch key={index} color={color} />
+							))}
+						</div>
+					)}
+				</AppDetailField>
+			);
+		})}
+	</dl>
+);

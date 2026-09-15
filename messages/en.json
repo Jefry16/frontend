@@ -676,7 +676,6 @@
 	"brand_background": "Background",
 	"brand_foreground": "Text on it",
 	"add_color": "Add colour",
-	"brand_colors_empty": "No colours yet — the theme falls back to its own.",
 	"brand_colors_saved": "Brand colours saved",
 	"brand_social_links": "Social links",
 	"brand_social_links_hint": "Where a visitor can find you. One link per platform.",

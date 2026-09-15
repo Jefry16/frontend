@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppToast } from "@vointika/ui";
 import type { AxiosError } from "axios";
+import { useState } from "react";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
@@ -17,6 +18,7 @@ export const useMetafieldTranslationSave = (
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
 	const endpoint = `${ownerMetafieldTranslationsEndpoint(tourOperatorId, ownerType, ownerId)}/${locale}`;
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const invalidate = () =>
 		Promise.all([
@@ -47,8 +49,11 @@ export const useMetafieldTranslationSave = (
 			await authApi.put(endpoint, { values });
 		},
 		onSettled: invalidate,
-		onSuccess: () => toast.success(m.translation_saved()),
-		onError: (error) => toast.error(apiErrorMessage(error)),
+		onSuccess: () => {
+			setErrorMessage(null);
+			toast.success(m.translation_saved());
+		},
+		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});
 
 	const clear = useMutation<void, AxiosError, void>({
@@ -56,9 +61,12 @@ export const useMetafieldTranslationSave = (
 			await authApi.delete(endpoint);
 		},
 		onSettled: invalidate,
-		onSuccess: () => toast.deleted(m.translation()),
-		onError: (error) => toast.error(apiErrorMessage(error)),
+		onSuccess: () => {
+			setErrorMessage(null);
+			toast.deleted(m.translation());
+		},
+		onError: (error) => setErrorMessage(apiErrorMessage(error)),
 	});
 
-	return { save, clear };
+	return { save, clear, errorMessage };
 };
