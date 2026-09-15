@@ -69,6 +69,15 @@ the list never pretends.
     `AppResourceView` — a marker independent of the rules the gate checks, so
     a page missing its breadcrumb fails rather than silently falling out of
     scope.
+13. **A form names its save failure where the form is.** Every `AppForm`
+    and `AppFormCard` passes `errorMessage`; the hook that saves it owns
+    that message, sets it from `apiErrorMessage` on failure and clears it
+    on the next success, and never reports the failure by toast: a toast
+    is gone before the reader looks up, the alert stays above the fields
+    until they try again. Success stays a toast. Gate:
+    `src/shared/form-error.test.ts`, scoped to every file that renders
+    `AppForm` or `AppFormCard`, wherever on the page the form sits. That
+    no save hook also toasts its error is by review.
 
 ## Page patterns
 

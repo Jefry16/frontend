@@ -32,7 +32,11 @@ export const AppMetafieldsCard = ({
 }) => {
 	const { canWrite } = usePermissions();
 	const query = useOwnerMetafields(tourOperatorId, ownerType, ownerId);
-	const save = useMetafieldValueSave(tourOperatorId, ownerType, ownerId);
+	const { save, errorMessage } = useMetafieldValueSave(
+		tourOperatorId,
+		ownerType,
+		ownerId,
+	);
 	const [drafts, setDrafts] = useState<Record<string, string>>({});
 
 	const untilKnown = (
@@ -95,6 +99,7 @@ export const AppMetafieldsCard = ({
 								},
 							})
 						}
+						errorMessage={errorMessage}
 						actions={
 							changes.length > 0 && (
 								<AppFormActions

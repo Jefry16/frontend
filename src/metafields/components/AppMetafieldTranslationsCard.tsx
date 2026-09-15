@@ -43,7 +43,7 @@ export const AppMetafieldTranslationsCard = ({
 		ownerId,
 		locale,
 	);
-	const { save, clear } = useMetafieldTranslationSave(
+	const { save, clear, errorMessage } = useMetafieldTranslationSave(
 		tourOperatorId,
 		ownerType,
 		ownerId,
@@ -126,6 +126,7 @@ export const AppMetafieldTranslationsCard = ({
 											},
 										})
 									}
+									errorMessage={errorMessage}
 									actions={
 										(Object.keys(changes).length > 0 ||
 											Object.keys(translated).length > 0) && (

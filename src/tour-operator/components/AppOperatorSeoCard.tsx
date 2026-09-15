@@ -69,7 +69,7 @@ const SeoForm = ({
 	const [imageId, setImageId] = useState(seo.ogImageMediaId);
 	const [imageError, setImageError] = useState<string | null>(null);
 
-	const save = useOperatorSeoSave(tourOperatorId);
+	const { save, errorMessage } = useOperatorSeoSave(tourOperatorId);
 	const upload = useOperatorSeoImageUpload(tourOperatorId);
 	const image = useMedia(tourOperatorId, imageId);
 
@@ -92,6 +92,7 @@ const SeoForm = ({
 	return (
 		<AppForm
 			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
 			actions={
 				<AppFormActions
 					isPending={save.isPending}
