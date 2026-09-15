@@ -1,14 +1,9 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { server } from "#/test/server";
 import { wrapperWithProviders } from "#/test/test-utils";
 import { MEDIA_ACCEPT, useMediaUpload } from "./use-media-upload";
-
-const { toastMock } = vi.hoisted(() => ({
-	toastMock: { success: vi.fn(), error: vi.fn() },
-}));
-vi.mock("sonner", () => ({ toast: toastMock }));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
@@ -41,11 +36,6 @@ const upload = async (
 };
 
 describe("useMediaUpload", () => {
-	beforeEach(() => {
-		toastMock.success.mockReset();
-		toastMock.error.mockReset();
-	});
-
 	it("sends one request per valid file", async () => {
 		const posted = vi.fn();
 		server.use(accepting(posted));
@@ -70,7 +60,7 @@ describe("useMediaUpload", () => {
 		await upload(result, [file(name, type, size)]);
 
 		expect(posted).not.toHaveBeenCalled();
-		expect(toastMock.error).toHaveBeenCalled();
+		expect(await screen.findByText(new RegExp(name))).toBeInTheDocument();
 	});
 
 	it("accepts a file exactly at the limit", async () => {
@@ -94,9 +84,7 @@ describe("useMediaUpload", () => {
 		]);
 
 		await waitFor(() => expect(posted).toHaveBeenCalledTimes(1));
-		expect(toastMock.error).toHaveBeenCalledWith(
-			expect.stringContaining("bad.gif"),
-		);
+		expect(await screen.findByText(/bad\.gif/)).toBeInTheDocument();
 	});
 
 	it("sends nothing when every file is rejected", async () => {

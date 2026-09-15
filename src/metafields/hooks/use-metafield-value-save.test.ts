@@ -1,15 +1,10 @@
-import { act, renderHook } from "@testing-library/react";
+import { act, renderHook, screen } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { server } from "#/test/server";
 import { wrapperWithProviders } from "#/test/test-utils";
 import type { MetafieldOwnerTypeCode } from "../types";
 import { useMetafieldValueSave } from "./use-metafield-value-save";
-
-const { toastMock } = vi.hoisted(() => ({
-	toastMock: { success: vi.fn(), error: vi.fn() },
-}));
-vi.mock("sonner", () => ({ toast: toastMock }));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
@@ -114,8 +109,10 @@ describe("useMetafieldValueSave", () => {
 
 		await save(result, [change("difficulty", "hard")]);
 
-		expect(toastMock.error).toHaveBeenCalledWith(
-			"A number_integer metafield value must be a whole number",
-		);
+		expect(
+			await screen.findByText(
+				"A number_integer metafield value must be a whole number",
+			),
+		).toBeInTheDocument();
 	});
 });

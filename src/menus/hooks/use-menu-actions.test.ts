@@ -1,13 +1,9 @@
+import { screen } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { describe, expect, it, vi } from "vitest";
 import { fire, renderActions } from "#/test/actions";
 import { server } from "#/test/server";
 import { useMenuActions } from "./use-menu-actions";
-
-const { toastMock } = vi.hoisted(() => ({
-	toastMock: { success: vi.fn(), error: vi.fn() },
-}));
-vi.mock("sonner", () => ({ toast: toastMock }));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
@@ -77,10 +73,12 @@ describe("useMenuActions", () => {
 		const { result } = renderActions(() => useMenuActions(OP, ID));
 
 		await fire(() => result.current.rename.mutateAsync({ title: "Main" }));
-		expect(toastMock.error).toHaveBeenCalledWith("That title is taken");
+		expect(await screen.findByText("That title is taken")).toBeInTheDocument();
 
-		toastMock.error.mockClear();
 		await fire(() => result.current.remove.mutateAsync());
-		expect(toastMock.error).not.toHaveBeenCalledWith("That title is taken");
+		expect(
+			await screen.findByText("Something went wrong. Please try again."),
+		).toBeInTheDocument();
+		expect(screen.queryAllByText("That title is taken")).toHaveLength(1);
 	});
 });

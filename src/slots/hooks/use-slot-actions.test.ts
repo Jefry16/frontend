@@ -1,13 +1,9 @@
+import { screen } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { fire, renderActions } from "#/test/actions";
 import { server } from "#/test/server";
 import { useSlotActions } from "./use-slot-actions";
-
-const { toastMock } = vi.hoisted(() => ({
-	toastMock: { success: vi.fn(), error: vi.fn() },
-}));
-vi.mock("sonner", () => ({ toast: toastMock }));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
@@ -66,8 +62,10 @@ describe("useSlotActions", () => {
 			]),
 		);
 
-		expect(toastMock.error).toHaveBeenCalledWith(
-			"Capacity cannot be below the seats already booked",
-		);
+		expect(
+			await screen.findByText(
+				"Capacity cannot be below the seats already booked",
+			),
+		).toBeInTheDocument();
 	});
 });

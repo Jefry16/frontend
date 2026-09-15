@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type RenderOptions, render } from "@testing-library/react";
 import {
+	Toaster,
 	TooltipProvider,
 	UiDataProvider,
 	UiLabelsProvider,
@@ -34,7 +35,16 @@ const seedAuth = (qc: QueryClient, user?: AuthUser) => {
 };
 
 const wrap = (qc: QueryClient, auth: boolean, children: ReactNode) => {
-	const inner = <TooltipProvider>{children}</TooltipProvider>;
+	// A real Toaster, not a mock: useAppToast calls sonner's toast from inside
+	// @vointika/ui, a module a test file cannot reach with vi.mock("sonner", …)
+	// once this app stops declaring sonner itself. Assert on the rendered
+	// sentence instead.
+	const inner = (
+		<TooltipProvider>
+			{children}
+			<Toaster />
+		</TooltipProvider>
+	);
 	return (
 		<UiLabelsProvider labels={appUiLabels}>
 			<QueryClientProvider client={qc}>
