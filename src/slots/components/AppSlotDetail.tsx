@@ -5,6 +5,7 @@ import {
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
+	AppResourceView,
 	Card,
 	CardContent,
 	CardHeader,
@@ -22,7 +23,6 @@ import { AppActivityCard } from "#/audit";
 import { formatMoney } from "#/lib/money";
 import * as m from "#/paraglide/messages";
 import { useOperatorCurrency, usePermissions } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb, AppLink } from "#/shared/links";
 import {
 	formatBookedCapacity,

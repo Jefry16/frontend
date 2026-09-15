@@ -2,6 +2,7 @@ import {
 	AppEmptyState,
 	AppFormSkeleton,
 	AppPageHeader,
+	AppResourceView,
 	Button,
 	Card,
 	CardContent,
@@ -16,7 +17,6 @@ import { useExperience } from "#/experiences";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBreadcrumb, AppNewLink } from "#/shared/links";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
 import { AppSingleSlotForm } from "./AppSingleSlotForm";

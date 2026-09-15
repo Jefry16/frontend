@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppFormSkeleton, AppPageHeader, AppPageShell } from "@vointika/ui";
+import {
+	AppFormSkeleton,
+	AppPageHeader,
+	AppPageShell,
+	AppResourceView,
+} from "@vointika/ui";
 import { Shapes } from "lucide-react";
 import { AppMetaobjectForm, useMetaobjectDefinition } from "#/metaobjects";
 import * as m from "#/paraglide/messages";
 import { AppWriteGate } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBreadcrumb } from "#/shared/links";
 
 export const Route = createFileRoute(

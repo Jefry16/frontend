@@ -1,7 +1,6 @@
-import { AppFormSkeleton, AppPageHeader } from "@vointika/ui";
+import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { MapPin } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBreadcrumb } from "#/shared/links";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 import { AppPickupLocationForm } from "./AppPickupLocationForm";

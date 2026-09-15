@@ -4,6 +4,7 @@ import {
 	AppDetailField,
 	AppPageHeader,
 	AppPageShell,
+	AppResourceView,
 	Card,
 	CardContent,
 	Skeleton,
@@ -16,7 +17,6 @@ import {
 	useOperatorLocales,
 	usePermissions,
 } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBreadcrumb } from "#/shared/links";
 import { AppOperatorLanguagesForm } from "#/tour-operator";
 

@@ -7,6 +7,7 @@ import {
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
+	AppResourceView,
 	Card,
 	CardContent,
 	CardHeader,
@@ -19,7 +20,6 @@ import { useAppToast } from "#/hooks/use-app-toast";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { metaobjectStatusBadgeVariant, metaobjectStatusLabel } from "../format";
 import { useMetaobject } from "../hooks/use-metaobject";

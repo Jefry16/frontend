@@ -5,6 +5,7 @@ import {
 	AppDetailField,
 	AppPageActions,
 	AppPageHeader,
+	AppResourceView,
 	Card,
 	CardContent,
 	CardHeader,
@@ -28,7 +29,6 @@ import {
 	useOperatorDateTime,
 	usePermissions,
 } from "#/session";
-import { AppResourceView } from "#/shared/components/AppResourceView";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
