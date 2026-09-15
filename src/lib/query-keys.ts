@@ -60,6 +60,11 @@ export const queryKeys = {
 		["policies", tourOperatorId, policyId] as const,
 	policyTranslations: (tourOperatorId: string, policyId: string) =>
 		["policies", tourOperatorId, policyId, "translations"] as const,
+	policyTranslation: (
+		tourOperatorId: string,
+		policyId: string,
+		locale: string,
+	) => ["policies", tourOperatorId, policyId, "translations", locale] as const,
 	metafieldDefinitions: (tourOperatorId: string) =>
 		["metafield-definitions", tourOperatorId] as const,
 	metafieldDefinition: (tourOperatorId: string, definitionId: string) =>

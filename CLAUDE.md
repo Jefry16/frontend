@@ -56,12 +56,10 @@ the list never pretends.
     `AppClearTranslationButton`; and the active locale's text is its own
     `QueryState` under `AppQueryState`, which the form and the summary both
     read. The translations list says which locales have text, which is what
-    the tab dots are, and never what one of them says. Where the backend has
-    no `GET …/translations/{locale}` — policies, whose controller is list,
-    `PUT` and `DELETE` only — the hook beside the endpoint derives the
-    overlay from the list and hands back a `QueryState`, so the page reads
-    like every other one and gains the endpoint without changing.
-    Gate: `src/shared/translations-page.test.ts`.
+    the tab dots are, and never what one of them says. Every one of the five
+    `GET …/translations/{locale}` endpoints answers an untranslated locale
+    with an empty record, never a `404`, so the overlay is always a form to
+    fill in. Gate: `src/shared/translations-page.test.ts`.
 11. **A settings page is a stack of self-describing cards a viewer can
     read.** No write gate; one breadcrumb header; every card is
     `AppSettingsCard` with a title and a description; a card's form is
