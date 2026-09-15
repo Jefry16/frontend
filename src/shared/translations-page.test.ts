@@ -74,12 +74,11 @@ describe("every translations page is an ungated locale editor a viewer can read"
 			offenders,
 			"The translations list says which locales have text — that is what " +
 				"the tab dots read — and never what one of them says. A locale's " +
-				"overlay is its own QueryState handed to AppQueryState, so the form " +
+				"overlay is its own query handed to AppQueryState, so the form " +
 				"and the viewer's summary read one source that can load and fail on " +
-				"its own. Where the backend has no GET …/translations/{locale} " +
-				"(policies), the hook beside the endpoint derives one from the list " +
-				"and presents it as a QueryState, so the component never knows the " +
-				"difference. This rule sees one shape of hand-picking, " +
+				"its own. Every GET …/translations/{locale} answers an untranslated " +
+				"locale with an empty record rather than a 404, so there is always " +
+				"a form to render. This rule sees one shape of hand-picking, " +
 				"`.find((t) => t.locale === …)` in a component, not every one.",
 		).toEqual([]);
 	});
