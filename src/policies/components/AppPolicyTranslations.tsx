@@ -7,13 +7,12 @@ import {
 	AppResourceView,
 	AppTranslationSummary,
 	mergeQueryState,
-	Skeleton,
 	type TranslatedField,
 } from "@vointika/ui";
 import { Scale } from "lucide-react";
 import { useState } from "react";
 import * as m from "#/paraglide/messages";
-import { localeLabel, useOperatorLocales } from "#/session";
+import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { usePolicy } from "../hooks/use-policy";
@@ -24,12 +23,11 @@ import { AppPolicyTranslationForm } from "./AppPolicyTranslationForm";
 export const AppPolicyTranslations = ({
 	tourOperatorId,
 	policyId,
-	canWrite,
 }: {
 	tourOperatorId: string;
 	policyId: string;
-	canWrite: boolean;
 }) => {
+	const { canWrite } = usePermissions();
 	const policyQuery = usePolicy(tourOperatorId, policyId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const listQuery = usePolicyTranslations(tourOperatorId, policyId);
@@ -69,18 +67,13 @@ export const AppPolicyTranslations = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<div className="flex flex-col gap-4">
-					<Skeleton className="h-9 w-64" />
-					<AppFormSkeleton rows={3} />
-				</div>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(policy) => (
 				<>
 					<AppPageHeader
 						title={m.translations()}
-						description={policy.title}
+						description={m.translations_description()}
 						breadcrumb={
 							<AppBreadcrumb
 								items={[
@@ -115,7 +108,7 @@ export const AppPolicyTranslations = ({
 										active={active}
 										onSelect={setPicked}
 										translated={translated}
-										label={(code) => localeLabel(code)}
+										label={localeLabel}
 									/>
 									{active &&
 										(canWrite ? (

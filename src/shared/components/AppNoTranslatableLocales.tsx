@@ -5,15 +5,15 @@ import { AppLink } from "#/shared/links";
 
 export const AppNoTranslatableLocales = ({
 	tourOperatorId,
-	message = m.translations_no_languages_generic(),
 }: {
 	tourOperatorId: string;
-	message?: string;
 }) => (
 	<Card>
 		<CardContent className="flex flex-col items-center gap-2 py-10 text-center">
 			<Languages className="size-8 text-muted-foreground" />
-			<p className="text-sm text-muted-foreground">{message}</p>
+			<p className="text-sm text-muted-foreground">
+				{m.translations_no_languages()}
+			</p>
 			<AppLink
 				to="/tour-operators/$tourOperatorId/settings/languages"
 				params={{ tourOperatorId }}

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/links";
 import { AppOperatorTranslations } from "#/tour-operator";
 
@@ -13,8 +12,6 @@ export const Route = createFileRoute(
 
 function TranslationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
-	const { canWrite } = usePermissions();
-
 	return (
 		<AppPageShell variant="form">
 			<AppPageHeader
@@ -33,10 +30,7 @@ function TranslationsSettingsPage() {
 					/>
 				}
 			/>
-			<AppOperatorTranslations
-				tourOperatorId={tourOperatorId}
-				canWrite={canWrite}
-			/>
+			<AppOperatorTranslations tourOperatorId={tourOperatorId} />
 		</AppPageShell>
 	);
 }

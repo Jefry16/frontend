@@ -2,7 +2,6 @@ import {
 	AppDetailField,
 	AppFormActions,
 	AppQueryState,
-	Button,
 	Card,
 	CardContent,
 	CardDescription,
@@ -12,10 +11,11 @@ import {
 	FieldGroup,
 	FieldLabel,
 	Skeleton,
-	Spinner,
 } from "@vointika/ui";
 import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
+import { usePermissions } from "#/session";
+import { AppClearTranslationButton } from "#/shared/components/AppClearTranslationButton";
 import { useMetafieldTranslationSave } from "../hooks/use-metafield-translation-save";
 import { useMetafieldTranslation } from "../hooks/use-metafield-translations";
 import { useOwnerMetafields } from "../hooks/use-owner-metafields";
@@ -32,14 +32,13 @@ export const AppMetafieldTranslationsCard = ({
 	ownerType,
 	ownerId,
 	locale,
-	canWrite,
 }: {
 	tourOperatorId: string;
 	ownerType: MetafieldOwnerTypeCode;
 	ownerId: string;
 	locale: string;
-	canWrite: boolean;
 }) => {
+	const { canWrite } = usePermissions();
 	const owner = useOwnerMetafields(tourOperatorId, ownerType, ownerId);
 	const overlay = useMetafieldTranslation(
 		tourOperatorId,
@@ -179,10 +178,9 @@ export const AppMetafieldTranslationsCard = ({
 											submitLabel={m.save_translation()}
 											secondary={
 												Object.keys(translated).length > 0 && (
-													<Button
-														type="button"
-														variant="outline"
-														disabled={save.isPending || clear.isPending}
+													<AppClearTranslationButton
+														isClearing={clear.isPending}
+														disabled={save.isPending}
 														onClick={() =>
 															clear.mutate(undefined, {
 																onSettled: (_data, error) => {
@@ -190,10 +188,7 @@ export const AppMetafieldTranslationsCard = ({
 																},
 															})
 														}
-													>
-														{clear.isPending && <Spinner className="size-4" />}
-														{m.clear_translation()}
-													</Button>
+													/>
 												)
 											}
 										/>

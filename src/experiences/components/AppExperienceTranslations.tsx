@@ -6,7 +6,6 @@ import {
 	AppQueryState,
 	AppResourceView,
 	AppTranslationSummary,
-	Skeleton,
 	type TranslatedField,
 } from "@vointika/ui";
 import { Languages } from "lucide-react";
@@ -16,7 +15,7 @@ import {
 	useMetafieldTranslationLocales,
 } from "#/metafields";
 import * as m from "#/paraglide/messages";
-import { localeLabel, useOperatorLocales } from "#/session";
+import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useExperience } from "../hooks/use-experience";
@@ -30,12 +29,11 @@ import { AppExperienceTranslationForm } from "./AppExperienceTranslationForm";
 export const AppExperienceTranslations = ({
 	tourOperatorId,
 	experienceId,
-	canWrite,
 }: {
 	tourOperatorId: string;
 	experienceId: string;
-	canWrite: boolean;
 }) => {
+	const { canWrite } = usePermissions();
 	const experienceQuery = useExperience(tourOperatorId, experienceId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const listQuery = useExperienceTranslations(tourOperatorId, experienceId);
@@ -82,12 +80,7 @@ export const AppExperienceTranslations = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<div className="flex flex-col gap-4">
-					<Skeleton className="h-9 w-64" />
-					<AppFormSkeleton rows={3} />
-				</div>
-			}
+			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(experience) => (
 				<>
@@ -117,10 +110,7 @@ export const AppExperienceTranslations = ({
 					<AppQueryState query={localesQuery} loading={<AppLoadingBlock />}>
 						{() =>
 							translatable.length === 0 ? (
-								<AppNoTranslatableLocales
-									tourOperatorId={tourOperatorId}
-									message={m.translations_no_languages()}
-								/>
+								<AppNoTranslatableLocales tourOperatorId={tourOperatorId} />
 							) : (
 								<div className="flex flex-col gap-4">
 									<AppLocaleTabs
@@ -128,7 +118,7 @@ export const AppExperienceTranslations = ({
 										active={active}
 										onSelect={setPicked}
 										translated={translated}
-										label={(code) => localeLabel(code)}
+										label={localeLabel}
 									/>
 									{active && (
 										<AppQueryState
@@ -160,7 +150,6 @@ export const AppExperienceTranslations = ({
 											ownerType="experience"
 											ownerId={experienceId}
 											locale={active}
-											canWrite={canWrite}
 										/>
 									)}
 								</div>

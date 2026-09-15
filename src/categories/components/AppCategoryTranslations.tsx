@@ -1,14 +1,8 @@
-import {
-	AppPageHeader,
-	AppResourceView,
-	Card,
-	CardContent,
-	Skeleton,
-} from "@vointika/ui";
+import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { Tags } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { localeLabel, useOperatorLocales } from "#/session";
+import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
 import { AppNameTranslations } from "#/shared/components/AppNameTranslations";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useCategory } from "../hooks/use-category";
@@ -16,12 +10,11 @@ import { useCategory } from "../hooks/use-category";
 export const AppCategoryTranslations = ({
 	tourOperatorId,
 	categoryId,
-	canWrite,
 }: {
 	tourOperatorId: string;
 	categoryId: string;
-	canWrite: boolean;
 }) => {
+	const { canWrite } = usePermissions();
 	const query = useCategory(tourOperatorId, categoryId);
 	const localesQuery = useOperatorLocales(tourOperatorId);
 	const primary = localesQuery.data?.primaryLocale;
@@ -48,14 +41,7 @@ export const AppCategoryTranslations = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-4">
-						<Skeleton className="h-9 w-64" />
-						<Skeleton className="h-9 w-full" />
-					</CardContent>
-				</Card>
-			}
+			loading={<AppFormSkeleton rows={1} />}
 		>
 			{(category) => (
 				<>

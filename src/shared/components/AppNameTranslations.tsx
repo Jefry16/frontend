@@ -9,9 +9,7 @@ import {
 	AppQueryState,
 	AppTranslationNotice,
 	AppTranslationSummary,
-	Button,
 	type QueryState,
-	Spinner,
 	useAppToast,
 } from "@vointika/ui";
 import type { AxiosError } from "axios";
@@ -21,6 +19,7 @@ import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys, withLocale } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
+import { AppClearTranslationButton } from "./AppClearTranslationButton";
 import { AppNoTranslatableLocales } from "./AppNoTranslatableLocales";
 
 interface NameTranslation {
@@ -229,15 +228,11 @@ function NameFormBody({
 					submitLabel={m.save_translation()}
 					secondary={
 						hasTranslation && (
-							<Button
-								type="button"
-								variant="outline"
-								disabled={isSaving || isClearing}
+							<AppClearTranslationButton
+								isClearing={isClearing}
+								disabled={isSaving}
 								onClick={onClear}
-							>
-								{isClearing && <Spinner className="size-4" />}
-								{m.clear_translation()}
-							</Button>
+							/>
 						)
 					}
 				/>

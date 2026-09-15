@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppPageShell } from "@vointika/ui";
 import { AppPageTranslations } from "#/pages";
-import { usePermissions } from "#/session";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/pages/$pageId/translations",
@@ -10,15 +9,10 @@ export const Route = createFileRoute(
 });
 
 function PageTranslationsPage() {
-	const { canWrite } = usePermissions();
 	const { tourOperatorId, pageId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageTranslations
-				tourOperatorId={tourOperatorId}
-				pageId={pageId}
-				canWrite={canWrite}
-			/>
+			<AppPageTranslations tourOperatorId={tourOperatorId} pageId={pageId} />
 		</AppPageShell>
 	);
 }
