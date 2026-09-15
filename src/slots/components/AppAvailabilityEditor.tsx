@@ -3,8 +3,7 @@ import {
 	AppFormSkeleton,
 	AppPageHeader,
 	AppResourceView,
-	Button,
-	cn,
+	AppSegmentedControl,
 	mergeQueryState,
 	useAllPages,
 } from "@vointika/ui";
@@ -96,28 +95,15 @@ export const AppAvailabilityEditor = ({
 					) : (
 						<div className="flex flex-col gap-4">
 							<div>
-								<div className="inline-flex rounded-md border p-0.5">
-									{(
-										[
-											{ value: "recurring", label: m.recurring() },
-											{ value: "single", label: m.one_time() },
-										] as const
-									).map((option) => (
-										<Button
-											key={option.value}
-											type="button"
-											variant="ghost"
-											size="sm"
-											className={cn(
-												option.value === mode &&
-													"bg-secondary text-secondary-foreground",
-											)}
-											onClick={() => setMode(option.value)}
-										>
-											{option.label}
-										</Button>
-									))}
-								</div>
+								<AppSegmentedControl
+									label={m.availability_mode()}
+									value={mode}
+									onChange={setMode}
+									options={[
+										{ value: "recurring", label: m.recurring() },
+										{ value: "single", label: m.one_time() },
+									]}
+								/>
 								<p className="mt-2 text-sm text-muted-foreground">
 									{mode === "recurring"
 										? m.recurring_hint()

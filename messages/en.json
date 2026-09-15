@@ -365,6 +365,7 @@
 	"add_availability": "Add availability",
 	"choose_experience": "Choose an experience",
 	"choose_experience_hint": "Availability is scheduled per experience — pick the one these departures belong to.",
+	"availability_mode": "Kind of availability",
 	"recurring": "Recurring",
 	"one_time": "One-time",
 	"recurring_hint": "Creates a departure on every selected weekday between the two dates.",

@@ -35,7 +35,9 @@ the list never pretends.
    viewer never sees.** The action is `AppNewLink` to the create page, or a
    `Button` when the create is a dialog or an upload, written inline as
    `actions={canWrite && …}` so the gate can read it; a `Button asChild`
-   around an `AppLink` is `AppNewLink` written by hand. Gate:
+   around an `AppLink` is `AppNewLink` written by hand, in the route or in
+   any `App` component it renders, a create dialog's empty state included.
+   Gate:
    `src/shared/list-page.test.ts`. That there is only one action is by
    review; the gate reads the gating, not the count.
 9. **A create or edit page is the write gate first, then one breadcrumb
@@ -99,8 +101,8 @@ Named variants: a read-only list has no action; a list whose create is a
 dialog has a button where the others have a link; a read-only detail has no
 page actions; a create that needs a parent record (a metaobject entry, a
 slot for an experience) loads it through `AppResourceView` the way an edit
-does; availability picks recurring or one-time with a toggle above the
-card, one form card per mode; the first-run create-operator page is the
+does; availability picks recurring or one-time with `AppSegmentedControl`
+above the card, one form card per mode; the first-run create-operator page is the
 auth shell with a card, not a form page, because there is no operator to
 frame it yet; the operator's own translations page has no record to load,
 so its header sits in the route rather than inside `AppResourceView`;
