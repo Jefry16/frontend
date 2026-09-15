@@ -1,20 +1,16 @@
 import {
-	AppAlert,
 	AppConfirmDialog,
 	AppDetailField,
 	AppField,
+	AppForm,
 	AppFormActions,
+	AppFormSkeleton,
 	AppQueryState,
 	AppSelectField,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+	AppSettingsCard,
 	EmptyValue,
 	FieldGroup,
 	SelectItem,
-	Skeleton,
 } from "@vointika/ui";
 import { useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -41,34 +37,23 @@ export const AppOperatorDetailsCard = ({
 	const query = useOperatorDetails(tourOperatorId);
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.operator_details()}</CardTitle>
-				<CardDescription>{m.operator_details_description()}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<AppQueryState
-					query={query}
-					loading={
-						<div className="flex flex-col gap-4">
-							<Skeleton className="h-10 w-full" />
-							<Skeleton className="h-10 w-full" />
-						</div>
-					}
-				>
-					{(operator) =>
-						canWrite ? (
-							<DetailsForm
-								tourOperatorId={tourOperatorId}
-								operator={operator}
-							/>
-						) : (
-							<DetailsSummary operator={operator} />
-						)
-					}
-				</AppQueryState>
-			</CardContent>
-		</Card>
+		<AppSettingsCard
+			title={m.operator_details()}
+			description={m.operator_details_description()}
+		>
+			<AppQueryState
+				query={query}
+				loading={<AppFormSkeleton rows={4} card={false} />}
+			>
+				{(operator) =>
+					canWrite ? (
+						<DetailsForm tourOperatorId={tourOperatorId} operator={operator} />
+					) : (
+						<DetailsSummary operator={operator} />
+					)
+				}
+			</AppQueryState>
+		</AppSettingsCard>
 	);
 };
 
@@ -109,10 +94,8 @@ const DetailsForm = ({
 		useState<OperatorDetailsFormData | null>(null);
 
 	return (
-		<form
-			className="space-y-4"
-			onSubmit={(e) => {
-				e.preventDefault();
+		<AppForm
+			onSubmit={() => {
 				const parsed = operatorDetailsSchema.safeParse(form.state.values);
 				if (parsed.success && parsed.data.timezoneId !== operator.timezoneId) {
 					setConfirmZone(parsed.data);
@@ -120,8 +103,11 @@ const DetailsForm = ({
 				}
 				form.handleSubmit();
 			}}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
+			}
 		>
-			{errorMessage && <AppAlert description={errorMessage} />}
 			<FieldGroup>
 				<form.Field name="name">
 					{(field) => <AppField field={field} label={m.shop_name()} required />}
@@ -177,8 +163,6 @@ const DetailsForm = ({
 					)}
 				</form.Field>
 			</FieldGroup>
-			<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
-
 			<AppConfirmDialog
 				open={confirmZone !== null}
 				onOpenChange={(open) => {
@@ -193,6 +177,6 @@ const DetailsForm = ({
 						submit(confirmZone, { onSuccess: () => setConfirmZone(null) });
 				}}
 			/>
-		</form>
+		</AppForm>
 	);
 };

@@ -1,12 +1,8 @@
 import {
-	AppAlert,
+	AppForm,
 	AppFormActions,
 	AppPasswordField,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+	AppSettingsCard,
 	FieldGroup,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
@@ -16,55 +12,50 @@ export const AppChangePasswordForm = () => {
 	const { form, isPending, errorMessage } = useChangePasswordForm();
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.password()}</CardTitle>
-				<CardDescription>{m.change_password_description()}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						form.handleSubmit();
-					}}
-					className="space-y-4"
-				>
-					{errorMessage && <AppAlert description={errorMessage} />}
-					<FieldGroup>
-						<form.Field name="currentPassword">
-							{(field) => (
-								<AppPasswordField
-									field={field}
-									label={m.current_password()}
-									autoComplete="current-password"
-								/>
-							)}
-						</form.Field>
-						<form.Field name="newPassword">
-							{(field) => (
-								<AppPasswordField
-									field={field}
-									label={m.new_password()}
-									autoComplete="new-password"
-								/>
-							)}
-						</form.Field>
-						<form.Field name="confirmPassword">
-							{(field) => (
-								<AppPasswordField
-									field={field}
-									label={m.confirm_new_password()}
-									autoComplete="new-password"
-								/>
-							)}
-						</form.Field>
-					</FieldGroup>
+		<AppSettingsCard
+			title={m.password()}
+			description={m.change_password_description()}
+		>
+			<AppForm
+				onSubmit={form.handleSubmit}
+				errorMessage={errorMessage}
+				actions={
 					<AppFormActions
 						isPending={isPending}
 						submitLabel={m.change_password()}
 					/>
-				</form>
-			</CardContent>
-		</Card>
+				}
+			>
+				<FieldGroup>
+					<form.Field name="currentPassword">
+						{(field) => (
+							<AppPasswordField
+								field={field}
+								label={m.current_password()}
+								autoComplete="current-password"
+							/>
+						)}
+					</form.Field>
+					<form.Field name="newPassword">
+						{(field) => (
+							<AppPasswordField
+								field={field}
+								label={m.new_password()}
+								autoComplete="new-password"
+							/>
+						)}
+					</form.Field>
+					<form.Field name="confirmPassword">
+						{(field) => (
+							<AppPasswordField
+								field={field}
+								label={m.confirm_new_password()}
+								autoComplete="new-password"
+							/>
+						)}
+					</form.Field>
+				</FieldGroup>
+			</AppForm>
+		</AppSettingsCard>
 	);
 };

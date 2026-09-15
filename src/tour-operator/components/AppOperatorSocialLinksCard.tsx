@@ -1,17 +1,13 @@
 import {
-	AppAlert,
 	AppDetailField,
 	AppField,
+	AppForm,
 	AppFormActions,
 	AppFormSkeleton,
 	AppQueryState,
 	AppSelectField,
+	AppSettingsCard,
 	Button,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
 	SelectItem,
 } from "@vointika/ui";
 import { Plus, X } from "lucide-react";
@@ -30,26 +26,23 @@ export const AppOperatorSocialLinksCard = ({
 	const query = useBrand(tourOperatorId);
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.brand_social_links()}</CardTitle>
-				<CardDescription>{m.brand_social_links_hint()}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<AppQueryState
-					query={query}
-					loading={<AppFormSkeleton rows={2} card={false} />}
-				>
-					{(brand) =>
-						canWrite ? (
-							<SocialLinksForm tourOperatorId={tourOperatorId} brand={brand} />
-						) : (
-							<SocialLinksSummary brand={brand} />
-						)
-					}
-				</AppQueryState>
-			</CardContent>
-		</Card>
+		<AppSettingsCard
+			title={m.brand_social_links()}
+			description={m.brand_social_links_hint()}
+		>
+			<AppQueryState
+				query={query}
+				loading={<AppFormSkeleton rows={2} card={false} />}
+			>
+				{(brand) =>
+					canWrite ? (
+						<SocialLinksForm tourOperatorId={tourOperatorId} brand={brand} />
+					) : (
+						<SocialLinksSummary brand={brand} />
+					)
+				}
+			</AppQueryState>
+		</AppSettingsCard>
 	);
 };
 
@@ -66,15 +59,13 @@ const SocialLinksForm = ({
 	);
 
 	return (
-		<form
-			className="flex flex-col gap-4"
-			onSubmit={(e) => {
-				e.preventDefault();
-				form.handleSubmit();
-			}}
+		<AppForm
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
+			}
 		>
-			{errorMessage && <AppAlert description={errorMessage} />}
-
 			<form.Field name="socialLinks" mode="array">
 				{(links) => {
 					const rows = links.state.value ?? [];
@@ -149,9 +140,7 @@ const SocialLinksForm = ({
 					);
 				}}
 			</form.Field>
-
-			<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
-		</form>
+		</AppForm>
 	);
 };
 

@@ -1,15 +1,11 @@
 import {
-	AppAlert,
 	AppColorField,
+	AppForm,
 	AppFormActions,
 	AppFormSkeleton,
 	AppQueryState,
+	AppSettingsCard,
 	Button,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
 	FieldLabel,
 } from "@vointika/ui";
 import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
@@ -42,26 +38,23 @@ export const AppOperatorColorsCard = ({
 	const query = useBrand(tourOperatorId);
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.brand_colors()}</CardTitle>
-				<CardDescription>{m.brand_colors_hint()}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<AppQueryState
-					query={query}
-					loading={<AppFormSkeleton rows={2} card={false} />}
-				>
-					{(brand) =>
-						canWrite ? (
-							<ColorsForm tourOperatorId={tourOperatorId} brand={brand} />
-						) : (
-							<ColorsSummary brand={brand} />
-						)
-					}
-				</AppQueryState>
-			</CardContent>
-		</Card>
+		<AppSettingsCard
+			title={m.brand_colors()}
+			description={m.brand_colors_hint()}
+		>
+			<AppQueryState
+				query={query}
+				loading={<AppFormSkeleton rows={2} card={false} />}
+			>
+				{(brand) =>
+					canWrite ? (
+						<ColorsForm tourOperatorId={tourOperatorId} brand={brand} />
+					) : (
+						<ColorsSummary brand={brand} />
+					)
+				}
+			</AppQueryState>
+		</AppSettingsCard>
 	);
 };
 
@@ -83,15 +76,13 @@ const ColorsForm = ({
 	);
 
 	return (
-		<form
-			className="flex flex-col gap-6"
-			onSubmit={(e) => {
-				e.preventDefault();
-				form.handleSubmit();
-			}}
+		<AppForm
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
+			}
 		>
-			{errorMessage && <AppAlert description={errorMessage} />}
-
 			{ROLES.map((role) => (
 				<form.Field key={role.name} name={role.name} mode="array">
 					{(group) => {
@@ -182,9 +173,7 @@ const ColorsForm = ({
 					}}
 				</form.Field>
 			))}
-
-			<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
-		</form>
+		</AppForm>
 	);
 };
 

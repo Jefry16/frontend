@@ -33,8 +33,8 @@ importers:
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@vointika/ui':
-        specifier: github:Jefry16/ui#v0.5.0
-        version: https://codeload.github.com/Jefry16/ui/tar.gz/5a5a5effb621d7cb0fbf884c00978465492f120d(@tanstack/react-form@1.33.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-query@5.100.14(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)
+        specifier: github:Jefry16/ui#v0.6.0
+        version: https://codeload.github.com/Jefry16/ui/tar.gz/1df6a7b2e16ab4d0e88d2998af5ffb16a6757fdd(@tanstack/react-form@1.33.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-query@5.100.14(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)
       axios:
         specifier: ^1.14.0
         version: 1.18.1
@@ -2346,8 +2346,8 @@ packages:
   '@vitest/utils@3.2.7':
     resolution: {integrity: sha512-x6BDOd7dyo3PFLY3I9/HJ25X/6OurhGXk2/B9gOZNPF7XDVjeBK4k01lQE5uvDpbuheErh91qYuE1E2OEjK3Rw==}
 
-  '@vointika/ui@https://codeload.github.com/Jefry16/ui/tar.gz/5a5a5effb621d7cb0fbf884c00978465492f120d':
-    resolution: {tarball: https://codeload.github.com/Jefry16/ui/tar.gz/5a5a5effb621d7cb0fbf884c00978465492f120d}
+  '@vointika/ui@https://codeload.github.com/Jefry16/ui/tar.gz/1df6a7b2e16ab4d0e88d2998af5ffb16a6757fdd':
+    resolution: {tarball: https://codeload.github.com/Jefry16/ui/tar.gz/1df6a7b2e16ab4d0e88d2998af5ffb16a6757fdd}
     version: 0.0.0
     peerDependencies:
       '@tanstack/react-form': ^1.28.6
@@ -4691,7 +4691,7 @@ snapshots:
 
   '@babel/helper-annotate-as-pure@7.29.7':
     dependencies:
-      '@babel/types': 7.29.7
+      '@babel/types': 7.29.8
 
   '@babel/helper-compilation-targets@7.29.7':
     dependencies:
@@ -4719,7 +4719,7 @@ snapshots:
   '@babel/helper-member-expression-to-functions@7.29.7':
     dependencies:
       '@babel/traverse': 7.29.7
-      '@babel/types': 7.29.7
+      '@babel/types': 7.29.8
     transitivePeerDependencies:
       - supports-color
 
@@ -4741,7 +4741,7 @@ snapshots:
 
   '@babel/helper-optimise-call-expression@7.29.7':
     dependencies:
-      '@babel/types': 7.29.7
+      '@babel/types': 7.29.8
 
   '@babel/helper-plugin-utils@7.29.7': {}
 
@@ -4757,7 +4757,7 @@ snapshots:
   '@babel/helper-skip-transparent-expression-wrappers@7.29.7':
     dependencies:
       '@babel/traverse': 7.29.7
-      '@babel/types': 7.29.7
+      '@babel/types': 7.29.8
     transitivePeerDependencies:
       - supports-color
 
@@ -4934,11 +4934,11 @@ snapshots:
       enquirer: 2.4.1
       env-paths: 2.2.1
       execa: 5.1.1
-      fdir: 6.5.0(picomatch@4.0.5)
+      fdir: 6.5.0(picomatch@4.0.7)
       ignore: 5.3.2
       object-treeify: 1.1.33
       open: 8.4.2
-      picomatch: 4.0.5
+      picomatch: 4.0.7
       systeminformation: 5.33.0
       undici: 7.28.0
       which: 4.0.0
@@ -6722,7 +6722,7 @@ snapshots:
       loupe: 3.2.1
       tinyrainbow: 2.0.0
 
-  '@vointika/ui@https://codeload.github.com/Jefry16/ui/tar.gz/5a5a5effb621d7cb0fbf884c00978465492f120d(@tanstack/react-form@1.33.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-query@5.100.14(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)':
+  '@vointika/ui@https://codeload.github.com/Jefry16/ui/tar.gz/1df6a7b2e16ab4d0e88d2998af5ffb16a6757fdd(@tanstack/react-form@1.33.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@tanstack/react-query@5.100.14(react@19.2.8))(@tanstack/react-table@8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.3.3)(typescript@5.9.3)':
     dependencies:
       '@fontsource-variable/geist': 5.3.0
       '@tanstack/react-form': 1.33.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -8444,7 +8444,7 @@ snapshots:
   shadcn@4.13.1(typescript@5.9.3):
     dependencies:
       '@babel/core': 7.29.7
-      '@babel/parser': 7.29.7
+      '@babel/parser': 7.29.8
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)
       '@babel/preset-typescript': 7.29.7(@babel/core@7.29.7)
       '@dotenvx/dotenvx': 1.75.1

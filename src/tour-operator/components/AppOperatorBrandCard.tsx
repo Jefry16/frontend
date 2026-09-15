@@ -1,18 +1,14 @@
 import {
-	AppAlert,
 	AppDetailField,
 	AppField,
+	AppForm,
 	AppFormActions,
+	AppFormSkeleton,
 	AppQueryState,
+	AppSettingsCard,
 	AppTextareaField,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
 	EmptyValue,
 	FieldGroup,
-	Skeleton,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import {
@@ -33,31 +29,20 @@ export const AppOperatorBrandCard = ({
 	const query = useBrand(tourOperatorId);
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.brand()}</CardTitle>
-				<CardDescription>{m.brand_description()}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<AppQueryState
-					query={query}
-					loading={
-						<div className="flex flex-col gap-4">
-							<Skeleton className="h-10 w-full" />
-							<Skeleton className="h-24 w-full" />
-						</div>
-					}
-				>
-					{(brand) => (
-						<BrandBody
-							tourOperatorId={tourOperatorId}
-							brand={brand}
-							canWrite={canWrite}
-						/>
-					)}
-				</AppQueryState>
-			</CardContent>
-		</Card>
+		<AppSettingsCard title={m.brand()} description={m.brand_description()}>
+			<AppQueryState
+				query={query}
+				loading={<AppFormSkeleton rows={2} card={false} />}
+			>
+				{(brand) => (
+					<BrandBody
+						tourOperatorId={tourOperatorId}
+						brand={brand}
+						canWrite={canWrite}
+					/>
+				)}
+			</AppQueryState>
+		</AppSettingsCard>
 	);
 };
 
@@ -99,14 +84,16 @@ const BrandBody = ({
 	return (
 		<div className="flex flex-col gap-6">
 			{canWrite ? (
-				<form
-					className="space-y-4"
-					onSubmit={(e) => {
-						e.preventDefault();
-						form.handleSubmit();
-					}}
+				<AppForm
+					onSubmit={form.handleSubmit}
+					errorMessage={errorMessage}
+					actions={
+						<AppFormActions
+							isPending={isPending}
+							submitLabel={m.save_changes()}
+						/>
+					}
 				>
-					{errorMessage && <AppAlert description={errorMessage} />}
 					<FieldGroup>
 						<form.Field name="slogan">
 							{(field) => (
@@ -128,11 +115,7 @@ const BrandBody = ({
 							)}
 						</form.Field>
 					</FieldGroup>
-					<AppFormActions
-						isPending={isPending}
-						submitLabel={m.save_changes()}
-					/>
-				</form>
+				</AppForm>
 			) : (
 				<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 					<AppDetailField label={m.brand_slogan()}>

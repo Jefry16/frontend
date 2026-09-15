@@ -1,17 +1,14 @@
 import {
-	AppAlert,
 	AppCheckboxField,
 	AppDetailField,
+	AppForm,
 	AppFormActions,
 	AppFormSkeleton,
 	AppPasswordField,
 	AppQueryState,
+	AppSettingsCard,
 	AppTextareaField,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+	EmptyValue,
 	FieldGroup,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
@@ -31,29 +28,26 @@ export const AppStorefrontPasswordCard = ({
 	const query = useStorefrontPassword(tourOperatorId);
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.store_access()}</CardTitle>
-				<CardDescription>{m.store_access_hint()}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<AppQueryState
-					query={query}
-					loading={<AppFormSkeleton rows={3} card={false} />}
-				>
-					{(settings) =>
-						canWrite ? (
-							<StoreAccessForm
-								tourOperatorId={tourOperatorId}
-								settings={settings}
-							/>
-						) : (
-							<StoreAccessSummary settings={settings} />
-						)
-					}
-				</AppQueryState>
-			</CardContent>
-		</Card>
+		<AppSettingsCard
+			title={m.store_access()}
+			description={m.store_access_hint()}
+		>
+			<AppQueryState
+				query={query}
+				loading={<AppFormSkeleton rows={3} card={false} />}
+			>
+				{(settings) =>
+					canWrite ? (
+						<StoreAccessForm
+							tourOperatorId={tourOperatorId}
+							settings={settings}
+						/>
+					) : (
+						<StoreAccessSummary settings={settings} />
+					)
+				}
+			</AppQueryState>
+		</AppSettingsCard>
 	);
 };
 
@@ -70,14 +64,13 @@ const StoreAccessForm = ({
 	);
 
 	return (
-		<form
-			onSubmit={(e) => {
-				e.preventDefault();
-				form.handleSubmit();
-			}}
-			className="space-y-6"
+		<AppForm
+			onSubmit={form.handleSubmit}
+			errorMessage={errorMessage}
+			actions={
+				<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
+			}
 		>
-			{errorMessage && <AppAlert description={errorMessage} />}
 			<FieldGroup>
 				<form.Field name="enabled">
 					{(field) => (
@@ -108,8 +101,7 @@ const StoreAccessForm = ({
 					)}
 				</form.Field>
 			</FieldGroup>
-			<AppFormActions isPending={isPending} submitLabel={m.save_changes()} />
-		</form>
+		</AppForm>
 	);
 };
 
@@ -118,14 +110,13 @@ const StoreAccessSummary = ({
 }: {
 	settings: StorefrontPasswordSettings;
 }) => {
-	const none = <span className="text-muted-foreground">{m.not_set()}</span>;
 	return (
 		<dl className="flex flex-col gap-6">
 			<AppDetailField label={m.store_access()}>
 				{settings.enabled ? m.store_access_on() : m.store_access_off()}
 			</AppDetailField>
 			<AppDetailField label={m.visitor_message()}>
-				{settings.message ?? none}
+				{settings.message ?? <EmptyValue />}
 			</AppDetailField>
 		</dl>
 	);
