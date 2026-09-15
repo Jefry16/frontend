@@ -12,11 +12,11 @@ import {
 	Input,
 	useAllPages,
 } from "@vointika/ui";
-import { ChevronRight, Compass, Plus } from "lucide-react";
+import { ChevronRight, Compass } from "lucide-react";
 import { useState } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { AppLink } from "#/shared/links";
+import { AppNewLink } from "#/shared/links";
 
 interface ExperienceRow {
 	id: string;
@@ -55,15 +55,13 @@ export const AppAddAvailabilityDialog = ({
 								icon={Compass}
 								title={m.no_experiences()}
 								action={
-									<Button asChild size="sm">
-										<AppLink
-											to="/tour-operators/$tourOperatorId/experiences/new"
-											params={{ tourOperatorId }}
-										>
-											<Plus />
-											{m.new_experience()}
-										</AppLink>
-									</Button>
+									<AppNewLink
+										size="sm"
+										to="/tour-operators/$tourOperatorId/experiences/new"
+										params={{ tourOperatorId }}
+									>
+										{m.new_experience()}
+									</AppNewLink>
 								}
 							/>
 						) : (

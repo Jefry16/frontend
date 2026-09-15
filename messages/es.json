@@ -365,6 +365,7 @@
 	"add_availability": "Añadir disponibilidad",
 	"choose_experience": "Elige una experiencia",
 	"choose_experience_hint": "La disponibilidad se programa por experiencia — elige a cuál pertenecen estas salidas.",
+	"availability_mode": "Tipo de disponibilidad",
 	"recurring": "Recurrente",
 	"one_time": "Única",
 	"recurring_hint": "Crea una salida cada día de la semana seleccionado entre las dos fechas.",
