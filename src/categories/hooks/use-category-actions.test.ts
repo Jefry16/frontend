@@ -4,11 +4,6 @@ import { fire, renderActions } from "#/test/actions";
 import { server } from "#/test/server";
 import { useCategoryActions } from "./use-category-actions";
 
-const { toastMock } = vi.hoisted(() => ({
-	toastMock: { success: vi.fn(), error: vi.fn() },
-}));
-vi.mock("sonner", () => ({ toast: toastMock }));
-
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
 const ID = "cat-1";

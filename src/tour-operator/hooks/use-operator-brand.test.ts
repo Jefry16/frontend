@@ -9,9 +9,6 @@ import { useBrandActions, useBrandTextForm } from "./use-operator-brand";
 
 const { refreshUser } = vi.hoisted(() => ({ refreshUser: vi.fn() }));
 vi.mock("#/auth", () => ({ useAuth: () => ({ refreshUser }) }));
-vi.mock("sonner", () => ({
-	toast: { success: vi.fn(), error: vi.fn() },
-}));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";

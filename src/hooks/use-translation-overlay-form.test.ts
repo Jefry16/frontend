@@ -1,13 +1,9 @@
 import { HttpResponse, http } from "msw";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { fire, renderActions } from "#/test/actions";
 import { server } from "#/test/server";
 import { useTranslationOverlayForm } from "./use-translation-overlay-form";
-
-vi.mock("sonner", () => ({
-	toast: { success: vi.fn(), error: vi.fn() },
-}));
 
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const ENDPOINT = "/tour-operators/op-1/policies/policy-1/translations/es";

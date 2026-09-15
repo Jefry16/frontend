@@ -5,10 +5,6 @@ import { server } from "#/test/server";
 import { wrapperWithProviders } from "#/test/test-utils";
 import { usePageTranslationForm } from "./use-page-translation-form";
 
-vi.mock("sonner", () => ({
-	toast: { success: vi.fn(), error: vi.fn() },
-}));
-
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
 const LOCALE = "es";
