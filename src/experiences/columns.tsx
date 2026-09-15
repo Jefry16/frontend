@@ -1,6 +1,10 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { AppBadge, AppDataTableHeader, timestampColumn } from "@vointika/ui";
-import { formatMoney } from "#/lib/money";
+import {
+	AppBadge,
+	AppDataTableHeader,
+	formatMoney,
+	timestampColumn,
+} from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppResourceLink } from "#/shared/links";
 import { statusBadgeVariant, statusLabel } from "./format";

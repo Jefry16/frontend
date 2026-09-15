@@ -1,9 +1,9 @@
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { useAppToast } from "@vointika/ui";
 import type { AxiosError } from "axios";
 import { useState } from "react";
-import { useAppToast } from "#/hooks/use-app-toast";
 import { authApi } from "#/lib/api";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";

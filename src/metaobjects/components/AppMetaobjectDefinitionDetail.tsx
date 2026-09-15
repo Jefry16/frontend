@@ -14,11 +14,11 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	useAppToast,
 } from "@vointika/ui";
 import { Pencil, Shapes, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { AppActivityCard } from "#/audit";
-import { useAppToast } from "#/hooks/use-app-toast";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import { metafieldTypeLabel } from "#/metafields";

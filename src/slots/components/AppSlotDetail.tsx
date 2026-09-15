@@ -10,6 +10,7 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	formatMoney,
 	Table,
 	TableBody,
 	TableCell,
@@ -20,7 +21,6 @@ import {
 import { Ban, CalendarDays, Pencil } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
-import { formatMoney } from "#/lib/money";
 import * as m from "#/paraglide/messages";
 import { useOperatorCurrency, usePermissions } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppLink } from "#/shared/links";
