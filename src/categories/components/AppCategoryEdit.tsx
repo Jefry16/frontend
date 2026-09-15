@@ -1,7 +1,7 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { Tags } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useCategory } from "../hooks/use-category";
 import { AppCategoryForm } from "./AppCategoryForm";
 
@@ -14,6 +14,14 @@ export const AppCategoryEdit = ({
 }) => {
 	const query = useCategory(tourOperatorId, categoryId);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/categories"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_categories()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -24,6 +32,7 @@ export const AppCategoryEdit = ({
 					items={[{ label: m.catalog() }, { label: m.categories() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={2} />}
 		>
 			{(category) => (

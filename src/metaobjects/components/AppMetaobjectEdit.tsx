@@ -1,7 +1,7 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { Shapes } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useMetaobject } from "../hooks/use-metaobject";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
 import type { Metaobject } from "../types";
@@ -16,6 +16,14 @@ export const AppMetaobjectEdit = ({
 }) => {
 	const query = useMetaobject(tourOperatorId, metaobjectId);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/content/metaobjects"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_metaobjects()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -26,6 +34,7 @@ export const AppMetaobjectEdit = ({
 					items={[{ label: m.content() }, { label: m.metaobjects() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(entry) => <EditView tourOperatorId={tourOperatorId} entry={entry} />}
@@ -45,6 +54,14 @@ const EditView = ({
 		entry.definitionId,
 	);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/content/metaobjects"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_metaobjects()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={definition}
@@ -55,6 +72,7 @@ const EditView = ({
 					items={[{ label: m.content() }, { label: m.metaobjects() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(def) => (

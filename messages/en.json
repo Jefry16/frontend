@@ -299,6 +299,7 @@
 	"revoke_invitation_title": "Revoke this invitation?",
 	"revoke_invitation_body": "The accept link will stop working immediately. This can't be undone — you'd need to send a new invitation.",
 	"back_to_members": "Back to members",
+	"back_to_settings": "Back to settings",
 	"make_admin": "Make admin",
 	"make_staff": "Make staff",
 	"make_owner": "Make owner",

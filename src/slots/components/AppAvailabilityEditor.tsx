@@ -17,7 +17,7 @@ import { useExperience } from "#/experiences";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
-import { AppBreadcrumb, AppNewLink } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb, AppNewLink } from "#/shared/links";
 import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
 import { AppSingleSlotForm } from "./AppSingleSlotForm";
 
@@ -54,12 +54,22 @@ export const AppAvailabilityEditor = ({
 		/>
 	);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/availability"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_availability()}
+		</AppBackLink>
+	);
+
 	return (
 		<AppResourceView
 			query={query}
 			resource={m.add_availability()}
 			icon={CalendarDays}
 			breadcrumb={breadcrumb()}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={3} />}
 		>
 			{({ record, rows }) => (

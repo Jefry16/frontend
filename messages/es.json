@@ -299,6 +299,7 @@
 	"revoke_invitation_title": "¿Revocar esta invitación?",
 	"revoke_invitation_body": "El enlace para aceptar dejará de funcionar de inmediato. Esto no se puede deshacer — tendrías que enviar una nueva invitación.",
 	"back_to_members": "Volver a miembros",
+	"back_to_settings": "Volver a ajustes",
 	"make_admin": "Hacer administrador",
 	"make_staff": "Hacer personal",
 	"make_owner": "Hacer propietario",

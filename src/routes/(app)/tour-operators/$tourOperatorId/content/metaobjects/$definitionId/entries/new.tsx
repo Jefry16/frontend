@@ -9,7 +9,7 @@ import { Shapes } from "lucide-react";
 import { AppMetaobjectForm, useMetaobjectDefinition } from "#/metaobjects";
 import * as m from "#/paraglide/messages";
 import { AppWriteGate } from "#/session";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metaobjects/$definitionId/entries/new",
@@ -20,6 +20,15 @@ export const Route = createFileRoute(
 function NewMetaobjectPage() {
 	const { tourOperatorId, definitionId } = Route.useParams();
 	const query = useMetaobjectDefinition(tourOperatorId, definitionId);
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/content/metaobjects"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_metaobjects()}
+		</AppBackLink>
+	);
+
 	return (
 		<AppPageShell variant="form">
 			<AppWriteGate>
@@ -32,6 +41,7 @@ function NewMetaobjectPage() {
 							items={[{ label: m.content() }, { label: m.metaobjects() }]}
 						/>
 					}
+					notFoundAction={backLink}
 					loading={<AppFormSkeleton rows={3} />}
 				>
 					{(definition) => (

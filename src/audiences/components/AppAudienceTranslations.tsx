@@ -10,7 +10,7 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales } from "#/session";
 import { AppNameTranslations } from "#/shared/components/AppNameTranslations";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useAudience } from "../hooks/use-audience";
 
 export const AppAudienceTranslations = ({
@@ -29,6 +29,14 @@ export const AppAudienceTranslations = ({
 		(code) => code !== primary,
 	);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/audiences"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_audiences()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -39,6 +47,7 @@ export const AppAudienceTranslations = ({
 					items={[{ label: m.catalog() }, { label: m.audiences() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={
 				<Card>
 					<CardContent className="flex flex-col gap-4">

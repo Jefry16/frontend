@@ -1,7 +1,7 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { Shapes } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useMetaobjectDefinition } from "../hooks/use-metaobject-definition";
 import { AppMetaobjectDefinitionForm } from "./AppMetaobjectDefinitionForm";
 
@@ -14,6 +14,14 @@ export const AppMetaobjectDefinitionEdit = ({
 }) => {
 	const query = useMetaobjectDefinition(tourOperatorId, definitionId);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/content/metaobjects"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_metaobjects()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -24,6 +32,7 @@ export const AppMetaobjectDefinitionEdit = ({
 					items={[{ label: m.content() }, { label: m.metaobjects() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(definition) => (

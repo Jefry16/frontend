@@ -1,7 +1,7 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
 import { Database } from "lucide-react";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useMetafieldDefinition } from "../hooks/use-metafield-definition";
 import { AppMetafieldDefinitionForm } from "./AppMetafieldDefinitionForm";
 
@@ -14,6 +14,14 @@ export const AppMetafieldDefinitionEdit = ({
 }) => {
 	const query = useMetafieldDefinition(tourOperatorId, definitionId);
 
+	const backLink = (
+		<AppBackLink
+			to="/tour-operators/$tourOperatorId/content/metafields"
+			params={{ tourOperatorId }}
+		>
+			{m.back_to_metafields()}
+		</AppBackLink>
+	);
 	return (
 		<AppResourceView
 			query={query}
@@ -24,6 +32,7 @@ export const AppMetafieldDefinitionEdit = ({
 					items={[{ label: m.content() }, { label: m.metafields() }]}
 				/>
 			}
+			notFoundAction={backLink}
 			loading={<AppFormSkeleton rows={3} />}
 		>
 			{(definition) => (
