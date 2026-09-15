@@ -4,7 +4,7 @@ import {
 	type AppAction,
 	AppBadge,
 	AppDetailField,
-	AppFormSkeleton,
+	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
@@ -57,7 +57,7 @@ export const AppPolicyDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={<AppFormSkeleton rows={3} />}
+			loading={<AppDetailSkeleton fields={4} />}
 		>
 			{(policy) => {
 				const actions: AppAction[] = [

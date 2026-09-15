@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppDetailField,
-	AppFormSkeleton,
+	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
@@ -51,7 +51,7 @@ export const AppContactMessageDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={<AppFormSkeleton rows={3} />}
+			loading={<AppDetailSkeleton fields={2} />}
 		>
 			{(message) => (
 				<MessageView tourOperatorId={tourOperatorId} message={message} />

@@ -3,13 +3,13 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppDetailField,
+	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
 	Card,
 	CardContent,
 	EmptyValue,
-	Skeleton,
 	useAppToast,
 } from "@vointika/ui";
 import { FileText, Images, Pencil, Trash2 } from "lucide-react";
@@ -91,21 +91,7 @@ export const AppMediaDetail = ({
 				<AppBreadcrumb items={[{ label: m.content() }, { label: m.media() }]} />
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-6">
-						<Skeleton className="h-48 w-full" />
-						<div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-							{["a", "b", "c", "d"].map((k) => (
-								<div key={k} className="flex flex-col gap-2">
-									<Skeleton className="h-3 w-16" />
-									<Skeleton className="h-5 w-32" />
-								</div>
-							))}
-						</div>
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={6} variant="labelled" />}
 		>
 			{(media) => (
 				<>
