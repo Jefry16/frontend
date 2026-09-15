@@ -61,10 +61,37 @@ const pages = walk(join(ROOT, "src", "routes"))
 const tags = (texts: string[], tag: string) =>
 	texts.flatMap((text) => openingTagProps(text, tag));
 
+/** Every component that builds a settings card, named by its own file. */
+const cards = walk(join(ROOT, "src"))
+	.map((f) => ({ file: relative(ROOT, f), source: readFileSync(f, "utf8") }))
+	.filter(({ source }) => /<AppSettingsCard\b/.test(source));
+
+/** An emptiness whose first element is a raw tag rather than a shared one. */
+const handRollsAnEmptyBranch = (source: string) =>
+	[...source.matchAll(/\.length === 0[^<;]*<([A-Za-z]+)/g)].some(([, tag]) =>
+		/^[a-z]/.test(tag),
+	);
+
 describe("every settings page is a stack of self-describing cards a viewer can read", () => {
 	it("the walk is wired (a broken walk must not pass vacuously)", () => {
 		expect(pages.length).toBeGreaterThan(2);
 		expect(components.size).toBeGreaterThan(50);
+		expect(cards.length).toBeGreaterThan(8);
+	});
+
+	it("an empty list is a shared empty state, not a hand-rolled sentence", () => {
+		const offenders = cards
+			.filter(({ source }) => handRollsAnEmptyBranch(source))
+			.map(({ file }) => file);
+		expect(
+			offenders,
+			"A card with nothing to show says so through a shared element: " +
+				'<AppEmptyState variant="inline" /> for a list that is empty, ' +
+				"<EmptyValue /> for a field with no value. A paragraph of muted " +
+				"text written by hand is one card's own typography, and the next " +
+				"card's will differ. This rule sees one shape of emptiness, " +
+				"`.length === 0` followed by an element, not every one.",
+		).toEqual([]);
 	});
 
 	it("no write gate: a viewer opens the page and reads each card", () => {

@@ -1,5 +1,6 @@
 import {
 	AppDetailField,
+	AppEmptyState,
 	AppField,
 	AppForm,
 	AppFormActions,
@@ -147,9 +148,7 @@ const SocialLinksForm = ({
 const SocialLinksSummary = ({ brand }: { brand: Brand }) => {
 	if (brand.socialLinks.length === 0) {
 		return (
-			<p className="text-muted-foreground text-sm">
-				{m.brand_social_links_empty()}
-			</p>
+			<AppEmptyState variant="inline" title={m.brand_social_links_empty()} />
 		);
 	}
 
