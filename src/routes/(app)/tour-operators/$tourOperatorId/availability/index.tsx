@@ -3,6 +3,7 @@ import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import * as m from "#/paraglide/messages";
+import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/links";
 import { AppAddAvailabilityDialog, AppSlotsList } from "#/slots";
 
@@ -15,6 +16,14 @@ export const Route = createFileRoute(
 function AvailabilityPage() {
 	const { tourOperatorId } = Route.useParams();
 	const [addOpen, setAddOpen] = useState(false);
+	const { canWrite } = usePermissions();
+	const addButton = (
+		<Button onClick={() => setAddOpen(true)}>
+			<Plus />
+			{m.add_availability()}
+		</Button>
+	);
+
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader
@@ -24,21 +33,11 @@ function AvailabilityPage() {
 						items={[{ label: m.catalog() }, { label: m.availability() }]}
 					/>
 				}
-				actions={
-					<Button onClick={() => setAddOpen(true)}>
-						<Plus />
-						{m.add_availability()}
-					</Button>
-				}
+				actions={canWrite && addButton}
 			/>
 			<AppSlotsList
 				tourOperatorId={tourOperatorId}
-				emptyAction={
-					<Button onClick={() => setAddOpen(true)}>
-						<Plus />
-						{m.add_availability()}
-					</Button>
-				}
+				emptyAction={canWrite && addButton}
 			/>
 			<AppAddAvailabilityDialog
 				tourOperatorId={tourOperatorId}

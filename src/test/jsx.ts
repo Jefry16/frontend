@@ -26,3 +26,22 @@ export const openingTagProps = (source: string, tag: string): string[] => {
 	}
 	return found;
 };
+
+export const propExpression = (
+	props: string,
+	name: string,
+): string | undefined => {
+	const at = props.search(new RegExp(`\\b${name}=\\{`));
+	if (at === -1) return undefined;
+	let depth = 0;
+	const start = props.indexOf("{", at);
+	for (let i = start; i < props.length; i++) {
+		const c = props[i];
+		if (c === "{") depth += 1;
+		else if (c === "}") {
+			depth -= 1;
+			if (depth === 0) return props.slice(start + 1, i);
+		}
+	}
+	return props.slice(start + 1);
+};

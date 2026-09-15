@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
-import { Plus } from "lucide-react";
+import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppMetaobjectDefinitionsList } from "#/metaobjects";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb, AppLink } from "#/shared/links";
+import { usePermissions } from "#/session";
+import { AppBreadcrumb, AppNewLink } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/metaobjects/",
@@ -13,6 +13,8 @@ export const Route = createFileRoute(
 
 function MetaobjectsPage() {
 	const { tourOperatorId } = Route.useParams();
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader
@@ -23,15 +25,14 @@ function MetaobjectsPage() {
 					/>
 				}
 				actions={
-					<Button asChild>
-						<AppLink
+					canWrite && (
+						<AppNewLink
 							to="/tour-operators/$tourOperatorId/content/metaobjects/new"
 							params={{ tourOperatorId }}
 						>
-							<Plus />
 							{m.new_metaobject_definition()}
-						</AppLink>
-					</Button>
+						</AppNewLink>
+					)
 				}
 			/>
 			<AppMetaobjectDefinitionsList tourOperatorId={tourOperatorId} />

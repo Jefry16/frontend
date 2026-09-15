@@ -31,6 +31,13 @@ the list never pretends.
 7. **Every list passes an empty state**, in its own words, with no
    exception for a list that cannot be empty today: a rule with no exception
    is a rule nothing slips past. Gate: `src/shared/data-table.test.ts`.
+8. **A list page is one shell, one breadcrumb header and one action a
+   viewer never sees.** The action is `AppNewLink` to the create page, or a
+   `Button` when the create is a dialog or an upload, written inline as
+   `actions={canWrite && …}` so the gate can read it; a `Button asChild`
+   around an `AppLink` is `AppNewLink` written by hand. Gate:
+   `src/shared/list-page.test.ts`. That there is only one action is by
+   review; the gate reads the gating, not the count.
 
 ## Page patterns
 
@@ -41,7 +48,7 @@ lands.
 
 | pattern | composition |
 | --- | --- |
-| list | `AppPageShell variant="list"`, `AppPageHeader` with a breadcrumb and one action, `AppDataTable` with an `emptyState` |
+| list | `AppPageShell variant="list"`, `AppPageHeader` with a breadcrumb and one action behind `canWrite`, `AppDataTable` with an `emptyState` |
 | detail | `AppPageShell variant="detail"`, `AppResourceView` with a back link on not-found, `AppPageHeader` with breadcrumb and `AppPageActions`, detail fields in cards |
 | create | `AppPageShell variant="form"`, `AppPageHeader` with breadcrumb, `AppFormCard` with `AppFormActions` |
 | edit | the create pattern inside `AppResourceView` |
