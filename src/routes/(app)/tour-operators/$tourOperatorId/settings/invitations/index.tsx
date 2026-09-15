@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
-import { UserPlus } from "lucide-react";
+import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb, AppLink } from "#/shared/links";
+import { usePermissions } from "#/session";
+import { AppBreadcrumb, AppNewLink } from "#/shared/links";
 import { AppInvitationsList } from "#/team";
 
 export const Route = createFileRoute(
@@ -13,6 +13,8 @@ export const Route = createFileRoute(
 
 function InvitationsSettingsPage() {
 	const { tourOperatorId } = Route.useParams();
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader
@@ -30,15 +32,14 @@ function InvitationsSettingsPage() {
 					/>
 				}
 				actions={
-					<Button asChild>
-						<AppLink
+					canWrite && (
+						<AppNewLink
 							to="/tour-operators/$tourOperatorId/settings/members/new"
 							params={{ tourOperatorId }}
 						>
-							<UserPlus />
 							{m.invite_member()}
-						</AppLink>
-					</Button>
+						</AppNewLink>
+					)
 				}
 			/>
 			<AppInvitationsList tourOperatorId={tourOperatorId} />

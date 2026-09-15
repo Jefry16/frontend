@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppPageHeader, AppPageShell, Button } from "@vointika/ui";
-import { Plus } from "lucide-react";
+import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppMenusList } from "#/menus";
 import * as m from "#/paraglide/messages";
-import { AppBreadcrumb, AppLink } from "#/shared/links";
+import { usePermissions } from "#/session";
+import { AppBreadcrumb, AppNewLink } from "#/shared/links";
 
 export const Route = createFileRoute(
 	"/(app)/tour-operators/$tourOperatorId/content/menus/",
@@ -13,6 +13,8 @@ export const Route = createFileRoute(
 
 function MenusPage() {
 	const { tourOperatorId } = Route.useParams();
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader
@@ -23,15 +25,14 @@ function MenusPage() {
 					/>
 				}
 				actions={
-					<Button asChild>
-						<AppLink
+					canWrite && (
+						<AppNewLink
 							to="/tour-operators/$tourOperatorId/content/menus/new"
 							params={{ tourOperatorId }}
 						>
-							<Plus />
 							{m.new_menu()}
-						</AppLink>
-					</Button>
+						</AppNewLink>
+					)
 				}
 			/>
 			<AppMenusList tourOperatorId={tourOperatorId} />

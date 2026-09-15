@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppPageHeader, AppPageShell } from "@vointika/ui";
 import { AppMediaList, AppMediaUploadButton } from "#/media";
 import * as m from "#/paraglide/messages";
+import { usePermissions } from "#/session";
 import { AppBreadcrumb } from "#/shared/links";
 
 export const Route = createFileRoute(
@@ -12,6 +13,8 @@ export const Route = createFileRoute(
 
 function MediaPage() {
 	const { tourOperatorId } = Route.useParams();
+	const { canWrite } = usePermissions();
+
 	return (
 		<AppPageShell variant="list">
 			<AppPageHeader
@@ -21,7 +24,9 @@ function MediaPage() {
 						items={[{ label: m.content() }, { label: m.media() }]}
 					/>
 				}
-				actions={<AppMediaUploadButton tourOperatorId={tourOperatorId} />}
+				actions={
+					canWrite && <AppMediaUploadButton tourOperatorId={tourOperatorId} />
+				}
 			/>
 			<AppMediaList tourOperatorId={tourOperatorId} />
 		</AppPageShell>

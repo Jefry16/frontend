@@ -3,7 +3,7 @@ import { Images } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { useOperatorDateTime } from "#/session";
+import { useOperatorDateTime, usePermissions } from "#/session";
 import { mediaColumns } from "../columns";
 import { AppMediaUploadButton } from "./AppMediaUploadButton";
 
@@ -13,6 +13,7 @@ export const AppMediaList = ({
 	tourOperatorId: string;
 }) => {
 	const { formatDate } = useOperatorDateTime();
+	const { canWrite } = usePermissions();
 	const columns = useMemo(
 		() => mediaColumns(tourOperatorId, formatDate),
 		[tourOperatorId, formatDate],
@@ -27,7 +28,9 @@ export const AppMediaList = ({
 				icon: Images,
 				title: m.no_media(),
 				description: m.no_media_body(),
-				action: <AppMediaUploadButton tourOperatorId={tourOperatorId} />,
+				action: canWrite && (
+					<AppMediaUploadButton tourOperatorId={tourOperatorId} />
+				),
 			}}
 		/>
 	);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { openingTagProps } from "./jsx";
+import { openingTagProps, propExpression } from "./jsx";
 
 describe("openingTagProps", () => {
 	it("stops at the tag's own closing bracket, not one inside a prop", () => {
@@ -19,5 +19,19 @@ describe("openingTagProps", () => {
 		);
 		expect(props).toHaveLength(1);
 		expect(props[0]).toContain("columns=");
+	});
+});
+
+describe("propExpression", () => {
+	it("returns the braces' content, whole, even with nested braces", () => {
+		const props =
+			" title={m.x()} actions={canWrite && (<A params={{ id }}>{m.y()}</A>)} />";
+		expect(propExpression(props, "actions")).toBe(
+			"canWrite && (<A params={{ id }}>{m.y()}</A>)",
+		);
+	});
+
+	it("is undefined for a prop that is not passed", () => {
+		expect(propExpression(" title={m.x()}", "actions")).toBeUndefined();
 	});
 });
