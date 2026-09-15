@@ -417,6 +417,8 @@
 	"activity_action_page_deleted": "eliminó una página",
 	"no_invitations": "Aún no hay invitaciones",
 	"no_invitations_body": "Invita a compañeros a ayudar a gestionar el operador — las invitaciones pendientes y pasadas aparecen aquí.",
+	"no_members": "Aún no hay miembros",
+	"no_members_body": "Invita a compañeros a ayudar a gestionar el operador.",
 	"delete_pickup_location": "Eliminar",
 	"delete_pickup_location_title": "¿Eliminar este punto de encuentro?",
 	"delete_pickup_location_body": "El lugar de reunión se elimina de forma permanente. Esto no se puede deshacer.",

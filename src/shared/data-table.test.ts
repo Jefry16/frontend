@@ -15,30 +15,30 @@ const walk = (dir: string) => {
 };
 walk(join(ROOT, "src"));
 
-const views = (source: string) => openingTagProps(source, "AppResourceView");
+const tables = (source: string) => openingTagProps(source, "AppDataTable");
 
-describe("a resource page's not-found state offers a named way back", () => {
+describe("every list passes an empty state", () => {
 	it("the walk is wired (a broken walk must not pass vacuously)", () => {
 		expect(files.length).toBeGreaterThan(50);
 		expect(
-			files.filter((f) => views(readFileSync(f, "utf8")).length > 0).length,
+			files.filter((f) => tables(readFileSync(f, "utf8")).length > 0).length,
 		).toBeGreaterThan(10);
 	});
 
-	it("every AppResourceView passes notFoundAction", () => {
+	it("every AppDataTable passes emptyState", () => {
 		const offenders = files
 			.filter((f) =>
-				views(readFileSync(f, "utf8")).some(
-					(props) => !/\bnotFoundAction=/.test(props),
+				tables(readFileSync(f, "utf8")).some(
+					(props) => !/\bemptyState=/.test(props),
 				),
 			)
 			.map((f) => relative(ROOT, f));
 		expect(
 			offenders,
-			"A record that is gone gets a link back to its list, named for the " +
-				"list (m.back_to_x), not the package's generic Go back: a visitor who " +
-				"arrived from a bookmark has no history to go back to. Pass " +
-				"notFoundAction={backLink} to every AppResourceView.",
+			"Every list says what an empty one means, in its own words, even the " +
+				"one list that cannot be empty today: a rule with no exception is a " +
+				"rule nothing slips past. Pass emptyState={{ title, description }} " +
+				"to every AppDataTable.",
 		).toEqual([]);
 	});
 });

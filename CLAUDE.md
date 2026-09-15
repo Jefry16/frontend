@@ -28,6 +28,9 @@ the list never pretends.
    list**, `m.back_to_x`, never the package's generic button: a visitor from
    a bookmark has no history to go back to. Gate:
    `src/shared/resource-view.test.ts`.
+7. **Every list passes an empty state**, in its own words, with no
+   exception for a list that cannot be empty today: a rule with no exception
+   is a rule nothing slips past. Gate: `src/shared/data-table.test.ts`.
 
 ## Page patterns
 
