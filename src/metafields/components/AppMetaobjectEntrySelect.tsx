@@ -1,4 +1,5 @@
 import {
+	AppFormSkeleton,
 	AppQueryState,
 	Select,
 	SelectContent,
@@ -6,7 +7,6 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-	Skeleton,
 	useAllPages,
 } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
@@ -40,7 +40,7 @@ export const AppMetaobjectEntrySelect = ({
 	return (
 		<AppQueryState
 			query={catalogue}
-			loading={<Skeleton className="h-9 w-full" />}
+			loading={<AppFormSkeleton rows={1} card={false} />}
 		>
 			{(rows) => {
 				const entries = rows.filter(

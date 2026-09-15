@@ -1,7 +1,7 @@
 import {
 	AppCheckboxGroupField,
+	AppForm,
 	AppFormActions,
-	AppFormCard,
 	AppSelectField,
 	FieldGroup,
 	SelectItem,
@@ -36,7 +36,7 @@ export const AppOperatorLanguagesForm = ({
 	];
 
 	return (
-		<AppFormCard
+		<AppForm
 			onSubmit={form.handleSubmit}
 			errorMessage={errorMessage}
 			actions={
@@ -94,6 +94,6 @@ export const AppOperatorLanguagesForm = ({
 					)}
 				</form.Subscribe>
 			</FieldGroup>
-		</AppFormCard>
+		</AppForm>
 	);
 };

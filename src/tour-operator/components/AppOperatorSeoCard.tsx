@@ -2,17 +2,15 @@ import { useForm } from "@tanstack/react-form";
 import {
 	AppDetailField,
 	AppField,
+	AppForm,
 	AppFormActions,
 	AppFormSkeleton,
 	AppImageDropzone,
 	AppQueryState,
+	AppSettingsCard,
 	AppTextareaField,
 	Button,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+	EmptyValue,
 	FieldDescription,
 	FieldGroup,
 	Label,
@@ -44,26 +42,20 @@ export const AppOperatorSeoCard = ({
 	const query = useOperatorSeo(tourOperatorId);
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.seo()}</CardTitle>
-				<CardDescription>{m.seo_hint()}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<AppQueryState
-					query={query}
-					loading={<AppFormSkeleton rows={3} card={false} />}
-				>
-					{(seo) =>
-						canWrite ? (
-							<SeoForm tourOperatorId={tourOperatorId} seo={seo} />
-						) : (
-							<SeoSummary tourOperatorId={tourOperatorId} seo={seo} />
-						)
-					}
-				</AppQueryState>
-			</CardContent>
-		</Card>
+		<AppSettingsCard title={m.seo()} description={m.seo_hint()}>
+			<AppQueryState
+				query={query}
+				loading={<AppFormSkeleton rows={3} card={false} />}
+			>
+				{(seo) =>
+					canWrite ? (
+						<SeoForm tourOperatorId={tourOperatorId} seo={seo} />
+					) : (
+						<SeoSummary tourOperatorId={tourOperatorId} seo={seo} />
+					)
+				}
+			</AppQueryState>
+		</AppSettingsCard>
 	);
 };
 
@@ -98,12 +90,15 @@ const SeoForm = ({
 	});
 
 	return (
-		<form
-			onSubmit={(e) => {
-				e.preventDefault();
-				form.handleSubmit();
-			}}
-			className="space-y-4"
+		<AppForm
+			onSubmit={form.handleSubmit}
+			actions={
+				<AppFormActions
+					isPending={save.isPending}
+					disabled={upload.isPending}
+					submitLabel={m.save_changes()}
+				/>
+			}
 		>
 			<FieldGroup>
 				<form.Field name="seoTitle">
@@ -165,12 +160,7 @@ const SeoForm = ({
 					)}
 				</div>
 			</FieldGroup>
-			<AppFormActions
-				isPending={save.isPending}
-				disabled={upload.isPending}
-				submitLabel={m.save_changes()}
-			/>
-		</form>
+		</AppForm>
 	);
 };
 
@@ -182,15 +172,13 @@ const SeoSummary = ({
 	seo: OperatorSeo;
 }) => {
 	const image = useMedia(tourOperatorId, seo.ogImageMediaId);
-	const none = <span className="text-muted-foreground">{m.not_set()}</span>;
-
 	return (
 		<dl className="flex flex-col gap-6">
 			<AppDetailField label={m.seo_title()}>
-				{seo.seoTitle ?? none}
+				{seo.seoTitle ?? <EmptyValue />}
 			</AppDetailField>
 			<AppDetailField label={m.seo_description()}>
-				{seo.seoDescription ?? none}
+				{seo.seoDescription ?? <EmptyValue />}
 			</AppDetailField>
 			<AppDetailField label={m.og_image()}>
 				{image.data?.url ? (
@@ -200,7 +188,7 @@ const SeoSummary = ({
 						className="size-28 rounded-md border object-cover"
 					/>
 				) : (
-					none
+					<EmptyValue />
 				)}
 			</AppDetailField>
 		</dl>

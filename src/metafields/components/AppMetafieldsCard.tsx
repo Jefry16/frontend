@@ -1,17 +1,17 @@
 import {
+	AppDetailField,
+	AppForm,
 	AppFormActions,
 	AppQueryState,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+	AppSettingsCard,
+	EmptyValue,
 	Field,
 	FieldGroup,
 	FieldLabel,
 } from "@vointika/ui";
 import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
+import { usePermissions } from "#/session";
 import { useMetafieldValueSave } from "../hooks/use-metafield-value-save";
 import { useOwnerMetafields } from "../hooks/use-owner-metafields";
 import type {
@@ -30,28 +30,43 @@ export const AppMetafieldsCard = ({
 	ownerType: MetafieldOwnerTypeCode;
 	ownerId: string;
 }) => {
+	const { canWrite } = usePermissions();
 	const query = useOwnerMetafields(tourOperatorId, ownerType, ownerId);
 	const save = useMetafieldValueSave(tourOperatorId, ownerType, ownerId);
 	const [drafts, setDrafts] = useState<Record<string, string>>({});
 
-	const chrome = (body: ReactNode, phase: "pending" | "error" | "loaded") =>
+	const untilKnown = (
+		body: ReactNode,
+		phase: "pending" | "error" | "loaded",
+	) =>
 		phase === "pending" ? null : (
-			<Card>
-				<CardHeader>
-					<CardTitle>{m.metafields()}</CardTitle>
-					<CardDescription>{m.metafields_hint()}</CardDescription>
-				</CardHeader>
-				<CardContent>{body}</CardContent>
-			</Card>
+			<AppSettingsCard title={m.metafields()} description={m.metafields_hint()}>
+				{body}
+			</AppSettingsCard>
 		);
 
 	return (
-		<AppQueryState query={query} chrome={chrome} loading={null}>
+		<AppQueryState query={query} chrome={untilKnown} loading={null}>
 			{({ definitions, values }) => {
 				if (definitions.length === 0) return null;
 				const stored = new Map(
 					values.map((v) => [`${v.namespace}.${v.key}`, v.value]),
 				);
+
+				if (!canWrite) {
+					return (
+						<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+							{definitions.map((definition) => (
+								<AppDetailField key={definition.id} label={definition.name}>
+									{stored.get(`${definition.namespace}.${definition.key}`) || (
+										<EmptyValue />
+									)}
+								</AppDetailField>
+							))}
+						</dl>
+					);
+				}
+
 				const current = (id: string) => drafts[id] ?? stored.get(id) ?? "";
 				const setDraft = (id: string, value: string) =>
 					setDrafts((prev) => ({ ...prev, [id]: value }));
@@ -72,16 +87,22 @@ export const AppMetafieldsCard = ({
 					}));
 
 				return (
-					<form
-						onSubmit={(e) => {
-							e.preventDefault();
+					<AppForm
+						onSubmit={() =>
 							save.mutate(changes, {
 								onSettled: (_data, error) => {
 									if (!error) setDrafts({});
 								},
-							});
-						}}
-						className="space-y-4"
+							})
+						}
+						actions={
+							changes.length > 0 && (
+								<AppFormActions
+									isPending={save.isPending}
+									submitLabel={m.save_changes()}
+								/>
+							)
+						}
 					>
 						<FieldGroup>
 							{definitions.map((definition) => (
@@ -96,13 +117,7 @@ export const AppMetafieldsCard = ({
 								/>
 							))}
 						</FieldGroup>
-						{changes.length > 0 && (
-							<AppFormActions
-								isPending={save.isPending}
-								submitLabel={m.save_changes()}
-							/>
-						)}
-					</form>
+					</AppForm>
 				);
 			}}
 		</AppQueryState>

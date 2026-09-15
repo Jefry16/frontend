@@ -52,6 +52,14 @@ the list never pretends.
     is `AppNoTranslatableLocales`; every form card carries
     `AppTranslationNotice`; the only button beside Save is
     `AppClearTranslationButton`. Gate: `src/shared/translations-page.test.ts`.
+11. **A settings page is a stack of self-describing cards a viewer can
+    read.** No write gate; one breadcrumb header; every card is
+    `AppSettingsCard` with a title and a description; a card's form is
+    `AppForm` with nothing beside Save; inside a card a query loads as
+    `AppFormSkeleton` with `card={false}`, or stays hidden with
+    `loading={null}` until its chrome can decide. Gate:
+    `src/shared/settings-card.test.ts`, scoped to form-shaped routes that
+    reach `AppSettingsCard` and no `AppLocaleTabs`.
 
 ## Page patterns
 
@@ -67,7 +75,7 @@ lands.
 | create | `AppPageShell variant="form"`, `AppWriteGate` first, `AppPageHeader` with breadcrumb, `AppFormCard` with `AppFormActions` and no second button |
 | edit | the create pattern inside `AppResourceView` |
 | translations | `AppPageShell variant="form"` with no gate, `AppPageHeader` with breadcrumb, `AppLocaleTabs` over one `AppFormCard` per locale (`AppTranslationSummary` for a viewer, `AppNoTranslatableLocales` with one language); `AppNameTranslations` when the name is the only translatable field |
-| settings card | a stack of self-saving cards under one header |
+| settings | `AppPageShell variant="form"` with no gate, `AppPageHeader` with breadcrumb in the route, then `AppSettingsCard`s each holding `AppQueryState` over `AppForm` for an editor or a `dl` of `AppDetailField` for a viewer |
 
 Named variants: a read-only list has no action; a list whose create is a
 dialog has a button where the others have a link; a read-only detail has no
@@ -79,7 +87,12 @@ auth shell with a card, not a form page, because there is no operator to
 frame it yet; the operator's own translations page has no record to load,
 so its header sits in the route rather than inside `AppResourceView`;
 `AppNameTranslations` lives in `shared/`, which cannot import a module, so
-its caller reads `usePermissions()` and passes `canWrite` in.
+its caller reads `usePermissions()` and passes `canWrite` in; the account
+page's cards have no viewer branch because the account is the viewer's own;
+the two metafields cards render nothing until their definitions are known
+and show Save only once a field has changed, and they are settings cards
+wherever they sit (a detail page, a translations page), gated by the
+pattern that owns the page.
 
 ## Gates
 

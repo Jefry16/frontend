@@ -1,16 +1,13 @@
 import {
 	AppDetailField,
+	AppForm,
 	AppFormActions,
+	AppFormSkeleton,
 	AppQueryState,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+	AppSettingsCard,
 	Field,
 	FieldGroup,
 	FieldLabel,
-	Skeleton,
 } from "@vointika/ui";
 import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -55,13 +52,12 @@ export const AppMetafieldTranslationsCard = ({
 	const [drafts, setDrafts] = useState<Record<string, string>>({});
 
 	const titled = (body: ReactNode) => (
-		<Card>
-			<CardHeader>
-				<CardTitle>{m.metafield_translations()}</CardTitle>
-				<CardDescription>{m.metafield_translations_hint()}</CardDescription>
-			</CardHeader>
-			<CardContent>{body}</CardContent>
-		</Card>
+		<AppSettingsCard
+			title={m.metafield_translations()}
+			description={m.metafield_translations_hint()}
+		>
+			{body}
+		</AppSettingsCard>
 	);
 	const untilKnown = (
 		body: ReactNode,
@@ -81,13 +77,7 @@ export const AppMetafieldTranslationsCard = ({
 					<AppQueryState
 						query={overlay}
 						chrome={titled}
-						loading={
-							<div className="flex flex-col gap-4">
-								{["a", "b"].map((k) => (
-									<Skeleton key={k} className="h-12 w-full" />
-								))}
-							</div>
-						}
+						loading={<AppFormSkeleton rows={2} card={false} />}
 					>
 						{(translated) => {
 							const canonical = new Map(
@@ -128,16 +118,41 @@ export const AppMetafieldTranslationsCard = ({
 							}
 
 							return (
-								<form
-									onSubmit={(e) => {
-										e.preventDefault();
+								<AppForm
+									onSubmit={() =>
 										save.mutate(changes, {
 											onSettled: (_data, error) => {
 												if (!error) setDrafts({});
 											},
-										});
-									}}
-									className="space-y-4"
+										})
+									}
+									actions={
+										(Object.keys(changes).length > 0 ||
+											Object.keys(translated).length > 0) && (
+											<AppFormActions
+												isPending={save.isPending}
+												disabled={
+													clear.isPending || Object.keys(changes).length === 0
+												}
+												submitLabel={m.save_translation()}
+												secondary={
+													Object.keys(translated).length > 0 && (
+														<AppClearTranslationButton
+															isClearing={clear.isPending}
+															disabled={save.isPending}
+															onClick={() =>
+																clear.mutate(undefined, {
+																	onSettled: (_data, error) => {
+																		if (!error) setDrafts({});
+																	},
+																})
+															}
+														/>
+													)
+												}
+											/>
+										)
+									}
 								>
 									<FieldGroup>
 										{definitions.map((definition) => {
@@ -168,32 +183,7 @@ export const AppMetafieldTranslationsCard = ({
 											);
 										})}
 									</FieldGroup>
-									{(Object.keys(changes).length > 0 ||
-										Object.keys(translated).length > 0) && (
-										<AppFormActions
-											isPending={save.isPending}
-											disabled={
-												clear.isPending || Object.keys(changes).length === 0
-											}
-											submitLabel={m.save_translation()}
-											secondary={
-												Object.keys(translated).length > 0 && (
-													<AppClearTranslationButton
-														isClearing={clear.isPending}
-														disabled={save.isPending}
-														onClick={() =>
-															clear.mutate(undefined, {
-																onSettled: (_data, error) => {
-																	if (!error) setDrafts({});
-																},
-															})
-														}
-													/>
-												)
-											}
-										/>
-									)}
-								</form>
+								</AppForm>
 							);
 						}}
 					</AppQueryState>
