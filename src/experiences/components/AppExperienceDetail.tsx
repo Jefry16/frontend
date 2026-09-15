@@ -3,6 +3,7 @@ import {
 	type AppAction,
 	AppBadge,
 	AppDetailField,
+	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
@@ -11,7 +12,6 @@ import {
 	CardHeader,
 	CardTitle,
 	formatMoney,
-	Skeleton,
 } from "@vointika/ui";
 import {
 	CalendarDays,
@@ -71,21 +71,7 @@ export const AppExperienceDetail = ({
 				/>
 			}
 			notFoundAction={backLink}
-			loading={
-				<Card>
-					<CardContent className="flex flex-col gap-5 sm:flex-row">
-						<Skeleton className="aspect-video w-full sm:w-64" />
-						<div className="flex flex-1 flex-col gap-4">
-							<Skeleton className="h-5 w-24" />
-							<div className="grid grid-cols-2 gap-4">
-								{["a", "b", "c", "d"].map((k) => (
-									<Skeleton key={k} className="h-8 w-full" />
-								))}
-							</div>
-						</div>
-					</CardContent>
-				</Card>
-			}
+			loading={<AppDetailSkeleton fields={4} />}
 		>
 			{(experience) => {
 				const actions: AppAction[] = [

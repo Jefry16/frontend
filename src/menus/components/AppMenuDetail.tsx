@@ -7,7 +7,6 @@ import {
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Button,
 	Card,
 	CardContent,
 	CardHeader,
@@ -153,20 +152,8 @@ const MenuView = ({
 			</Card>
 
 			<Card>
-				<CardHeader className="flex flex-row items-center justify-between">
+				<CardHeader>
 					<CardTitle>{m.menu_items()}</CardTitle>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() =>
-							navigate({
-								to: "/tour-operators/$tourOperatorId/content/menus/$menuId/edit",
-								params: { tourOperatorId, menuId: menu.id },
-							})
-						}
-					>
-						{m.edit_menu_items()}
-					</Button>
 				</CardHeader>
 				<CardContent>
 					{menu.items.length === 0 ? (

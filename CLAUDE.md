@@ -60,6 +60,15 @@ the list never pretends.
     `loading={null}` until its chrome can decide. Gate:
     `src/shared/settings-card.test.ts`, scoped to form-shaped routes that
     reach `AppSettingsCard` and no `AppLocaleTabs`.
+12. **A detail page has one breadcrumb header and one loading shape.**
+    `AppResourceView`'s `loading` prop is `<AppDetailSkeleton fields={n} />`,
+    never `AppFormSkeleton` borrowed from the write pattern and never a
+    hand-rolled `Card` of `Skeleton` bars; a field long enough to scroll is
+    `AppSourceBlock`, never a raw `<pre>`. Gate: `src/shared/detail-page.test.ts`,
+    scoped to `variant="detail"` routes whose closure reaches
+    `AppResourceView` — a marker independent of the rules the gate checks, so
+    a page missing its breadcrumb fails rather than silently falling out of
+    scope.
 
 ## Page patterns
 
@@ -92,7 +101,12 @@ page's cards have no viewer branch because the account is the viewer's own;
 the two metafields cards render nothing until their definitions are known
 and show Save only once a field has changed, and they are settings cards
 wherever they sit (a detail page, a translations page), gated by the
-pattern that owns the page.
+pattern that owns the page; a detail page's `AppActivityCard` names the
+entity type the backend actually logs writes under, which is not always the
+page's own record — the policy detail has none because the backend logs a
+policy write against the tour operator, not the policy, and the contact
+message detail has none because the backend never writes an audit entry for
+one at all.
 
 ## Gates
 
