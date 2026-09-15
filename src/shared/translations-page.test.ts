@@ -52,10 +52,36 @@ const pages = walk(join(ROOT, "src", "routes"))
 const tags = (texts: string[], tag: string) =>
 	texts.flatMap((text) => openingTagProps(text, tag));
 
+/** Every component that renders the locale tabs, named by its own file. */
+const localeEditors = walk(join(ROOT, "src"))
+	.map((f) => ({ file: relative(ROOT, f), source: readFileSync(f, "utf8") }))
+	.filter(({ source }) => /<AppLocaleTabs\b/.test(source));
+
+const picksLocaleOutOfAList = /\.find\(\s*\(\s*\w+\s*\)\s*=>\s*\w+\.locale ===/;
+
 describe("every translations page is an ungated locale editor a viewer can read", () => {
 	it("the walk is wired (a broken walk must not pass vacuously)", () => {
 		expect(pages.length).toBeGreaterThan(4);
 		expect(components.size).toBeGreaterThan(50);
+		expect(localeEditors.length).toBeGreaterThan(4);
+	});
+
+	it("a locale's text is its own query, never picked out of the list", () => {
+		const offenders = localeEditors
+			.filter(({ source }) => picksLocaleOutOfAList.test(source))
+			.map(({ file }) => file);
+		expect(
+			offenders,
+			"The translations list says which locales have text — that is what " +
+				"the tab dots read — and never what one of them says. A locale's " +
+				"overlay is its own QueryState handed to AppQueryState, so the form " +
+				"and the viewer's summary read one source that can load and fail on " +
+				"its own. Where the backend has no GET …/translations/{locale} " +
+				"(policies), the hook beside the endpoint derives one from the list " +
+				"and presents it as a QueryState, so the component never knows the " +
+				"difference. This rule sees one shape of hand-picking, " +
+				"`.find((t) => t.locale === …)` in a component, not every one.",
+		).toEqual([]);
 	});
 
 	it("no write gate: a viewer opens the page and reads the translations", () => {

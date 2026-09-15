@@ -62,6 +62,13 @@ export const AppNameTranslations = ({
 		(listQuery.data ?? []).filter((t) => t.name).map((t) => t.locale),
 	);
 
+	const overlayQuery = useQuery({
+		queryKey: withLocale(queryKeyBase, active ?? ""),
+		enabled: Boolean(active),
+		queryFn: async () =>
+			(await authApi.get<NameTranslation>(`${endpointBase}/${active}`)).data,
+	});
+
 	return (
 		<AppQueryState query={localesQuery} loading={<AppLoadingBlock />}>
 			{() =>
@@ -76,28 +83,28 @@ export const AppNameTranslations = ({
 							translated={translated}
 							label={localeLabel}
 						/>
-						{active &&
-							(canWrite ? (
-								<LocaleNameForm
-									key={active}
-									locale={active}
-									tourOperatorId={tourOperatorId}
-									endpointBase={endpointBase}
-									queryKeyBase={queryKeyBase}
-									canonicalName={canonicalName}
-									maxLength={maxLength}
-								/>
-							) : (
-								<AppTranslationSummary
-									fields={[
-										[
-											m.name(),
-											listQuery.data?.find((t) => t.locale === active)?.name ??
-												null,
-										],
-									]}
-								/>
-							))}
+						{active && (
+							<AppQueryState query={overlayQuery} loading={<AppLoadingBlock />}>
+								{(overlay) =>
+									canWrite ? (
+										<LocaleNameForm
+											key={active}
+											locale={active}
+											overlay={overlay}
+											tourOperatorId={tourOperatorId}
+											endpointBase={endpointBase}
+											queryKeyBase={queryKeyBase}
+											canonicalName={canonicalName}
+											maxLength={maxLength}
+										/>
+									) : (
+										<AppTranslationSummary
+											fields={[[m.name(), overlay.name]]}
+										/>
+									)
+								}
+							</AppQueryState>
+						)}
 					</div>
 				)
 			}
@@ -107,6 +114,7 @@ export const AppNameTranslations = ({
 
 function LocaleNameForm({
 	locale,
+	overlay,
 	tourOperatorId,
 	endpointBase,
 	queryKeyBase,
@@ -114,6 +122,7 @@ function LocaleNameForm({
 	maxLength,
 }: {
 	locale: string;
+	overlay: NameTranslation;
 	tourOperatorId: string;
 	endpointBase: string;
 	queryKeyBase: readonly unknown[];
@@ -123,12 +132,6 @@ function LocaleNameForm({
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-	const overlayQuery = useQuery({
-		queryKey: withLocale(queryKeyBase, locale),
-		queryFn: async () =>
-			(await authApi.get<NameTranslation>(`${endpointBase}/${locale}`)).data,
-	});
 
 	const invalidate = () => {
 		queryClient.invalidateQueries({ queryKey: queryKeyBase });
@@ -163,21 +166,17 @@ function LocaleNameForm({
 	});
 
 	return (
-		<AppQueryState query={overlayQuery} loading={<AppLoadingBlock />}>
-			{(overlay) => (
-				<NameFormBody
-					initialName={overlay.name ?? ""}
-					hasTranslation={Boolean(overlay.name)}
-					canonicalName={canonicalName}
-					maxLength={maxLength}
-					errorMessage={errorMessage}
-					isSaving={save.isPending}
-					isClearing={clear.isPending}
-					onSave={(name) => save.mutate(name)}
-					onClear={() => clear.mutate()}
-				/>
-			)}
-		</AppQueryState>
+		<NameFormBody
+			initialName={overlay.name ?? ""}
+			hasTranslation={Boolean(overlay.name)}
+			canonicalName={canonicalName}
+			maxLength={maxLength}
+			errorMessage={errorMessage}
+			isSaving={save.isPending}
+			isClearing={clear.isPending}
+			onSave={(name) => save.mutate(name)}
+			onClear={() => clear.mutate()}
+		/>
 	);
 }
 
