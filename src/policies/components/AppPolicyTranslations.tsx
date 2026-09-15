@@ -6,7 +6,6 @@ import {
 	AppQueryState,
 	AppResourceView,
 	AppTranslationSummary,
-	mergeQueryState,
 	type TranslatedField,
 } from "@vointika/ui";
 import { Scale } from "lucide-react";
@@ -16,7 +15,10 @@ import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
 import { AppNoTranslatableLocales } from "#/shared/components/AppNoTranslatableLocales";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { usePolicy } from "../hooks/use-policy";
-import { usePolicyTranslations } from "../hooks/use-policy-translations";
+import {
+	usePolicyTranslation,
+	usePolicyTranslations,
+} from "../hooks/use-policy-translations";
 import type { PolicyTranslation } from "../types";
 import { AppPolicyTranslationForm } from "./AppPolicyTranslationForm";
 
@@ -40,12 +42,11 @@ export const AppPolicyTranslations = ({
 	const active = picked ?? translatable[0];
 	const translated = new Set((listQuery.data ?? []).map((t) => t.locale));
 
-	const overlay: PolicyTranslation = (active &&
-		listQuery.data?.find((t) => t.locale === active)) || {
-		locale: active ?? "",
-		title: null,
-		body: null,
-	};
+	const translationQuery = usePolicyTranslation(
+		tourOperatorId,
+		policyId,
+		active,
+	);
 
 	const backLink = (
 		<AppBackLink
@@ -94,10 +95,7 @@ export const AppPolicyTranslations = ({
 						}
 					/>
 
-					<AppQueryState
-						query={mergeQueryState(localesQuery, listQuery, () => true)}
-						loading={<AppLoadingBlock />}
-					>
+					<AppQueryState query={localesQuery} loading={<AppLoadingBlock />}>
 						{() =>
 							translatable.length === 0 ? (
 								<AppNoTranslatableLocales tourOperatorId={tourOperatorId} />
@@ -110,19 +108,29 @@ export const AppPolicyTranslations = ({
 										translated={translated}
 										label={localeLabel}
 									/>
-									{active &&
-										(canWrite ? (
-											<AppPolicyTranslationForm
-												key={active}
-												tourOperatorId={tourOperatorId}
-												policyId={policyId}
-												locale={active}
-												canonical={policy}
-												translation={overlay}
-											/>
-										) : (
-											<AppTranslationSummary fields={policyFields(overlay)} />
-										))}
+									{active && (
+										<AppQueryState
+											query={translationQuery}
+											loading={<AppLoadingBlock />}
+										>
+											{(translation) =>
+												canWrite ? (
+													<AppPolicyTranslationForm
+														key={active}
+														tourOperatorId={tourOperatorId}
+														policyId={policyId}
+														locale={active}
+														canonical={policy}
+														translation={translation}
+													/>
+												) : (
+													<AppTranslationSummary
+														fields={policyFields(translation)}
+													/>
+												)
+											}
+										</AppQueryState>
+									)}
 								</div>
 							)
 						}
