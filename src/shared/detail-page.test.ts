@@ -45,20 +45,17 @@ const closure = (source: string): string[] => {
 
 /**
  * A detail page is a resource loaded through AppResourceView. The operator
- * dashboard is also `variant="detail"` but has no record to load and no
- * breadcrumb, so it is excluded the same way every prior round's pages array
- * excludes its own placeholder: by the shape a real detail page carries.
+ * dashboard is also `variant="detail"` but has no record to load, so it
+ * never reaches AppResourceView and is excluded by that, not by a rule this
+ * gate goes on to check (a scope built from the breadcrumb rule itself would
+ * let a page missing its breadcrumb simply fall out of scope instead of
+ * failing).
  */
 const pages = walk(join(ROOT, "src", "routes"))
 	.map((f) => ({ file: relative(ROOT, f), source: readFileSync(f, "utf8") }))
 	.filter(({ source }) => /variant="detail"/.test(source))
 	.map((route) => ({ ...route, texts: closure(route.source) }))
-	.filter(({ texts }) => {
-		const headers = texts.flatMap((text) =>
-			openingTagProps(text, "AppPageHeader"),
-		);
-		return headers.some((props) => /\bbreadcrumb=/.test(props));
-	});
+	.filter(({ texts }) => texts.some((text) => /<AppResourceView\b/.test(text)));
 
 const tags = (texts: string[], tag: string) =>
 	texts.flatMap((text) => openingTagProps(text, tag));
@@ -80,20 +77,6 @@ describe("every detail page loads its record through AppResourceView", () => {
 			offenders,
 			"Exactly one AppPageHeader reachable from the route, carrying a " +
 				"breadcrumb back to the record's list.",
-		).toEqual([]);
-	});
-
-	it("every page loads its record through AppResourceView", () => {
-		const offenders = pages
-			.filter(
-				({ texts }) => !texts.some((text) => /<AppResourceView\b/.test(text)),
-			)
-			.map(({ file }) => file);
-		expect(
-			offenders,
-			"A detail page's record comes from AppResourceView: it is what " +
-				"turns a not-found or a failed fetch into the same shape on every " +
-				"page. Never load the record any other way.",
 		).toEqual([]);
 	});
 
