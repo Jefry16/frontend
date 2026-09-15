@@ -15,23 +15,23 @@ function NewAudiencePage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageHeader
-				title={m.new_audience()}
-				breadcrumb={
-					<AppBreadcrumb
-						items={[
-							{ label: m.catalog() },
-							{
-								label: m.audiences(),
-								to: "/tour-operators/$tourOperatorId/audiences",
-								params: { tourOperatorId },
-							},
-							{ label: m.new_audience() },
-						]}
-					/>
-				}
-			/>
 			<AppWriteGate>
+				<AppPageHeader
+					title={m.new_audience()}
+					breadcrumb={
+						<AppBreadcrumb
+							items={[
+								{ label: m.catalog() },
+								{
+									label: m.audiences(),
+									to: "/tour-operators/$tourOperatorId/audiences",
+									params: { tourOperatorId },
+								},
+								{ label: m.new_audience() },
+							]}
+						/>
+					}
+				/>
 				<AppAudienceForm tourOperatorId={tourOperatorId} />
 			</AppWriteGate>
 		</AppPageShell>

@@ -3,12 +3,10 @@ import {
 	AppFormActions,
 	AppFormCard,
 	AppSelectField,
-	Button,
 	FieldGroup,
 	SelectItem,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppLink } from "#/shared/links";
 import { roleLabel } from "../format";
 import { useInviteMemberForm } from "../hooks/use-invite-member-form";
 
@@ -27,16 +25,6 @@ export const AppInviteMemberForm = ({
 				<AppFormActions
 					isPending={isPending}
 					submitLabel={m.send_invitation()}
-					secondary={
-						<Button type="button" variant="outline" asChild>
-							<AppLink
-								to="/tour-operators/$tourOperatorId/settings/members"
-								params={{ tourOperatorId }}
-							>
-								{m.cancel()}
-							</AppLink>
-						</Button>
-					}
 				/>
 			}
 		>

@@ -15,23 +15,23 @@ function NewMenuPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageHeader
-				title={m.new_menu()}
-				breadcrumb={
-					<AppBreadcrumb
-						items={[
-							{ label: m.content() },
-							{
-								label: m.menus(),
-								to: "/tour-operators/$tourOperatorId/content/menus",
-								params: { tourOperatorId },
-							},
-							{ label: m.new_menu() },
-						]}
-					/>
-				}
-			/>
 			<AppWriteGate>
+				<AppPageHeader
+					title={m.new_menu()}
+					breadcrumb={
+						<AppBreadcrumb
+							items={[
+								{ label: m.content() },
+								{
+									label: m.menus(),
+									to: "/tour-operators/$tourOperatorId/content/menus",
+									params: { tourOperatorId },
+								},
+								{ label: m.new_menu() },
+							]}
+						/>
+					}
+				/>
 				<AppMenuForm tourOperatorId={tourOperatorId} />
 			</AppWriteGate>
 		</AppPageShell>

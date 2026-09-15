@@ -15,23 +15,23 @@ function NewExperiencePage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageHeader
-				title={m.new_experience()}
-				breadcrumb={
-					<AppBreadcrumb
-						items={[
-							{ label: m.catalog() },
-							{
-								label: m.experiences(),
-								to: "/tour-operators/$tourOperatorId/experiences",
-								params: { tourOperatorId },
-							},
-							{ label: m.new_experience() },
-						]}
-					/>
-				}
-			/>
 			<AppWriteGate>
+				<AppPageHeader
+					title={m.new_experience()}
+					breadcrumb={
+						<AppBreadcrumb
+							items={[
+								{ label: m.catalog() },
+								{
+									label: m.experiences(),
+									to: "/tour-operators/$tourOperatorId/experiences",
+									params: { tourOperatorId },
+								},
+								{ label: m.new_experience() },
+							]}
+						/>
+					}
+				/>
 				<AppExperienceForm tourOperatorId={tourOperatorId} />
 			</AppWriteGate>
 		</AppPageShell>

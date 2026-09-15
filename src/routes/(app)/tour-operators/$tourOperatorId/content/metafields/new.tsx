@@ -15,23 +15,23 @@ function NewMetafieldDefinitionPage() {
 	const { tourOperatorId } = Route.useParams();
 	return (
 		<AppPageShell variant="form">
-			<AppPageHeader
-				title={m.new_metafield_definition()}
-				breadcrumb={
-					<AppBreadcrumb
-						items={[
-							{ label: m.content() },
-							{
-								label: m.metafields(),
-								to: "/tour-operators/$tourOperatorId/content/metafields",
-								params: { tourOperatorId },
-							},
-							{ label: m.new_metafield_definition() },
-						]}
-					/>
-				}
-			/>
 			<AppWriteGate>
+				<AppPageHeader
+					title={m.new_metafield_definition()}
+					breadcrumb={
+						<AppBreadcrumb
+							items={[
+								{ label: m.content() },
+								{
+									label: m.metafields(),
+									to: "/tour-operators/$tourOperatorId/content/metafields",
+									params: { tourOperatorId },
+								},
+								{ label: m.new_metafield_definition() },
+							]}
+						/>
+					}
+				/>
 				<AppMetafieldDefinitionForm tourOperatorId={tourOperatorId} />
 			</AppWriteGate>
 		</AppPageShell>

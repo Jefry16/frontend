@@ -4,8 +4,6 @@ import {
 	AppPageHeader,
 	AppResourceView,
 	Button,
-	Card,
-	CardContent,
 	cn,
 	mergeQueryState,
 	useAllPages,
@@ -96,52 +94,50 @@ export const AppAvailabilityEditor = ({
 							}
 						/>
 					) : (
-						<Card>
-							<CardContent className="flex flex-col gap-4">
-								<div>
-									<div className="inline-flex rounded-md border p-0.5">
-										{(
-											[
-												{ value: "recurring", label: m.recurring() },
-												{ value: "single", label: m.one_time() },
-											] as const
-										).map((option) => (
-											<Button
-												key={option.value}
-												type="button"
-												variant="ghost"
-												size="sm"
-												className={cn(
-													option.value === mode &&
-														"bg-secondary text-secondary-foreground",
-												)}
-												onClick={() => setMode(option.value)}
-											>
-												{option.label}
-											</Button>
-										))}
-									</div>
-									<p className="mt-2 text-sm text-muted-foreground">
-										{mode === "recurring"
-											? m.recurring_hint()
-											: m.one_time_hint()}
-									</p>
+						<div className="flex flex-col gap-4">
+							<div>
+								<div className="inline-flex rounded-md border p-0.5">
+									{(
+										[
+											{ value: "recurring", label: m.recurring() },
+											{ value: "single", label: m.one_time() },
+										] as const
+									).map((option) => (
+										<Button
+											key={option.value}
+											type="button"
+											variant="ghost"
+											size="sm"
+											className={cn(
+												option.value === mode &&
+													"bg-secondary text-secondary-foreground",
+											)}
+											onClick={() => setMode(option.value)}
+										>
+											{option.label}
+										</Button>
+									))}
 								</div>
-								{mode === "recurring" ? (
-									<AppRecurringSlotForm
-										tourOperatorId={tourOperatorId}
-										experienceId={experienceId}
-										audiences={rows}
-									/>
-								) : (
-									<AppSingleSlotForm
-										tourOperatorId={tourOperatorId}
-										experienceId={experienceId}
-										audiences={rows}
-									/>
-								)}
-							</CardContent>
-						</Card>
+								<p className="mt-2 text-sm text-muted-foreground">
+									{mode === "recurring"
+										? m.recurring_hint()
+										: m.one_time_hint()}
+								</p>
+							</div>
+							{mode === "recurring" ? (
+								<AppRecurringSlotForm
+									tourOperatorId={tourOperatorId}
+									experienceId={experienceId}
+									audiences={rows}
+								/>
+							) : (
+								<AppSingleSlotForm
+									tourOperatorId={tourOperatorId}
+									experienceId={experienceId}
+									audiences={rows}
+								/>
+							)}
+						</div>
 					)}
 				</>
 			)}
