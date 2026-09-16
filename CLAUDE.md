@@ -118,10 +118,8 @@ Named variants: a read-only list has no action; a list whose create is a
 dialog has a button where the others have a link; a read-only detail has no
 page actions; a create that needs a parent record (a metaobject entry, a
 slot for an experience) loads it through `AppResourceView` the way an edit
-does; availability picks recurring or one-time with `AppSegmentedControl`
-above the card, one form card per mode; the first-run create-operator page is the
-auth shell with a card, not a form page, because there is no operator to
-frame it yet; the operator's own translations page has no record to load,
+does; the first-run create-operator page is the auth shell with a card, not
+a form page, because there is no operator to frame it yet; the operator's own translations page has no record to load,
 so its header sits in the route rather than inside `AppResourceView`;
 `AppNameTranslations` lives in `shared/`, which cannot import a module, so
 its caller reads `usePermissions()` and passes `canWrite` in; the account

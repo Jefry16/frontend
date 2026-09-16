@@ -121,8 +121,9 @@ describe("every create and edit page is a gated header over one form card", () =
 			.map(({ file }) => file);
 		expect(
 			offenders,
-			"A page with two forms (availability's two modes) passes the card " +
-				"rule with one card; this is what makes each of them an AppFormCard.",
+			"One AppFormCard satisfies the card rule, so a second form written by " +
+				"hand beside it would slip past; this is what makes every form on a " +
+				"write page an AppFormCard.",
 		).toEqual([]);
 	});
 

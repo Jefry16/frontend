@@ -3,20 +3,17 @@ import {
 	AppFormSkeleton,
 	AppPageHeader,
 	AppResourceView,
-	AppSegmentedControl,
 	mergeQueryState,
 	useAllPages,
 } from "@vointika/ui";
 import { CalendarDays, UsersRound } from "lucide-react";
-import { useState } from "react";
 import type { Audience } from "#/audiences";
 import { useExperience } from "#/experiences";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppNewLink } from "#/shared/links";
-import { AppRecurringSlotForm } from "./AppRecurringSlotForm";
-import { AppSingleSlotForm } from "./AppSingleSlotForm";
+import { AppSlotForm } from "./AppSlotForm";
 
 export const AppAvailabilityEditor = ({
 	tourOperatorId,
@@ -34,7 +31,6 @@ export const AppAvailabilityEditor = ({
 		record,
 		rows,
 	}));
-	const [mode, setMode] = useState<"recurring" | "single">("recurring");
 	const { canWrite } = usePermissions();
 
 	const breadcrumb = (label?: string) => (
@@ -93,37 +89,11 @@ export const AppAvailabilityEditor = ({
 							}
 						/>
 					) : (
-						<div className="flex flex-col gap-4">
-							<div>
-								<AppSegmentedControl
-									label={m.availability_mode()}
-									value={mode}
-									onChange={setMode}
-									options={[
-										{ value: "recurring", label: m.recurring() },
-										{ value: "single", label: m.one_time() },
-									]}
-								/>
-								<p className="mt-2 text-sm text-muted-foreground">
-									{mode === "recurring"
-										? m.recurring_hint()
-										: m.one_time_hint()}
-								</p>
-							</div>
-							{mode === "recurring" ? (
-								<AppRecurringSlotForm
-									tourOperatorId={tourOperatorId}
-									experienceId={experienceId}
-									audiences={rows}
-								/>
-							) : (
-								<AppSingleSlotForm
-									tourOperatorId={tourOperatorId}
-									experienceId={experienceId}
-									audiences={rows}
-								/>
-							)}
-						</div>
+						<AppSlotForm
+							tourOperatorId={tourOperatorId}
+							experienceId={experienceId}
+							audiences={rows}
+						/>
 					)}
 				</>
 			)}
