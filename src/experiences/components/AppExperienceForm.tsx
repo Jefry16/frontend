@@ -5,8 +5,11 @@ import {
 	AppFormCard,
 	AppNumberField,
 	AppTextareaField,
+	Field,
 	FieldGroup,
+	FieldLabel,
 } from "@vointika/ui";
+import { AppCategorySelect } from "#/categories";
 import * as m from "#/paraglide/messages";
 import { useExperienceForm } from "../hooks/use-experience-form";
 import type { Experience } from "../types";
@@ -103,6 +106,19 @@ export const AppExperienceForm = ({
 							label={m.featured()}
 							description={m.featured_hint()}
 						/>
+					)}
+				</form.Field>
+				<form.Field name="categoryId">
+					{(field) => (
+						<Field>
+							<FieldLabel htmlFor={field.name}>{m.category()}</FieldLabel>
+							<AppCategorySelect
+								tourOperatorId={tourOperatorId}
+								value={field.state.value}
+								onValueChange={(v) => field.handleChange(v)}
+								errors={field.state.meta.errors}
+							/>
+						</Field>
 					)}
 				</form.Field>
 				<form.Field name="seoTitle">

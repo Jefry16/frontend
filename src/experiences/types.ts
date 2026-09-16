@@ -14,6 +14,7 @@ export interface Experience {
 	seoTitle: string | null;
 	seoDescription: string | null;
 	startingPrice: number;
+	categoryId: string | null;
 	published: boolean;
 	createdBy: string;
 	createdAt: string;

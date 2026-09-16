@@ -25,7 +25,8 @@ type FieldName =
 	| "startingPrice"
 	| "featured"
 	| "thumbnailMediaId"
-	| "mediaIds";
+	| "mediaIds"
+	| "categoryId";
 
 const VALID: Partial<Record<FieldName, unknown>> = {
 	name: "Sunset Sailing",
@@ -97,6 +98,18 @@ describe("useExperienceForm", () => {
 			thumbnailMediaId: "m-1",
 			mediaIds: ["m-1", "m-2"],
 		});
+	});
+
+	it("carries the category through, and defaults to none", async () => {
+		const body = vi.fn();
+		server.use(created(body));
+		const { result: withoutCategory } = render();
+		await submit(withoutCategory.current.form, VALID);
+		expect(body.mock.calls[0][0]).toMatchObject({ categoryId: null });
+
+		const { result: withCategory } = render();
+		await submit(withCategory.current.form, { ...VALID, categoryId: "cat-1" });
+		expect(body.mock.calls[1][0]).toMatchObject({ categoryId: "cat-1" });
 	});
 
 	it.each([
