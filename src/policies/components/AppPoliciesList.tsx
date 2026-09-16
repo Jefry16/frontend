@@ -3,7 +3,7 @@ import { Scale } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { useOperatorDateTime, usePermissions } from "#/session";
+import { usePermissions } from "#/session";
 import { AppNewLink } from "#/shared/links";
 import { policyColumns } from "../columns";
 
@@ -12,11 +12,10 @@ export const AppPoliciesList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const { formatDate } = useOperatorDateTime();
 	const { canWrite } = usePermissions();
 	const columns = useMemo(
-		() => policyColumns(tourOperatorId, formatDate),
-		[tourOperatorId, formatDate],
+		() => policyColumns(tourOperatorId),
+		[tourOperatorId],
 	);
 
 	return (

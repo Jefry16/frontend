@@ -7,6 +7,13 @@ export const POLICY_TYPES = [
 
 export type PolicyTypeCode = (typeof POLICY_TYPES)[number];
 
+export interface PolicyListItem {
+	id: string;
+	context: "policies";
+	type: PolicyTypeCode;
+	title: string;
+}
+
 export interface Policy {
 	id: string;
 	context: "policies";
