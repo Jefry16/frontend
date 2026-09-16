@@ -1,4 +1,5 @@
 import {
+	AppDatePicker,
 	AppNumericInput,
 	Input,
 	Select,
@@ -44,11 +45,11 @@ export const AppTypedValueInput = ({
 			);
 		case "date":
 			return (
-				<Input
+				<AppDatePicker
 					id={inputId}
-					type="date"
 					value={value}
-					onChange={(e) => onValueChange(e.target.value)}
+					onValueChange={onValueChange}
+					placeholder={m.not_set()}
 				/>
 			);
 		case "number_integer":
