@@ -24,7 +24,9 @@ const menuItemNodeSchema: z.ZodType<MenuItemFormNode, MenuItemFormNode> =
 			})
 			.superRefine((node, ctx) => {
 				if (
-					(node.linkType === "EXPERIENCE" || node.linkType === "PAGE") &&
+					(node.linkType === "EXPERIENCE" ||
+						node.linkType === "PAGE" ||
+						node.linkType === "CATEGORY") &&
 					!node.resourceId
 				) {
 					ctx.addIssue({

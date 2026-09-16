@@ -32,10 +32,10 @@ describe("useMenuActions", () => {
 		expect(invalidated()).toEqual([DETAIL, LIST, TRAIL]);
 	});
 
-	it("puts the whole tree under `items` on save", async () => {
+	it("patches the whole tree under `items`, never `title`, on save", async () => {
 		const body = vi.fn();
 		server.use(
-			http.put(`${BASE}/items`, async ({ request }) => {
+			http.patch(BASE, async ({ request }) => {
 				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),
@@ -46,6 +46,7 @@ describe("useMenuActions", () => {
 		await fire(() => result.current.replaceItems.mutateAsync(items as never));
 
 		expect(body).toHaveBeenCalledWith({ items });
+		expect(body.mock.calls[0][0]).not.toHaveProperty("title");
 		expect(invalidated()).toEqual([DETAIL, LIST, TRAIL]);
 	});
 

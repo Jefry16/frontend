@@ -3,6 +3,7 @@ export type MenuLinkType =
 	| "EXPERIENCE_LIST"
 	| "EXPERIENCE"
 	| "PAGE"
+	| "CATEGORY"
 	| "EXTERNAL_URL";
 
 export interface MenuListItem {

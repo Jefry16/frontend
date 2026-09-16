@@ -179,7 +179,7 @@ const ItemRows = ({
 								<form.Field name={`${rowPath}.resourceId`}>
 									{(field) => (
 										<AppMenuTargetSelect
-											kind={node.linkType as "EXPERIENCE" | "PAGE"}
+											kind={node.linkType as "EXPERIENCE" | "PAGE" | "CATEGORY"}
 											tourOperatorId={tourOperatorId}
 											value={field.state.value as string}
 											onValueChange={(v) => field.handleChange(v)}

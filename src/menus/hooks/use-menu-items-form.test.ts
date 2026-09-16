@@ -16,7 +16,7 @@ vi.mock("@tanstack/react-router", async () => {
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
 const MENU = "menu-1";
-const URL = `${API}/tour-operators/${OP}/menus/${MENU}/items`;
+const URL = `${API}/tour-operators/${OP}/menus/${MENU}`;
 
 const menu = (items: unknown[]) =>
 	({
@@ -51,7 +51,7 @@ const save = async (form: { handleSubmit: () => Promise<void> }) => {
 };
 
 const put = (body: ReturnType<typeof vi.fn>) =>
-	http.put(URL, async ({ request }) => {
+	http.patch(URL, async ({ request }) => {
 		body(await request.json());
 		return new HttpResponse(null, { status: 204 });
 	});
@@ -66,17 +66,20 @@ describe("useMenuItemsForm", () => {
 			node({ title: "Boats", linkType: "EXPERIENCE", resourceId: "exp-1" }),
 			node({ title: "Blog", linkType: "EXTERNAL_URL", url: "https://x.test" }),
 			node({ title: "Home", linkType: "HOME" }),
+			node({ title: "Tours", linkType: "CATEGORY", resourceId: "cat-1" }),
 		]);
 
 		await save(result.current.form);
 
-		const [experience, external, home] = body.mock.calls[0][0].items;
+		const [experience, external, home, category] = body.mock.calls[0][0].items;
 		expect(experience).toMatchObject({ resourceId: "exp-1" });
 		expect(experience).not.toHaveProperty("url");
 		expect(external).toMatchObject({ url: "https://x.test" });
 		expect(external).not.toHaveProperty("resourceId");
 		expect(home).not.toHaveProperty("resourceId");
 		expect(home).not.toHaveProperty("url");
+		expect(category).toMatchObject({ resourceId: "cat-1" });
+		expect(category).not.toHaveProperty("url");
 	});
 
 	it("drops blank translations and omits the key entirely when none remain", async () => {
