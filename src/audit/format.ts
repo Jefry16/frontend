@@ -31,7 +31,6 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"experience.translation_updated": m.activity_action_translation_updated,
 	"experience.translation_deleted": m.activity_action_translation_deleted,
 	"experience.slots_created": m.activity_action_experience_slots_created,
-	"slot.created": m.activity_action_slot_created,
 	"slot.cancelled": m.activity_action_slot_cancelled,
 	"slot.updated": m.activity_action_slot_updated,
 	"audience.created": m.activity_action_audience_created,

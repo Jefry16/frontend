@@ -10,29 +10,26 @@ import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import {
 	emptyPriceRow,
-	type RecurringSlotFields,
-	type RecurringSlotFormData,
-	recurringSlotSchema,
+	expandDepartures,
+	type SlotFields,
+	type SlotFormData,
+	slotSchema,
 } from "../validators/slot";
 
-export const useRecurringSlotForm = (
-	tourOperatorId: string,
-	experienceId: string,
-) => {
+export const useSlotForm = (tourOperatorId: string, experienceId: string) => {
 	const navigate = useNavigate();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	const { mutate, isPending } = useMutation<
-		void,
-		AxiosError,
-		RecurringSlotFields
-	>({
+	const { mutate, isPending } = useMutation<void, AxiosError, SlotFields>({
 		mutationFn: async (fields) => {
 			await authApi.post(
 				`/tour-operators/${tourOperatorId}/experiences/${experienceId}/slots`,
-				fields,
+				{
+					departures: expandDepartures(fields),
+					audiencePrices: fields.audiencePrices,
+				},
 			);
 		},
 		onSuccess: () => {
@@ -60,9 +57,9 @@ export const useRecurringSlotForm = (
 			validFrom: "",
 			validTo: "",
 			audiencePrices: [emptyPriceRow()],
-		} as RecurringSlotFormData,
-		validators: { onSubmit: recurringSlotSchema },
-		onSubmit: ({ value }) => mutate(recurringSlotSchema.parse(value)),
+		} as SlotFormData,
+		validators: { onSubmit: slotSchema },
+		onSubmit: ({ value }) => mutate(slotSchema.parse(value)),
 	});
 
 	return { form, isPending, errorMessage };

@@ -5,6 +5,7 @@ const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_PRICE = 10_000_000_000;
 const MAX_CAPACITY = 100_000;
+const MAX_DEPARTURES = 500;
 
 export interface AudiencePriceRow {
 	_key: string;
@@ -59,50 +60,88 @@ const audiencePricesSchema = z
 		})),
 	);
 
-const sharedFields = {
-	startTime: z.string().regex(TIME, m.validation_required()),
-	endTime: z.string().regex(TIME, m.validation_required()),
-	audiencePrices: audiencePricesSchema,
-};
-
-export const recurringSlotSchema = z
+export const slotSchema = z
 	.object({
 		days: z.array(z.number()).min(1, m.validation_select_one_day()),
+		startTime: z.string().regex(TIME, m.validation_required()),
+		endTime: z.string().regex(TIME, m.validation_required()),
 		validFrom: z.string().regex(ISO_DATE, m.validation_required()),
 		validTo: z.string().regex(ISO_DATE, m.validation_required()),
-		...sharedFields,
+		audiencePrices: audiencePricesSchema,
 	})
-	.refine((v) => v.validTo >= v.validFrom, {
-		message: m.validation_window_end_before_start(),
-		path: ["validTo"],
+	.superRefine((v, ctx) => {
+		if (!ISO_DATE.test(v.validFrom) || !ISO_DATE.test(v.validTo)) return;
+		if (v.validTo < v.validFrom) {
+			ctx.addIssue({
+				code: "custom",
+				message: m.validation_window_end_before_start(),
+				path: ["validTo"],
+			});
+			return;
+		}
+		const count = matchingDates(v).length;
+		if (count === 0) {
+			ctx.addIssue({
+				code: "custom",
+				message: m.validation_no_departures(),
+				path: ["days"],
+			});
+		}
+		if (count > MAX_DEPARTURES) {
+			ctx.addIssue({
+				code: "custom",
+				message: m.validation_too_many_departures({ count: MAX_DEPARTURES }),
+				path: ["validTo"],
+			});
+		}
 	});
 
-export const singleSlotSchema = z.object({
-	date: z.string().regex(ISO_DATE, m.validation_required()),
-	...sharedFields,
-});
+export type SlotFormData = z.input<typeof slotSchema>;
+export type SlotFields = z.output<typeof slotSchema>;
 
-export type RecurringSlotFormData = z.input<typeof recurringSlotSchema>;
-export type RecurringSlotFields = z.output<typeof recurringSlotSchema>;
-export type SingleSlotFormData = z.input<typeof singleSlotSchema>;
-export type SingleSlotFields = z.output<typeof singleSlotSchema>;
+export interface Departure {
+	startAt: string;
+	endAt: string;
+}
 
 export const rollsToNextDay = (startTime: string, endTime: string): boolean =>
 	TIME.test(startTime) && TIME.test(endTime) && endTime <= startTime;
 
-const nextDay = (isoDate: string): string => {
+const parseIsoDate = (isoDate: string): Date => {
 	const [y = 1970, mo = 1, d = 1] = isoDate.split("-").map(Number);
-	const date = new Date(y, mo - 1, d + 1);
-	return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+	return new Date(y, mo - 1, d);
 };
 
-export const composeStartEnd = (
-	fields: SingleSlotFields,
-): { startAt: string; endAt: string } => ({
-	startAt: `${fields.date}T${fields.startTime}:00`,
-	endAt: `${
-		rollsToNextDay(fields.startTime, fields.endTime)
-			? nextDay(fields.date)
-			: fields.date
-	}T${fields.endTime}:00`,
-});
+const toIsoDate = (date: Date): string =>
+	`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+const nextDay = (isoDate: string): string => {
+	const date = parseIsoDate(isoDate);
+	date.setDate(date.getDate() + 1);
+	return toIsoDate(date);
+};
+
+const matchingDates = (
+	pattern: Pick<SlotFields, "days" | "validFrom" | "validTo">,
+): string[] => {
+	const days = new Set(pattern.days);
+	const dates: string[] = [];
+	for (
+		let day = pattern.validFrom;
+		day <= pattern.validTo;
+		day = nextDay(day)
+	) {
+		if (days.has(parseIsoDate(day).getDay())) dates.push(day);
+	}
+	return dates;
+};
+
+export const expandDepartures = (
+	fields: Omit<SlotFields, "audiencePrices">,
+): Departure[] => {
+	const rolls = rollsToNextDay(fields.startTime, fields.endTime);
+	return matchingDates(fields).map((day) => ({
+		startAt: `${day}T${fields.startTime}:00`,
+		endAt: `${rolls ? nextDay(day) : day}T${fields.endTime}:00`,
+	}));
+};
