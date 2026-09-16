@@ -36,6 +36,12 @@ describe("menuItemsSchema", () => {
 		);
 	});
 
+	it("requires a target on a category link too", () => {
+		expect(paths({ items: [node({ linkType: "CATEGORY" })] })).toContain(
+			"items.0.resourceId",
+		);
+	});
+
 	it("requires a title at any depth", () => {
 		expect(
 			paths({ items: [node({ children: [node({ title: "  " })] })] }),

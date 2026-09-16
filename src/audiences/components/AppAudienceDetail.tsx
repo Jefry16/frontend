@@ -10,7 +10,6 @@ import {
 	CardContent,
 } from "@vointika/ui";
 import { Languages, Pencil, UsersRound } from "lucide-react";
-import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
@@ -105,11 +104,6 @@ export const AppAudienceDetail = ({
 								</dl>
 							</CardContent>
 						</Card>
-						<AppActivityCard
-							tourOperatorId={tourOperatorId}
-							entityType="AUDIENCE"
-							entityId={audienceId}
-						/>
 					</>
 				);
 			}}

@@ -23,6 +23,11 @@ interface PageRow {
 	title: string;
 	handle: string;
 }
+interface CategoryRow {
+	id: string;
+	name: string;
+	handle: string;
+}
 interface Option {
 	id: string;
 	label: string;
@@ -36,7 +41,7 @@ export const AppMenuTargetSelect = ({
 	ariaLabel,
 	errors,
 }: {
-	kind: "EXPERIENCE" | "PAGE";
+	kind: "EXPERIENCE" | "PAGE" | "CATEGORY";
 	tourOperatorId: string;
 	value: string;
 	onValueChange: (value: string) => void;
@@ -46,11 +51,23 @@ export const AppMenuTargetSelect = ({
 	const experiences = useAllPages<ExperienceRow>(
 		queryKeys.experiences(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/experiences`,
+		{ enabled: kind === "EXPERIENCE" },
 	);
 	const pages = useAllPages<PageRow>(
 		queryKeys.pages(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/pages`,
+		{ enabled: kind === "PAGE" },
 	);
+	const categories = useAllPages<CategoryRow>(
+		queryKeys.categories(tourOperatorId),
+		`/tour-operators/${tourOperatorId}/categories`,
+		{ enabled: kind === "CATEGORY" },
+	);
+	const placeholder = {
+		EXPERIENCE: m.select_experience,
+		PAGE: m.select_page,
+		CATEGORY: m.select_category,
+	}[kind]();
 	const catalogue: QueryState<Option[]> =
 		kind === "EXPERIENCE"
 			? {
@@ -60,10 +77,21 @@ export const AppMenuTargetSelect = ({
 						label: row.name,
 					})),
 				}
-			: {
-					...pages,
-					data: pages.data?.map((row) => ({ id: row.id, label: row.title })),
-				};
+			: kind === "PAGE"
+				? {
+						...pages,
+						data: pages.data?.map((row) => ({
+							id: row.id,
+							label: row.title,
+						})),
+					}
+				: {
+						...categories,
+						data: categories.data?.map((row) => ({
+							id: row.id,
+							label: row.name,
+						})),
+					};
 	const invalid = (errors?.length ?? 0) > 0;
 
 	return (
@@ -79,13 +107,7 @@ export const AppMenuTargetSelect = ({
 							aria-label={ariaLabel}
 							aria-invalid={invalid || undefined}
 						>
-							<SelectValue
-								placeholder={
-									kind === "EXPERIENCE"
-										? m.select_experience()
-										: m.select_page()
-								}
-							/>
+							<SelectValue placeholder={placeholder} />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>

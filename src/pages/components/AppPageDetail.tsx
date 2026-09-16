@@ -26,7 +26,6 @@ import {
 	Trash2,
 } from "lucide-react";
 import { useState } from "react";
-import { AppActivityCard } from "#/audit";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import { AppMetafieldsCard } from "#/metafields";
@@ -209,12 +208,6 @@ export const AppPageDetail = ({
 							tourOperatorId={tourOperatorId}
 							ownerType="page"
 							ownerId={pageId}
-						/>
-
-						<AppActivityCard
-							tourOperatorId={tourOperatorId}
-							entityType="PAGE"
-							entityId={pageId}
 						/>
 
 						<AppRenameHandleDialog

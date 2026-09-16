@@ -47,7 +47,7 @@ export const useMenuActions = (tourOperatorId: string, menuId: string) => {
 	});
 
 	const replaceItems = useMutation<unknown, AxiosError, MenuItemInput[]>({
-		mutationFn: (items) => authApi.put(`${base}/items`, { items }),
+		mutationFn: (items) => authApi.patch(base, { items }),
 		onSuccess: () => {
 			toast.success(m.menu_items_saved());
 			invalidate();

@@ -175,32 +175,46 @@ const ItemRows = ({
 									</form.Field>
 								</div>
 							</div>
-							{isResourceLink(node.linkType as MenuLinkType) && (
-								<form.Field name={`${rowPath}.resourceId`}>
-									{(field) => (
-										<AppMenuTargetSelect
-											kind={node.linkType as "EXPERIENCE" | "PAGE"}
-											tourOperatorId={tourOperatorId}
-											value={field.state.value as string}
-											onValueChange={(v) => field.handleChange(v)}
-											ariaLabel={m.menu_link_target()}
-											errors={field.state.meta.errors}
-										/>
-									)}
-								</form.Field>
-							)}
-							{node.linkType === "EXTERNAL_URL" && (
-								<form.Field name={`${rowPath}.url`}>
-									{(field) => (
-										<AppField
-											field={field}
-											label={m.url()}
-											hideLabel
-											placeholder="https://"
-										/>
-									)}
-								</form.Field>
-							)}
+							<form.Field name={`${rowPath}.linkType`}>
+								{(linkTypeField) => {
+									const linkType = linkTypeField.state.value as MenuLinkType;
+									return (
+										<>
+											{isResourceLink(linkType) && (
+												<form.Field
+													key={linkType}
+													name={`${rowPath}.resourceId`}
+												>
+													{(field) => (
+														<AppMenuTargetSelect
+															kind={
+																linkType as "EXPERIENCE" | "PAGE" | "CATEGORY"
+															}
+															tourOperatorId={tourOperatorId}
+															value={field.state.value as string}
+															onValueChange={(v) => field.handleChange(v)}
+															ariaLabel={m.menu_link_target()}
+															errors={field.state.meta.errors}
+														/>
+													)}
+												</form.Field>
+											)}
+											{linkType === "EXTERNAL_URL" && (
+												<form.Field name={`${rowPath}.url`}>
+													{(field) => (
+														<AppField
+															field={field}
+															label={m.url()}
+															hideLabel
+															placeholder="https://"
+														/>
+													)}
+												</form.Field>
+											)}
+										</>
+									);
+								}}
+							</form.Field>
 							{extraLocales.length > 0 && (
 								<div className="flex flex-col gap-1.5">
 									{extraLocales.map((locale) => (

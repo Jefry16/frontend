@@ -6,6 +6,7 @@ export const MENU_LINK_TYPES: MenuLinkType[] = [
 	"EXPERIENCE_LIST",
 	"EXPERIENCE",
 	"PAGE",
+	"CATEGORY",
 	"EXTERNAL_URL",
 ];
 
@@ -14,6 +15,7 @@ const LINK_TYPE_LABELS: Record<MenuLinkType, () => string> = {
 	EXPERIENCE_LIST: m.menu_link_experience_list,
 	EXPERIENCE: m.menu_link_experience,
 	PAGE: m.menu_link_page,
+	CATEGORY: m.menu_link_category,
 	EXTERNAL_URL: m.menu_link_external_url,
 };
 
@@ -21,4 +23,4 @@ export const menuLinkTypeLabel = (type: MenuLinkType): string =>
 	LINK_TYPE_LABELS[type]();
 
 export const isResourceLink = (type: MenuLinkType): boolean =>
-	type === "EXPERIENCE" || type === "PAGE";
+	type === "EXPERIENCE" || type === "PAGE" || type === "CATEGORY";

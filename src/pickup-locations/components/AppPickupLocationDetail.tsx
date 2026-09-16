@@ -12,7 +12,6 @@ import {
 	useAppToast,
 } from "@vointika/ui";
 import { MapPin, Pencil, Trash2 } from "lucide-react";
-import { AppActivityCard } from "#/audit";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
@@ -129,11 +128,6 @@ export const AppPickupLocationDetail = ({
 								</dl>
 							</CardContent>
 						</Card>
-						<AppActivityCard
-							tourOperatorId={tourOperatorId}
-							entityType="PICKUP_LOCATION"
-							entityId={pickupLocationId}
-						/>
 					</>
 				);
 			}}
