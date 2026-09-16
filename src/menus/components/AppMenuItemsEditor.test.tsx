@@ -97,3 +97,48 @@ describe("AppMenuItemsEditor", () => {
 		expect(options.map((o) => o.textContent)).toEqual(["Water sports"]);
 	});
 });
+
+describe("AppMenuItemsEditor list drains", () => {
+	it("fetches only the catalogues the rows' link types need, once each", async () => {
+		const hits = { experiences: 0, pages: 0, categories: 0 };
+		const queryClient = createTestQueryClient();
+		queryClient.setQueryData(queryKeys.operatorDetails(OP), {
+			locales: { primaryLocale: "en", supportedLocales: ["en"] },
+		});
+		for (const list of Object.keys(hits) as (keyof typeof hits)[]) {
+			server.use(
+				http.get(`${API}/tour-operators/${OP}/${list}`, () => {
+					hits[list]++;
+					return HttpResponse.json({ data: [], nextCursor: null });
+				}),
+			);
+		}
+		const row = (id: string, linkType: "PAGE" | "CATEGORY" | "HOME") => ({
+			id,
+			title: id,
+			linkType,
+			resourceId: null,
+			url: null,
+			titleTranslations: {},
+			children: [],
+		});
+		renderWithProviders(
+			<AppMenuItemsEditor
+				tourOperatorId={OP}
+				menu={{
+					...menu,
+					items: [
+						row("a", "PAGE"),
+						row("b", "CATEGORY"),
+						row("c", "HOME"),
+						row("d", "CATEGORY"),
+					],
+				}}
+			/>,
+			{ queryClient },
+		);
+		await waitFor(() => expect(hits.categories).toBe(1));
+		await waitFor(() => expect(hits.pages).toBe(1));
+		expect(hits.experiences).toBe(0);
+	});
+});

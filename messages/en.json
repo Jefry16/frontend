@@ -600,7 +600,7 @@
 	"select_category": "Select a category",
 	"menu_items_saved": "Menu items saved.",
 	"menu_items_title_required": "Every item needs a title.",
-	"menu_items_target_required": "Every experience or page link needs a target.",
+	"menu_items_target_required": "Every experience, page or category link needs a target.",
 	"menu_items_url_required": "Every external link needs a URL.",
 	"activity_action_menu_created": "created the menu",
 	"activity_action_menu_renamed": "renamed the menu",

@@ -51,14 +51,17 @@ export const AppMenuTargetSelect = ({
 	const experiences = useAllPages<ExperienceRow>(
 		queryKeys.experiences(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/experiences`,
+		{ enabled: kind === "EXPERIENCE" },
 	);
 	const pages = useAllPages<PageRow>(
 		queryKeys.pages(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/pages`,
+		{ enabled: kind === "PAGE" },
 	);
 	const categories = useAllPages<CategoryRow>(
 		queryKeys.categories(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/categories`,
+		{ enabled: kind === "CATEGORY" },
 	);
 	const placeholder = {
 		EXPERIENCE: m.select_experience,
