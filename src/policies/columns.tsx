@@ -2,7 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { AppBadge, AppDataTableHeader } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppResourceLink } from "#/shared/links";
-import { POLICY_TYPE_OPTIONS, policyTypeLabel } from "./format";
+import { policyTypeLabel } from "./format";
 import type { PolicyListItem } from "./types";
 
 export const policyColumns = (
@@ -12,11 +12,7 @@ export const policyColumns = (
 		id: "title",
 		accessorKey: "title",
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.title()}
-				headerContext={ctx}
-				allowFiltering="text"
-			/>
+			<AppDataTableHeader label={m.title()} headerContext={ctx} />
 		),
 		cell: ({ row }) => (
 			<AppResourceLink
@@ -30,14 +26,8 @@ export const policyColumns = (
 	{
 		id: "type",
 		accessorKey: "type",
-		enableSorting: true,
 		header: (ctx) => (
-			<AppDataTableHeader
-				label={m.policy_type()}
-				headerContext={ctx}
-				allowFiltering="set"
-				items={POLICY_TYPE_OPTIONS}
-			/>
+			<AppDataTableHeader label={m.policy_type()} headerContext={ctx} />
 		),
 		cell: ({ row }) => (
 			<AppBadge variant="secondary">
