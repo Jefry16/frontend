@@ -18,7 +18,6 @@ import {
 } from "@vointika/ui";
 import { Pencil, Shapes, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
-import { AppActivityCard } from "#/audit";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
 import { metafieldTypeLabel } from "#/metafields";
@@ -244,12 +243,6 @@ const DefinitionView = ({
 					/>
 				</CardContent>
 			</Card>
-
-			<AppActivityCard
-				tourOperatorId={tourOperatorId}
-				entityType="METAOBJECT_DEFINITION"
-				entityId={definition.id}
-			/>
 
 			<AppMetaobjectFieldDialog
 				open={addOpen}

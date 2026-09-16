@@ -21,7 +21,6 @@ import {
 	Languages,
 	Pencil,
 } from "lucide-react";
-import { AppActivityCard } from "#/audit";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
 import {
@@ -244,11 +243,6 @@ const ExperienceView = ({
 				tourOperatorId={tourOperatorId}
 				ownerType="experience"
 				ownerId={experience.id}
-			/>
-			<AppActivityCard
-				tourOperatorId={tourOperatorId}
-				entityType="EXPERIENCE"
-				entityId={experience.id}
 			/>
 		</>
 	);
