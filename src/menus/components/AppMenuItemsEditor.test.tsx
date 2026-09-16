@@ -98,6 +98,90 @@ describe("AppMenuItemsEditor", () => {
 	});
 });
 
+describe("AppMenuItemsEditor row removal", () => {
+	it("keeps a surviving row's target when removal shifts it into a slot that held a different link type", async () => {
+		const queryClient = createTestQueryClient();
+		queryClient.setQueryData(queryKeys.operatorDetails(OP), {
+			locales: { primaryLocale: "en", supportedLocales: ["en"] },
+		});
+		type SubmittedBody = { items?: { resourceId?: string }[] };
+		const submitted: { body: SubmittedBody | null } = { body: null };
+		server.use(
+			http.get(`${API}/tour-operators/${OP}/experiences`, () =>
+				HttpResponse.json({
+					data: [{ id: "e-1", name: "Sunset Sail" }],
+					nextCursor: null,
+				}),
+			),
+			http.get(`${API}/tour-operators/${OP}/pages`, () =>
+				HttpResponse.json({
+					data: [{ id: "p-1", title: "About", handle: "about" }],
+					nextCursor: null,
+				}),
+			),
+			http.get(`${API}/tour-operators/${OP}/categories`, () =>
+				HttpResponse.json({
+					data: [{ id: "c-1", name: "Water sports", handle: "water" }],
+					nextCursor: null,
+				}),
+			),
+			http.patch(
+				`${API}/tour-operators/${OP}/menus/menu-1`,
+				async ({ request }) => {
+					submitted.body = (await request.json()) as SubmittedBody;
+					return new HttpResponse(null, { status: 204 });
+				},
+			),
+		);
+		const row = (
+			id: string,
+			title: string,
+			linkType: "HOME" | "EXPERIENCE" | "PAGE" | "CATEGORY",
+			resourceId: string | null,
+		) => ({
+			id,
+			title,
+			linkType,
+			resourceId,
+			url: null,
+			titleTranslations: {},
+			children: [],
+		});
+		renderWithProviders(
+			<AppMenuItemsEditor
+				tourOperatorId={OP}
+				menu={{
+					...menu,
+					items: [
+						row("a", "Home", "HOME", null),
+						row("b", "Exp", "EXPERIENCE", "e-1"),
+						row("c", "Pg", "PAGE", "p-1"),
+						row("d", "Cat", "CATEGORY", "c-1"),
+					],
+				}}
+			/>,
+			{ queryClient },
+		);
+		await screen.findByDisplayValue("Home");
+
+		const user = userEvent.setup();
+		const removeButtons = await screen.findAllByRole("button", {
+			name: /remove/i,
+		});
+		await user.click(removeButtons[0]);
+		await waitFor(() => expect(screen.queryByDisplayValue("Home")).toBeNull());
+
+		await user.click(screen.getByRole("button", { name: /save/i }));
+
+		await waitFor(() => expect(submitted.body).not.toBeNull());
+		expect(submitted.body?.items?.map((item) => item.resourceId)).toEqual([
+			"e-1",
+			"p-1",
+			"c-1",
+		]);
+	});
+});
+
 describe("AppMenuItemsEditor list drains", () => {
 	it("fetches only the catalogues the rows' link types need, once each", async () => {
 		const hits = { experiences: 0, pages: 0, categories: 0 };

@@ -181,7 +181,10 @@ const ItemRows = ({
 									return (
 										<>
 											{isResourceLink(linkType) && (
-												<form.Field name={`${rowPath}.resourceId`}>
+												<form.Field
+													key={linkType}
+													name={`${rowPath}.resourceId`}
+												>
 													{(field) => (
 														<AppMenuTargetSelect
 															kind={
