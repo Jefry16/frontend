@@ -1,14 +1,13 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { AppBadge, AppDataTableHeader, timestampColumn } from "@vointika/ui";
+import { AppBadge, AppDataTableHeader } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppResourceLink } from "#/shared/links";
 import { POLICY_TYPE_OPTIONS, policySlug, policyTypeLabel } from "./format";
-import type { Policy } from "./types";
+import type { PolicyListItem } from "./types";
 
 export const policyColumns = (
 	tourOperatorId: string,
-	formatDate: (iso: string) => string,
-): ColumnDef<Policy, unknown>[] => [
+): ColumnDef<PolicyListItem, unknown>[] => [
 	{
 		id: "title",
 		accessorKey: "title",
@@ -56,5 +55,4 @@ export const policyColumns = (
 			</span>
 		),
 	},
-	timestampColumn<Policy>("updatedAt", m.last_updated(), formatDate),
 ];
