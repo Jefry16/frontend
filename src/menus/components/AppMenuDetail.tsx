@@ -15,7 +15,6 @@ import {
 } from "@vointika/ui";
 import { ListTree, Pencil, TextCursorInput, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { AppActivityCard } from "#/audit";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
@@ -163,12 +162,6 @@ const MenuView = ({
 					)}
 				</CardContent>
 			</Card>
-
-			<AppActivityCard
-				tourOperatorId={tourOperatorId}
-				entityType="MENU"
-				entityId={menu.id}
-			/>
 
 			<AppMenuRenameDialog
 				open={renameOpen}

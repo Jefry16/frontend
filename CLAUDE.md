@@ -130,9 +130,12 @@ wherever they sit (a detail page, a translations page), gated by the
 pattern that owns the page; a detail page's `AppActivityCard` names the
 entity type the backend actually logs writes under, which is not always the
 page's own record — the policy detail has none because the backend logs a
-policy write against the tour operator, not the policy, and the contact
+policy write against the tour operator, not the policy, the contact
 message detail has none because the backend never writes an audit entry for
-one at all.
+one at all, and the menu detail has none because every operator's menus are
+the two the backend creates directly on signup, bypassing the use case that
+writes the audit entry, so a menu never has a creation entry and often has
+no entries at all.
 
 ## Gates
 
