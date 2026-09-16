@@ -65,9 +65,13 @@ the list never pretends.
     `AppSettingsCard` with a title and a description; a card's form is
     `AppForm` with nothing beside Save; inside a card a query loads as
     `AppFormSkeleton` with `card={false}`, or stays hidden with
-    `loading={null}` until its chrome can decide. Gate:
+    `loading={null}` until its chrome can decide; and a card with nothing to
+    show says so through a shared element, `AppEmptyState variant="inline"`
+    for an empty list and `EmptyValue` for a field with no value, never a
+    paragraph of muted text of its own. Gate:
     `src/shared/settings-card.test.ts`, scoped to form-shaped routes that
-    reach `AppSettingsCard` and no `AppLocaleTabs`.
+    reach `AppSettingsCard` and no `AppLocaleTabs`, and for the empty-state
+    rule to every file that builds an `AppSettingsCard`.
 12. **A detail page has one breadcrumb header and one loading shape.**
     `AppResourceView`'s `loading` prop is `<AppDetailSkeleton fields={n} />`,
     never `AppFormSkeleton` borrowed from the write pattern and never a
@@ -86,6 +90,13 @@ the list never pretends.
     `src/shared/form-error.test.ts`, scoped to every file that renders
     `AppForm` or `AppFormCard`, wherever on the page the form sits. That
     no save hook also toasts its error is by review.
+14. **The document says which language it is in.** `index.html` is served
+    before any script runs, so its `lang` is the base locale and nothing
+    else; `src/main.tsx` then assigns `document.documentElement.lang` from
+    `getLocale()`, once, because `setLocale` reloads the page. A Spanish UI
+    served as `lang="en"` has a screen reader pronouncing Spanish as
+    English and a browser offering to translate text already in the
+    reader's language. Gate: `src/shared/document-language.test.ts`.
 
 ## Page patterns
 
