@@ -62,6 +62,9 @@ const BrandBody = ({
 	);
 
 	const imagePending = setImage.isPending || clearImage.isPending;
+	const slotPending = (slot: BrandImageSlot) =>
+		(setImage.isPending && setImage.variables?.slot === slot) ||
+		(clearImage.isPending && clearImage.variables === slot);
 	const slots: { slot: BrandImageSlot; label: string; hint: string }[] = [
 		{ slot: "logoMediaId", label: m.logo(), hint: m.brand_logo_hint() },
 		{
@@ -137,7 +140,8 @@ const BrandBody = ({
 						hint={s.hint}
 						mediaId={brand[s.slot]}
 						canWrite={canWrite}
-						pending={imagePending}
+						pending={slotPending(s.slot)}
+						disabled={imagePending}
 						onFile={(slot, file) => setImage.mutate({ slot, file })}
 						onClear={(slot) => clearImage.mutate(slot)}
 					/>

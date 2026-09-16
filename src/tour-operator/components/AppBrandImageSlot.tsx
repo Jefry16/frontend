@@ -20,6 +20,7 @@ export const AppBrandImageSlot = ({
 	mediaId,
 	canWrite,
 	pending,
+	disabled,
 	onFile,
 	onClear,
 }: {
@@ -30,6 +31,7 @@ export const AppBrandImageSlot = ({
 	mediaId: string | null;
 	canWrite: boolean;
 	pending: boolean;
+	disabled: boolean;
 	onFile: (slot: BrandImageSlot, file: File) => void;
 	onClear: (slot: BrandImageSlot) => void;
 }) => {
@@ -65,7 +67,7 @@ export const AppBrandImageSlot = ({
 					accept={IMAGE_TYPES}
 					maxBytes={MAX_BYTES}
 					pending={pending}
-					disabled={pending}
+					disabled={disabled}
 					errorMessages={{
 						wrongType: m.logo_wrong_type(),
 						tooLarge: m.logo_too_large(),
@@ -83,7 +85,7 @@ export const AppBrandImageSlot = ({
 							variant="outline"
 							size="sm"
 							className="text-destructive hover:text-destructive"
-							disabled={pending}
+							disabled={disabled}
 							onClick={() => setConfirmOpen(true)}
 						>
 							{m.remove()}
