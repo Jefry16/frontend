@@ -17,7 +17,6 @@ import {
 	useAppToast,
 } from "@vointika/ui";
 import { Eye, EyeOff, Pencil, Shapes, Trash2 } from "lucide-react";
-import { AppActivityCard } from "#/audit";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
@@ -213,12 +212,6 @@ const MetaobjectView = ({
 					</dl>
 				</CardContent>
 			</Card>
-
-			<AppActivityCard
-				tourOperatorId={tourOperatorId}
-				entityType="METAOBJECT"
-				entityId={entry.id}
-			/>
 		</>
 	);
 };

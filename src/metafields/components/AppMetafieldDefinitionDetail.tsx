@@ -14,7 +14,6 @@ import {
 	useAppToast,
 } from "@vointika/ui";
 import { Database, Pencil, Trash2 } from "lucide-react";
-import { AppActivityCard } from "#/audit";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
@@ -165,11 +164,6 @@ export const AppMetafieldDefinitionDetail = ({
 								</dl>
 							</CardContent>
 						</Card>
-						<AppActivityCard
-							tourOperatorId={tourOperatorId}
-							entityType="METAFIELD_DEFINITION"
-							entityId={definitionId}
-						/>
 					</>
 				);
 			}}
