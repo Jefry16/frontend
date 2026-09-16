@@ -75,6 +75,7 @@ export const useExperienceForm = (
 				: "24",
 			startingPrice: experience ? String(experience.startingPrice) : "",
 			featured: experience?.featured ?? false,
+			categoryId: experience?.categoryId ?? null,
 			thumbnailMediaId: experience?.thumbnailMediaId ?? null,
 			mediaIds: experience?.mediaIds ?? [],
 			seoTitle: experience?.seoTitle ?? "",

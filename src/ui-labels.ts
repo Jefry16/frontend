@@ -7,6 +7,8 @@ export const appUiLabels: UiLabels = {
 	clear: m.clear(),
 	search: m.search(),
 	noResults: m.no_results(),
+	loadMore: m.load_more(),
+	notSet: m.not_set(),
 	nSelected: (count) => m.n_selected({ count }),
 	textOperators: {
 		eq: m.op_eq(),

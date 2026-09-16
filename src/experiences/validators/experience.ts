@@ -45,6 +45,7 @@ export const experienceSchema = z.object({
 				.lt(10_000_000_000, m.validation_max_value({ count: 10_000_000_000 })),
 		),
 	featured: z.boolean(),
+	categoryId: z.string().nullable(),
 	thumbnailMediaId: z.string().nullable(),
 	mediaIds: z.array(z.string()),
 	seoTitle: optionalText(70),

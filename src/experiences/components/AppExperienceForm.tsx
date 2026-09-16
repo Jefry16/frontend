@@ -1,5 +1,6 @@
 import {
 	AppCheckboxField,
+	AppComboboxField,
 	AppField,
 	AppFormActions,
 	AppFormCard,
@@ -7,6 +8,7 @@ import {
 	AppTextareaField,
 	FieldGroup,
 } from "@vointika/ui";
+import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useExperienceForm } from "../hooks/use-experience-form";
 import type { Experience } from "../types";
@@ -102,6 +104,17 @@ export const AppExperienceForm = ({
 							field={field}
 							label={m.featured()}
 							description={m.featured_hint()}
+						/>
+					)}
+				</form.Field>
+				<form.Field name="categoryId">
+					{(field) => (
+						<AppComboboxField
+							field={field}
+							label={m.category()}
+							endpoint={`/tour-operators/${tourOperatorId}/categories`}
+							queryKey={queryKeys.categories(tourOperatorId)}
+							placeholder={m.not_set()}
 						/>
 					)}
 				</form.Field>
