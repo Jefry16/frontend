@@ -136,10 +136,11 @@ one at all, and the menu detail has none because every operator's menus are
 the two the backend creates directly on signup, bypassing the use case that
 writes the audit entry, so a menu never has a creation entry and often has
 no entries at all. The category, audience, pickup-location, page, media,
-metafield-definition, metaobject and metaobject-definition details have none
-for a different reason: the backend logs every one of their writes
-correctly, but showing that trail on these eight screens was a product
-decision, not a backend gap, so they carry no `AppActivityCard` either.
+metafield-definition, metaobject, metaobject-definition and experience
+details have none for a different reason: the backend logs every one of
+their writes correctly, but showing that trail on these nine screens was a
+product decision, not a backend gap, so they carry no `AppActivityCard`
+either.
 
 ## Gates
 
