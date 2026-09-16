@@ -12,7 +12,6 @@ import {
 	useAppToast,
 } from "@vointika/ui";
 import { Languages, Pencil, Tags, Trash2 } from "lucide-react";
-import { AppActivityCard } from "#/audit";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
@@ -137,11 +136,6 @@ export const AppCategoryDetail = ({
 								</dl>
 							</CardContent>
 						</Card>
-						<AppActivityCard
-							tourOperatorId={tourOperatorId}
-							entityType="CATEGORY"
-							entityId={categoryId}
-						/>
 					</>
 				);
 			}}
