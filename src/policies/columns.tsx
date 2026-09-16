@@ -2,7 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { AppBadge, AppDataTableHeader } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { AppResourceLink } from "#/shared/links";
-import { POLICY_TYPE_OPTIONS, policySlug, policyTypeLabel } from "./format";
+import { POLICY_TYPE_OPTIONS, policyTypeLabel } from "./format";
 import type { PolicyListItem } from "./types";
 
 export const policyColumns = (
@@ -43,16 +43,6 @@ export const policyColumns = (
 			<AppBadge variant="secondary">
 				{policyTypeLabel(row.original.type)}
 			</AppBadge>
-		),
-	},
-	{
-		id: "path",
-		accessorKey: "type",
-		header: () => null,
-		cell: ({ row }) => (
-			<span className="font-mono text-xs text-muted-foreground">
-				/policies/{policySlug(row.original.type)}
-			</span>
 		),
 	},
 ];
