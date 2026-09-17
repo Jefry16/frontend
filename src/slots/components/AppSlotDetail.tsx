@@ -23,7 +23,7 @@ import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
 import { useOperatorCurrency, usePermissions } from "#/session";
-import { AppBackLink, AppBreadcrumb, AppLink } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import {
 	formatBookedCapacity,
 	formatDayName,
@@ -128,16 +128,15 @@ export const AppSlotDetail = ({
 								</div>
 								<dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
 									<AppDetailField label={m.experience()}>
-										<AppLink
+										<AppResourceLink
 											to="/tour-operators/$tourOperatorId/experiences/$experienceId"
 											params={{
 												tourOperatorId,
 												experienceId: slot.experienceId,
 											}}
-											className="text-info hover:underline"
 										>
 											{slot.experienceName}
-										</AppLink>
+										</AppResourceLink>
 									</AppDetailField>
 									<AppDetailField label={m.starts()}>
 										{formatSlotDateTime(slot.startAt)}

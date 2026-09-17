@@ -17,7 +17,7 @@ import {
 import { History } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
-import { AppBackLink, AppBreadcrumb, AppLink } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import {
 	entityRoute,
 	formatAuditAction,
@@ -96,13 +96,9 @@ export const AppActivityEntryDetail = ({
 									</AppDetailField>
 									<AppDetailField label={m.entity()}>
 										{route ? (
-											<AppLink
-												to={route.to}
-												params={route.params}
-												className="text-info hover:underline"
-											>
+											<AppResourceLink to={route.to} params={route.params}>
 												{entityLabel}
-											</AppLink>
+											</AppResourceLink>
 										) : (
 											entityLabel
 										)}

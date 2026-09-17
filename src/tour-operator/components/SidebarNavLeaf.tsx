@@ -8,7 +8,12 @@ export const SidebarNavLeaf = ({ item }: { item: NavLeaf }) => {
 	const isActive = !!matchRoute({ ...item.link, fuzzy: !item.exact });
 	return (
 		<SidebarMenuItem>
-			<SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
+			<SidebarMenuButton
+				asChild
+				isActive={isActive}
+				tooltip={item.label}
+				className="data-active:bg-sidebar-primary data-active:text-sidebar-primary-foreground data-active:hover:bg-sidebar-primary data-active:hover:text-sidebar-primary-foreground"
+			>
 				<AppLink {...item.link} aria-current={isActive ? "page" : undefined}>
 					<item.icon />
 					<span>{item.label}</span>
