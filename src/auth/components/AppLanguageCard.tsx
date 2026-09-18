@@ -1,13 +1,9 @@
 import {
 	AppFormSkeleton,
 	AppQueryState,
+	AppSelect,
 	AppSettingsCard,
-	Select,
-	SelectContent,
-	SelectGroup,
 	SelectItem,
-	SelectTrigger,
-	SelectValue,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import { getLocale, type Locale } from "#/paraglide/runtime";
@@ -34,24 +30,19 @@ export const AppLanguageCard = () => {
 				loading={<AppFormSkeleton rows={1} card={false} />}
 			>
 				{(options) => (
-					<Select
+					<AppSelect
+						aria-label={m.interface_language()}
+						className="sm:max-w-xs"
 						value={getLocale()}
 						onValueChange={(value) => changeLanguage.mutate(value as Locale)}
 						disabled={changeLanguage.isPending}
 					>
-						<SelectTrigger className="w-full sm:max-w-xs">
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectGroup>
-								{options.map((code) => (
-									<SelectItem key={code} value={code}>
-										{languageLabel(code)}
-									</SelectItem>
-								))}
-							</SelectGroup>
-						</SelectContent>
-					</Select>
+						{options.map((code) => (
+							<SelectItem key={code} value={code}>
+								{languageLabel(code)}
+							</SelectItem>
+						))}
+					</AppSelect>
 				)}
 			</AppQueryState>
 		</AppSettingsCard>

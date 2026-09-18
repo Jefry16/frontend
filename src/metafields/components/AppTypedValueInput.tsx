@@ -1,13 +1,9 @@
 import {
 	AppDatePicker,
 	AppNumericInput,
+	AppSelect,
 	Input,
-	Select,
-	SelectContent,
-	SelectGroup,
 	SelectItem,
-	SelectTrigger,
-	SelectValue,
 	Textarea,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
@@ -27,21 +23,16 @@ export const AppTypedValueInput = ({
 	switch (type) {
 		case "boolean":
 			return (
-				<Select
-					value={value || undefined}
+				<AppSelect
+					id={inputId}
+					value={value}
 					onValueChange={(v) => onValueChange(v === "unset" ? "" : v)}
+					placeholder={m.not_set()}
 				>
-					<SelectTrigger id={inputId} className="w-full">
-						<SelectValue placeholder={m.not_set()} />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectGroup>
-							<SelectItem value="unset">{m.not_set()}</SelectItem>
-							<SelectItem value="true">{m.value_true()}</SelectItem>
-							<SelectItem value="false">{m.value_false()}</SelectItem>
-						</SelectGroup>
-					</SelectContent>
-				</Select>
+					<SelectItem value="unset">{m.not_set()}</SelectItem>
+					<SelectItem value="true">{m.value_true()}</SelectItem>
+					<SelectItem value="false">{m.value_false()}</SelectItem>
+				</AppSelect>
 			);
 		case "date":
 			return (

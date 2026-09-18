@@ -1,13 +1,9 @@
 import {
 	AppQueryState,
+	AppSelect,
 	FieldError,
 	type QueryState,
-	Select,
-	SelectContent,
-	SelectGroup,
 	SelectItem,
-	SelectTrigger,
-	SelectValue,
 	Skeleton,
 	useAllPages,
 } from "@vointika/ui";
@@ -101,24 +97,19 @@ export const AppMenuTargetSelect = ({
 		>
 			{(options) => (
 				<div className="flex flex-col gap-1">
-					<Select value={value || undefined} onValueChange={onValueChange}>
-						<SelectTrigger
-							className="w-full"
-							aria-label={ariaLabel}
-							aria-invalid={invalid || undefined}
-						>
-							<SelectValue placeholder={placeholder} />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectGroup>
-								{options.map((option) => (
-									<SelectItem key={option.id} value={option.id}>
-										{option.label}
-									</SelectItem>
-								))}
-							</SelectGroup>
-						</SelectContent>
-					</Select>
+					<AppSelect
+						value={value}
+						onValueChange={onValueChange}
+						aria-label={ariaLabel}
+						aria-invalid={invalid || undefined}
+						placeholder={placeholder}
+					>
+						{options.map((option) => (
+							<SelectItem key={option.id} value={option.id}>
+								{option.label}
+							</SelectItem>
+						))}
+					</AppSelect>
 					{invalid && <FieldError errors={errors} />}
 				</div>
 			)}

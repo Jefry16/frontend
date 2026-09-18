@@ -1,16 +1,12 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
 import {
 	AppNumericInput,
+	AppSelect,
 	Button,
 	FieldError,
 	FieldLabel,
 	RequiredMark,
-	Select,
-	SelectContent,
-	SelectGroup,
 	SelectItem,
-	SelectTrigger,
-	SelectValue,
 } from "@vointika/ui";
 import { Plus, Trash2 } from "lucide-react";
 import type { Audience } from "#/audiences";
@@ -57,27 +53,19 @@ export const AppAudiencePriceRows = ({
 						key={row._key}
 						className="grid grid-cols-[1fr_6rem_6rem_2.25rem] gap-2"
 					>
-						<Select
-							value={row.audienceId || undefined}
+						<AppSelect
+							value={row.audienceId}
 							onValueChange={(audienceId) => patch(row._key, { audienceId })}
+							aria-label={m.audience()}
+							onBlur={field.handleBlur}
+							placeholder={m.audience()}
 						>
-							<SelectTrigger
-								className="w-full"
-								aria-label={m.audience()}
-								onBlur={field.handleBlur}
-							>
-								<SelectValue placeholder={m.audience()} />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									{options.map((a) => (
-										<SelectItem key={a.id} value={a.id}>
-											{a.name}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
+							{options.map((a) => (
+								<SelectItem key={a.id} value={a.id}>
+									{a.name}
+								</SelectItem>
+							))}
+						</AppSelect>
 						<AppNumericInput
 							decimal
 							aria-label={m.price()}
