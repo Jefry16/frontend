@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { AppDataTableHeader, EmptyValue, timestampColumn } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
-import { AppLink, AppResourceLink } from "#/shared/links";
+import { AppResourceLink } from "#/shared/links";
 import {
 	ACTION_OPTIONS,
 	ENTITY_TYPE_OPTIONS,
@@ -75,13 +75,9 @@ export const activityColumns = (
 			);
 			if (!route) return label;
 			return (
-				<AppLink
-					to={route.to}
-					params={route.params}
-					className="text-info underline-offset-2 hover:underline"
-				>
+				<AppResourceLink to={route.to} params={route.params}>
 					{label}
-				</AppLink>
+				</AppResourceLink>
 			);
 		},
 	},
