@@ -267,18 +267,22 @@ const ItemRows = ({
 							</Button>
 						</div>
 					</div>
-					{node.children.length > 0 && (
-						<div className="ml-8 border-l pl-4">
-							<ItemRows
-								form={form}
-								path={`${rowPath}.children`}
-								nodes={node.children}
-								depth={depth + 1}
-								tourOperatorId={tourOperatorId}
-								extraLocales={extraLocales}
-							/>
-						</div>
-					)}
+					<form.Field name={`${rowPath}.children`} mode="array">
+						{(children) =>
+							children.state.value.length > 0 && (
+								<div className="ml-8 border-l pl-4">
+									<ItemRows
+										form={form}
+										path={`${rowPath}.children`}
+										nodes={children.state.value}
+										depth={depth + 1}
+										tourOperatorId={tourOperatorId}
+										extraLocales={extraLocales}
+									/>
+								</div>
+							)
+						}
+					</form.Field>
 				</div>
 			);
 		})}

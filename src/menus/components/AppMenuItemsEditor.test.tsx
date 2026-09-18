@@ -98,6 +98,21 @@ describe("AppMenuItemsEditor", () => {
 	});
 });
 
+describe("AppMenuItemsEditor nested rows", () => {
+	it("shows a sub-item the moment it is added, and drops it the moment it is removed", async () => {
+		const user = userEvent.setup();
+		render();
+		await user.click(screen.getByRole("button", { name: "Add item" }));
+		expect(screen.getAllByPlaceholderText("Title")).toHaveLength(1);
+
+		await user.click(screen.getByRole("button", { name: "Add sub-item" }));
+		expect(screen.getAllByPlaceholderText("Title")).toHaveLength(2);
+
+		await user.click(screen.getAllByRole("button", { name: "Remove" })[1]);
+		expect(screen.getAllByPlaceholderText("Title")).toHaveLength(1);
+	});
+});
+
 describe("AppMenuItemsEditor row removal", () => {
 	it("keeps a surviving row's target when removal shifts it into a slot that held a different link type", async () => {
 		const queryClient = createTestQueryClient();
