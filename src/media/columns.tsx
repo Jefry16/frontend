@@ -20,7 +20,7 @@ export const mediaColumns = (
 	return [
 		{
 			id: "preview",
-			header: () => <span className="font-semibold">{m.preview()}</span>,
+			header: () => <span>{m.preview()}</span>,
 			cell: ({ row }) =>
 				isImage(row.original.contentType) ? (
 					<img
