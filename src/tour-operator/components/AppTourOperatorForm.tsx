@@ -36,6 +36,14 @@ export const AppTourOperatorForm = () => {
 			title={m.create_tour_operator()}
 			subtitle={m.create_tour_operator_subtitle()}
 		>
+			{isOnboarding && (
+				<AppAlert
+					variant="info"
+					className="mb-4"
+					title={m.join_existing_team_title()}
+					description={m.join_existing_team_body()}
+				/>
+			)}
 			<AppCard>
 				<form
 					onSubmit={(e) => {
@@ -112,19 +120,11 @@ export const AppTourOperatorForm = () => {
 				)}
 			</AppCard>
 			{isOnboarding && (
-				<>
-					<AppAlert
-						variant="info"
-						className="mt-4"
-						title={m.join_existing_team_title()}
-						description={m.join_existing_team_body()}
-					/>
-					<div className="mt-4 flex justify-center">
-						<Button type="button" variant="ghost" onClick={signOut}>
-							{m.sign_out()}
-						</Button>
-					</div>
-				</>
+				<div className="mt-4 flex justify-center">
+					<Button type="button" variant="ghost" onClick={signOut}>
+						{m.sign_out()}
+					</Button>
+				</div>
 			)}
 		</AppAuthShell>
 	);
