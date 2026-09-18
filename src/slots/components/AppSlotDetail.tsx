@@ -7,13 +7,9 @@ import {
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
+	AppStaticTable,
+	type AppStaticTableColumn,
 	formatMoney,
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
 } from "@vointika/ui";
 import { Ban, CalendarDays, Pencil } from "lucide-react";
 import { useState } from "react";
@@ -31,7 +27,32 @@ import {
 } from "../format";
 import { useSlot } from "../hooks/use-slot";
 import { useSlotActions } from "../hooks/use-slot-actions";
+import type { SlotAudiencePrice } from "../types";
 import { AppEditCapacityDialog } from "./AppEditCapacityDialog";
+
+const tierColumns = (
+	currency: string | null,
+): AppStaticTableColumn<SlotAudiencePrice>[] => [
+	{ id: "audience", header: m.audience(), cell: (tier) => tier.audienceName },
+	{
+		id: "price",
+		header: m.price(),
+		cell: (tier) => formatMoney(tier.price, currency),
+		numeric: true,
+	},
+	{
+		id: "capacity",
+		header: m.capacity(),
+		cell: (tier) => tier.capacity,
+		numeric: true,
+	},
+	{
+		id: "booked",
+		header: m.booked(),
+		cell: (tier) => tier.bookedCount,
+		numeric: true,
+	},
+];
 
 export const AppSlotDetail = ({
 	tourOperatorId,
@@ -153,32 +174,11 @@ export const AppSlotDetail = ({
 						</AppCard>
 
 						<AppCard title={m.pricing()}>
-							<Table>
-								<TableHeader>
-									<TableRow>
-										<TableHead>{m.audience()}</TableHead>
-										<TableHead className="text-right">{m.price()}</TableHead>
-										<TableHead className="text-right">{m.capacity()}</TableHead>
-										<TableHead className="text-right">{m.booked()}</TableHead>
-									</TableRow>
-								</TableHeader>
-								<TableBody>
-									{slot.audiencePrices.map((tier) => (
-										<TableRow key={tier.audienceId}>
-											<TableCell>{tier.audienceName}</TableCell>
-											<TableCell className="text-right tabular-nums">
-												{formatMoney(tier.price, currency)}
-											</TableCell>
-											<TableCell className="text-right tabular-nums">
-												{tier.capacity}
-											</TableCell>
-											<TableCell className="text-right tabular-nums">
-												{tier.bookedCount}
-											</TableCell>
-										</TableRow>
-									))}
-								</TableBody>
-							</Table>
+							<AppStaticTable
+								columns={tierColumns(currency)}
+								rows={slot.audiencePrices}
+								rowKey={(tier) => tier.audienceId}
+							/>
 						</AppCard>
 
 						<AppActivityCard

@@ -2,12 +2,11 @@ import {
 	AppDetailField,
 	AppForm,
 	AppFormActions,
+	AppLabelledControl,
 	AppQueryState,
 	AppSettingsCard,
 	EmptyValue,
-	Field,
 	FieldGroup,
-	FieldLabel,
 } from "@vointika/ui";
 import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -142,13 +141,11 @@ const MetafieldInput = ({
 }) => {
 	const inputId = `metafield-${definition.namespace}-${definition.key}`;
 	return (
-		<Field>
-			<FieldLabel htmlFor={inputId}>
-				{definition.name}
-				<span className="ml-2 font-mono text-xs font-normal text-muted-foreground">
-					{definition.namespace}.{definition.key}
-				</span>
-			</FieldLabel>
+		<AppLabelledControl
+			label={definition.name}
+			code={`${definition.namespace}.${definition.key}`}
+			htmlFor={inputId}
+		>
 			{definition.type === "metaobject_reference" &&
 			definition.metaobjectDefinitionId ? (
 				<AppMetaobjectEntrySelect
@@ -166,6 +163,6 @@ const MetafieldInput = ({
 					onValueChange={onChange}
 				/>
 			)}
-		</Field>
+		</AppLabelledControl>
 	);
 };

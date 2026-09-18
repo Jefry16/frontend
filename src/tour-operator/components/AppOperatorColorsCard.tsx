@@ -4,11 +4,11 @@ import {
 	AppForm,
 	AppFormActions,
 	AppFormSkeleton,
+	AppLabelledControl,
 	AppQueryState,
 	AppSettingsCard,
 	Button,
 	EmptyValue,
-	FieldLabel,
 } from "@vointika/ui";
 import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
 import * as m from "#/paraglide/messages";
@@ -90,8 +90,7 @@ const ColorsForm = ({
 					{(group) => {
 						const rows = group.state.value ?? [];
 						return (
-							<div className="flex flex-col gap-3">
-								<FieldLabel>{role.label()}</FieldLabel>
+							<AppLabelledControl label={role.label()}>
 								{rows.map((_, index) => (
 									// biome-ignore lint/suspicious/noArrayIndexKey: a colour row has no identity but its position
 									<div key={index} className="flex items-end gap-2">
@@ -170,7 +169,7 @@ const ColorsForm = ({
 										{m.add_color()}
 									</Button>
 								</div>
-							</div>
+							</AppLabelledControl>
 						);
 					}}
 				</form.Field>

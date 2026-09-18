@@ -6,6 +6,7 @@ import {
 	AppFormActions,
 	AppFormSkeleton,
 	AppImageDropzone,
+	AppLabelledControl,
 	AppQueryState,
 	AppSettingsCard,
 	AppTextareaField,
@@ -13,7 +14,6 @@ import {
 	EmptyValue,
 	FieldDescription,
 	FieldGroup,
-	Label,
 } from "@vointika/ui";
 import { useState } from "react";
 import { useMedia } from "#/media";
@@ -121,8 +121,7 @@ const SeoForm = ({
 						/>
 					)}
 				</form.Field>
-				<div className="space-y-2">
-					<Label>{m.og_image()}</Label>
+				<AppLabelledControl label={m.og_image()}>
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center">
 						<AppImageDropzone
 							className="size-28 min-h-0 shrink-0"
@@ -159,7 +158,7 @@ const SeoForm = ({
 					{imageError && (
 						<p className="text-sm text-destructive">{imageError}</p>
 					)}
-				</div>
+				</AppLabelledControl>
 			</FieldGroup>
 		</AppForm>
 	);

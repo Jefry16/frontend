@@ -2,10 +2,10 @@ import {
 	AppField,
 	AppFormActions,
 	AppFormCard,
+	AppLabelledControl,
 	AppSelectField,
 	Button,
 	FieldGroup,
-	FieldLabel,
 	SelectItem,
 } from "@vointika/ui";
 import { Plus, Trash2 } from "lucide-react";
@@ -74,8 +74,7 @@ export const AppMetaobjectDefinitionForm = ({
 			{!isEdit && (
 				<form.Field name="fields" mode="array">
 					{(fieldsField) => (
-						<div className="flex flex-col gap-3">
-							<FieldLabel>{m.metaobject_fields()}</FieldLabel>
+						<AppLabelledControl label={m.metaobject_fields()}>
 							{(fieldsField.state.value ?? []).map((_, index) => (
 								// biome-ignore lint/suspicious/noArrayIndexKey: see above
 								<div key={index} className="flex items-start gap-2">
@@ -159,7 +158,7 @@ export const AppMetaobjectDefinitionForm = ({
 									{m.metaobject_add_field()}
 								</Button>
 							</div>
-						</div>
+						</AppLabelledControl>
 					)}
 				</form.Field>
 			)}

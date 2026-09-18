@@ -1,15 +1,14 @@
 import {
 	AppAlert,
 	AppDialogFooter,
+	AppLabelledControl,
 	AppSelect,
+	AppTextInput,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	Field,
-	FieldLabel,
-	Input,
 	SelectItem,
 } from "@vointika/ui";
 import { useState } from "react";
@@ -74,18 +73,17 @@ export const AppMetaobjectFieldDialog = ({
 					<AppAlert title={m.error()} description={errorMessage} />
 				)}
 				<div className="flex flex-col gap-4">
-					<Field>
-						<FieldLabel htmlFor="metaobject-field-name">{m.name()}</FieldLabel>
-						<Input
+					<AppLabelledControl label={m.name()} htmlFor="metaobject-field-name">
+						<AppTextInput
 							id="metaobject-field-name"
 							autoFocus
 							value={name}
-							onChange={(e) => setName(e.target.value)}
+							onValueChange={setName}
 							onBlur={() => {
 								if (!isRename && !key) setKey(deriveSlug(name));
 							}}
 						/>
-					</Field>
+					</AppLabelledControl>
 					{isRename ? (
 						<p className="text-sm text-muted-foreground">
 							<span className="font-mono">{field.key}</span> ·{" "}
@@ -93,21 +91,21 @@ export const AppMetaobjectFieldDialog = ({
 						</p>
 					) : (
 						<>
-							<Field>
-								<FieldLabel htmlFor="metaobject-field-key">
-									{m.metafield_key()}
-								</FieldLabel>
-								<Input
+							<AppLabelledControl
+								label={m.metafield_key()}
+								htmlFor="metaobject-field-key"
+							>
+								<AppTextInput
 									id="metaobject-field-key"
 									className="font-mono"
 									value={key}
-									onChange={(e) => setKey(e.target.value)}
+									onValueChange={setKey}
 								/>
-							</Field>
-							<Field>
-								<FieldLabel htmlFor="metaobject-field-type">
-									{m.metafield_type()}
-								</FieldLabel>
+							</AppLabelledControl>
+							<AppLabelledControl
+								label={m.metafield_type()}
+								htmlFor="metaobject-field-type"
+							>
 								<AppSelect
 									id="metaobject-field-type"
 									value={type}
@@ -119,7 +117,7 @@ export const AppMetaobjectFieldDialog = ({
 										</SelectItem>
 									))}
 								</AppSelect>
-							</Field>
+							</AppLabelledControl>
 						</>
 					)}
 				</div>

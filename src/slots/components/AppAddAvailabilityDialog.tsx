@@ -3,13 +3,13 @@ import {
 	AppEmptyState,
 	AppLoadingBlock,
 	AppQueryState,
+	AppTextInput,
 	Button,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	Input,
 	useAllPages,
 } from "@vointika/ui";
 import { ChevronRight, Compass } from "lucide-react";
@@ -89,11 +89,11 @@ const ExperiencePicker = ({
 
 	return (
 		<div className="flex flex-col gap-2">
-			<Input
+			<AppTextInput
 				autoFocus
 				placeholder={m.search()}
 				value={search}
-				onChange={(e) => setSearch(e.target.value)}
+				onValueChange={setSearch}
 			/>
 			<div className="flex max-h-72 flex-col gap-1 overflow-y-auto">
 				{filtered.map((experience) => (

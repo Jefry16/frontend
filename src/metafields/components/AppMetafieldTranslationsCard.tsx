@@ -3,11 +3,10 @@ import {
 	AppForm,
 	AppFormActions,
 	AppFormSkeleton,
+	AppLabelledControl,
 	AppQueryState,
 	AppSettingsCard,
-	Field,
 	FieldGroup,
-	FieldLabel,
 } from "@vointika/ui";
 import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -160,13 +159,15 @@ export const AppMetafieldTranslationsCard = ({
 											const id = `${definition.namespace}.${definition.key}`;
 											const inputId = `metafield-translation-${locale}-${definition.namespace}-${definition.key}`;
 											return (
-												<Field key={definition.id}>
-													<FieldLabel htmlFor={inputId}>
-														{definition.name}
-														<span className="ml-2 font-mono text-xs font-normal text-muted-foreground">
-															{id}
-														</span>
-													</FieldLabel>
+												<AppLabelledControl
+													key={definition.id}
+													label={definition.name}
+													code={id}
+													htmlFor={inputId}
+													description={m.translation_canonical({
+														value: canonical.get(id) ?? m.not_set(),
+													})}
+												>
 													<AppTypedValueInput
 														inputId={inputId}
 														type={definition.type}
@@ -175,12 +176,7 @@ export const AppMetafieldTranslationsCard = ({
 															setDrafts((prev) => ({ ...prev, [id]: value }))
 														}
 													/>
-													<p className="text-sm text-muted-foreground">
-														{m.translation_canonical({
-															value: canonical.get(id) ?? m.not_set(),
-														})}
-													</p>
-												</Field>
+												</AppLabelledControl>
 											);
 										})}
 									</FieldGroup>

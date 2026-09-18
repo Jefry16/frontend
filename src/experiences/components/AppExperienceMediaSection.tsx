@@ -1,10 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
+	AppSkeleton,
 	cn,
 	FieldDescription,
 	FieldLegend,
 	FieldSet,
-	Skeleton,
 } from "@vointika/ui";
 import { ImageOff, Plus, Star, X } from "lucide-react";
 import { useState } from "react";
@@ -77,7 +77,7 @@ export const AppExperienceMediaSection = ({
 									className="size-full object-cover"
 								/>
 							) : isLoading ? (
-								<Skeleton className="size-full" />
+								<AppSkeleton variant="image" />
 							) : (
 								<div className="grid size-full place-items-center text-muted-foreground">
 									<ImageOff className="size-5" />

@@ -1,4 +1,4 @@
-import { AppError, Button, Skeleton, Spinner } from "@vointika/ui";
+import { AppError, AppSkeleton, Button, Spinner } from "@vointika/ui";
 import { apiErrorMessage } from "#/lib/api-error";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime } from "#/session";
@@ -23,16 +23,7 @@ export const AppActivityLog = ({
 	const log = useActivityLog(tourOperatorId, entityType, entityId);
 
 	if (log.isPending) {
-		return (
-			<div data-testid="activity-log-skeleton" className="flex flex-col gap-4">
-				{[0, 1, 2].map((row) => (
-					<div key={row} className="flex flex-col gap-1.5">
-						<Skeleton className="h-4 w-2/3 max-w-md" />
-						<Skeleton className="h-3.5 w-1/2 max-w-sm" />
-					</div>
-				))}
-			</div>
-		);
+		return <AppSkeleton variant="list" rows={3} />;
 	}
 	if (log.isError)
 		return (

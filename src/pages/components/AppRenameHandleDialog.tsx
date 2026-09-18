@@ -1,12 +1,12 @@
 import {
 	AppAlert,
 	AppDialogFooter,
+	AppTextInput,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	Input,
 } from "@vointika/ui";
 import { useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -49,11 +49,11 @@ export const AppRenameHandleDialog = ({
 				)}
 				<div className="flex items-center gap-1">
 					<span className="text-sm text-muted-foreground">/pages/</span>
-					<Input
+					<AppTextInput
 						autoFocus
 						value={handle}
 						aria-label={m.handle()}
-						onChange={(e) => setHandle(e.target.value)}
+						onValueChange={setHandle}
 						className="font-mono"
 					/>
 				</div>

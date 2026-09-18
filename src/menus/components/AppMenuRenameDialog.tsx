@@ -1,11 +1,11 @@
 import {
 	AppDialogFooter,
+	AppTextInput,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	Input,
 } from "@vointika/ui";
 import { useEffect, useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -38,11 +38,11 @@ export const AppMenuRenameDialog = ({
 					<DialogTitle>{m.rename_menu_title()}</DialogTitle>
 					<DialogDescription>{m.rename_menu_hint()}</DialogDescription>
 				</DialogHeader>
-				<Input
+				<AppTextInput
 					autoFocus
 					value={title}
 					aria-label={m.title()}
-					onChange={(e) => setTitle(e.target.value)}
+					onValueChange={setTitle}
 				/>
 				<AppDialogFooter
 					onConfirm={() => onRename(trimmed)}

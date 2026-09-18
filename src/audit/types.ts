@@ -1,6 +1,6 @@
 type AuditActorType = "USER" | "SYSTEM";
 
-interface AuditFieldChange {
+export interface AuditFieldChange {
 	field: string;
 	from: unknown;
 	to: unknown;

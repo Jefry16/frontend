@@ -2,9 +2,9 @@ import {
 	AppDatePicker,
 	AppNumericInput,
 	AppSelect,
-	Input,
+	AppTextarea,
+	AppTextInput,
 	SelectItem,
-	Textarea,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import type { MetafieldTypeCode } from "../types";
@@ -55,38 +55,33 @@ export const AppTypedValueInput = ({
 			);
 		case "multi_line_text":
 			return (
-				<Textarea
-					id={inputId}
-					rows={3}
-					value={value}
-					onChange={(e) => onValueChange(e.target.value)}
-				/>
+				<AppTextarea id={inputId} value={value} onValueChange={onValueChange} />
 			);
 		case "json":
 			return (
-				<Textarea
+				<AppTextarea
 					id={inputId}
 					rows={4}
 					className="font-mono text-xs"
 					value={value}
-					onChange={(e) => onValueChange(e.target.value)}
+					onValueChange={onValueChange}
 				/>
 			);
 		case "url":
 			return (
-				<Input
+				<AppTextInput
 					id={inputId}
 					value={value}
 					placeholder="https://"
-					onChange={(e) => onValueChange(e.target.value)}
+					onValueChange={onValueChange}
 				/>
 			);
 		default:
 			return (
-				<Input
+				<AppTextInput
 					id={inputId}
 					value={value}
-					onChange={(e) => onValueChange(e.target.value)}
+					onValueChange={onValueChange}
 				/>
 			);
 	}
