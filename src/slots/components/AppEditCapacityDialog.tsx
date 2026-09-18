@@ -1,12 +1,12 @@
 import {
 	AppDialogFooter,
+	AppLabelledControl,
 	AppNumericInput,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	Label,
 } from "@vointika/ui";
 import { useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -61,13 +61,14 @@ export const AppEditCapacityDialog = ({
 						const id = `capacity-${tier.audienceId}`;
 						const below = Number(valueFor(tier) || "0") < tier.bookedCount;
 						return (
-							<div key={tier.audienceId} className="flex items-center gap-3">
-								<Label htmlFor={id} className="flex-1 font-normal">
-									{tier.audienceName}
-									<span className="text-xs text-muted-foreground">
-										{m.booked_count({ count: tier.bookedCount })}
-									</span>
-								</Label>
+							<AppLabelledControl
+								key={tier.audienceId}
+								label={tier.audienceName}
+								hint={m.booked_count({ count: tier.bookedCount })}
+								htmlFor={id}
+								layout="row"
+								invalid={below}
+							>
 								<AppNumericInput
 									id={id}
 									className="w-24 text-right"
@@ -80,7 +81,7 @@ export const AppEditCapacityDialog = ({
 										}));
 									}}
 								/>
-							</div>
+							</AppLabelledControl>
 						);
 					})}
 					{belowBooked && (

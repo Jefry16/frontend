@@ -4,12 +4,8 @@ import {
 	AppDetailSkeleton,
 	AppPageHeader,
 	AppResourceView,
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
+	AppStaticTable,
+	type AppStaticTableColumn,
 } from "@vointika/ui";
 import { History } from "lucide-react";
 import * as m from "#/paraglide/messages";
@@ -24,6 +20,23 @@ import {
 	formatEntityType,
 } from "../format";
 import { useAuditLogEntry } from "../hooks/use-audit-log-entry";
+import type { AuditFieldChange } from "../types";
+
+const CHANGE_COLUMNS: AppStaticTableColumn<AuditFieldChange>[] = [
+	{
+		id: "field",
+		header: m.field(),
+		cell: (change) => formatAuditField(change.field),
+		emphasis: "strong",
+	},
+	{
+		id: "from",
+		header: m.from(),
+		cell: (change) => formatAuditValue(change.from),
+		emphasis: "muted",
+	},
+	{ id: "to", header: m.to(), cell: (change) => formatAuditValue(change.to) },
+];
 
 export const AppActivityEntryDetail = ({
 	tourOperatorId,
@@ -109,31 +122,11 @@ export const AppActivityEntryDetail = ({
 						</AppCard>
 						{entry.changes && entry.changes.length > 0 && (
 							<AppCard title={m.changes()}>
-								<Table>
-									<TableHeader>
-										<TableRow>
-											<TableHead>{m.field()}</TableHead>
-											<TableHead>{m.from()}</TableHead>
-											<TableHead>{m.to()}</TableHead>
-										</TableRow>
-									</TableHeader>
-									<TableBody>
-										{entry.changes.map((change, index) => (
-											<TableRow
-												// biome-ignore lint/suspicious/noArrayIndexKey: static per-entry diff list
-												key={index}
-											>
-												<TableCell className="font-medium">
-													{formatAuditField(change.field)}
-												</TableCell>
-												<TableCell className="text-muted-foreground">
-													{formatAuditValue(change.from)}
-												</TableCell>
-												<TableCell>{formatAuditValue(change.to)}</TableCell>
-											</TableRow>
-										))}
-									</TableBody>
-								</Table>
+								<AppStaticTable
+									columns={CHANGE_COLUMNS}
+									rows={entry.changes}
+									rowKey={(_, index) => String(index)}
+								/>
 							</AppCard>
 						)}
 						{details.length > 0 && (

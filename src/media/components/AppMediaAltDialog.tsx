@@ -1,11 +1,11 @@
 import {
 	AppDialogFooter,
+	AppTextarea,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	Textarea,
 } from "@vointika/ui";
 import { useEffect, useState } from "react";
 import * as m from "#/paraglide/messages";
@@ -39,14 +39,13 @@ export const AppMediaAltDialog = ({
 					<DialogTitle>{m.media_alt_title()}</DialogTitle>
 					<DialogDescription>{m.media_alt_hint()}</DialogDescription>
 				</DialogHeader>
-				<Textarea
+				<AppTextarea
 					autoFocus
-					rows={3}
 					value={alt}
 					maxLength={MAX}
 					aria-label={m.media_alt()}
 					placeholder={m.media_alt_placeholder()}
-					onChange={(e) => setAlt(e.target.value)}
+					onValueChange={setAlt}
 				/>
 				<AppDialogFooter
 					onConfirm={() => onSave(trimmed)}

@@ -1,8 +1,8 @@
 import {
 	AppConfirmDialog,
 	AppImageDropzone,
+	AppLabelledControl,
 	Button,
-	Label,
 } from "@vointika/ui";
 import { useState } from "react";
 import { useMedia } from "#/media";
@@ -42,8 +42,7 @@ export const AppBrandImageSlot = ({
 
 	if (!canWrite) {
 		return (
-			<div className="space-y-2">
-				<Label>{label}</Label>
+			<AppLabelledControl label={label}>
 				{url ? (
 					<img
 						src={url}
@@ -53,13 +52,12 @@ export const AppBrandImageSlot = ({
 				) : (
 					<p className="text-sm text-muted-foreground">{m.not_set()}</p>
 				)}
-			</div>
+			</AppLabelledControl>
 		);
 	}
 
 	return (
-		<div className="space-y-2">
-			<Label>{label}</Label>
+		<AppLabelledControl label={label}>
 			<div className="flex items-start gap-3">
 				<AppImageDropzone
 					className="size-24 min-h-0 shrink-0"
@@ -108,6 +106,6 @@ export const AppBrandImageSlot = ({
 					setConfirmOpen(false);
 				}}
 			/>
-		</div>
+		</AppLabelledControl>
 	);
 };

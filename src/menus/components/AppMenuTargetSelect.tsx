@@ -1,10 +1,10 @@
 import {
 	AppQueryState,
 	AppSelect,
+	AppSkeleton,
 	FieldError,
 	type QueryState,
 	SelectItem,
-	Skeleton,
 	useAllPages,
 } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
@@ -93,7 +93,7 @@ export const AppMenuTargetSelect = ({
 	return (
 		<AppQueryState
 			query={catalogue}
-			loading={<Skeleton className="h-9 w-full" />}
+			loading={<AppSkeleton variant="control" />}
 		>
 			{(options) => (
 				<div className="flex flex-col gap-1">

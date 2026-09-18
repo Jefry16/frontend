@@ -1,11 +1,9 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
 import {
+	AppLabelledControl,
 	AppNumericInput,
 	AppSelect,
 	Button,
-	FieldError,
-	FieldLabel,
-	RequiredMark,
 	SelectItem,
 } from "@vointika/ui";
 import { Plus, Trash2 } from "lucide-react";
@@ -32,11 +30,12 @@ export const AppAudiencePriceRows = ({
 	};
 
 	return (
-		<div className="flex flex-col gap-2" data-invalid={isInvalid || undefined}>
-			<FieldLabel>
-				{m.pricing()}
-				<RequiredMark />
-			</FieldLabel>
+		<AppLabelledControl
+			label={m.pricing()}
+			required
+			invalid={isInvalid}
+			errors={field.state.meta.errors}
+		>
 			<div className="grid grid-cols-[1fr_6rem_6rem_2.25rem] gap-2 text-xs text-muted-foreground">
 				<span>{m.audience()}</span>
 				<span>{m.price()}</span>
@@ -107,7 +106,6 @@ export const AppAudiencePriceRows = ({
 					{m.add_audience()}
 				</Button>
 			</div>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</div>
+		</AppLabelledControl>
 	);
 };

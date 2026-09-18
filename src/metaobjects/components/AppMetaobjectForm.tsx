@@ -2,9 +2,8 @@ import {
 	AppField,
 	AppFormActions,
 	AppFormCard,
-	Field,
+	AppLabelledControl,
 	FieldGroup,
-	FieldLabel,
 } from "@vointika/ui";
 import type { ReactNode } from "react";
 import { AppTypedValueInput, metafieldTypeLabel } from "#/metafields";
@@ -79,20 +78,18 @@ export const AppMetaobjectForm = ({
 				{definition.fields.map((defField) => (
 					<values.Field key={defField.key} name={`values.${defField.key}`}>
 						{(field) => (
-							<Field>
-								<FieldLabel htmlFor={`metaobject-${defField.key}`}>
-									{defField.name}
-									<span className="ml-2 font-mono text-xs font-normal text-muted-foreground">
-										{metafieldTypeLabel(defField.type)}
-									</span>
-								</FieldLabel>
+							<AppLabelledControl
+								label={defField.name}
+								hint={metafieldTypeLabel(defField.type)}
+								htmlFor={`metaobject-${defField.key}`}
+							>
 								<AppTypedValueInput
 									inputId={`metaobject-${defField.key}`}
 									type={defField.type}
 									value={field.state.value ?? ""}
 									onValueChange={field.handleChange}
 								/>
-							</Field>
+							</AppLabelledControl>
 						)}
 					</values.Field>
 				))}

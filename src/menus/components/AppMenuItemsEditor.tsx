@@ -1,10 +1,10 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
 import {
+	AppBadge,
 	AppField,
 	AppFormActions,
 	AppFormCard,
 	AppSelectField,
-	Badge,
 	Button,
 	SelectItem,
 } from "@vointika/ui";
@@ -219,12 +219,12 @@ const ItemRows = ({
 								<div className="flex flex-col gap-1.5">
 									{extraLocales.map((locale) => (
 										<div key={locale} className="flex items-center gap-2">
-											<Badge
+											<AppBadge
 												variant="outline"
 												className="w-10 shrink-0 justify-center font-mono uppercase"
 											>
 												{locale}
-											</Badge>
+											</AppBadge>
 											<div className="grow">
 												<form.Field name={`${rowPath}.translations.${locale}`}>
 													{(field) => (
