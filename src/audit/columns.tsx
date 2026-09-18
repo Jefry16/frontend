@@ -83,7 +83,7 @@ export const activityColumns = (
 	},
 	{
 		id: "changes",
-		header: () => <span className="font-semibold">{m.changes()}</span>,
+		header: () => <span>{m.changes()}</span>,
 		cell: ({ row }) => {
 			const changes = row.original.changes;
 			if (!changes || changes.length === 0) {

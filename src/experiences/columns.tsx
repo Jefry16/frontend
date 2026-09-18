@@ -51,9 +51,7 @@ export const experienceColumns = (
 			id: "startingPrice",
 			accessorKey: "startingPrice",
 			header: () => (
-				<span className="block text-right font-semibold">
-					{m.starting_price()}
-				</span>
+				<span className="block text-right">{m.starting_price()}</span>
 			),
 			cell: ({ row }) => (
 				<span className="block text-right tabular-nums">
@@ -63,7 +61,7 @@ export const experienceColumns = (
 		},
 		{
 			id: "status",
-			header: () => <span className="font-semibold">{m.status()}</span>,
+			header: () => <span>{m.status()}</span>,
 			cell: ({ row }) => (
 				<AppBadge variant={statusBadgeVariant(row.original.published)}>
 					{statusLabel(row.original.published)}

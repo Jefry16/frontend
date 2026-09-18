@@ -84,7 +84,7 @@ export const slotColumns = (
 	{
 		id: "booked",
 		meta: { align: "right" },
-		header: () => <span className="font-semibold">{m.booked()}</span>,
+		header: () => <span>{m.booked()}</span>,
 		cell: ({ row }) => formatBookedCapacity(row.original.audiencePrices),
 	},
 ];
