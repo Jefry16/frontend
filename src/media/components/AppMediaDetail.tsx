@@ -2,13 +2,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
 	EmptyValue,
 	useAppToast,
 } from "@vointika/ui";
@@ -152,45 +151,43 @@ const MediaFacts = ({
 				}
 				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
-			<Card>
-				<CardContent className="flex flex-col gap-6">
-					<div className="grid min-h-40 place-items-center rounded-md border bg-muted/30 p-4">
-						{isImage(media.contentType) ? (
-							<img
-								src={media.url}
-								alt={media.alt ?? media.originalName}
-								className="max-h-64 rounded object-contain"
-							/>
+			<AppCard className="flex flex-col gap-6">
+				<div className="grid min-h-40 place-items-center rounded-md border bg-muted/30 p-4">
+					{isImage(media.contentType) ? (
+						<img
+							src={media.url}
+							alt={media.alt ?? media.originalName}
+							className="max-h-64 rounded object-contain"
+						/>
+					) : (
+						<FileText className="size-12 text-muted-foreground" />
+					)}
+				</div>
+				<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<AppDetailField label={m.file_type()}>
+						{mimeLabel(media.contentType)}
+					</AppDetailField>
+					<AppDetailField label={m.size()}>
+						{formatBytes(media.sizeBytes)}
+					</AppDetailField>
+					<AppDetailField label={m.media_alt()} className="sm:col-span-2">
+						{media.alt ?? <EmptyValue />}
+					</AppDetailField>
+					<AppDetailField label={m.media_dimensions()}>
+						{media.width && media.height ? (
+							`${media.width} × ${media.height}`
 						) : (
-							<FileText className="size-12 text-muted-foreground" />
+							<EmptyValue />
 						)}
-					</div>
-					<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-						<AppDetailField label={m.file_type()}>
-							{mimeLabel(media.contentType)}
-						</AppDetailField>
-						<AppDetailField label={m.size()}>
-							{formatBytes(media.sizeBytes)}
-						</AppDetailField>
-						<AppDetailField label={m.media_alt()} className="sm:col-span-2">
-							{media.alt ?? <EmptyValue />}
-						</AppDetailField>
-						<AppDetailField label={m.media_dimensions()}>
-							{media.width && media.height ? (
-								`${media.width} × ${media.height}`
-							) : (
-								<EmptyValue />
-							)}
-						</AppDetailField>
-						<AppDetailField label={m.uploaded_by()}>
-							{media.uploadedBy.name ?? <EmptyValue />}
-						</AppDetailField>
-						<AppDetailField label={m.added()}>
-							{formatDateTime(media.createdAt)}
-						</AppDetailField>
-					</dl>
-				</CardContent>
-			</Card>
+					</AppDetailField>
+					<AppDetailField label={m.uploaded_by()}>
+						{media.uploadedBy.name ?? <EmptyValue />}
+					</AppDetailField>
+					<AppDetailField label={m.added()}>
+						{formatDateTime(media.createdAt)}
+					</AppDetailField>
+				</dl>
+			</AppCard>
 		</>
 	);
 };

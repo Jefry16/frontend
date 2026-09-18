@@ -1,11 +1,4 @@
-import {
-	AppAlert,
-	Button,
-	Card,
-	CardContent,
-	FieldGroup,
-	Spinner,
-} from "@vointika/ui";
+import { AppAlert, AppCard, Button, FieldGroup, Spinner } from "@vointika/ui";
 import type { ReactNode } from "react";
 import { AppAuthShell } from "./AppAuthShell";
 
@@ -32,29 +25,27 @@ export const AppAuthFormWrapper = ({
 }: AppAuthFormWrapperProps) => {
 	return (
 		<AppAuthShell title={title} subtitle={subtitle}>
-			<Card>
-				<CardContent>
-					<form
-						onSubmit={(e) => {
-							e.preventDefault();
-							form.handleSubmit();
-						}}
-						className="space-y-4"
-					>
-						{errorMessage && <AppAlert description={errorMessage} />}
-						<FieldGroup>{children}</FieldGroup>
-						<Button type="submit" disabled={isSubmitting} className="w-full">
-							{isSubmitting && <Spinner />}
-							{submitLabel}
-						</Button>
-					</form>
-					{footer && (
-						<div className="mt-4 flex flex-col items-center gap-2 text-sm text-muted-foreground">
-							{footer}
-						</div>
-					)}
-				</CardContent>
-			</Card>
+			<AppCard>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						form.handleSubmit();
+					}}
+					className="space-y-4"
+				>
+					{errorMessage && <AppAlert description={errorMessage} />}
+					<FieldGroup>{children}</FieldGroup>
+					<Button type="submit" disabled={isSubmitting} className="w-full">
+						{isSubmitting && <Spinner />}
+						{submitLabel}
+					</Button>
+				</form>
+				{footer && (
+					<div className="mt-4 flex flex-col items-center gap-2 text-sm text-muted-foreground">
+						{footer}
+					</div>
+				)}
+			</AppCard>
 		</AppAuthShell>
 	);
 };

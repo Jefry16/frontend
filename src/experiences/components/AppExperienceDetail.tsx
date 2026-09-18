@@ -2,15 +2,12 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppBadge,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	formatMoney,
 } from "@vointika/ui";
 import {
@@ -171,72 +168,63 @@ const ExperienceView = ({
 			/>
 
 			<div className="flex flex-col gap-6">
-				<Card>
-					<CardContent className="flex flex-col gap-5 sm:flex-row">
-						<div className="shrink-0 sm:w-64">
-							{experience.thumbnailUrl ? (
-								<img
-									src={experience.thumbnailUrl}
-									alt={experience.name}
-									className="aspect-video w-full rounded-md border object-cover"
-								/>
-							) : (
-								<div className="grid aspect-video w-full place-items-center rounded-md border bg-muted text-muted-foreground">
-									<Compass className="size-8" />
-								</div>
+				<AppCard className="flex flex-col gap-5 sm:flex-row">
+					<div className="shrink-0 sm:w-64">
+						{experience.thumbnailUrl ? (
+							<img
+								src={experience.thumbnailUrl}
+								alt={experience.name}
+								className="aspect-video w-full rounded-md border object-cover"
+							/>
+						) : (
+							<div className="grid aspect-video w-full place-items-center rounded-md border bg-muted text-muted-foreground">
+								<Compass className="size-8" />
+							</div>
+						)}
+					</div>
+					<div className="flex flex-1 flex-col gap-4">
+						<div className="flex flex-wrap gap-2">
+							<AppBadge variant={statusBadgeVariant(experience.published)}>
+								{statusLabel(experience.published)}
+							</AppBadge>
+							{experience.featured && (
+								<AppBadge variant="secondary">{m.featured()}</AppBadge>
 							)}
 						</div>
-						<div className="flex flex-1 flex-col gap-4">
-							<div className="flex flex-wrap gap-2">
-								<AppBadge variant={statusBadgeVariant(experience.published)}>
-									{statusLabel(experience.published)}
-								</AppBadge>
-								{experience.featured && (
-									<AppBadge variant="secondary">{m.featured()}</AppBadge>
-								)}
-							</div>
-							<dl className="grid grid-cols-2 gap-4">
-								<AppDetailField label={m.starting_price()}>
-									{formatMoney(experience.startingPrice, currency)}
-								</AppDetailField>
-								<AppDetailField label={m.booking_cutoff()}>
-									{`${experience.bookingCutoffHours}h`}
-								</AppDetailField>
-								<AppDetailField label={m.slug()}>
-									<span className="font-mono text-sm">{experience.handle}</span>
-								</AppDetailField>
-								<AppDetailField label={m.created()}>{created}</AppDetailField>
-							</dl>
-						</div>
-					</CardContent>
-				</Card>
+						<dl className="grid grid-cols-2 gap-4">
+							<AppDetailField label={m.starting_price()}>
+								{formatMoney(experience.startingPrice, currency)}
+							</AppDetailField>
+							<AppDetailField label={m.booking_cutoff()}>
+								{`${experience.bookingCutoffHours}h`}
+							</AppDetailField>
+							<AppDetailField label={m.slug()}>
+								<span className="font-mono text-sm">{experience.handle}</span>
+							</AppDetailField>
+							<AppDetailField label={m.created()}>{created}</AppDetailField>
+						</dl>
+					</div>
+				</AppCard>
 
 				{experience.galleryUrls.length > 0 && (
-					<Card>
-						<CardContent className="flex flex-wrap gap-3">
-							{experience.galleryUrls.map((url) => (
-								<img
-									key={url}
-									src={url}
-									alt=""
-									className="h-20 w-28 rounded-md border object-cover"
-								/>
-							))}
-						</CardContent>
-					</Card>
+					<AppCard className="flex flex-wrap gap-3">
+						{experience.galleryUrls.map((url) => (
+							<img
+								key={url}
+								src={url}
+								alt=""
+								className="h-20 w-28 rounded-md border object-cover"
+							/>
+						))}
+					</AppCard>
 				)}
 
 				{experience.longDescription && (
-					<Card>
-						<CardHeader>
-							<CardTitle>{m.about()}</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<p className="whitespace-pre-wrap text-sm text-muted-foreground">
-								{experience.longDescription}
-							</p>
-						</CardContent>
-					</Card>
+					<AppCard title={m.about()}>
+						<p className="whitespace-pre-wrap text-sm text-muted-foreground">
+							{experience.longDescription}
+						</p>
+					</AppCard>
 				)}
 			</div>
 			<AppMetafieldsCard

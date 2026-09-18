@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppCard,
 	AppConfirmDialog,
 	AppDataTable,
 	AppDetailField,
@@ -10,10 +11,6 @@ import {
 	AppPageHeader,
 	AppResourceView,
 	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	useAppToast,
 } from "@vointika/ui";
 import { Pencil, Shapes, Trash2 } from "lucide-react";
@@ -157,92 +154,88 @@ const DefinitionView = ({
 				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 
-			<Card>
-				<CardContent>
-					<dl className="grid grid-cols-2 gap-4">
-						<AppDetailField label={m.metaobject_type()}>
-							<span className="font-mono text-sm">{definition.type}</span>
-						</AppDetailField>
-						<AppDetailField label={m.created()}>
-							{formatDate(definition.createdAt)}
-						</AppDetailField>
-					</dl>
-				</CardContent>
-			</Card>
+			<AppCard>
+				<dl className="grid grid-cols-2 gap-4">
+					<AppDetailField label={m.metaobject_type()}>
+						<span className="font-mono text-sm">{definition.type}</span>
+					</AppDetailField>
+					<AppDetailField label={m.created()}>
+						{formatDate(definition.createdAt)}
+					</AppDetailField>
+				</dl>
+			</AppCard>
 
-			<Card>
-				<CardHeader className="flex flex-row items-center justify-between">
-					<CardTitle>{m.metaobject_fields()}</CardTitle>
+			<AppCard
+				title={m.metaobject_fields()}
+				action={
 					<Button variant="outline" size="sm" onClick={() => setAddOpen(true)}>
 						{m.metaobject_add_field()}
 					</Button>
-				</CardHeader>
-				<CardContent>
-					<ul className="flex flex-col divide-y">
-						{definition.fields.map((field) => (
-							<li
-								key={field.key}
-								className="flex items-center justify-between gap-3 py-2.5"
-							>
-								<div className="min-w-0">
-									<p className="truncate text-sm font-medium">{field.name}</p>
-									<p className="font-mono text-xs text-muted-foreground">
-										{field.key} · {metafieldTypeLabel(field.type)}
-									</p>
-								</div>
-								<div className="flex shrink-0 gap-1">
-									<Button
-										variant="ghost"
-										size="sm"
-										onClick={() => {
-											setRenaming(field);
-											setRenameOpen(true);
-										}}
-									>
-										{m.rename()}
-									</Button>
-									<Button
-										variant="ghost"
-										size="sm"
-										className="text-destructive"
-										disabled={definition.fields.length === 1}
-										onClick={() => setRemoving(field)}
-									>
-										{m.remove()}
-									</Button>
-								</div>
-							</li>
-						))}
-					</ul>
-				</CardContent>
-			</Card>
+				}
+			>
+				<ul className="flex flex-col divide-y">
+					{definition.fields.map((field) => (
+						<li
+							key={field.key}
+							className="flex items-center justify-between gap-3 py-2.5"
+						>
+							<div className="min-w-0">
+								<p className="truncate text-sm font-medium">{field.name}</p>
+								<p className="font-mono text-xs text-muted-foreground">
+									{field.key} · {metafieldTypeLabel(field.type)}
+								</p>
+							</div>
+							<div className="flex shrink-0 gap-1">
+								<Button
+									variant="ghost"
+									size="sm"
+									onClick={() => {
+										setRenaming(field);
+										setRenameOpen(true);
+									}}
+								>
+									{m.rename()}
+								</Button>
+								<Button
+									variant="ghost"
+									size="sm"
+									className="text-destructive"
+									disabled={definition.fields.length === 1}
+									onClick={() => setRemoving(field)}
+								>
+									{m.remove()}
+								</Button>
+							</div>
+						</li>
+					))}
+				</ul>
+			</AppCard>
 
-			<Card>
-				<CardHeader className="flex flex-row items-center justify-between">
-					<CardTitle>{m.metaobject_entries()}</CardTitle>
+			<AppCard
+				title={m.metaobject_entries()}
+				action={
 					<AppNewLink
 						to="/tour-operators/$tourOperatorId/content/metaobjects/$definitionId/entries/new"
 						params={{ tourOperatorId, definitionId: definition.id }}
 					>
 						{m.new_metaobject()}
 					</AppNewLink>
-				</CardHeader>
-				<CardContent>
-					<AppDataTable
-						columns={entryColumns}
-						endpoint={`/tour-operators/${tourOperatorId}/metaobjects`}
-						queryKey={queryKeys.metaobjectsOfDefinition(
-							tourOperatorId,
-							definition.id,
-						)}
-						baseParams={{ "filter[definitionId][in]": definition.id }}
-						emptyState={{
-							title: m.no_metaobjects(),
-							description: m.no_metaobjects_body(),
-						}}
-					/>
-				</CardContent>
-			</Card>
+				}
+			>
+				<AppDataTable
+					columns={entryColumns}
+					endpoint={`/tour-operators/${tourOperatorId}/metaobjects`}
+					queryKey={queryKeys.metaobjectsOfDefinition(
+						tourOperatorId,
+						definition.id,
+					)}
+					baseParams={{ "filter[definitionId][in]": definition.id }}
+					emptyState={{
+						title: m.no_metaobjects(),
+						description: m.no_metaobjects_body(),
+					}}
+				/>
+			</AppCard>
 
 			<AppMetaobjectFieldDialog
 				open={addOpen}

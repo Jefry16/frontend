@@ -3,14 +3,13 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppBadge,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
 	AppSourceBlock,
-	Card,
-	CardContent,
 	useAppToast,
 } from "@vointika/ui";
 import { Languages, Pencil, Scale, Trash2 } from "lucide-react";
@@ -128,30 +127,28 @@ export const AppPolicyDetail = ({
 							}
 							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
-						<Card>
-							<CardContent>
-								<dl className="flex flex-col gap-6">
-									<AppDetailField label={m.policy_type()}>
-										<AppBadge variant="secondary">
-											{policyTypeLabel(policy.type)}
-										</AppBadge>
-									</AppDetailField>
-									<AppDetailField label={m.storefront_path()}>
-										<span className="font-mono text-sm">
-											/policies/{policySlug(policy.type)}
-										</span>
-									</AppDetailField>
-									<AppDetailField label={m.last_updated()}>
-										{formatDateTime(policy.updatedAt)}
-									</AppDetailField>
-									<AppDetailField label={m.policy_body()}>
-										<AppSourceBlock label={m.policy_body()}>
-											{policy.body}
-										</AppSourceBlock>
-									</AppDetailField>
-								</dl>
-							</CardContent>
-						</Card>
+						<AppCard>
+							<dl className="flex flex-col gap-6">
+								<AppDetailField label={m.policy_type()}>
+									<AppBadge variant="secondary">
+										{policyTypeLabel(policy.type)}
+									</AppBadge>
+								</AppDetailField>
+								<AppDetailField label={m.storefront_path()}>
+									<span className="font-mono text-sm">
+										/policies/{policySlug(policy.type)}
+									</span>
+								</AppDetailField>
+								<AppDetailField label={m.last_updated()}>
+									{formatDateTime(policy.updatedAt)}
+								</AppDetailField>
+								<AppDetailField label={m.policy_body()}>
+									<AppSourceBlock label={m.policy_body()}>
+										{policy.body}
+									</AppSourceBlock>
+								</AppDetailField>
+							</dl>
+						</AppCard>
 					</>
 				);
 			}}

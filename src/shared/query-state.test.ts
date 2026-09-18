@@ -8,7 +8,7 @@ const PENDING_RECEIVER = /\b([A-Za-z_$][\w$]*)\.(?:isPending|isLoading)\b/g;
 const SPINNER = /<AppLoadingBlock\b/g;
 const SPINNER_AS_SLOT = /loading=\{\s*<AppLoadingBlock\b/g;
 const HAND_ROLLED_ERROR = /<AppError\b/;
-const BUILDS_A_CARD_HEADER = /<CardHeader\b/;
+const BUILDS_A_CARD_HEADER = /<CardHeader\b|<AppCard\b[^>]*\btitle=/;
 const ERROR_TAG = /<AppError\b(?:(?!\/>)[\s\S])*\/>/g;
 
 const count = (src: string, pattern: RegExp) =>
@@ -126,6 +126,9 @@ describe("the gate itself", () => {
 		expect(handRolledCardError("<CardHeader /> <AppError onRetry={r} />")).toBe(
 			true,
 		);
+		expect(
+			handRolledCardError("<AppCard title={t}> <AppError onRetry={r} />"),
+		).toBe(true);
 		expect(errorWithoutReason("<AppError onRetry={r} />")).toBe(true);
 		expect(errorWithoutReason("<AppError description={why} />")).toBe(false);
 	});

@@ -3,13 +3,12 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppBadge,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
 	EmptyValue,
 	useAppToast,
 } from "@vointika/ui";
@@ -207,23 +206,21 @@ const MemberFacts = ({
 				}
 				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
-			<Card>
-				<CardContent>
-					<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-						<AppDetailField label={m.role()}>
-							<AppBadge variant={roleBadgeVariant(member.role)}>
-								{roleLabel(member.role)}
-							</AppBadge>
-						</AppDetailField>
-						<AppDetailField label={m.email()}>
-							{member.email ?? <EmptyValue />}
-						</AppDetailField>
-						<AppDetailField label={m.joined()}>
-							{formatDate(member.joinedAt)}
-						</AppDetailField>
-					</dl>
-				</CardContent>
-			</Card>
+			<AppCard>
+				<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<AppDetailField label={m.role()}>
+						<AppBadge variant={roleBadgeVariant(member.role)}>
+							{roleLabel(member.role)}
+						</AppBadge>
+					</AppDetailField>
+					<AppDetailField label={m.email()}>
+						{member.email ?? <EmptyValue />}
+					</AppDetailField>
+					<AppDetailField label={m.joined()}>
+						{formatDate(member.joinedAt)}
+					</AppDetailField>
+				</dl>
+			</AppCard>
 			<AppActivityCard
 				tourOperatorId={tourOperatorId}
 				entityType="MEMBER"

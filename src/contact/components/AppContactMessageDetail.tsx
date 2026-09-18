@@ -2,15 +2,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	useAppToast,
 } from "@vointika/ui";
 import { Inbox, Mail, Trash2 } from "lucide-react";
@@ -132,35 +129,28 @@ const MessageView = ({
 				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 
-			<Card>
-				<CardContent>
-					<dl className="grid grid-cols-2 gap-4">
-						<AppDetailField label={m.inbox_from()}>
-							<div className="min-w-0">
-								{message.name && <p className="text-sm">{message.name}</p>}
-								<a
-									href={`mailto:${message.email}`}
-									className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-								>
-									{message.email}
-								</a>
-							</div>
-						</AppDetailField>
-						<AppDetailField label={m.inbox_received()}>
-							{formatDateTime(message.createdAt)}
-						</AppDetailField>
-					</dl>
-				</CardContent>
-			</Card>
+			<AppCard>
+				<dl className="grid grid-cols-2 gap-4">
+					<AppDetailField label={m.inbox_from()}>
+						<div className="min-w-0">
+							{message.name && <p className="text-sm">{message.name}</p>}
+							<a
+								href={`mailto:${message.email}`}
+								className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+							>
+								{message.email}
+							</a>
+						</div>
+					</AppDetailField>
+					<AppDetailField label={m.inbox_received()}>
+						{formatDateTime(message.createdAt)}
+					</AppDetailField>
+				</dl>
+			</AppCard>
 
-			<Card>
-				<CardHeader>
-					<CardTitle>{m.inbox_message()}</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<p className="whitespace-pre-wrap text-sm">{message.content}</p>
-				</CardContent>
-			</Card>
+			<AppCard title={m.inbox_message()}>
+				<p className="whitespace-pre-wrap text-sm">{message.content}</p>
+			</AppCard>
 		</>
 	);
 };

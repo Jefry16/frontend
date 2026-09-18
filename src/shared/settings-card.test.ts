@@ -124,7 +124,9 @@ describe("every settings page is a stack of self-describing cards a viewer can r
 		const offenders = pages
 			.filter(({ texts }) =>
 				texts.some((text) =>
-					/<Card(Header|Title|Description|Content|Footer)?[\s>]/.test(text),
+					/<(App)?Card(Header|Title|Description|Content|Footer)?[\s>]/.test(
+						text,
+					),
 				),
 			)
 			.map(({ file }) => file);
@@ -132,7 +134,8 @@ describe("every settings page is a stack of self-describing cards a viewer can r
 			offenders,
 			"A card on a settings page is AppSettingsCard, with a title and a " +
 				"description, so every card names itself the same way. Never " +
-				"compose Card, CardHeader or CardContent by hand here.",
+				"compose Card, CardHeader or CardContent by hand here, and never " +
+				"reach for the untitled AppCard.",
 		).toEqual([]);
 	});
 

@@ -1,12 +1,9 @@
 import {
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	Table,
 	TableBody,
 	TableCell,
@@ -88,81 +85,67 @@ export const AppActivityEntryDetail = ({
 								/>
 							}
 						/>
-						<Card>
-							<CardContent>
-								<dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-									<AppDetailField label={m.actor()}>
-										{formatAuditActor(entry)}
-									</AppDetailField>
-									<AppDetailField label={m.entity()}>
-										{route ? (
-											<AppResourceLink to={route.to} params={route.params}>
-												{entityLabel}
-											</AppResourceLink>
-										) : (
-											entityLabel
-										)}
-									</AppDetailField>
-									<AppDetailField label={m.date()}>{when}</AppDetailField>
-									{entry.requestId && (
-										<AppDetailField label={m.request_id()}>
-											<span className="font-mono text-xs">
-												{entry.requestId}
-											</span>
-										</AppDetailField>
+						<AppCard>
+							<dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+								<AppDetailField label={m.actor()}>
+									{formatAuditActor(entry)}
+								</AppDetailField>
+								<AppDetailField label={m.entity()}>
+									{route ? (
+										<AppResourceLink to={route.to} params={route.params}>
+											{entityLabel}
+										</AppResourceLink>
+									) : (
+										entityLabel
 									)}
-								</dl>
-							</CardContent>
-						</Card>
+								</AppDetailField>
+								<AppDetailField label={m.date()}>{when}</AppDetailField>
+								{entry.requestId && (
+									<AppDetailField label={m.request_id()}>
+										<span className="font-mono text-xs">{entry.requestId}</span>
+									</AppDetailField>
+								)}
+							</dl>
+						</AppCard>
 						{entry.changes && entry.changes.length > 0 && (
-							<Card>
-								<CardHeader>
-									<CardTitle>{m.changes()}</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<Table>
-										<TableHeader>
-											<TableRow>
-												<TableHead>{m.field()}</TableHead>
-												<TableHead>{m.from()}</TableHead>
-												<TableHead>{m.to()}</TableHead>
+							<AppCard title={m.changes()}>
+								<Table>
+									<TableHeader>
+										<TableRow>
+											<TableHead>{m.field()}</TableHead>
+											<TableHead>{m.from()}</TableHead>
+											<TableHead>{m.to()}</TableHead>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
+										{entry.changes.map((change, index) => (
+											<TableRow
+												// biome-ignore lint/suspicious/noArrayIndexKey: static per-entry diff list
+												key={index}
+											>
+												<TableCell className="font-medium">
+													{formatAuditField(change.field)}
+												</TableCell>
+												<TableCell className="text-muted-foreground">
+													{formatAuditValue(change.from)}
+												</TableCell>
+												<TableCell>{formatAuditValue(change.to)}</TableCell>
 											</TableRow>
-										</TableHeader>
-										<TableBody>
-											{entry.changes.map((change, index) => (
-												<TableRow
-													// biome-ignore lint/suspicious/noArrayIndexKey: static per-entry diff list
-													key={index}
-												>
-													<TableCell className="font-medium">
-														{formatAuditField(change.field)}
-													</TableCell>
-													<TableCell className="text-muted-foreground">
-														{formatAuditValue(change.from)}
-													</TableCell>
-													<TableCell>{formatAuditValue(change.to)}</TableCell>
-												</TableRow>
-											))}
-										</TableBody>
-									</Table>
-								</CardContent>
-							</Card>
+										))}
+									</TableBody>
+								</Table>
+							</AppCard>
 						)}
 						{details.length > 0 && (
-							<Card>
-								<CardHeader>
-									<CardTitle>{m.details()}</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<dl className="grid grid-cols-2 gap-4">
-										{details.map(([key, value]) => (
-											<AppDetailField key={key} label={formatAuditField(key)}>
-												{formatAuditValue(value)}
-											</AppDetailField>
-										))}
-									</dl>
-								</CardContent>
-							</Card>
+							<AppCard title={m.details()}>
+								<dl className="grid grid-cols-2 gap-4">
+									{details.map(([key, value]) => (
+										<AppDetailField key={key} label={formatAuditField(key)}>
+											{formatAuditValue(value)}
+										</AppDetailField>
+									))}
+								</dl>
+							</AppCard>
 						)}
 					</>
 				);

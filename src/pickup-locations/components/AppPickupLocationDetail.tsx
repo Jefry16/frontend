@@ -2,13 +2,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
 	useAppToast,
 } from "@vointika/ui";
 import { MapPin, Pencil, Trash2 } from "lucide-react";
@@ -118,16 +117,14 @@ export const AppPickupLocationDetail = ({
 							}
 							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
-						<Card>
-							<CardContent>
-								<dl className="grid grid-cols-2 gap-4">
-									<AppDetailField label={m.time()}>
-										{formatTime(pickup.time)}
-									</AppDetailField>
-									<AppDetailField label={m.created()}>{created}</AppDetailField>
-								</dl>
-							</CardContent>
-						</Card>
+						<AppCard>
+							<dl className="grid grid-cols-2 gap-4">
+								<AppDetailField label={m.time()}>
+									{formatTime(pickup.time)}
+								</AppDetailField>
+								<AppDetailField label={m.created()}>{created}</AppDetailField>
+							</dl>
+						</AppCard>
 					</>
 				);
 			}}

@@ -1,15 +1,12 @@
 import {
 	type AppAction,
 	AppBadge,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	formatMoney,
 	Table,
 	TableBody,
@@ -119,79 +116,70 @@ export const AppSlotDetail = ({
 							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
 
-						<Card>
-							<CardContent className="flex flex-col gap-4">
-								<div className="flex flex-wrap gap-2">
-									<AppBadge variant={slotStatusBadgeVariant(slot.status)}>
-										{formatSlotStatus(slot.status)}
-									</AppBadge>
-								</div>
-								<dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-									<AppDetailField label={m.experience()}>
-										<AppResourceLink
-											to="/tour-operators/$tourOperatorId/experiences/$experienceId"
-											params={{
-												tourOperatorId,
-												experienceId: slot.experienceId,
-											}}
-										>
-											{slot.experienceName}
-										</AppResourceLink>
-									</AppDetailField>
-									<AppDetailField label={m.starts()}>
-										{formatSlotDateTime(slot.startAt)}
-									</AppDetailField>
-									<AppDetailField label={m.ends()}>
-										{formatSlotDateTime(slot.endAt)}
-									</AppDetailField>
-									<AppDetailField label={m.duration()}>
-										{formatSlotDuration(slot.durationMinutes)}
-									</AppDetailField>
-									<AppDetailField label={m.day()}>
-										{formatDayName(slot.day)}
-									</AppDetailField>
-									<AppDetailField label={m.booked()}>
-										{formatBookedCapacity(slot.audiencePrices)}
-									</AppDetailField>
-								</dl>
-							</CardContent>
-						</Card>
+						<AppCard className="flex flex-col gap-4">
+							<div className="flex flex-wrap gap-2">
+								<AppBadge variant={slotStatusBadgeVariant(slot.status)}>
+									{formatSlotStatus(slot.status)}
+								</AppBadge>
+							</div>
+							<dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+								<AppDetailField label={m.experience()}>
+									<AppResourceLink
+										to="/tour-operators/$tourOperatorId/experiences/$experienceId"
+										params={{
+											tourOperatorId,
+											experienceId: slot.experienceId,
+										}}
+									>
+										{slot.experienceName}
+									</AppResourceLink>
+								</AppDetailField>
+								<AppDetailField label={m.starts()}>
+									{formatSlotDateTime(slot.startAt)}
+								</AppDetailField>
+								<AppDetailField label={m.ends()}>
+									{formatSlotDateTime(slot.endAt)}
+								</AppDetailField>
+								<AppDetailField label={m.duration()}>
+									{formatSlotDuration(slot.durationMinutes)}
+								</AppDetailField>
+								<AppDetailField label={m.day()}>
+									{formatDayName(slot.day)}
+								</AppDetailField>
+								<AppDetailField label={m.booked()}>
+									{formatBookedCapacity(slot.audiencePrices)}
+								</AppDetailField>
+							</dl>
+						</AppCard>
 
-						<Card>
-							<CardHeader>
-								<CardTitle>{m.pricing()}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<Table>
-									<TableHeader>
-										<TableRow>
-											<TableHead>{m.audience()}</TableHead>
-											<TableHead className="text-right">{m.price()}</TableHead>
-											<TableHead className="text-right">
-												{m.capacity()}
-											</TableHead>
-											<TableHead className="text-right">{m.booked()}</TableHead>
+						<AppCard title={m.pricing()}>
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead>{m.audience()}</TableHead>
+										<TableHead className="text-right">{m.price()}</TableHead>
+										<TableHead className="text-right">{m.capacity()}</TableHead>
+										<TableHead className="text-right">{m.booked()}</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{slot.audiencePrices.map((tier) => (
+										<TableRow key={tier.audienceId}>
+											<TableCell>{tier.audienceName}</TableCell>
+											<TableCell className="text-right tabular-nums">
+												{formatMoney(tier.price, currency)}
+											</TableCell>
+											<TableCell className="text-right tabular-nums">
+												{tier.capacity}
+											</TableCell>
+											<TableCell className="text-right tabular-nums">
+												{tier.bookedCount}
+											</TableCell>
 										</TableRow>
-									</TableHeader>
-									<TableBody>
-										{slot.audiencePrices.map((tier) => (
-											<TableRow key={tier.audienceId}>
-												<TableCell>{tier.audienceName}</TableCell>
-												<TableCell className="text-right tabular-nums">
-													{formatMoney(tier.price, currency)}
-												</TableCell>
-												<TableCell className="text-right tabular-nums">
-													{tier.capacity}
-												</TableCell>
-												<TableCell className="text-right tabular-nums">
-													{tier.bookedCount}
-												</TableCell>
-											</TableRow>
-										))}
-									</TableBody>
-								</Table>
-							</CardContent>
-						</Card>
+									))}
+								</TableBody>
+							</Table>
+						</AppCard>
 
 						<AppActivityCard
 							tourOperatorId={tourOperatorId}

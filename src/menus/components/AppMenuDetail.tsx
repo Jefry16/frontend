@@ -2,15 +2,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	useAppToast,
 } from "@vointika/ui";
 import { ListTree, Pencil, TextCursorInput, Trash2 } from "lucide-react";
@@ -137,31 +134,24 @@ const MenuView = ({
 				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 
-			<Card>
-				<CardContent>
-					<dl className="grid grid-cols-2 gap-4">
-						<AppDetailField label={m.handle()}>
-							<span className="font-mono text-sm">{menu.handle}</span>
-						</AppDetailField>
-						<AppDetailField label={m.created()}>
-							{formatDate(menu.createdAt)}
-						</AppDetailField>
-					</dl>
-				</CardContent>
-			</Card>
+			<AppCard>
+				<dl className="grid grid-cols-2 gap-4">
+					<AppDetailField label={m.handle()}>
+						<span className="font-mono text-sm">{menu.handle}</span>
+					</AppDetailField>
+					<AppDetailField label={m.created()}>
+						{formatDate(menu.createdAt)}
+					</AppDetailField>
+				</dl>
+			</AppCard>
 
-			<Card>
-				<CardHeader>
-					<CardTitle>{m.menu_items()}</CardTitle>
-				</CardHeader>
-				<CardContent>
-					{menu.items.length === 0 ? (
-						<p className="text-sm text-muted-foreground">{m.no_menu_items()}</p>
-					) : (
-						<ItemTree items={menu.items} />
-					)}
-				</CardContent>
-			</Card>
+			<AppCard title={m.menu_items()}>
+				{menu.items.length === 0 ? (
+					<p className="text-sm text-muted-foreground">{m.no_menu_items()}</p>
+				) : (
+					<ItemTree items={menu.items} />
+				)}
+			</AppCard>
 
 			<AppMenuRenameDialog
 				open={renameOpen}

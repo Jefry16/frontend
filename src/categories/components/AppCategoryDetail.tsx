@@ -2,13 +2,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
 	useAppToast,
 } from "@vointika/ui";
 import { Languages, Pencil, Tags, Trash2 } from "lucide-react";
@@ -124,18 +123,16 @@ export const AppCategoryDetail = ({
 							}
 							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
-						<Card>
-							<CardContent>
-								<dl className="grid grid-cols-2 gap-4">
-									<AppDetailField label={m.handle()}>
-										<span className="font-mono text-sm">{category.handle}</span>
-									</AppDetailField>
-									<AppDetailField label={m.created()}>
-										{formatDate(category.createdAt)}
-									</AppDetailField>
-								</dl>
-							</CardContent>
-						</Card>
+						<AppCard>
+							<dl className="grid grid-cols-2 gap-4">
+								<AppDetailField label={m.handle()}>
+									<span className="font-mono text-sm">{category.handle}</span>
+								</AppDetailField>
+								<AppDetailField label={m.created()}>
+									{formatDate(category.createdAt)}
+								</AppDetailField>
+							</dl>
+						</AppCard>
 					</>
 				);
 			}}
