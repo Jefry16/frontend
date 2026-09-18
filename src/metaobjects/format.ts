@@ -6,4 +6,4 @@ export const metaobjectStatusLabel = (published: boolean): string =>
 
 export const metaobjectStatusBadgeVariant = (
 	published: boolean,
-): AppBadgeProps["variant"] => (published ? "default" : "secondary");
+): AppBadgeProps["variant"] => (published ? "success" : "secondary");

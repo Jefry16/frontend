@@ -188,7 +188,7 @@ const ExperienceView = ({
 								{statusLabel(experience.published)}
 							</AppBadge>
 							{experience.featured && (
-								<AppBadge variant="secondary">{m.featured()}</AppBadge>
+								<AppBadge variant="info">{m.featured()}</AppBadge>
 							)}
 						</div>
 						<dl className="grid grid-cols-2 gap-4">
