@@ -63,9 +63,9 @@ export const slotStatusBadgeVariant = (
 ): AppBadgeProps["variant"] => {
 	switch (status) {
 		case "AVAILABLE":
-			return "default";
+			return "success";
 		case "SOLD_OUT":
-			return "secondary";
+			return "warning";
 		case "CANCELLED":
 			return "destructive";
 	}

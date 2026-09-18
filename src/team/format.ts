@@ -1,3 +1,4 @@
+import type { AppBadgeProps } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 import type { Invitation, InvitationStatus, MemberRole } from "./types";
 
@@ -27,9 +28,9 @@ export const statusLabel = (status: InvitationStatus): string =>
 
 export const statusBadgeVariant = (
 	status: InvitationStatus,
-): "default" | "secondary" | "outline" =>
+): AppBadgeProps["variant"] =>
 	status === "PENDING"
-		? "default"
+		? "warning"
 		: status === "ACCEPTED"
-			? "secondary"
+			? "success"
 			: "outline";

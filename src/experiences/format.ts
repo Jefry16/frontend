@@ -6,4 +6,4 @@ export const statusLabel = (published: boolean): string =>
 
 export const statusBadgeVariant = (
 	published: boolean,
-): AppBadgeProps["variant"] => (published ? "default" : "secondary");
+): AppBadgeProps["variant"] => (published ? "success" : "secondary");
