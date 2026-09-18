@@ -49,48 +49,54 @@ export const AppTourOperatorForm = () => {
 						{errorMessage && <AppAlert description={errorMessage} />}
 						<FieldGroup>
 							<form.Field name="name">
-								{(field) => <AppField field={field} label={m.name()} />}
+								{(field) => (
+									<AppField field={field} label={m.name()} required />
+								)}
 							</form.Field>
 							<AppOperatorAddressFields form={form} />
-							<form.Field name="currencyId">
-								{(field) => (
-									<AppSelectField
-										field={field}
-										label={m.currency()}
-										placeholder={m.select_option()}
-									>
-										{currencies.map((c) => (
-											<SelectItem key={c.id} value={c.id}>
-												{c.code} — {c.name}
-											</SelectItem>
-										))}
-									</AppSelectField>
-								)}
-							</form.Field>
-							<form.Field name="timezoneId">
-								{(field) => (
-									<AppSelectField
-										field={field}
-										label={m.timezone()}
-										placeholder={m.select_option()}
-									>
-										{timezones.map((t) => (
-											<SelectItem key={t.id} value={t.id}>
-												{t.country.flagUrl && (
-													<img
-														src={t.country.flagUrl}
-														alt=""
-														className="h-3.5 w-5 shrink-0 rounded-xs object-cover"
-													/>
-												)}
-												<span>
-													{t.cityName}, {t.country.name}
-												</span>
-											</SelectItem>
-										))}
-									</AppSelectField>
-								)}
-							</form.Field>
+							<div className="grid gap-4 sm:grid-cols-2">
+								<form.Field name="currencyId">
+									{(field) => (
+										<AppSelectField
+											field={field}
+											label={m.currency()}
+											required
+											placeholder={m.select_option()}
+										>
+											{currencies.map((c) => (
+												<SelectItem key={c.id} value={c.id}>
+													{c.code} — {c.name}
+												</SelectItem>
+											))}
+										</AppSelectField>
+									)}
+								</form.Field>
+								<form.Field name="timezoneId">
+									{(field) => (
+										<AppSelectField
+											field={field}
+											label={m.timezone()}
+											required
+											placeholder={m.select_option()}
+										>
+											{timezones.map((t) => (
+												<SelectItem key={t.id} value={t.id}>
+													{t.country.flagUrl && (
+														<img
+															src={t.country.flagUrl}
+															alt=""
+															className="h-3.5 w-5 shrink-0 rounded-xs object-cover"
+														/>
+													)}
+													<span>
+														{t.cityName}, {t.country.name}
+													</span>
+												</SelectItem>
+											))}
+										</AppSelectField>
+									)}
+								</form.Field>
+							</div>
 						</FieldGroup>
 						<Button type="submit" disabled={isPending} className="w-full">
 							{isPending && <Spinner />}

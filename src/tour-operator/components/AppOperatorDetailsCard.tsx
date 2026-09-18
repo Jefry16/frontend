@@ -137,6 +137,7 @@ const DetailsForm = ({
 						<AppSelectField
 							field={field}
 							label={m.timezone()}
+							required
 							placeholder={m.select_option()}
 						>
 							{timezones.data?.map((tz) => (
@@ -152,6 +153,7 @@ const DetailsForm = ({
 						<AppSelectField
 							field={field}
 							label={m.currency()}
+							required
 							placeholder={m.select_option()}
 						>
 							{currencies.data?.map((c) => (
