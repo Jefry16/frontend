@@ -1,6 +1,7 @@
 import {
 	AppAlert,
 	AppDialogFooter,
+	AppSelect,
 	Dialog,
 	DialogContent,
 	DialogDescription,
@@ -9,12 +10,7 @@ import {
 	Field,
 	FieldLabel,
 	Input,
-	Select,
-	SelectContent,
-	SelectGroup,
 	SelectItem,
-	SelectTrigger,
-	SelectValue,
 } from "@vointika/ui";
 import { useState } from "react";
 import {
@@ -112,23 +108,17 @@ export const AppMetaobjectFieldDialog = ({
 								<FieldLabel htmlFor="metaobject-field-type">
 									{m.metafield_type()}
 								</FieldLabel>
-								<Select
+								<AppSelect
+									id="metaobject-field-type"
 									value={type}
 									onValueChange={(v) => setType(v as MetafieldTypeCode)}
 								>
-									<SelectTrigger id="metaobject-field-type" className="w-full">
-										<SelectValue />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectGroup>
-											{METAOBJECT_FIELD_TYPE_CODES.map((code) => (
-												<SelectItem key={code} value={code}>
-													{metafieldTypeLabel(code)}
-												</SelectItem>
-											))}
-										</SelectGroup>
-									</SelectContent>
-								</Select>
+									{METAOBJECT_FIELD_TYPE_CODES.map((code) => (
+										<SelectItem key={code} value={code}>
+											{metafieldTypeLabel(code)}
+										</SelectItem>
+									))}
+								</AppSelect>
 							</Field>
 						</>
 					)}

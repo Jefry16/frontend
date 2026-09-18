@@ -1,12 +1,8 @@
 import {
 	AppFormSkeleton,
 	AppQueryState,
-	Select,
-	SelectContent,
-	SelectGroup,
+	AppSelect,
 	SelectItem,
-	SelectTrigger,
-	SelectValue,
 	useAllPages,
 } from "@vointika/ui";
 import { queryKeys } from "#/lib/query-keys";
@@ -47,27 +43,22 @@ export const AppMetaobjectEntrySelect = ({
 					(row) => row.definitionId === metaobjectDefinitionId,
 				);
 				return (
-					<Select
-						value={value || undefined}
+					<AppSelect
+						id={inputId}
+						value={value}
 						onValueChange={(v) => onValueChange(v === "unset" ? "" : v)}
+						placeholder={m.not_set()}
 					>
-						<SelectTrigger id={inputId} className="w-full">
-							<SelectValue placeholder={m.not_set()} />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectGroup>
-								<SelectItem value="unset">{m.not_set()}</SelectItem>
-								{entries.map((entry) => (
-									<SelectItem key={entry.id} value={entry.id}>
-										{entry.name}
-										<span className="ml-2 font-mono text-xs text-muted-foreground">
-											{entry.handle}
-										</span>
-									</SelectItem>
-								))}
-							</SelectGroup>
-						</SelectContent>
-					</Select>
+						<SelectItem value="unset">{m.not_set()}</SelectItem>
+						{entries.map((entry) => (
+							<SelectItem key={entry.id} value={entry.id}>
+								{entry.name}
+								<span className="ml-2 font-mono text-xs text-muted-foreground">
+									{entry.handle}
+								</span>
+							</SelectItem>
+						))}
+					</AppSelect>
 				);
 			}}
 		</AppQueryState>
