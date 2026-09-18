@@ -1,13 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
 } from "@vointika/ui";
 import { Languages, Pencil, UsersRound } from "lucide-react";
 import * as m from "#/paraglide/messages";
@@ -94,16 +93,14 @@ export const AppAudienceDetail = ({
 							}
 							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
-						<Card>
-							<CardContent>
-								<dl className="grid grid-cols-2 gap-4">
-									<AppDetailField label={m.pax_per_unit()}>
-										{audience.paxPerUnit}
-									</AppDetailField>
-									<AppDetailField label={m.created()}>{created}</AppDetailField>
-								</dl>
-							</CardContent>
-						</Card>
+						<AppCard>
+							<dl className="grid grid-cols-2 gap-4">
+								<AppDetailField label={m.pax_per_unit()}>
+									{audience.paxPerUnit}
+								</AppDetailField>
+								<AppDetailField label={m.created()}>{created}</AppDetailField>
+							</dl>
+						</AppCard>
 					</>
 				);
 			}}

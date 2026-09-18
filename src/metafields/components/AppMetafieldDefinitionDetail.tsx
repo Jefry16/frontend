@@ -3,13 +3,12 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppBadge,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
 	useAllPages,
 	useAppToast,
 } from "@vointika/ui";
@@ -127,43 +126,41 @@ export const AppMetafieldDefinitionDetail = ({
 							}
 							actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 						/>
-						<Card>
-							<CardContent>
-								<dl className="grid grid-cols-2 gap-4">
-									<AppDetailField label={m.metafield_identifier()}>
-										<span className="font-mono text-sm">
-											{definition.namespace}.{definition.key}
-										</span>
+						<AppCard>
+							<dl className="grid grid-cols-2 gap-4">
+								<AppDetailField label={m.metafield_identifier()}>
+									<span className="font-mono text-sm">
+										{definition.namespace}.{definition.key}
+									</span>
+								</AppDetailField>
+								<AppDetailField label={m.metafield_applies_to()}>
+									<AppBadge variant="secondary">
+										{ownerTypeLabel(definition.ownerType)}
+									</AppBadge>
+								</AppDetailField>
+								<AppDetailField label={m.metafield_type()}>
+									{metafieldTypeLabel(definition.type)}
+								</AppDetailField>
+								{definition.metaobjectDefinitionId && (
+									<AppDetailField label={m.metafield_references()}>
+										<AppResourceLink
+											to="/tour-operators/$tourOperatorId/content/metaobjects/$definitionId"
+											params={{
+												tourOperatorId,
+												definitionId: definition.metaobjectDefinitionId,
+											}}
+										>
+											{metaobjectTypes.data?.find(
+												(t) => t.id === definition.metaobjectDefinitionId,
+											)?.name ?? m.metaobject_definition()}
+										</AppResourceLink>
 									</AppDetailField>
-									<AppDetailField label={m.metafield_applies_to()}>
-										<AppBadge variant="secondary">
-											{ownerTypeLabel(definition.ownerType)}
-										</AppBadge>
-									</AppDetailField>
-									<AppDetailField label={m.metafield_type()}>
-										{metafieldTypeLabel(definition.type)}
-									</AppDetailField>
-									{definition.metaobjectDefinitionId && (
-										<AppDetailField label={m.metafield_references()}>
-											<AppResourceLink
-												to="/tour-operators/$tourOperatorId/content/metaobjects/$definitionId"
-												params={{
-													tourOperatorId,
-													definitionId: definition.metaobjectDefinitionId,
-												}}
-											>
-												{metaobjectTypes.data?.find(
-													(t) => t.id === definition.metaobjectDefinitionId,
-												)?.name ?? m.metaobject_definition()}
-											</AppResourceLink>
-										</AppDetailField>
-									)}
-									<AppDetailField label={m.created()}>
-										{formatDate(definition.createdAt)}
-									</AppDetailField>
-								</dl>
-							</CardContent>
-						</Card>
+								)}
+								<AppDetailField label={m.created()}>
+									{formatDate(definition.createdAt)}
+								</AppDetailField>
+							</dl>
+						</AppCard>
 					</>
 				);
 			}}

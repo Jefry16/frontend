@@ -1,13 +1,12 @@
 import {
 	type AppAction,
 	AppBadge,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	Card,
-	CardContent,
 } from "@vointika/ui";
 import { Mail, Send, Trash2 } from "lucide-react";
 import { AppActivityCard } from "#/audit";
@@ -143,36 +142,34 @@ const InvitationFacts = ({
 				}
 				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
-			<Card>
-				<CardContent>
-					<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-						<AppDetailField label={m.role()}>
-							<AppBadge variant={roleBadgeVariant(invitation.role)}>
-								{roleLabel(invitation.role)}
-							</AppBadge>
+			<AppCard>
+				<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+					<AppDetailField label={m.role()}>
+						<AppBadge variant={roleBadgeVariant(invitation.role)}>
+							{roleLabel(invitation.role)}
+						</AppBadge>
+					</AppDetailField>
+					<AppDetailField label={m.status()}>
+						<AppBadge variant={statusBadgeVariant(status)}>
+							{statusLabel(status)}
+						</AppBadge>
+					</AppDetailField>
+					<AppDetailField label={m.invited_by()}>
+						{invitation.invitedBy.name}
+					</AppDetailField>
+					<AppDetailField label={m.sent()}>
+						{format(invitation.createdAt)}
+					</AppDetailField>
+					<AppDetailField label={m.expires()}>
+						{format(invitation.expiresAt)}
+					</AppDetailField>
+					{invitation.acceptedAt && (
+						<AppDetailField label={m.accepted()}>
+							{format(invitation.acceptedAt)}
 						</AppDetailField>
-						<AppDetailField label={m.status()}>
-							<AppBadge variant={statusBadgeVariant(status)}>
-								{statusLabel(status)}
-							</AppBadge>
-						</AppDetailField>
-						<AppDetailField label={m.invited_by()}>
-							{invitation.invitedBy.name}
-						</AppDetailField>
-						<AppDetailField label={m.sent()}>
-							{format(invitation.createdAt)}
-						</AppDetailField>
-						<AppDetailField label={m.expires()}>
-							{format(invitation.expiresAt)}
-						</AppDetailField>
-						{invitation.acceptedAt && (
-							<AppDetailField label={m.accepted()}>
-								{format(invitation.acceptedAt)}
-							</AppDetailField>
-						)}
-					</dl>
-				</CardContent>
-			</Card>
+					)}
+				</dl>
+			</AppCard>
 			<AppActivityCard
 				tourOperatorId={tourOperatorId}
 				entityType="INVITATION"

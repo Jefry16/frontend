@@ -3,16 +3,13 @@ import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppBadge,
+	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
 	AppSourceBlock,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	EmptyValue,
 	useAppToast,
 } from "@vointika/ui";
@@ -170,48 +167,41 @@ const MetaobjectView = ({
 				actions={<AppPageActions actions={actions} canWrite={canWrite} />}
 			/>
 
-			<Card>
-				<CardContent className="flex flex-col gap-4">
-					<div className="flex flex-wrap gap-2">
-						<AppBadge variant={metaobjectStatusBadgeVariant(entry.published)}>
-							{metaobjectStatusLabel(entry.published)}
-						</AppBadge>
-					</div>
-					<dl className="grid grid-cols-2 gap-4">
-						<AppDetailField label={m.handle()}>
-							<span className="font-mono text-sm">{entry.handle}</span>
-						</AppDetailField>
-						<AppDetailField label={m.created()}>
-							{formatDate(entry.createdAt)}
-						</AppDetailField>
-					</dl>
-				</CardContent>
-			</Card>
+			<AppCard className="flex flex-col gap-4">
+				<div className="flex flex-wrap gap-2">
+					<AppBadge variant={metaobjectStatusBadgeVariant(entry.published)}>
+						{metaobjectStatusLabel(entry.published)}
+					</AppBadge>
+				</div>
+				<dl className="grid grid-cols-2 gap-4">
+					<AppDetailField label={m.handle()}>
+						<span className="font-mono text-sm">{entry.handle}</span>
+					</AppDetailField>
+					<AppDetailField label={m.created()}>
+						{formatDate(entry.createdAt)}
+					</AppDetailField>
+				</dl>
+			</AppCard>
 
-			<Card>
-				<CardHeader>
-					<CardTitle>{m.metaobject_fields()}</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-						{entry.fields.map((field) => (
-							<AppDetailField key={field.key} label={field.name}>
-								{field.value !== null ? (
-									field.type === "json" || field.type === "multi_line_text" ? (
-										<AppSourceBlock label={field.name}>
-											{field.value}
-										</AppSourceBlock>
-									) : (
-										field.value
-									)
+			<AppCard title={m.metaobject_fields()}>
+				<dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+					{entry.fields.map((field) => (
+						<AppDetailField key={field.key} label={field.name}>
+							{field.value !== null ? (
+								field.type === "json" || field.type === "multi_line_text" ? (
+									<AppSourceBlock label={field.name}>
+										{field.value}
+									</AppSourceBlock>
 								) : (
-									<EmptyValue />
-								)}
-							</AppDetailField>
-						))}
-					</dl>
-				</CardContent>
-			</Card>
+									field.value
+								)
+							) : (
+								<EmptyValue />
+							)}
+						</AppDetailField>
+					))}
+				</dl>
+			</AppCard>
 		</>
 	);
 };

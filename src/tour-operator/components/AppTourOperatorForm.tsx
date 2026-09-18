@@ -1,11 +1,10 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
 	AppAlert,
+	AppCard,
 	AppField,
 	AppSelectField,
 	Button,
-	Card,
-	CardContent,
 	FieldGroup,
 	SelectItem,
 	Spinner,
@@ -37,85 +36,81 @@ export const AppTourOperatorForm = () => {
 			title={m.create_tour_operator()}
 			subtitle={m.create_tour_operator_subtitle()}
 		>
-			<Card>
-				<CardContent>
-					<form
-						onSubmit={(e) => {
-							e.preventDefault();
-							form.handleSubmit();
-						}}
-						className="space-y-4"
-					>
-						{errorMessage && <AppAlert description={errorMessage} />}
-						<FieldGroup>
-							<form.Field name="name">
+			<AppCard>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						form.handleSubmit();
+					}}
+					className="space-y-4"
+				>
+					{errorMessage && <AppAlert description={errorMessage} />}
+					<FieldGroup>
+						<form.Field name="name">
+							{(field) => <AppField field={field} label={m.name()} required />}
+						</form.Field>
+						<AppOperatorAddressFields form={form} />
+						<div className="grid gap-4 sm:grid-cols-2">
+							<form.Field name="currencyId">
 								{(field) => (
-									<AppField field={field} label={m.name()} required />
+									<AppSelectField
+										field={field}
+										label={m.currency()}
+										required
+										placeholder={m.select_option()}
+									>
+										{currencies.map((c) => (
+											<SelectItem key={c.id} value={c.id}>
+												{c.code} — {c.name}
+											</SelectItem>
+										))}
+									</AppSelectField>
 								)}
 							</form.Field>
-							<AppOperatorAddressFields form={form} />
-							<div className="grid gap-4 sm:grid-cols-2">
-								<form.Field name="currencyId">
-									{(field) => (
-										<AppSelectField
-											field={field}
-											label={m.currency()}
-											required
-											placeholder={m.select_option()}
-										>
-											{currencies.map((c) => (
-												<SelectItem key={c.id} value={c.id}>
-													{c.code} — {c.name}
-												</SelectItem>
-											))}
-										</AppSelectField>
-									)}
-								</form.Field>
-								<form.Field name="timezoneId">
-									{(field) => (
-										<AppSelectField
-											field={field}
-											label={m.timezone()}
-											required
-											placeholder={m.select_option()}
-										>
-											{timezones.map((t) => (
-												<SelectItem key={t.id} value={t.id}>
-													{t.country.flagUrl && (
-														<img
-															src={t.country.flagUrl}
-															alt=""
-															className="h-3.5 w-5 shrink-0 rounded-xs object-cover"
-														/>
-													)}
-													<span>
-														{t.cityName}, {t.country.name}
-													</span>
-												</SelectItem>
-											))}
-										</AppSelectField>
-									)}
-								</form.Field>
-							</div>
-						</FieldGroup>
-						<Button type="submit" disabled={isPending} className="w-full">
-							{isPending && <Spinner />}
-							{m.create()}
-						</Button>
-					</form>
-					{existingUser && (
-						<div className="mt-4 flex justify-center">
-							<Button
-								type="button"
-								variant="ghost"
-								onClick={() => navigate({ to: getPostLoginPath(existingUser) })}
-							>
-								{m.cancel()}
-							</Button>
+							<form.Field name="timezoneId">
+								{(field) => (
+									<AppSelectField
+										field={field}
+										label={m.timezone()}
+										required
+										placeholder={m.select_option()}
+									>
+										{timezones.map((t) => (
+											<SelectItem key={t.id} value={t.id}>
+												{t.country.flagUrl && (
+													<img
+														src={t.country.flagUrl}
+														alt=""
+														className="h-3.5 w-5 shrink-0 rounded-xs object-cover"
+													/>
+												)}
+												<span>
+													{t.cityName}, {t.country.name}
+												</span>
+											</SelectItem>
+										))}
+									</AppSelectField>
+								)}
+							</form.Field>
 						</div>
-					)}
-				</CardContent>
-			</Card>
+					</FieldGroup>
+					<Button type="submit" disabled={isPending} className="w-full">
+						{isPending && <Spinner />}
+						{m.create()}
+					</Button>
+				</form>
+				{existingUser && (
+					<div className="mt-4 flex justify-center">
+						<Button
+							type="button"
+							variant="ghost"
+							onClick={() => navigate({ to: getPostLoginPath(existingUser) })}
+						>
+							{m.cancel()}
+						</Button>
+					</div>
+				)}
+			</AppCard>
 			{isOnboarding && (
 				<>
 					<AppAlert
