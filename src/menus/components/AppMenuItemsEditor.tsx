@@ -193,7 +193,7 @@ const ItemRows = ({
 															tourOperatorId={tourOperatorId}
 															value={field.state.value as string}
 															onValueChange={(v) => field.handleChange(v)}
-															ariaLabel={m.menu_link_target()}
+															label={m.menu_link_target()}
 															errors={field.state.meta.errors}
 														/>
 													)}
