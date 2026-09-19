@@ -103,8 +103,8 @@ export const AppMediaPicker = ({
 											className="size-full object-cover"
 										/>
 										{isSelected && (
-											<span className="absolute right-1 top-1 grid size-5 place-items-center rounded-full bg-primary text-primary-foreground">
-												<Check className="size-3" />
+											<span className="absolute right-1 top-1 grid size-6 place-items-center rounded-full bg-primary text-primary-foreground">
+												<Check className="size-4" />
 											</span>
 										)}
 									</button>

@@ -49,7 +49,7 @@ export const AppTourOperatorSwitcher = ({
 						</AvatarFallback>
 					</Avatar>
 					<span className="truncate font-medium">{active.name}</span>
-					<ChevronsUpDown className="ml-auto size-4 opacity-60" />
+					<ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
 				</SidebarMenuButton>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
@@ -75,9 +75,7 @@ export const AppTourOperatorSwitcher = ({
 							<AvatarFallback>{op.name.charAt(0).toUpperCase()}</AvatarFallback>
 						</Avatar>
 						<span className="truncate">{op.name}</span>
-						{op.id === active.id && (
-							<Check className="ml-auto size-4 opacity-80" />
-						)}
+						{op.id === active.id && <Check className="ml-auto size-4" />}
 					</DropdownMenuItem>
 				))}
 				<DropdownMenuSeparator />

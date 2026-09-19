@@ -1,5 +1,5 @@
 import { AppCard, cn } from "@vointika/ui";
-import { CircleCheck, CircleX, type LucideIcon } from "lucide-react";
+import { CircleCheck, type LucideIcon, OctagonX } from "lucide-react";
 import type { ReactNode } from "react";
 import { AppAuthShell } from "./AppAuthShell";
 
@@ -7,7 +7,7 @@ type AppAuthMessageTone = "success" | "destructive";
 
 const ICONS: Record<AppAuthMessageTone, LucideIcon> = {
 	success: CircleCheck,
-	destructive: CircleX,
+	destructive: OctagonX,
 };
 
 const COLORS: Record<AppAuthMessageTone, string> = {
@@ -35,7 +35,7 @@ export const AppAuthMessageCard = ({
 		<AppAuthShell>
 			<AppCard className="flex flex-col items-center gap-4 text-center">
 				{tone && ToneIcon ? (
-					<ToneIcon className={cn("size-10", COLORS[tone])} />
+					<ToneIcon className={cn("size-8", COLORS[tone])} />
 				) : (
 					icon
 				)}

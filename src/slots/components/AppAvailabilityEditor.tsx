@@ -6,7 +6,7 @@ import {
 	mergeQueryState,
 	useAllPages,
 } from "@vointika/ui";
-import { CalendarDays, UsersRound } from "lucide-react";
+import { CalendarDays, Target } from "lucide-react";
 import type { Audience } from "#/audiences";
 import { useExperience } from "#/experiences";
 import { queryKeys } from "#/lib/query-keys";
@@ -74,7 +74,7 @@ export const AppAvailabilityEditor = ({
 					/>
 					{rows.length === 0 ? (
 						<AppEmptyState
-							icon={UsersRound}
+							icon={Target}
 							title={m.no_audiences_for_slots()}
 							description={m.no_audiences_for_slots_body()}
 							action={

@@ -160,7 +160,7 @@ const MediaFacts = ({
 							className="max-h-64 rounded object-contain"
 						/>
 					) : (
-						<FileText className="size-12 text-muted-foreground" />
+						<FileText className="size-8 text-muted-foreground" />
 					)}
 				</div>
 				<dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">

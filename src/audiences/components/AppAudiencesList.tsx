@@ -1,5 +1,5 @@
 import { AppDataTable } from "@vointika/ui";
-import { UsersRound } from "lucide-react";
+import { Target } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
@@ -26,7 +26,7 @@ export const AppAudiencesList = ({
 			endpoint={`/tour-operators/${tourOperatorId}/audiences`}
 			queryKey={queryKeys.audiences(tourOperatorId)}
 			emptyState={{
-				icon: UsersRound,
+				icon: Target,
 				title: m.no_audiences(),
 				description: m.no_audiences_body(),
 				action: canWrite && (

@@ -25,7 +25,7 @@ export const AppVerifyEmailNotice = ({ email }: { email?: string }) => {
 
 	return (
 		<AppAuthMessageCard
-			icon={<MailCheck className="size-10 text-primary" />}
+			icon={<MailCheck className="size-8 text-muted-foreground" />}
 			title={m.check_email_title()}
 			description={
 				email

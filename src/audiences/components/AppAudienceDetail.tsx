@@ -8,7 +8,7 @@ import {
 	AppPageHeader,
 	AppResourceView,
 } from "@vointika/ui";
-import { Languages, Pencil, UsersRound } from "lucide-react";
+import { Languages, Pencil, Target } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
@@ -40,7 +40,7 @@ export const AppAudienceDetail = ({
 		<AppResourceView
 			query={query}
 			resource={m.audience()}
-			icon={UsersRound}
+			icon={Target}
 			breadcrumb={
 				<AppBreadcrumb
 					items={[{ label: m.catalog() }, { label: m.audiences() }]}

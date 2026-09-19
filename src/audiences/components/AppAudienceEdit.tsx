@@ -1,5 +1,5 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
-import { UsersRound } from "lucide-react";
+import { Target } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useAudience } from "../hooks/use-audience";
@@ -26,7 +26,7 @@ export const AppAudienceEdit = ({
 		<AppResourceView
 			query={query}
 			resource={m.audience()}
-			icon={UsersRound}
+			icon={Target}
 			breadcrumb={
 				<AppBreadcrumb
 					items={[{ label: m.catalog() }, { label: m.audiences() }]}

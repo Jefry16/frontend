@@ -80,7 +80,7 @@ export const AppExperienceMediaSection = ({
 								<AppSkeleton variant="image" />
 							) : (
 								<div className="grid size-full place-items-center text-muted-foreground">
-									<ImageOff className="size-5" />
+									<ImageOff className="size-8" />
 								</div>
 							)}
 
@@ -97,7 +97,7 @@ export const AppExperienceMediaSection = ({
 											: "text-muted-foreground opacity-0 group-hover:opacity-100",
 									)}
 								>
-									<Star className={cn("size-3", isCover && "fill-current")} />
+									<Star className={cn("size-4", isCover && "fill-current")} />
 									{isCover && <span>{m.cover()}</span>}
 								</button>
 							)}
@@ -106,9 +106,9 @@ export const AppExperienceMediaSection = ({
 								type="button"
 								aria-label={m.remove()}
 								onClick={() => removeItem(id)}
-								className="absolute right-1 top-1 grid size-5 place-items-center rounded-full bg-background/90 text-destructive opacity-0 transition-opacity group-hover:opacity-100"
+								className="absolute right-1 top-1 grid size-6 place-items-center rounded-full bg-background/90 text-destructive opacity-0 transition-opacity group-hover:opacity-100"
 							>
-								<X className="size-3" />
+								<X className="size-4" />
 							</button>
 						</div>
 					);
@@ -122,7 +122,7 @@ export const AppExperienceMediaSection = ({
 						"hover:border-primary hover:text-primary",
 					)}
 				>
-					<Plus className="size-5" />
+					<Plus className="size-8" />
 				</button>
 			</div>
 
