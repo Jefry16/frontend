@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { AppMetafieldsCard } from "#/metafields";
 import * as m from "#/paraglide/messages";
+import { getLocale } from "#/paraglide/runtime";
 import {
 	useOperatorCurrency,
 	useOperatorDateTime,
@@ -193,7 +194,7 @@ const ExperienceView = ({
 						</div>
 						<dl className="grid grid-cols-2 gap-4">
 							<AppDetailField label={m.starting_price()}>
-								{formatMoney(experience.startingPrice, currency)}
+								{formatMoney(experience.startingPrice, currency, getLocale())}
 							</AppDetailField>
 							<AppDetailField label={m.booking_cutoff()}>
 								{`${experience.bookingCutoffHours}h`}
