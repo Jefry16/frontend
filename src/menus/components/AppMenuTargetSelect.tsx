@@ -1,12 +1,13 @@
 import {
+	AppLabelledControl,
 	AppQueryState,
 	AppSelect,
 	AppSkeleton,
-	FieldError,
 	type QueryState,
 	SelectItem,
 	useAllPages,
 } from "@vointika/ui";
+import { useId } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 
@@ -34,16 +35,17 @@ export const AppMenuTargetSelect = ({
 	tourOperatorId,
 	value,
 	onValueChange,
-	ariaLabel,
+	label,
 	errors,
 }: {
 	kind: "EXPERIENCE" | "PAGE" | "CATEGORY";
 	tourOperatorId: string;
 	value: string;
 	onValueChange: (value: string) => void;
-	ariaLabel: string;
+	label: string;
 	errors?: { message?: string }[];
 }) => {
+	const id = useId();
 	const experiences = useAllPages<ExperienceRow>(
 		queryKeys.experiences(tourOperatorId),
 		`/tour-operators/${tourOperatorId}/experiences`,
@@ -96,11 +98,17 @@ export const AppMenuTargetSelect = ({
 			loading={<AppSkeleton variant="control" />}
 		>
 			{(options) => (
-				<div className="flex flex-col gap-1">
+				<AppLabelledControl
+					label={label}
+					htmlFor={id}
+					hideLabel
+					invalid={invalid}
+					errors={errors}
+				>
 					<AppSelect
+						id={id}
 						value={value}
 						onValueChange={onValueChange}
-						aria-label={ariaLabel}
 						aria-invalid={invalid || undefined}
 						placeholder={placeholder}
 					>
@@ -110,8 +118,7 @@ export const AppMenuTargetSelect = ({
 							</SelectItem>
 						))}
 					</AppSelect>
-					{invalid && <FieldError errors={errors} />}
-				</div>
+				</AppLabelledControl>
 			)}
 		</AppQueryState>
 	);
