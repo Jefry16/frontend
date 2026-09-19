@@ -257,10 +257,15 @@ const DefinitionView = ({
 			/>
 			<AppMetaobjectFieldDialog
 				open={renameOpen}
-				onOpenChange={setRenameOpen}
+				onOpenChange={(open) => {
+					setRenameOpen(open);
+					if (open) renameField.reset();
+				}}
 				field={renaming ?? undefined}
 				pending={renameField.isPending}
-				errorMessage={null}
+				errorMessage={
+					renameField.error ? apiErrorMessage(renameField.error) : null
+				}
 				onSubmit={(field) =>
 					renameField.mutate(
 						{ key: field.key, name: field.name },

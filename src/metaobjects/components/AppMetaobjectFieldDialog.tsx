@@ -125,6 +125,7 @@ export const AppMetaobjectFieldDialog = ({
 					onConfirm={() => onSubmit(draft)}
 					disabled={!valid}
 					pending={pending}
+					confirmLabel={isRename ? m.save_changes() : m.metaobject_add_field()}
 				/>
 			</DialogContent>
 		</Dialog>
