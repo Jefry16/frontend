@@ -1,5 +1,5 @@
 import { AppFormSkeleton, AppPageHeader, AppResourceView } from "@vointika/ui";
-import { UsersRound } from "lucide-react";
+import { Target } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { localeLabel, useOperatorLocales, usePermissions } from "#/session";
@@ -34,7 +34,7 @@ export const AppAudienceTranslations = ({
 		<AppResourceView
 			query={query}
 			resource={m.translations()}
-			icon={UsersRound}
+			icon={Target}
 			breadcrumb={
 				<AppBreadcrumb
 					items={[{ label: m.catalog() }, { label: m.audiences() }]}

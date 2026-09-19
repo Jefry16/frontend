@@ -12,7 +12,7 @@ import {
 	EmptyValue,
 	useAppToast,
 } from "@vointika/ui";
-import { Crown, LogOut, Trash2, UserCog, Users } from "lucide-react";
+import { Crown, LogOut, Trash2, UserCog, UsersRound } from "lucide-react";
 import { AppActivityCard } from "#/audit";
 import { useAuth } from "#/auth";
 import { queryKeys } from "#/lib/query-keys";
@@ -55,7 +55,7 @@ export const AppMemberDetail = ({
 		<AppResourceView
 			query={query}
 			resource={m.member()}
-			icon={Users}
+			icon={UsersRound}
 			breadcrumb={
 				<AppBreadcrumb
 					items={[

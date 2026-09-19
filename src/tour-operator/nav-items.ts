@@ -19,8 +19,8 @@ import {
 	Settings,
 	Shapes,
 	Tags,
+	Target,
 	UserRound,
-	Users,
 	UsersRound,
 } from "lucide-react";
 import * as m from "#/paraglide/messages";
@@ -68,7 +68,7 @@ export const catalogNavItems = (tourOperatorId: string): NavLeaf[] => [
 	},
 	{
 		label: m.audiences(),
-		icon: UsersRound,
+		icon: Target,
 		link: {
 			to: "/tour-operators/$tourOperatorId/audiences",
 			params: { tourOperatorId },
@@ -104,7 +104,7 @@ export const settingsSectionItems = (tourOperatorId: string): NavLeaf[] => [
 	},
 	{
 		label: m.members(),
-		icon: Users,
+		icon: UsersRound,
 		link: {
 			to: "/tour-operators/$tourOperatorId/settings/members",
 			params: { tourOperatorId },
