@@ -168,7 +168,14 @@ const DefinitionView = ({
 			<AppCard
 				title={m.metaobject_fields()}
 				action={
-					<Button variant="outline" size="sm" onClick={() => setAddOpen(true)}>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => {
+							addField.reset();
+							setAddOpen(true);
+						}}
+					>
 						{m.metaobject_add_field()}
 					</Button>
 				}
@@ -190,6 +197,7 @@ const DefinitionView = ({
 									variant="ghost"
 									size="sm"
 									onClick={() => {
+										renameField.reset();
 										setRenaming(field);
 										setRenameOpen(true);
 									}}
@@ -239,10 +247,7 @@ const DefinitionView = ({
 
 			<AppMetaobjectFieldDialog
 				open={addOpen}
-				onOpenChange={(open) => {
-					setAddOpen(open);
-					if (open) addField.reset();
-				}}
+				onOpenChange={setAddOpen}
 				pending={addField.isPending}
 				errorMessage={
 					addField.error
@@ -257,10 +262,7 @@ const DefinitionView = ({
 			/>
 			<AppMetaobjectFieldDialog
 				open={renameOpen}
-				onOpenChange={(open) => {
-					setRenameOpen(open);
-					if (open) renameField.reset();
-				}}
+				onOpenChange={setRenameOpen}
 				field={renaming ?? undefined}
 				pending={renameField.isPending}
 				errorMessage={
