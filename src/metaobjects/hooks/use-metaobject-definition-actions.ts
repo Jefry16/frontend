@@ -66,7 +66,6 @@ export const useMetaobjectDefinitionActions = (
 			toast.success(m.metaobject_field_renamed());
 			invalidate();
 		},
-		onError: (error) => toast.error(apiErrorMessage(error)),
 	});
 
 	const removeField = useMutation<unknown, AxiosError, { key: string }>({
