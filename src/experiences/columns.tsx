@@ -6,6 +6,7 @@ import {
 	timestampColumn,
 } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
+import { getLocale } from "#/paraglide/runtime";
 import { AppResourceLink } from "#/shared/links";
 import { statusBadgeVariant, statusLabel } from "./format";
 import type { Experience } from "./types";
@@ -55,7 +56,7 @@ export const experienceColumns = (
 			),
 			cell: ({ row }) => (
 				<span className="block text-right tabular-nums">
-					{formatMoney(row.original.startingPrice, currency)}
+					{formatMoney(row.original.startingPrice, currency, getLocale())}
 				</span>
 			),
 		},

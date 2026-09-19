@@ -15,6 +15,7 @@ import { Ban, CalendarDays, Pencil } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
+import { getLocale } from "#/paraglide/runtime";
 import { useOperatorCurrency, usePermissions } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import {
@@ -32,12 +33,13 @@ import { AppEditCapacityDialog } from "./AppEditCapacityDialog";
 
 const tierColumns = (
 	currency: string | null,
+	locale: string,
 ): AppStaticTableColumn<SlotAudiencePrice>[] => [
 	{ id: "audience", header: m.audience(), cell: (tier) => tier.audienceName },
 	{
 		id: "price",
 		header: m.price(),
-		cell: (tier) => formatMoney(tier.price, currency),
+		cell: (tier) => formatMoney(tier.price, currency, locale),
 		numeric: true,
 	},
 	{
@@ -175,7 +177,7 @@ export const AppSlotDetail = ({
 
 						<AppCard title={m.pricing()}>
 							<AppStaticTable
-								columns={tierColumns(currency)}
+								columns={tierColumns(currency, getLocale())}
 								rows={slot.audiencePrices}
 								rowKey={(tier) => tier.audienceId}
 							/>
