@@ -1,5 +1,6 @@
 import type { AppBadgeProps } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
+import { getLocale } from "#/paraglide/runtime";
 import {
 	SLOT_STATUSES,
 	type SlotAudiencePrice,
@@ -11,7 +12,7 @@ const SUNDAY_ANCHOR = new Date(Date.UTC(2024, 0, 7));
 export const formatDayName = (day: number): string => {
 	const date = new Date(SUNDAY_ANCHOR);
 	date.setUTCDate(SUNDAY_ANCHOR.getUTCDate() + day);
-	return new Intl.DateTimeFormat(undefined, {
+	return new Intl.DateTimeFormat(getLocale(), {
 		weekday: "long",
 		timeZone: "UTC",
 	}).format(date);
@@ -27,7 +28,7 @@ const parseWallClock = (dateTime: string): Date | null => {
 export const formatSlotDateTime = (dateTime: string): string => {
 	const date = parseWallClock(dateTime);
 	if (!date) return dateTime;
-	return new Intl.DateTimeFormat(undefined, {
+	return new Intl.DateTimeFormat(getLocale(), {
 		dateStyle: "medium",
 		timeStyle: "short",
 	}).format(date);

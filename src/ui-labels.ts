@@ -1,7 +1,9 @@
 import type { UiLabels } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
+import { getLocale } from "#/paraglide/runtime";
 
 export const appUiLabels: UiLabels = {
+	locale: getLocale(),
 	cancel: m.cancel(),
 	saveChanges: m.save_changes(),
 	clear: m.clear(),
