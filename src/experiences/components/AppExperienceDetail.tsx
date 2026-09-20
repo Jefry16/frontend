@@ -8,6 +8,7 @@ import {
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
+	EmptyValue,
 	formatMoney,
 } from "@vointika/ui";
 import {
@@ -26,7 +27,7 @@ import {
 	useOperatorDateTime,
 	usePermissions,
 } from "#/session";
-import { AppBackLink, AppBreadcrumb } from "#/shared/links";
+import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import { statusBadgeVariant, statusLabel } from "../format";
 import { useExperience } from "../hooks/use-experience";
 import { useExperienceActions } from "../hooks/use-experience-actions";
@@ -198,6 +199,21 @@ const ExperienceView = ({
 							</AppDetailField>
 							<AppDetailField label={m.booking_cutoff()}>
 								{`${experience.bookingCutoffHours}h`}
+							</AppDetailField>
+							<AppDetailField label={m.category()}>
+								{experience.category ? (
+									<AppResourceLink
+										to="/tour-operators/$tourOperatorId/categories/$categoryId"
+										params={{
+											tourOperatorId,
+											categoryId: experience.category.id,
+										}}
+									>
+										{experience.category.name}
+									</AppResourceLink>
+								) : (
+									<EmptyValue />
+								)}
 							</AppDetailField>
 							<AppDetailField label={m.slug()}>
 								<span className="font-mono text-sm">{experience.handle}</span>
