@@ -24,7 +24,7 @@ export const AppUserAvatarCard = ({
 		<AppSettingsCard title={m.avatar()} description={m.avatar_description()}>
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center">
 				<AppImageDropzone
-					className="size-28 min-h-0 shrink-0 rounded-full"
+					className="size-28 min-h-0 shrink-0"
 					previewUrl={avatarUrl}
 					accept={AVATAR_TYPES}
 					maxBytes={MAX_AVATAR_BYTES}

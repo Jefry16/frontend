@@ -1,8 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
+	AppAvatar,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
@@ -40,14 +38,7 @@ export const AppTourOperatorSwitcher = ({
 					aria-label={m.switch_tour_operator()}
 					className="bg-background hover:bg-background data-[state=open]:bg-background"
 				>
-					<Avatar size="sm">
-						{active.logoUrl && (
-							<AvatarImage src={active.logoUrl} alt={active.name} />
-						)}
-						<AvatarFallback>
-							{active.name.charAt(0).toUpperCase()}
-						</AvatarFallback>
-					</Avatar>
+					<AppAvatar size="sm" name={active.name} src={active.logoUrl} />
 					<span className="truncate font-medium">{active.name}</span>
 					<ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
 				</SidebarMenuButton>
@@ -70,10 +61,7 @@ export const AppTourOperatorSwitcher = ({
 							})
 						}
 					>
-						<Avatar size="sm">
-							{op.logoUrl && <AvatarImage src={op.logoUrl} alt={op.name} />}
-							<AvatarFallback>{op.name.charAt(0).toUpperCase()}</AvatarFallback>
-						</Avatar>
+						<AppAvatar size="sm" name={op.name} src={op.logoUrl} />
 						<span className="truncate">{op.name}</span>
 						{op.id === active.id && <Check className="ml-auto size-4" />}
 					</DropdownMenuItem>
