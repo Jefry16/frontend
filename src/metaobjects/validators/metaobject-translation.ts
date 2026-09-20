@@ -26,18 +26,12 @@ const text = (max: number) =>
 // A blank value clears that field's translation; the write is a patch.
 export const metaobjectTranslationSchema = (fields: TranslatableField[]) =>
 	z
-		.record(z.string(), z.string())
-		.superRefine((values, ctx) => {
-			for (const field of fields) {
-				const max = MAX_LENGTH[field.type as keyof typeof MAX_LENGTH];
-				const result = text(max).safeParse(values[field.key] ?? "");
-				for (const issue of result.error?.issues ?? []) {
-					ctx.addIssue({ ...issue, path: [field.key] });
-				}
-			}
-		})
-		.transform((values) => ({
-			values: Object.fromEntries(
-				fields.map((field) => [field.key, (values[field.key] ?? "").trim()]),
+		.object(
+			Object.fromEntries(
+				fields.map((field) => [
+					field.key,
+					text(MAX_LENGTH[field.type as keyof typeof MAX_LENGTH]),
+				]),
 			),
-		}));
+		)
+		.transform((values) => ({ values }));
