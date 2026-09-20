@@ -91,7 +91,7 @@ export const AppExperienceMediaSection = ({
 									title={isCover ? m.cover() : m.set_as_cover()}
 									onClick={() => onThumbnailChange(id)}
 									className={cn(
-										"absolute left-1 top-1 flex items-center gap-1 rounded-full bg-background/90 px-1.5 py-0.5 text-xs font-medium transition-opacity",
+										"absolute left-1 top-1 flex items-center gap-1 rounded-md bg-background/90 px-1.5 py-0.5 text-xs font-medium transition-opacity",
 										isCover
 											? "text-primary opacity-100"
 											: "text-muted-foreground opacity-0 group-hover:opacity-100",
@@ -106,7 +106,7 @@ export const AppExperienceMediaSection = ({
 								type="button"
 								aria-label={m.remove()}
 								onClick={() => removeItem(id)}
-								className="absolute right-1 top-1 grid size-6 place-items-center rounded-full bg-background/90 text-destructive opacity-0 transition-opacity group-hover:opacity-100"
+								className="absolute right-1 top-1 grid size-6 place-items-center rounded-md bg-background/90 text-destructive opacity-0 transition-opacity group-hover:opacity-100"
 							>
 								<X className="size-4" />
 							</button>

@@ -97,6 +97,11 @@ the list never pretends.
     served as `lang="en"` has a screen reader pronouncing Spanish as
     English and a browser offering to translate text already in the
     reader's language. Gate: `src/shared/document-language.test.ts`.
+15. **One shape.** The radius, and a `size-1.5` dot for a state. No
+    `rounded-full` on a tile, a chip, a well or a button: what sits on a
+    tile takes `rounded-md`, everything else `rounded-lg`, and a round
+    primitive is wrapped in the package, as `AppAvatar` is. Gate:
+    `src/shared/shape.test.ts`, the same test the package runs on itself.
 
 ## Page patterns
 
