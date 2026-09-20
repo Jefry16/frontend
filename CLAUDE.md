@@ -5,6 +5,14 @@ contract with the backend, and three adapters that hand `@vointika/ui` a
 client, a label set and a router Link. Everything that renders without
 naming a route or writing to the API lives in the package, not here.
 
+The look has a name, **Signal on Slate**, and it is written in the package:
+`DESIGN.md` in `@vointika/ui`, `~/vointika/ui` on this machine. A quiet,
+precise workspace in cool grey, where colour appears only when it means
+something: lime is where you are, blue is what you can do, a state colour
+is what happened. A screen built here is judged by that file's test before
+it is judged by taste: decorative, soft, round, or coloured without a
+meaning does not belong. Rules 4 and 15 are the part of it this repo gates.
+
 ## Rules, each with the gate that enforces it
 
 A rule is a test with an empty allow-list, or it is a habit. Where a line
