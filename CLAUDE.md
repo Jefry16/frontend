@@ -127,6 +127,10 @@ slot for an experience) loads it through `AppResourceView` the way an edit
 does; the first-run create-operator page is the auth shell with a card, not
 a form page, because there is no operator to frame it yet; the operator's own translations page has no record to load,
 so its header sits in the route rather than inside `AppResourceView`;
+a metaobject entry's translations page builds its form from the entry,
+one field per text field that has a value, because the backend refuses a
+translation of an unset field, and an entry with none shows a block
+`AppEmptyState` where the tabs would be;
 `AppNameTranslations` lives in `shared/`, which cannot import a module, so
 its caller reads `usePermissions()` and passes `canWrite` in; the account
 page's cards have no viewer branch because the account is the viewer's own;

@@ -13,7 +13,7 @@ import {
 	EmptyValue,
 	useAppToast,
 } from "@vointika/ui";
-import { Eye, EyeOff, Pencil, Shapes, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Languages, Pencil, Shapes, Trash2 } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
@@ -91,6 +91,17 @@ const MetaobjectView = ({
 			onSelect: () =>
 				navigate({
 					to: "/tour-operators/$tourOperatorId/content/metaobjects/entries/$metaobjectId/edit",
+					params: { tourOperatorId, metaobjectId: entry.id },
+				}),
+		},
+		{
+			id: "translations",
+			label: m.translations(),
+			icon: Languages,
+			member: true,
+			onSelect: () =>
+				navigate({
+					to: "/tour-operators/$tourOperatorId/content/metaobjects/entries/$metaobjectId/translations",
 					params: { tourOperatorId, metaobjectId: entry.id },
 				}),
 		},

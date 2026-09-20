@@ -552,6 +552,8 @@
 	"metaobject_handle_taken": "An entry with this handle already exists for this type.",
 	"metaobject_published": "Entry published",
 	"metaobject_unpublished": "Entry unpublished",
+	"metaobject_no_translatable_fields": "No text fields to translate",
+	"metaobject_no_translatable_fields_body": "Only text fields that have a value can be translated. Numbers, dates and references read the same everywhere.",
 	"rename": "Rename",
 	"activity_action_metaobject_definition_created": "created a metaobject type",
 	"activity_action_metaobject_definition_updated": "updated a metaobject type",

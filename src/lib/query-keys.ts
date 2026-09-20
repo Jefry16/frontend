@@ -79,6 +79,20 @@ export const queryKeys = {
 		["metaobjects", tourOperatorId, definitionId] as const,
 	metaobject: (tourOperatorId: string, metaobjectId: string) =>
 		["metaobjects", tourOperatorId, metaobjectId] as const,
+	metaobjectTranslations: (tourOperatorId: string, metaobjectId: string) =>
+		["metaobjects", tourOperatorId, metaobjectId, "translations"] as const,
+	metaobjectTranslation: (
+		tourOperatorId: string,
+		metaobjectId: string,
+		locale: string,
+	) =>
+		[
+			"metaobjects",
+			tourOperatorId,
+			metaobjectId,
+			"translations",
+			locale,
+		] as const,
 	allMetafieldValues: ["metafield-values"] as const,
 	metafieldValues: (
 		tourOperatorId: string,

@@ -75,6 +75,8 @@ const ACTION_LABELS: Record<string, () => string> = {
 	"metaobject.published": m.activity_action_metaobject_published,
 	"metaobject.unpublished": m.activity_action_metaobject_unpublished,
 	"metaobject.deleted": m.activity_action_metaobject_deleted,
+	"metaobject.translation_updated": m.activity_action_translation_updated,
+	"metaobject.translation_cleared": m.activity_action_translation_deleted,
 	"experience.metafield_updated": m.activity_action_metafield_updated,
 	"experience.metafield_cleared": m.activity_action_metafield_cleared,
 	"page.metafield_updated": m.activity_action_metafield_updated,

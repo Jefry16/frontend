@@ -5,4 +5,5 @@ export { AppMetaobjectDefinitionsList } from "./components/AppMetaobjectDefiniti
 export { AppMetaobjectDetail } from "./components/AppMetaobjectDetail";
 export { AppMetaobjectEdit } from "./components/AppMetaobjectEdit";
 export { AppMetaobjectForm } from "./components/AppMetaobjectForm";
+export { AppMetaobjectTranslations } from "./components/AppMetaobjectTranslations";
 export { useMetaobjectDefinition } from "./hooks/use-metaobject-definition";

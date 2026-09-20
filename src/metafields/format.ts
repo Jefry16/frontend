@@ -53,3 +53,8 @@ export const TYPE_FILTER_OPTIONS = METAFIELD_TYPE_CODES.map((code) => ({
 export const METAOBJECT_FIELD_TYPE_CODES = METAFIELD_TYPE_CODES.filter(
 	(code) => code !== "metaobject_reference",
 );
+
+export const TRANSLATABLE_METAFIELD_TYPES: readonly MetafieldTypeCode[] = [
+	"single_line_text",
+	"multi_line_text",
+];
