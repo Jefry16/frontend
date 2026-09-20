@@ -68,7 +68,7 @@ export const AppExperienceMediaSection = ({
 					return (
 						<div
 							key={id}
-							className="group relative aspect-square overflow-hidden rounded-md border bg-muted"
+							className="group relative aspect-square overflow-hidden rounded-lg border bg-muted"
 						>
 							{asset ? (
 								<img
@@ -118,7 +118,7 @@ export const AppExperienceMediaSection = ({
 					type="button"
 					onClick={() => setPickerOpen(true)}
 					className={cn(
-						"grid aspect-square place-items-center rounded-md border border-dashed text-muted-foreground",
+						"grid aspect-square place-items-center rounded-lg border-2 border-dashed border-input bg-muted/30 text-muted-foreground",
 						"hover:border-primary hover:text-primary",
 					)}
 				>

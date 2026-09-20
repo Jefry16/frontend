@@ -57,7 +57,7 @@ function TourOperatorLayout() {
 			    navigation. Hidden until focused, so it costs sighted users nothing. */}
 			<a
 				href="#main-content"
-				className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:shadow-sm focus:outline-2 focus:outline-ring"
+				className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:shadow-md focus:outline-2 focus:outline-ring"
 			>
 				{m.skip_to_content()}
 			</a>

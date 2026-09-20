@@ -41,7 +41,7 @@ export const AppAuthFormWrapper = ({
 					</Button>
 				</form>
 				{footer && (
-					<div className="mt-4 flex flex-col items-center gap-2 text-sm text-muted-foreground">
+					<div className="mt-4 flex flex-col items-start gap-2 text-sm text-muted-foreground">
 						{footer}
 					</div>
 				)}

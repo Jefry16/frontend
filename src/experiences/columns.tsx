@@ -5,6 +5,7 @@ import {
 	formatMoney,
 	timestampColumn,
 } from "@vointika/ui";
+import { ImageOff } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
 import { AppResourceLink } from "#/shared/links";
@@ -29,7 +30,9 @@ export const experienceColumns = (
 						className="h-12 w-16 rounded-md border object-cover"
 					/>
 				) : (
-					<div className="h-12 w-16 rounded-md border bg-muted" />
+					<div className="grid h-12 w-16 place-items-center rounded-md border bg-muted text-muted-foreground">
+						<ImageOff className="size-4" />
+					</div>
 				),
 		},
 		{
