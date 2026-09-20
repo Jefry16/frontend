@@ -25,7 +25,7 @@
     "@tanstack/react-router": "1.170.36",
     "@tanstack/react-router-devtools": "1.167.2",
     "@tanstack/react-table": "^8.21.3",
-    "@vointika/ui": "github:Jefry16/ui#v0.27.0",
+    "@vointika/ui": "github:Jefry16/ui#v0.28.0",
     "axios": "^1.14.0",
     "lucide-react": "^0.545.0",
     "react": "^19.2.0",
