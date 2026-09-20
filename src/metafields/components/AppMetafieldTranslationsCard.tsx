@@ -12,16 +12,12 @@ import { type ReactNode, useState } from "react";
 import * as m from "#/paraglide/messages";
 import { usePermissions } from "#/session";
 import { AppClearTranslationButton } from "#/shared/components/AppClearTranslationButton";
+import { TRANSLATABLE_METAFIELD_TYPES } from "../format";
 import { useMetafieldTranslationSave } from "../hooks/use-metafield-translation-save";
 import { useMetafieldTranslation } from "../hooks/use-metafield-translations";
 import { useOwnerMetafields } from "../hooks/use-owner-metafields";
-import type { MetafieldOwnerTypeCode, MetafieldTypeCode } from "../types";
+import type { MetafieldOwnerTypeCode } from "../types";
 import { AppTypedValueInput } from "./AppTypedValueInput";
-
-const TRANSLATABLE: readonly MetafieldTypeCode[] = [
-	"single_line_text",
-	"multi_line_text",
-];
 
 export const AppMetafieldTranslationsCard = ({
 	tourOperatorId,
@@ -67,7 +63,7 @@ export const AppMetafieldTranslationsCard = ({
 		<AppQueryState query={owner} chrome={untilKnown} loading={null}>
 			{(fields) => {
 				const definitions = fields.definitions.filter((d) =>
-					TRANSLATABLE.includes(d.type),
+					TRANSLATABLE_METAFIELD_TYPES.includes(d.type),
 				);
 				if (definitions.length === 0) return null;
 				const values = fields.values;

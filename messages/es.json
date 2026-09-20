@@ -552,6 +552,8 @@
 	"metaobject_handle_taken": "Ya existe una entrada con este identificador para este tipo.",
 	"metaobject_published": "Entrada publicada",
 	"metaobject_unpublished": "Entrada despublicada",
+	"metaobject_no_translatable_fields": "No hay campos de texto para traducir",
+	"metaobject_no_translatable_fields_body": "Solo se pueden traducir los campos de texto que tienen un valor. Los números, las fechas y las referencias se leen igual en todos los idiomas.",
 	"rename": "Renombrar",
 	"activity_action_metaobject_definition_created": "creó un tipo de metaobjeto",
 	"activity_action_metaobject_definition_updated": "actualizó un tipo de metaobjeto",
