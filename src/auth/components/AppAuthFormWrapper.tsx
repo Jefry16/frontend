@@ -24,8 +24,14 @@ export const AppAuthFormWrapper = ({
 	isSubmitting,
 }: AppAuthFormWrapperProps) => {
 	return (
-		<AppAuthShell title={title} subtitle={subtitle}>
+		<AppAuthShell>
 			<AppCard>
+				<div className="mb-6 space-y-1">
+					<h1 className="text-xl font-semibold">{title}</h1>
+					{subtitle && (
+						<p className="text-sm text-muted-foreground">{subtitle}</p>
+					)}
+				</div>
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
