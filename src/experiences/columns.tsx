@@ -2,6 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import {
 	AppBadge,
 	AppDataTableHeader,
+	EmptyValue,
 	formatMoney,
 	timestampColumn,
 } from "@vointika/ui";
@@ -50,6 +51,21 @@ export const experienceColumns = (
 					{row.original.name}
 				</AppResourceLink>
 			),
+		},
+		{
+			id: "category",
+			header: () => <span>{m.category()}</span>,
+			cell: ({ row }) =>
+				row.original.category ? (
+					<AppResourceLink
+						to="/tour-operators/$tourOperatorId/categories/$categoryId"
+						params={{ tourOperatorId, categoryId: row.original.category.id }}
+					>
+						{row.original.category.name}
+					</AppResourceLink>
+				) : (
+					<EmptyValue />
+				),
 		},
 		{
 			id: "startingPrice",
