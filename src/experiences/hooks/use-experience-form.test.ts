@@ -3,6 +3,7 @@ import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { server } from "#/test/server";
 import { wrapperWithProviders } from "#/test/test-utils";
+import type { Experience } from "../types";
 import { useExperienceForm } from "./use-experience-form";
 
 const { navigateMock } = vi.hoisted(() => ({ navigateMock: vi.fn() }));
@@ -110,6 +111,43 @@ describe("useExperienceForm", () => {
 		const { result: withCategory } = render();
 		await submit(withCategory.current.form, { ...VALID, categoryId: "cat-1" });
 		expect(body.mock.calls[1][0]).toMatchObject({ categoryId: "cat-1" });
+	});
+
+	it("an edit keeps the experience's category, which the backend sends as a nested ref", async () => {
+		const body = vi.fn();
+		server.use(
+			http.patch(`${BASE}/exp-1`, async ({ request }) => {
+				body(await request.json());
+				return new HttpResponse(null, { status: 204 });
+			}),
+		);
+		const existing = {
+			id: "exp-1",
+			name: "Sunset Sailing",
+			description: "An evening on the water",
+			longDescription: "<p>Longer</p>",
+			featured: false,
+			bookingCutoffHours: 24,
+			startingPrice: 95,
+			mediaIds: [],
+			thumbnailMediaId: null,
+			seoTitle: null,
+			seoDescription: null,
+			category: {
+				id: "cat-1",
+				context: "categories",
+				name: "Sailing",
+				handle: "sailing",
+			},
+		} as unknown as Experience;
+		const { Wrapper } = wrapperWithProviders();
+		const { result } = renderHook(() => useExperienceForm(OP, existing), {
+			wrapper: Wrapper,
+		});
+
+		expect(result.current.form.state.values.categoryId).toBe("cat-1");
+		await submit(result.current.form, {});
+		expect(body.mock.calls[0][0]).toMatchObject({ categoryId: "cat-1" });
 	});
 
 	it.each([

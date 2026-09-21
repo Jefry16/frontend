@@ -1,3 +1,10 @@
+interface ExperienceCategoryRef {
+	id: string;
+	context: "categories";
+	name: string;
+	handle: string;
+}
+
 export interface Experience {
 	id: string;
 	context: "experiences";
@@ -14,7 +21,7 @@ export interface Experience {
 	seoTitle: string | null;
 	seoDescription: string | null;
 	startingPrice: number;
-	categoryId: string | null;
+	category: ExperienceCategoryRef | null;
 	published: boolean;
 	createdBy: string;
 	createdAt: string;
