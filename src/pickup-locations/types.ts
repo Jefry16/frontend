@@ -1,4 +1,4 @@
-export interface PickupAudiencePrice {
+interface PickupAudiencePrice {
 	audienceId: string;
 	audienceName: string;
 	price: number;
