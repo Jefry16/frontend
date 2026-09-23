@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAppToast } from "@vointika/ui";
 import type { AxiosError } from "axios";
 import { useState } from "react";
+import type { Audience } from "#/audiences";
 import { authApi } from "#/lib/api";
 import { apiErrorMessage } from "#/lib/api-error";
 import { queryKeys } from "#/lib/query-keys";
@@ -18,8 +19,10 @@ import {
 
 export const usePickupLocationForm = (
 	tourOperatorId: string,
+	audiences: readonly Audience[],
 	pickup?: PickupLocation,
 ) => {
+	const schema = pickupLocationSchema(audiences.map((a) => a.id));
 	const navigate = useNavigate();
 	const toast = useAppToast();
 	const queryClient = useQueryClient();
@@ -74,9 +77,17 @@ export const usePickupLocationForm = (
 		defaultValues: {
 			name: pickup?.name ?? "",
 			time: pickup ? formatTime(pickup.time) : "",
+			prices: Object.fromEntries(
+				audiences.map((a) => {
+					const paid = pickup?.audiencePrices.find(
+						(p) => p.audienceId === a.id,
+					)?.price;
+					return [a.id, paid ? String(paid) : ""];
+				}),
+			),
 		} as PickupLocationFormData,
-		validators: { onSubmit: pickupLocationSchema },
-		onSubmit: ({ value }) => mutate(pickupLocationSchema.parse(value)),
+		validators: { onSubmit: schema },
+		onSubmit: ({ value }) => mutate(schema.parse(value)),
 	});
 
 	return { form, isPending, errorMessage, isEdit: !!pickup };

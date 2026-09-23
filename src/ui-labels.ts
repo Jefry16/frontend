@@ -27,6 +27,8 @@ export const appUiLabels: UiLabels = {
 	pickADate: m.pick_a_date(),
 	pickATime: m.pick_a_time(),
 	hour: m.hour(),
+	audience: m.audience(),
+	price: m.price(),
 	minute: m.minute(),
 	showPassword: m.show_password(),
 	hidePassword: m.hide_password(),

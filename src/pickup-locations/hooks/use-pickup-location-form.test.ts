@@ -17,11 +17,30 @@ const API = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
 const OP = "op-1";
 const BASE = `${API}/tour-operators/${OP}/pickup-locations`;
 
-type FieldName = "name" | "time";
+type FieldName = "name" | "time" | "prices.aud-adult" | "prices.aud-child";
 
-const render = () => {
+const AUDIENCES = [
+	{
+		id: "aud-adult",
+		context: "audiences",
+		name: "Adult",
+		paxPerUnit: 1,
+		createdAt: "",
+	},
+	{
+		id: "aud-child",
+		context: "audiences",
+		name: "Child",
+		paxPerUnit: 1,
+		createdAt: "",
+	},
+] as const;
+
+const render = (pickup?: Parameters<typeof usePickupLocationForm>[2]) => {
 	const { Wrapper } = wrapperWithProviders();
-	return renderHook(() => usePickupLocationForm(OP), { wrapper: Wrapper });
+	return renderHook(() => usePickupLocationForm(OP, [...AUDIENCES], pickup), {
+		wrapper: Wrapper,
+	});
 };
 
 const submit = async (
@@ -64,7 +83,74 @@ describe("usePickupLocationForm", () => {
 			time: "08:30",
 		});
 
-		expect(body).toHaveBeenCalledWith({ name: "Harbour gate", time: "08:30" });
+		expect(body).toHaveBeenCalledWith({
+			name: "Harbour gate",
+			time: "08:30",
+			audiencePrices: [
+				{ audienceId: "aud-adult", price: 0 },
+				{ audienceId: "aud-child", price: 0 },
+			],
+		});
+	});
+
+	it("names every audience, an empty price as 0, so none is left to the backend's default", async () => {
+		const body = vi.fn();
+		server.use(
+			http.post(BASE, async ({ request }) => {
+				body(await request.json());
+				return new HttpResponse(null, { status: 201 });
+			}),
+		);
+		const { result } = render();
+
+		await submit(result.current.form, {
+			name: "Harbour gate",
+			time: "08:30",
+			"prices.aud-adult": "12.50",
+		});
+
+		expect(body.mock.calls[0][0].audiencePrices).toEqual([
+			{ audienceId: "aud-adult", price: 12.5 },
+			{ audienceId: "aud-child", price: 0 },
+		]);
+	});
+
+	it("an edit opens on the location's prices, a free audience blank", () => {
+		const { result } = render({
+			id: "pl-1",
+			context: "pickup-locations",
+			name: "Harbour gate",
+			time: "08:30:00",
+			createdAt: "",
+			audiencePrices: [
+				{ audienceId: "aud-adult", audienceName: "Adult", price: 12.5 },
+				{ audienceId: "aud-child", audienceName: "Child", price: 0 },
+			],
+		});
+
+		expect(result.current.form.state.values.prices).toEqual({
+			"aud-adult": "12.5",
+			"aud-child": "",
+		});
+	});
+
+	it("refuses a price that is not a number", async () => {
+		const body = vi.fn();
+		server.use(
+			http.post(BASE, () => {
+				body();
+				return new HttpResponse(null, { status: 201 });
+			}),
+		);
+		const { result } = render();
+
+		await submit(result.current.form, {
+			name: "Harbour gate",
+			time: "08:30",
+			"prices.aud-adult": "abc",
+		});
+
+		expect(body).not.toHaveBeenCalled();
 	});
 
 	it.each([
