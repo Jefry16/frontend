@@ -5,19 +5,43 @@ import {
 	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
+	AppEmptyState,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
+	AppStaticTable,
+	type AppStaticTableColumn,
+	formatMoney,
 	useAppToast,
 } from "@vointika/ui";
 import { MapPin, Pencil, Trash2 } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { useOperatorDateTime, usePermissions } from "#/session";
+import { getLocale } from "#/paraglide/runtime";
+import {
+	useOperatorCurrency,
+	useOperatorDateTime,
+	usePermissions,
+} from "#/session";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 import { usePickupLocationActions } from "../hooks/use-pickup-location-actions";
+import type { PickupAudiencePrice } from "../types";
+
+const priceColumns = (
+	currency: string | null,
+	locale: string,
+): AppStaticTableColumn<PickupAudiencePrice>[] => [
+	{ id: "audience", header: m.audience(), cell: (row) => row.audienceName },
+	{
+		id: "price",
+		header: m.price(),
+		cell: (row) =>
+			row.price === 0 ? m.free() : formatMoney(row.price, currency, locale),
+		numeric: true,
+	},
+];
 
 export const AppPickupLocationDetail = ({
 	tourOperatorId,
@@ -27,6 +51,7 @@ export const AppPickupLocationDetail = ({
 	pickupLocationId: string;
 }) => {
 	const { formatDate } = useOperatorDateTime();
+	const currency = useOperatorCurrency();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -124,6 +149,20 @@ export const AppPickupLocationDetail = ({
 								</AppDetailField>
 								<AppDetailField label={m.created()}>{created}</AppDetailField>
 							</dl>
+						</AppCard>
+						<AppCard title={m.pickup_prices()}>
+							{pickup.audiencePrices.length === 0 ? (
+								<AppEmptyState
+									variant="inline"
+									title={m.pickup_prices_no_audiences()}
+								/>
+							) : (
+								<AppStaticTable
+									columns={priceColumns(currency, getLocale())}
+									rows={pickup.audiencePrices}
+									rowKey={(row) => row.audienceId}
+								/>
+							)}
 						</AppCard>
 					</>
 				);
