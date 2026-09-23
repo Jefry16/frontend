@@ -1,7 +1,7 @@
 import { type AppStaticTableColumn, formatMoney } from "@vointika/ui";
 import * as m from "#/paraglide/messages";
 
-export interface AudiencePriced {
+interface AudiencePriced {
 	audienceName: string;
 	price: number;
 }
