@@ -1,5 +1,6 @@
 import {
 	type AppAction,
+	AppAudiencePriceTable,
 	AppBadge,
 	AppCard,
 	AppDetailField,
@@ -14,7 +15,6 @@ import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
 import { useOperatorCurrency, usePermissions } from "#/session";
-import { AppAudiencePriceTable } from "#/shared/components/AppAudiencePriceTable";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import {
 	formatBookedCapacity,

@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppAudiencePriceTable,
 	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
@@ -19,7 +20,6 @@ import {
 	useOperatorDateTime,
 	usePermissions,
 } from "#/session";
-import { AppAudiencePriceTable } from "#/shared/components/AppAudiencePriceTable";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
