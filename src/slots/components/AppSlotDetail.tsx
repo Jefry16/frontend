@@ -13,7 +13,7 @@ import { Ban, CalendarDays, Pencil } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
-import { usePermissions } from "#/session";
+import { useOperatorCurrency, usePermissions } from "#/session";
 import { AppAudiencePriceTable } from "#/shared/components/AppAudiencePriceTable";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import {
@@ -64,6 +64,7 @@ export const AppSlotDetail = ({
 		</AppBackLink>
 	);
 
+	const currency = useOperatorCurrency();
 	const { canWrite } = usePermissions();
 
 	return (
@@ -165,6 +166,7 @@ export const AppSlotDetail = ({
 						<AppCard title={m.pricing()}>
 							<AppAudiencePriceTable
 								rows={slot.audiencePrices}
+								currency={currency}
 								columns={tierColumns}
 							/>
 						</AppCard>
