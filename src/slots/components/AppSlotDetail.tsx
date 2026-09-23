@@ -9,7 +9,6 @@ import {
 	AppResourceView,
 	AppStaticTable,
 	type AppStaticTableColumn,
-	formatMoney,
 } from "@vointika/ui";
 import { Ban, CalendarDays, Pencil } from "lucide-react";
 import { useState } from "react";
@@ -17,6 +16,7 @@ import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
 import { useOperatorCurrency, usePermissions } from "#/session";
+import { audiencePriceColumns } from "#/shared/audience-price-columns";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import {
 	formatBookedCapacity,
@@ -35,13 +35,7 @@ const tierColumns = (
 	currency: string | null,
 	locale: string,
 ): AppStaticTableColumn<SlotAudiencePrice>[] => [
-	{ id: "audience", header: m.audience(), cell: (tier) => tier.audienceName },
-	{
-		id: "price",
-		header: m.price(),
-		cell: (tier) => formatMoney(tier.price, currency, locale),
-		numeric: true,
-	},
+	...audiencePriceColumns<SlotAudiencePrice>(currency, locale),
 	{
 		id: "capacity",
 		header: m.capacity(),

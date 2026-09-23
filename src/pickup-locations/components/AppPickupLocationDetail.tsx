@@ -10,8 +10,6 @@ import {
 	AppPageHeader,
 	AppResourceView,
 	AppStaticTable,
-	type AppStaticTableColumn,
-	formatMoney,
 	useAppToast,
 } from "@vointika/ui";
 import { MapPin, Pencil, Trash2 } from "lucide-react";
@@ -23,25 +21,11 @@ import {
 	useOperatorDateTime,
 	usePermissions,
 } from "#/session";
+import { audiencePriceColumns } from "#/shared/audience-price-columns";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
 import { usePickupLocationActions } from "../hooks/use-pickup-location-actions";
-import type { PickupAudiencePrice } from "../types";
-
-const priceColumns = (
-	currency: string | null,
-	locale: string,
-): AppStaticTableColumn<PickupAudiencePrice>[] => [
-	{ id: "audience", header: m.audience(), cell: (row) => row.audienceName },
-	{
-		id: "price",
-		header: m.price(),
-		cell: (row) =>
-			row.price === 0 ? m.free() : formatMoney(row.price, currency, locale),
-		numeric: true,
-	},
-];
 
 export const AppPickupLocationDetail = ({
 	tourOperatorId,
@@ -158,7 +142,7 @@ export const AppPickupLocationDetail = ({
 								/>
 							) : (
 								<AppStaticTable
-									columns={priceColumns(currency, getLocale())}
+									columns={audiencePriceColumns(currency, getLocale())}
 									rows={pickup.audiencePrices}
 									rowKey={(row) => row.audienceId}
 								/>
