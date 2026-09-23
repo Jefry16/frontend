@@ -9,19 +9,13 @@ import {
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	AppStaticTable,
 	useAppToast,
 } from "@vointika/ui";
 import { MapPin, Pencil, Trash2 } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { getLocale } from "#/paraglide/runtime";
-import {
-	useOperatorCurrency,
-	useOperatorDateTime,
-	usePermissions,
-} from "#/session";
-import { audiencePriceColumns } from "#/shared/audience-price-columns";
+import { useOperatorDateTime, usePermissions } from "#/session";
+import { AppAudiencePriceTable } from "#/shared/components/AppAudiencePriceTable";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
@@ -35,7 +29,6 @@ export const AppPickupLocationDetail = ({
 	pickupLocationId: string;
 }) => {
 	const { formatDate } = useOperatorDateTime();
-	const currency = useOperatorCurrency();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -141,11 +134,7 @@ export const AppPickupLocationDetail = ({
 									title={m.pickup_prices_no_audiences()}
 								/>
 							) : (
-								<AppStaticTable
-									columns={audiencePriceColumns(currency, getLocale())}
-									rows={pickup.audiencePrices}
-									rowKey={(row) => row.audienceId}
-								/>
+								<AppAudiencePriceTable rows={pickup.audiencePrices} />
 							)}
 						</AppCard>
 					</>

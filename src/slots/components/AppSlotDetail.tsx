@@ -7,16 +7,14 @@ import {
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	AppStaticTable,
 	type AppStaticTableColumn,
 } from "@vointika/ui";
 import { Ban, CalendarDays, Pencil } from "lucide-react";
 import { useState } from "react";
 import { AppActivityCard } from "#/audit";
 import * as m from "#/paraglide/messages";
-import { getLocale } from "#/paraglide/runtime";
-import { useOperatorCurrency, usePermissions } from "#/session";
-import { audiencePriceColumns } from "#/shared/audience-price-columns";
+import { usePermissions } from "#/session";
+import { AppAudiencePriceTable } from "#/shared/components/AppAudiencePriceTable";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import {
 	formatBookedCapacity,
@@ -31,11 +29,7 @@ import { useSlotActions } from "../hooks/use-slot-actions";
 import type { SlotAudiencePrice } from "../types";
 import { AppEditCapacityDialog } from "./AppEditCapacityDialog";
 
-const tierColumns = (
-	currency: string | null,
-	locale: string,
-): AppStaticTableColumn<SlotAudiencePrice>[] => [
-	...audiencePriceColumns<SlotAudiencePrice>(currency, locale),
+const tierColumns: AppStaticTableColumn<SlotAudiencePrice>[] = [
 	{
 		id: "capacity",
 		header: m.capacity(),
@@ -71,7 +65,6 @@ export const AppSlotDetail = ({
 	);
 
 	const { canWrite } = usePermissions();
-	const currency = useOperatorCurrency();
 
 	return (
 		<AppResourceView
@@ -170,10 +163,9 @@ export const AppSlotDetail = ({
 						</AppCard>
 
 						<AppCard title={m.pricing()}>
-							<AppStaticTable
-								columns={tierColumns(currency, getLocale())}
+							<AppAudiencePriceTable
 								rows={slot.audiencePrices}
-								rowKey={(tier) => tier.audienceId}
+								columns={tierColumns}
 							/>
 						</AppCard>
 
