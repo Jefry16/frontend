@@ -2,9 +2,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
+	AppAudiencePriceTable,
 	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
+	AppEmptyState,
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
@@ -13,7 +15,11 @@ import {
 import { MapPin, Pencil, Trash2 } from "lucide-react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { useOperatorDateTime, usePermissions } from "#/session";
+import {
+	useOperatorCurrency,
+	useOperatorDateTime,
+	usePermissions,
+} from "#/session";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { formatTime } from "../format";
 import { usePickupLocation } from "../hooks/use-pickup-location";
@@ -27,6 +33,7 @@ export const AppPickupLocationDetail = ({
 	pickupLocationId: string;
 }) => {
 	const { formatDate } = useOperatorDateTime();
+	const currency = useOperatorCurrency();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const toast = useAppToast();
@@ -124,6 +131,19 @@ export const AppPickupLocationDetail = ({
 								</AppDetailField>
 								<AppDetailField label={m.created()}>{created}</AppDetailField>
 							</dl>
+						</AppCard>
+						<AppCard title={m.pickup_prices()}>
+							{pickup.audiencePrices.length === 0 ? (
+								<AppEmptyState
+									variant="inline"
+									title={m.pickup_prices_no_audiences()}
+								/>
+							) : (
+								<AppAudiencePriceTable
+									rows={pickup.audiencePrices}
+									currency={currency}
+								/>
+							)}
 						</AppCard>
 					</>
 				);
