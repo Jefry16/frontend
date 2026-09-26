@@ -31,6 +31,8 @@ export const queryKeys = {
 	order: (tourOperatorId: string, orderId: string) =>
 		["orders", tourOperatorId, orderId] as const,
 	bookings: (tourOperatorId: string) => ["bookings", tourOperatorId] as const,
+	booking: (tourOperatorId: string, bookingId: string) =>
+		["bookings", tourOperatorId, bookingId] as const,
 	activityEntry: (tourOperatorId: string, entryId: string) =>
 		["activity", tourOperatorId, entryId] as const,
 	activityTimeline: (

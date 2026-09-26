@@ -1,9 +1,22 @@
+export type BookingFeeBearer = "CUSTOMER" | "OPERATOR";
+
+interface OrderFees {
+	linesTotal: number;
+	bookingFee: number;
+	bookingFeePercentage: number;
+	bookingFeeBearer: BookingFeeBearer;
+	operatorAmount: number;
+}
+
 export interface OrderListItem {
 	id: string;
+	number: number;
+	reference: string;
 	context: "orders";
 	customerName: string;
 	customerEmail: string;
 	totalAmount: number;
+	fees: OrderFees;
 	currency: string;
 	placedAt: string;
 }
@@ -34,6 +47,8 @@ export type BookingStatus = "CONFIRMED";
 
 export interface Booking {
 	id: string;
+	position: number;
+	reference: string;
 	slotId: string;
 	experienceId: string;
 	experienceName: string;
@@ -48,11 +63,14 @@ export interface Booking {
 
 export interface Order {
 	id: string;
+	number: number;
+	reference: string;
 	context: "orders";
 	checkoutSessionId: string;
 	paymentId: string;
 	customer: OrderCustomer;
 	totalAmount: number;
+	fees: OrderFees;
 	currency: string;
 	placedAt: string;
 	bookings: Booking[];

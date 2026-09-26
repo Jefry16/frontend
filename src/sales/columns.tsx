@@ -25,6 +25,23 @@ export const orderColumns = (
 	formatDateTime: (iso: string) => string,
 ): ColumnDef<OrderListItem, unknown>[] => [
 	{
+		id: "number",
+		accessorKey: "number",
+		enableSorting: true,
+		header: (ctx) => (
+			<AppDataTableHeader label={m.order()} headerContext={ctx} />
+		),
+		cell: ({ row }) => (
+			<AppResourceLink
+				to="/tour-operators/$tourOperatorId/orders/$orderId"
+				params={{ tourOperatorId, orderId: row.original.id }}
+				className="font-mono"
+			>
+				{row.original.reference}
+			</AppResourceLink>
+		),
+	},
+	{
 		id: "customerName",
 		accessorKey: "customerName",
 		header: (ctx) => (
@@ -34,14 +51,7 @@ export const orderColumns = (
 				allowFiltering="text"
 			/>
 		),
-		cell: ({ row }) => (
-			<AppResourceLink
-				to="/tour-operators/$tourOperatorId/orders/$orderId"
-				params={{ tourOperatorId, orderId: row.original.id }}
-			>
-				{row.original.customerName}
-			</AppResourceLink>
-		),
+		cell: ({ row }) => row.original.customerName,
 	},
 	{
 		id: "customerEmail",
@@ -69,6 +79,19 @@ export const bookingColumns = (
 	currency: string | null,
 ): ColumnDef<BookingManifestItem, unknown>[] => [
 	{
+		id: "reference",
+		header: () => <span>{m.booking()}</span>,
+		cell: ({ row }) => (
+			<AppResourceLink
+				to="/tour-operators/$tourOperatorId/bookings/$bookingId"
+				params={{ tourOperatorId, bookingId: row.original.id }}
+				className="font-mono"
+			>
+				{row.original.reference}
+			</AppResourceLink>
+		),
+	},
+	{
 		id: "experienceId",
 		accessorKey: "experienceId",
 		header: (ctx) => (
@@ -80,14 +103,7 @@ export const bookingColumns = (
 				queryKey={queryKeys.experiences(tourOperatorId)}
 			/>
 		),
-		cell: ({ row }) => (
-			<AppResourceLink
-				to="/tour-operators/$tourOperatorId/orders/$orderId"
-				params={{ tourOperatorId, orderId: row.original.orderId }}
-			>
-				{row.original.experienceName}
-			</AppResourceLink>
-		),
+		cell: ({ row }) => row.original.experienceName,
 	},
 	{
 		id: "startAt",

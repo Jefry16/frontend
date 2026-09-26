@@ -16,7 +16,7 @@ import { getLocale } from "#/paraglide/runtime";
 import { useOperatorDateTime } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
-import { bookingStatusLabel } from "../format";
+import { bookingStatusLabel, feeBearerLabel } from "../format";
 import { useOrder } from "../hooks/use-order";
 import type { Booking, BookingLine, Order } from "../types";
 
@@ -102,8 +102,8 @@ const OrderView = ({
 	return (
 		<>
 			<AppPageHeader
-				title={order.customer.name}
-				description={formatDateTime(order.placedAt)}
+				title={order.reference}
+				description={`${order.customer.name} · ${formatDateTime(order.placedAt)}`}
 				breadcrumb={
 					<AppBreadcrumb
 						items={[
@@ -113,7 +113,7 @@ const OrderView = ({
 								to: "/tour-operators/$tourOperatorId/orders",
 								params: { tourOperatorId },
 							},
-							{ label: order.customer.name },
+							{ label: order.reference },
 						]}
 					/>
 				}
@@ -121,6 +121,9 @@ const OrderView = ({
 
 			<AppCard title={m.customer()}>
 				<dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+					<AppDetailField label={m.name()}>
+						{order.customer.name}
+					</AppDetailField>
 					<AppDetailField label={m.email()}>
 						<a href={`mailto:${order.customer.email}`}>
 							{order.customer.email}
@@ -136,8 +139,25 @@ const OrderView = ({
 					<AppDetailField label={m.customer_notes()}>
 						{order.customer.detail ?? <EmptyValue />}
 					</AppDetailField>
+				</dl>
+			</AppCard>
+
+			<AppCard title={m.totals()}>
+				<dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+					<AppDetailField label={m.lines_total()}>
+						{formatMoney(order.fees.linesTotal, order.currency, locale)}
+					</AppDetailField>
+					<AppDetailField label={m.booking_fee()}>
+						{`${formatMoney(order.fees.bookingFee, order.currency, locale)} (${order.fees.bookingFeePercentage}%)`}
+					</AppDetailField>
+					<AppDetailField label={m.booking_fee_bearer()}>
+						{feeBearerLabel(order.fees.bookingFeeBearer)}
+					</AppDetailField>
 					<AppDetailField label={m.total()}>
 						{formatMoney(order.totalAmount, order.currency, locale)}
+					</AppDetailField>
+					<AppDetailField label={m.operator_amount()}>
+						{formatMoney(order.fees.operatorAmount, order.currency, locale)}
 					</AppDetailField>
 					<AppDetailField label={m.payment_reference()}>
 						<span className="font-mono text-sm">{order.paymentId}</span>

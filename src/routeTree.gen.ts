@@ -27,6 +27,7 @@ import { Route as appTourOperatorsTourOperatorIdAudiencesIndexRouteImport } from
 import { Route as appTourOperatorsTourOperatorIdAudiencesNewRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/audiences/new'
 import { Route as appTourOperatorsTourOperatorIdAvailabilityIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/availability/index'
 import { Route as appTourOperatorsTourOperatorIdBookingsIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/bookings/index'
+import { Route as appTourOperatorsTourOperatorIdBookingsBookingIdRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/bookings/$bookingId'
 import { Route as appTourOperatorsTourOperatorIdCategoriesIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/categories/index'
 import { Route as appTourOperatorsTourOperatorIdCategoriesNewRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/categories/new'
 import { Route as appTourOperatorsTourOperatorIdExperiencesIndexRouteImport } from './routes/(app)/tour-operators/$tourOperatorId/experiences/index'
@@ -184,6 +185,12 @@ const appTourOperatorsTourOperatorIdBookingsIndexRoute =
   appTourOperatorsTourOperatorIdBookingsIndexRouteImport.update({
     id: '/bookings/',
     path: '/bookings/',
+    getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
+  } as any)
+const appTourOperatorsTourOperatorIdBookingsBookingIdRoute =
+  appTourOperatorsTourOperatorIdBookingsBookingIdRouteImport.update({
+    id: '/bookings/$bookingId',
+    path: '/bookings/$bookingId',
     getParentRoute: () => appTourOperatorsTourOperatorIdRouteRoute,
   } as any)
 const appTourOperatorsTourOperatorIdCategoriesIndexRoute =
@@ -605,6 +612,7 @@ export interface FileRoutesByFullPath {
   '/tour-operators/new': typeof appTourOperatorsNewRoute
   '/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
   '/tour-operators/$tourOperatorId/audiences/new': typeof appTourOperatorsTourOperatorIdAudiencesNewRoute
+  '/tour-operators/$tourOperatorId/bookings/$bookingId': typeof appTourOperatorsTourOperatorIdBookingsBookingIdRoute
   '/tour-operators/$tourOperatorId/categories/new': typeof appTourOperatorsTourOperatorIdCategoriesNewRoute
   '/tour-operators/$tourOperatorId/experiences/new': typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
   '/tour-operators/$tourOperatorId/inbox/$messageId': typeof appTourOperatorsTourOperatorIdInboxMessageIdRoute
@@ -685,6 +693,7 @@ export interface FileRoutesByTo {
   '/tour-operators/new': typeof appTourOperatorsNewRoute
   '/tour-operators/$tourOperatorId': typeof appTourOperatorsTourOperatorIdIndexRoute
   '/tour-operators/$tourOperatorId/audiences/new': typeof appTourOperatorsTourOperatorIdAudiencesNewRoute
+  '/tour-operators/$tourOperatorId/bookings/$bookingId': typeof appTourOperatorsTourOperatorIdBookingsBookingIdRoute
   '/tour-operators/$tourOperatorId/categories/new': typeof appTourOperatorsTourOperatorIdCategoriesNewRoute
   '/tour-operators/$tourOperatorId/experiences/new': typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
   '/tour-operators/$tourOperatorId/inbox/$messageId': typeof appTourOperatorsTourOperatorIdInboxMessageIdRoute
@@ -768,6 +777,7 @@ export interface FileRoutesById {
   '/(app)/tour-operators/new': typeof appTourOperatorsNewRoute
   '/(app)/tour-operators/$tourOperatorId/': typeof appTourOperatorsTourOperatorIdIndexRoute
   '/(app)/tour-operators/$tourOperatorId/audiences/new': typeof appTourOperatorsTourOperatorIdAudiencesNewRoute
+  '/(app)/tour-operators/$tourOperatorId/bookings/$bookingId': typeof appTourOperatorsTourOperatorIdBookingsBookingIdRoute
   '/(app)/tour-operators/$tourOperatorId/categories/new': typeof appTourOperatorsTourOperatorIdCategoriesNewRoute
   '/(app)/tour-operators/$tourOperatorId/experiences/new': typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
   '/(app)/tour-operators/$tourOperatorId/inbox/$messageId': typeof appTourOperatorsTourOperatorIdInboxMessageIdRoute
@@ -851,6 +861,7 @@ export interface FileRouteTypes {
     | '/tour-operators/new'
     | '/tour-operators/$tourOperatorId/'
     | '/tour-operators/$tourOperatorId/audiences/new'
+    | '/tour-operators/$tourOperatorId/bookings/$bookingId'
     | '/tour-operators/$tourOperatorId/categories/new'
     | '/tour-operators/$tourOperatorId/experiences/new'
     | '/tour-operators/$tourOperatorId/inbox/$messageId'
@@ -931,6 +942,7 @@ export interface FileRouteTypes {
     | '/tour-operators/new'
     | '/tour-operators/$tourOperatorId'
     | '/tour-operators/$tourOperatorId/audiences/new'
+    | '/tour-operators/$tourOperatorId/bookings/$bookingId'
     | '/tour-operators/$tourOperatorId/categories/new'
     | '/tour-operators/$tourOperatorId/experiences/new'
     | '/tour-operators/$tourOperatorId/inbox/$messageId'
@@ -1013,6 +1025,7 @@ export interface FileRouteTypes {
     | '/(app)/tour-operators/new'
     | '/(app)/tour-operators/$tourOperatorId/'
     | '/(app)/tour-operators/$tourOperatorId/audiences/new'
+    | '/(app)/tour-operators/$tourOperatorId/bookings/$bookingId'
     | '/(app)/tour-operators/$tourOperatorId/categories/new'
     | '/(app)/tour-operators/$tourOperatorId/experiences/new'
     | '/(app)/tour-operators/$tourOperatorId/inbox/$messageId'
@@ -1213,6 +1226,13 @@ declare module '@tanstack/react-router' {
       path: '/bookings'
       fullPath: '/tour-operators/$tourOperatorId/bookings/'
       preLoaderRoute: typeof appTourOperatorsTourOperatorIdBookingsIndexRouteImport
+      parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
+    }
+    '/(app)/tour-operators/$tourOperatorId/bookings/$bookingId': {
+      id: '/(app)/tour-operators/$tourOperatorId/bookings/$bookingId'
+      path: '/bookings/$bookingId'
+      fullPath: '/tour-operators/$tourOperatorId/bookings/$bookingId'
+      preLoaderRoute: typeof appTourOperatorsTourOperatorIdBookingsBookingIdRouteImport
       parentRoute: typeof appTourOperatorsTourOperatorIdRouteRoute
     }
     '/(app)/tour-operators/$tourOperatorId/categories/': {
@@ -1655,6 +1675,7 @@ declare module '@tanstack/react-router' {
 interface appTourOperatorsTourOperatorIdRouteRouteChildren {
   appTourOperatorsTourOperatorIdIndexRoute: typeof appTourOperatorsTourOperatorIdIndexRoute
   appTourOperatorsTourOperatorIdAudiencesNewRoute: typeof appTourOperatorsTourOperatorIdAudiencesNewRoute
+  appTourOperatorsTourOperatorIdBookingsBookingIdRoute: typeof appTourOperatorsTourOperatorIdBookingsBookingIdRoute
   appTourOperatorsTourOperatorIdCategoriesNewRoute: typeof appTourOperatorsTourOperatorIdCategoriesNewRoute
   appTourOperatorsTourOperatorIdExperiencesNewRoute: typeof appTourOperatorsTourOperatorIdExperiencesNewRoute
   appTourOperatorsTourOperatorIdInboxMessageIdRoute: typeof appTourOperatorsTourOperatorIdInboxMessageIdRoute
@@ -1729,6 +1750,8 @@ const appTourOperatorsTourOperatorIdRouteRouteChildren: appTourOperatorsTourOper
       appTourOperatorsTourOperatorIdIndexRoute,
     appTourOperatorsTourOperatorIdAudiencesNewRoute:
       appTourOperatorsTourOperatorIdAudiencesNewRoute,
+    appTourOperatorsTourOperatorIdBookingsBookingIdRoute:
+      appTourOperatorsTourOperatorIdBookingsBookingIdRoute,
     appTourOperatorsTourOperatorIdCategoriesNewRoute:
       appTourOperatorsTourOperatorIdCategoriesNewRoute,
     appTourOperatorsTourOperatorIdExperiencesNewRoute:
