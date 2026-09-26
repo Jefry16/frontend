@@ -1,5 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
 import {
 	type AppAction,
 	AppCard,
@@ -8,15 +6,12 @@ import {
 	AppPageActions,
 	AppPageHeader,
 	AppResourceView,
-	useAppToast,
 } from "@vointika/ui";
-import { Inbox, Mail, Trash2 } from "lucide-react";
-import { queryKeys } from "#/lib/query-keys";
+import { Inbox, Mail } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { useOperatorDateTime, usePermissions } from "#/session";
 import { AppBackLink, AppBreadcrumb } from "#/shared/links";
 import { useContactMessage } from "../hooks/use-contact-message";
-import { useContactMessageActions } from "../hooks/use-contact-message-actions";
 import type { ContactMessage } from "../types";
 
 export const AppContactMessageDetail = ({
@@ -65,10 +60,6 @@ const MessageView = ({
 	message: ContactMessage;
 }) => {
 	const { formatDateTime } = useOperatorDateTime();
-	const navigate = useNavigate();
-	const queryClient = useQueryClient();
-	const toast = useAppToast();
-	const { remove } = useContactMessageActions(tourOperatorId, message.id);
 
 	const { canWrite } = usePermissions();
 	const actions: AppAction[] = [
@@ -82,30 +73,6 @@ const MessageView = ({
 					`Re: ${message.summary}`,
 				)}`;
 			},
-		},
-		{
-			id: "delete",
-			label: m.inbox_delete(),
-			icon: Trash2,
-			variant: "destructive",
-			pending: remove.isPending,
-			confirm: {
-				title: m.inbox_delete_confirm_title(),
-				description: m.inbox_delete_confirm_body(),
-			},
-			onSelect: () =>
-				remove.mutate(undefined, {
-					onSuccess: () => {
-						toast.deleted(m.inbox_message());
-						queryClient.removeQueries({
-							queryKey: queryKeys.contactMessage(tourOperatorId, message.id),
-						});
-						navigate({
-							to: "/tour-operators/$tourOperatorId/inbox",
-							params: { tourOperatorId },
-						});
-					},
-				}),
 		},
 	];
 
