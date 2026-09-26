@@ -18,8 +18,10 @@ import {
 	Scale,
 	Settings,
 	Shapes,
+	ShoppingBag,
 	Tags,
 	Target,
+	Ticket,
 	UserRound,
 	UsersRound,
 } from "lucide-react";
@@ -150,6 +152,22 @@ export const operationsNavItems = (tourOperatorId: string): NavLeaf[] => [
 		icon: Inbox,
 		link: {
 			to: "/tour-operators/$tourOperatorId/inbox",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.orders(),
+		icon: ShoppingBag,
+		link: {
+			to: "/tour-operators/$tourOperatorId/orders",
+			params: { tourOperatorId },
+		},
+	},
+	{
+		label: m.bookings(),
+		icon: Ticket,
+		link: {
+			to: "/tour-operators/$tourOperatorId/bookings",
 			params: { tourOperatorId },
 		},
 	},
