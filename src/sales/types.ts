@@ -15,7 +15,7 @@ export interface OrderListItem {
 	context: "orders";
 	customerName: string;
 	customerEmail: string;
-	totalAmount: number;
+	totalPrice: number;
 	fees: OrderFees;
 	currency: string;
 	placedAt: string;
@@ -56,7 +56,7 @@ export interface Booking {
 	endAt: string;
 	pickup: BookingPickup | null;
 	partySize: number;
-	totalAmount: number;
+	totalPrice: number;
 	status: BookingStatus;
 	lines: BookingLine[];
 }
@@ -69,7 +69,7 @@ export interface Order {
 	checkoutSessionId: string;
 	paymentId: string;
 	customer: OrderCustomer;
-	totalAmount: number;
+	totalPrice: number;
 	fees: OrderFees;
 	currency: string;
 	placedAt: string;

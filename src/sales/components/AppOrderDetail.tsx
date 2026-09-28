@@ -154,7 +154,7 @@ const OrderView = ({
 						{feeBearerLabel(order.fees.bookingFeeBearer)}
 					</AppDetailField>
 					<AppDetailField label={m.total()}>
-						{formatMoney(order.totalAmount, order.currency, locale)}
+						{formatMoney(order.totalPrice, order.currency, locale)}
 					</AppDetailField>
 					<AppDetailField label={m.operator_amount()}>
 						{formatMoney(order.fees.operatorAmount, order.currency, locale)}
@@ -226,7 +226,7 @@ const BookingCard = ({
 				{booking.partySize}
 			</AppDetailField>
 			<AppDetailField label={m.total()}>
-				{formatMoney(booking.totalAmount, currency, locale)}
+				{formatMoney(booking.totalPrice, currency, locale)}
 			</AppDetailField>
 		</dl>
 		<AppAudiencePriceTable

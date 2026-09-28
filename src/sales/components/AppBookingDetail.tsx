@@ -211,7 +211,7 @@ const BookingView = ({
 				/>
 				<dl className="grid grid-cols-2 gap-4">
 					<AppDetailField label={m.total()}>
-						{formatMoney(booking.totalAmount, currency, locale)}
+						{formatMoney(booking.totalPrice, currency, locale)}
 					</AppDetailField>
 				</dl>
 			</AppCard>

@@ -66,10 +66,10 @@ export const orderColumns = (
 		cell: ({ row }) => row.original.customerEmail,
 	},
 	{
-		id: "totalAmount",
-		accessorKey: "totalAmount",
+		id: "totalPrice",
+		accessorKey: "totalPrice",
 		header: () => <span className="block text-right">{m.total()}</span>,
-		cell: ({ row }) => money(row.original.totalAmount, row.original.currency),
+		cell: ({ row }) => money(row.original.totalPrice, row.original.currency),
 	},
 	timestampColumn<OrderListItem>("placedAt", m.placed(), formatDateTime),
 ];
@@ -131,9 +131,9 @@ export const bookingColumns = (
 		),
 	},
 	{
-		id: "totalAmount",
+		id: "totalPrice",
 		header: () => <span className="block text-right">{m.total()}</span>,
-		cell: ({ row }) => money(row.original.totalAmount, currency),
+		cell: ({ row }) => money(row.original.totalPrice, currency),
 	},
 	{
 		id: "status",
