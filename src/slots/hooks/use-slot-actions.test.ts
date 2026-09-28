@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { describe, expect, it } from "vitest";
+import { queryKeys } from "#/lib/query-keys";
 import { fire, renderActions } from "#/test/actions";
 import { server } from "#/test/server";
 import { useSlotActions } from "./use-slot-actions";
@@ -43,10 +44,12 @@ describe("useSlotActions", () => {
 		);
 
 		expect(invalidated()).toEqual([
-			["slots", OP, ID],
 			["slots", OP],
 			["activity", OP],
 		]);
+		expect(queryKeys.slot(OP, ID).slice(0, queryKeys.slots(OP).length)).toEqual(
+			[...queryKeys.slots(OP)],
+		);
 	});
 
 	it("offers no status setter", () => {

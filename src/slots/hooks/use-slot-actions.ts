@@ -41,9 +41,6 @@ export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: queryKeys.slot(tourOperatorId, slotId),
-			});
-			queryClient.invalidateQueries({
 				queryKey: queryKeys.slots(tourOperatorId),
 			});
 			queryClient.invalidateQueries({

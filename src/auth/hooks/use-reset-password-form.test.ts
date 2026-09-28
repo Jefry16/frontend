@@ -83,6 +83,22 @@ describe("useResetPasswordForm", () => {
 		expect(navigateMock).not.toHaveBeenCalled();
 	});
 
+	it.each([
+		[
+			409,
+			"This reset link has already been used. Request a new one if you still need it.",
+		],
+		[410, "This reset link has expired. Request a new one."],
+	])("a %s says so in its own sentence, apart from an unknown token", async (status, sentence) => {
+		server.use(failing(status));
+		const { result } = render();
+
+		await submit(result.current.form, VALID);
+
+		expect(result.current.errorMessage).toBe(sentence);
+		expect(navigateMock).not.toHaveBeenCalled();
+	});
+
 	it("a 422 shows the backend's sentence, which names which rule the reset broke", async () => {
 		server.use(
 			http.post(URL, () =>

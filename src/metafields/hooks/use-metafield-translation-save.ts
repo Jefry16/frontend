@@ -44,8 +44,7 @@ export const useMetafieldTranslationSave = (
 
 	const save = useMutation<void, AxiosError, Record<string, string>>({
 		mutationFn: async (values) => {
-			// A patch, unlike every other translation write here, and unlike what the
-			// backend's own javadoc claims. An absent key is left alone; a blank clears.
+			// A patch: an absent key is left alone; a blank clears.
 			await authApi.patch(endpoint, { values });
 		},
 		onSettled: invalidate,
