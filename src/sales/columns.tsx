@@ -77,7 +77,6 @@ export const orderColumns = (
 
 export const bookingColumns = (
 	tourOperatorId: string,
-	currency: string | null,
 ): ColumnDef<BookingManifestItem, unknown>[] => [
 	{
 		id: "reference",
@@ -134,7 +133,7 @@ export const bookingColumns = (
 	{
 		id: "totalPrice",
 		header: () => <span className="block text-right">{m.total()}</span>,
-		cell: ({ row }) => money(row.original.totalPrice, currency),
+		cell: ({ row }) => money(row.original.totalPrice, row.original.currency),
 	},
 	{
 		id: "status",
