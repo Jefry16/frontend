@@ -3,7 +3,6 @@ import { Ticket } from "lucide-react";
 import { useMemo } from "react";
 import { queryKeys } from "#/lib/query-keys";
 import * as m from "#/paraglide/messages";
-import { useOperatorCurrency } from "#/session";
 import { bookingColumns } from "../columns";
 
 export const AppBookingsList = ({
@@ -11,10 +10,9 @@ export const AppBookingsList = ({
 }: {
 	tourOperatorId: string;
 }) => {
-	const currency = useOperatorCurrency();
 	const columns = useMemo(
-		() => bookingColumns(tourOperatorId, currency),
-		[tourOperatorId, currency],
+		() => bookingColumns(tourOperatorId),
+		[tourOperatorId],
 	);
 
 	return (

@@ -12,7 +12,6 @@ import {
 import { Ticket } from "lucide-react";
 import * as m from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
-import { useOperatorCurrency } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
 import { bookingLineColumns, pricedLines } from "../columns";
@@ -65,7 +64,7 @@ const BookingView = ({
 	tourOperatorId: string;
 	booking: BookingManifestItem;
 }) => {
-	const currency = useOperatorCurrency();
+	const currency = booking.currency;
 	const locale = getLocale();
 
 	return (

@@ -79,5 +79,6 @@ export interface Order {
 export interface BookingManifestItem extends Booking {
 	context: "bookings";
 	orderId: string;
+	currency: string;
 	customer: OrderCustomer;
 }
