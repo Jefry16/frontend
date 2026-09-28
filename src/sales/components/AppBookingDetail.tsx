@@ -6,7 +6,6 @@ import {
 	AppDetailSkeleton,
 	AppPageHeader,
 	AppResourceView,
-	type AppStaticTableColumn,
 	EmptyValue,
 	formatMoney,
 } from "@vointika/ui";
@@ -16,42 +15,10 @@ import { getLocale } from "#/paraglide/runtime";
 import { useOperatorCurrency } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
+import { bookingLineColumns, pricedLines } from "../columns";
 import { bookingStatusLabel } from "../format";
 import { useBooking } from "../hooks/use-booking";
-import type { BookingLine, BookingManifestItem } from "../types";
-
-interface PricedLine extends BookingLine {
-	price: number;
-}
-
-const lineColumns = (
-	currency: string | null,
-	locale: string,
-): AppStaticTableColumn<PricedLine>[] => [
-	{
-		id: "quantity",
-		header: m.quantity(),
-		cell: (line) => line.quantity,
-		numeric: true,
-	},
-	{
-		id: "pickupPrice",
-		header: m.pickup_price(),
-		cell: (line) => formatMoney(line.pickupUnitPrice, currency, locale),
-		numeric: true,
-	},
-	{
-		id: "subtotal",
-		header: m.subtotal(),
-		cell: (line) =>
-			formatMoney(
-				line.quantity * (line.unitPrice + line.pickupUnitPrice),
-				currency,
-				locale,
-			),
-		numeric: true,
-	},
-];
+import type { BookingManifestItem } from "../types";
 
 export const AppBookingDetail = ({
 	tourOperatorId,
@@ -202,12 +169,9 @@ const BookingView = ({
 
 			<AppCard title={m.total()} className="flex flex-col gap-4">
 				<AppAudiencePriceTable
-					rows={booking.lines.map((line) => ({
-						...line,
-						price: line.unitPrice,
-					}))}
+					rows={pricedLines(booking.lines)}
 					currency={currency}
-					columns={lineColumns(currency, locale)}
+					columns={bookingLineColumns(currency, locale)}
 				/>
 				<dl className="grid grid-cols-2 gap-4">
 					<AppDetailField label={m.total()}>

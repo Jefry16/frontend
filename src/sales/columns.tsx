@@ -2,6 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import {
 	AppBadge,
 	AppDataTableHeader,
+	type AppStaticTableColumn,
 	EmptyValue,
 	formatMoney,
 	timestampColumn,
@@ -12,7 +13,7 @@ import { getLocale } from "#/paraglide/runtime";
 import { AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
 import { BOOKING_STATUS_OPTIONS, bookingStatusLabel } from "./format";
-import type { BookingManifestItem, OrderListItem } from "./types";
+import type { BookingLine, BookingManifestItem, OrderListItem } from "./types";
 
 const money = (amount: number, currency: string | null) => (
 	<span className="block text-right tabular-nums">
@@ -151,5 +152,43 @@ export const bookingColumns = (
 				{bookingStatusLabel(row.original.status)}
 			</AppBadge>
 		),
+	},
+];
+
+export interface PricedBookingLine extends BookingLine {
+	price: number;
+}
+
+export const pricedLines = (lines: BookingLine[]): PricedBookingLine[] =>
+	lines.map((line) => ({ ...line, price: line.unitPrice }));
+
+// What a booking's line knows beyond the audience and its price: the
+// AppAudiencePriceTable's own two columns open every table these follow.
+export const bookingLineColumns = (
+	currency: string | null,
+	locale: string,
+): AppStaticTableColumn<PricedBookingLine>[] => [
+	{
+		id: "quantity",
+		header: m.quantity(),
+		cell: (line) => line.quantity,
+		numeric: true,
+	},
+	{
+		id: "pickupPrice",
+		header: m.pickup_price(),
+		cell: (line) => formatMoney(line.pickupUnitPrice, currency, locale),
+		numeric: true,
+	},
+	{
+		id: "subtotal",
+		header: m.subtotal(),
+		cell: (line) =>
+			formatMoney(
+				line.quantity * (line.unitPrice + line.pickupUnitPrice),
+				currency,
+				locale,
+			),
+		numeric: true,
 	},
 ];

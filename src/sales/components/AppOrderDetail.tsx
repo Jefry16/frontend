@@ -6,7 +6,6 @@ import {
 	AppDetailSkeleton,
 	AppPageHeader,
 	AppResourceView,
-	type AppStaticTableColumn,
 	EmptyValue,
 	formatMoney,
 } from "@vointika/ui";
@@ -16,42 +15,10 @@ import { getLocale } from "#/paraglide/runtime";
 import { useOperatorDateTime } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
+import { bookingLineColumns, pricedLines } from "../columns";
 import { bookingStatusLabel, feeBearerLabel } from "../format";
 import { useOrder } from "../hooks/use-order";
-import type { Booking, BookingLine, Order } from "../types";
-
-interface PricedLine extends BookingLine {
-	price: number;
-}
-
-const lineColumns = (
-	currency: string,
-	locale: string,
-): AppStaticTableColumn<PricedLine>[] => [
-	{
-		id: "quantity",
-		header: m.quantity(),
-		cell: (line) => line.quantity,
-		numeric: true,
-	},
-	{
-		id: "pickupPrice",
-		header: m.pickup_price(),
-		cell: (line) => formatMoney(line.pickupUnitPrice, currency, locale),
-		numeric: true,
-	},
-	{
-		id: "subtotal",
-		header: m.subtotal(),
-		cell: (line) =>
-			formatMoney(
-				line.quantity * (line.unitPrice + line.pickupUnitPrice),
-				currency,
-				locale,
-			),
-		numeric: true,
-	},
-];
+import type { Booking, Order } from "../types";
 
 export const AppOrderDetail = ({
 	tourOperatorId,
@@ -230,9 +197,9 @@ const BookingCard = ({
 			</AppDetailField>
 		</dl>
 		<AppAudiencePriceTable
-			rows={booking.lines.map((line) => ({ ...line, price: line.unitPrice }))}
+			rows={pricedLines(booking.lines)}
 			currency={currency}
-			columns={lineColumns(currency, locale)}
+			columns={bookingLineColumns(currency, locale)}
 		/>
 	</AppCard>
 );
