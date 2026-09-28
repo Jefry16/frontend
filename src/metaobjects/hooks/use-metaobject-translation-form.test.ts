@@ -56,7 +56,7 @@ const submit = async (
 };
 
 const put = (body: ReturnType<typeof vi.fn>) =>
-	http.put(URL, async ({ request }) => {
+	http.patch(URL, async ({ request }) => {
 		body(await request.json());
 		return new HttpResponse(null, { status: 204 });
 	});

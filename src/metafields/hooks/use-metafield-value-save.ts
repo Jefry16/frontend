@@ -32,7 +32,7 @@ export const useMetafieldValueSave = (
 			);
 			// A merge, not a replace: a key not sent is left alone, and a key sent blank
 			// is CLEARED. Every entry is validated before any is written.
-			await authApi.put(endpoint, { values });
+			await authApi.patch(endpoint, { values });
 		},
 		onSettled: () =>
 			Promise.all([

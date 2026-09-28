@@ -27,7 +27,7 @@ export const usePageForm = (tourOperatorId: string, page?: Page) => {
 			mutationFn: async (fields) => {
 				const base = `/tour-operators/${tourOperatorId}/pages`;
 				if (page) {
-					await authApi.patch(`${base}/${page.id}`, {
+					await authApi.put(`${base}/${page.id}`, {
 						title: fields.title,
 						body: fields.body,
 						seoTitle: fields.seoTitle,

@@ -40,7 +40,7 @@ const save = async (
 };
 
 const recording = (seen: { path: string; body: unknown }[]) =>
-	http.put(
+	http.patch(
 		`${API}/tour-operators/:op/metafields/:ownerType/:ownerId`,
 		async ({ request }) => {
 			seen.push({
@@ -98,15 +98,18 @@ describe("useMetafieldValueSave", () => {
 
 	it("keeps the backend's reason beside the form when the write is refused", async () => {
 		server.use(
-			http.put(`${API}/tour-operators/:op/metafields/:ownerType/:ownerId`, () =>
-				HttpResponse.json(
-					{
-						status: 422,
-						error: "Unprocessable Entity",
-						message: "A number_integer metafield value must be a whole number",
-					},
-					{ status: 422 },
-				),
+			http.patch(
+				`${API}/tour-operators/:op/metafields/:ownerType/:ownerId`,
+				() =>
+					HttpResponse.json(
+						{
+							status: 422,
+							error: "Unprocessable Entity",
+							message:
+								"A number_integer metafield value must be a whole number",
+						},
+						{ status: 422 },
+					),
 			),
 		);
 		const { result } = render();

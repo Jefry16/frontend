@@ -83,7 +83,7 @@ describe("usePageForm", () => {
 	it("never sends the handle on edit", async () => {
 		const body = vi.fn();
 		server.use(
-			http.patch(`${BASE}/page-1`, async ({ request }) => {
+			http.put(`${BASE}/page-1`, async ({ request }) => {
 				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),
@@ -99,7 +99,7 @@ describe("usePageForm", () => {
 	it("collapses blank SEO fields to null", async () => {
 		const body = vi.fn();
 		server.use(
-			http.patch(`${BASE}/page-1`, async ({ request }) => {
+			http.put(`${BASE}/page-1`, async ({ request }) => {
 				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),

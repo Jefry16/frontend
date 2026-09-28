@@ -20,6 +20,7 @@ export const useMetaobjectTranslationForm = ({
 }) =>
 	useTranslationOverlayForm({
 		endpoint: `/tour-operators/${tourOperatorId}/metaobjects/${metaobjectId}/field-translations/${locale}`,
+		method: "patch",
 		schema: metaobjectTranslationSchema(fields),
 		defaultValues: Object.fromEntries(
 			fields.map((field) => [field.key, translation[field.key] ?? ""]),

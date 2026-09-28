@@ -12,7 +12,7 @@ export const useMediaActions = (tourOperatorId: string, mediaId: string) => {
 	const base = `/tour-operators/${tourOperatorId}/media/${mediaId}`;
 
 	const describe = useMutation<unknown, AxiosError, string>({
-		mutationFn: (alt) => authApi.patch(base, { alt }),
+		mutationFn: (alt) => authApi.put(base, { alt }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.mediaAsset(tourOperatorId, mediaId),

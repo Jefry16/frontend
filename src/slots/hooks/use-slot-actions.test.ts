@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { describe, expect, it } from "vitest";
+import { queryKeys } from "#/lib/query-keys";
 import { fire, renderActions } from "#/test/actions";
 import { server } from "#/test/server";
 import { useSlotActions } from "./use-slot-actions";
@@ -30,6 +31,25 @@ describe("useSlotActions", () => {
 			["slots", OP],
 			["activity", OP],
 		]);
+	});
+
+	it("refetches the slot once its capacities are set, the PATCH answering nothing", async () => {
+		server.use(http.patch(BASE, () => new HttpResponse(null, { status: 204 })));
+		const { result, invalidated } = renderActions(() => useSlotActions(OP, ID));
+
+		await fire(() =>
+			result.current.setCapacities.mutateAsync([
+				{ audienceId: "aud-1", capacity: 12 },
+			]),
+		);
+
+		expect(invalidated()).toEqual([
+			["slots", OP],
+			["activity", OP],
+		]);
+		expect(queryKeys.slot(OP, ID).slice(0, queryKeys.slots(OP).length)).toEqual(
+			[...queryKeys.slots(OP)],
+		);
 	});
 
 	it("offers no status setter", () => {
