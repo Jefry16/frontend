@@ -9,9 +9,10 @@ const MAX_PRICE = 10_000_000_000;
 const price = z
 	.string()
 	.trim()
+	.refine((v) => v === "" || Number(v) >= 0, m.validation_price())
 	.refine(
-		(v) => v === "" || (Number(v) >= 0 && Number(v) < MAX_PRICE),
-		m.validation_price(),
+		(v) => v === "" || Number(v) < MAX_PRICE,
+		m.validation_max_value({ count: MAX_PRICE }),
 	)
 	.transform((v) => (v === "" ? 0 : Number(v)));
 

@@ -134,6 +134,30 @@ describe("usePickupLocationForm", () => {
 		});
 	});
 
+	it("refuses a price at the backend's cap, naming the cap rather than zero", async () => {
+		const body = vi.fn();
+		server.use(
+			http.post(BASE, () => {
+				body();
+				return new HttpResponse(null, { status: 201 });
+			}),
+		);
+		const { result } = render();
+
+		await submit(result.current.form, {
+			name: "Harbour gate",
+			time: "08:30",
+			"prices.aud-adult": "10000000000",
+		});
+
+		expect(body).not.toHaveBeenCalled();
+		expect(
+			result.current.form
+				.getFieldMeta("prices.aud-adult")
+				?.errors.map((e) => (typeof e === "string" ? e : e?.message)),
+		).toEqual(["Must be at most 10000000000"]);
+	});
+
 	it("refuses a price that is not a number", async () => {
 		const body = vi.fn();
 		server.use(
