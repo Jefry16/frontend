@@ -17,7 +17,7 @@ describe("useMediaActions", () => {
 	it("patches the alt text and refreshes asset, list and trail", async () => {
 		const body = vi.fn();
 		server.use(
-			http.patch(BASE, async ({ request }) => {
+			http.put(BASE, async ({ request }) => {
 				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),
@@ -35,7 +35,7 @@ describe("useMediaActions", () => {
 	it("sends a blank alt rather than omitting it", async () => {
 		const body = vi.fn();
 		server.use(
-			http.patch(BASE, async ({ request }) => {
+			http.put(BASE, async ({ request }) => {
 				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),

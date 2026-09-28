@@ -111,7 +111,7 @@ describe("AppMetafieldTranslationsCard", () => {
 	beforeEach(() => {
 		body = undefined;
 		server.use(
-			http.put(ENDPOINT, async ({ request }) => {
+			http.patch(ENDPOINT, async ({ request }) => {
 				body = await request.json();
 				return new HttpResponse(null, { status: 204 });
 			}),
@@ -160,7 +160,7 @@ describe("AppMetafieldTranslationsCard", () => {
 	it("keeps a refused save's reason above the fields until the clear succeeds", async () => {
 		const user = userEvent.setup();
 		server.use(
-			http.put(ENDPOINT, () =>
+			http.patch(ENDPOINT, () =>
 				HttpResponse.json(
 					{
 						status: 422,

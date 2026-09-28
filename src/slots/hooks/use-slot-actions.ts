@@ -32,14 +32,23 @@ export const useSlotActions = (tourOperatorId: string, slotId: string) => {
 	});
 
 	const setCapacities = useMutation<
-		Slot,
+		void,
 		AxiosError,
 		{ audienceId: string; capacity: number }[]
 	>({
-		mutationFn: async (capacities) =>
-			(await authApi.patch<Slot>(base, { capacities })).data,
-		onSuccess: (slot) => {
-			applyRefreshed(slot);
+		mutationFn: async (capacities) => {
+			await authApi.patch(base, { capacities });
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.slot(tourOperatorId, slotId),
+			});
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.slots(tourOperatorId),
+			});
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.activity(tourOperatorId),
+			});
 			toast.updated(m.availability());
 		},
 		onError: (error) => toast.error(apiErrorMessage(error)),

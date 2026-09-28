@@ -116,7 +116,7 @@ describe("useExperienceForm", () => {
 	it("an edit keeps the experience's category, which the backend sends as a nested ref", async () => {
 		const body = vi.fn();
 		server.use(
-			http.patch(`${BASE}/exp-1`, async ({ request }) => {
+			http.put(`${BASE}/exp-1`, async ({ request }) => {
 				body(await request.json());
 				return new HttpResponse(null, { status: 204 });
 			}),

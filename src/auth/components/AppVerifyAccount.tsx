@@ -14,12 +14,16 @@ export const AppVerifyAccount = ({ state }: { state: VerifyState }) => {
 		);
 	}
 
-	if (state === "success") {
+	if (state === "success" || state === "already-verified") {
 		return (
 			<AppAuthMessageCard
 				tone="success"
 				title={m.email_verified_title()}
-				description={m.email_verified_description()}
+				description={
+					state === "already-verified"
+						? m.email_already_verified()
+						: m.email_verified_description()
+				}
 			>
 				<AppLink to="/auth/login">{m.go_to_sign_in()}</AppLink>
 			</AppAuthMessageCard>
@@ -33,7 +37,9 @@ export const AppVerifyAccount = ({ state }: { state: VerifyState }) => {
 			description={
 				state === "missing-token"
 					? m.verification_missing_token()
-					: m.verification_failed_description()
+					: state === "expired"
+						? m.verification_expired()
+						: m.verification_failed_description()
 			}
 		>
 			<AppLink to="/auth/login">{m.go_to_sign_in()}</AppLink>

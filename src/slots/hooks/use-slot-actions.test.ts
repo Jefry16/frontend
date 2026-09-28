@@ -32,6 +32,23 @@ describe("useSlotActions", () => {
 		]);
 	});
 
+	it("refetches the slot once its capacities are set, the PATCH answering nothing", async () => {
+		server.use(http.patch(BASE, () => new HttpResponse(null, { status: 204 })));
+		const { result, invalidated } = renderActions(() => useSlotActions(OP, ID));
+
+		await fire(() =>
+			result.current.setCapacities.mutateAsync([
+				{ audienceId: "aud-1", capacity: 12 },
+			]),
+		);
+
+		expect(invalidated()).toEqual([
+			["slots", OP, ID],
+			["slots", OP],
+			["activity", OP],
+		]);
+	});
+
 	it("offers no status setter", () => {
 		const { result } = renderActions(() => useSlotActions(OP, ID));
 

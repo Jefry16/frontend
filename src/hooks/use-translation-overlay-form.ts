@@ -10,12 +10,14 @@ import * as m from "#/paraglide/messages";
 
 export const useTranslationOverlayForm = <TValues, TPayload>({
 	endpoint,
+	method = "put",
 	schema,
 	defaultValues,
 	invalidateKeys,
 	conflictMessage,
 }: {
 	endpoint: string;
+	method?: "put" | "patch";
 	schema: z.ZodType<TPayload, TValues>;
 	defaultValues: TValues;
 	invalidateKeys: readonly (readonly unknown[])[];
@@ -33,7 +35,7 @@ export const useTranslationOverlayForm = <TValues, TPayload>({
 
 	const save = useMutation<void, AxiosError, TPayload>({
 		mutationFn: async (data) => {
-			await authApi.put(endpoint, data);
+			await authApi[method](endpoint, data);
 		},
 		onSuccess: () => {
 			setErrorMessage(null);

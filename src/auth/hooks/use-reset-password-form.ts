@@ -33,6 +33,10 @@ export const useResetPasswordForm = (token: string) => {
 			const status = error.response?.status;
 			if (status === 401) {
 				setErrorMessage(m.reset_link_invalid());
+			} else if (status === 409) {
+				setErrorMessage(m.reset_link_used());
+			} else if (status === 410) {
+				setErrorMessage(m.reset_link_expired());
 			} else if (status === 422) {
 				setErrorMessage(apiErrorMessage(error));
 			} else {

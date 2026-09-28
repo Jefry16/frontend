@@ -33,7 +33,7 @@ export const useExperienceForm = (
 			const payload = fields;
 			const base = `/tour-operators/${tourOperatorId}/experiences`;
 			if (experience) {
-				await authApi.patch(`${base}/${experience.id}`, payload);
+				await authApi.put(`${base}/${experience.id}`, payload);
 				return experience.id;
 			}
 			const { headers } = await authApi.post(base, payload);

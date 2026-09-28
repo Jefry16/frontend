@@ -28,4 +28,15 @@ describe("verifyToken", () => {
 		);
 		expect(await verifyToken("bad-token")).toBe("error");
 	});
+
+	it.each([
+		[409, "already-verified"],
+		[410, "expired"],
+		[401, "error"],
+	])("reads a %s as %s", async (status, state) => {
+		server.use(
+			http.get(`${API}/auth/verify`, () => new HttpResponse(null, { status })),
+		);
+		expect(await verifyToken("some-token")).toBe(state);
+	});
 });

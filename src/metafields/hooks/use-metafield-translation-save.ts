@@ -46,7 +46,7 @@ export const useMetafieldTranslationSave = (
 		mutationFn: async (values) => {
 			// A patch, unlike every other translation write here, and unlike what the
 			// backend's own javadoc claims. An absent key is left alone; a blank clears.
-			await authApi.put(endpoint, { values });
+			await authApi.patch(endpoint, { values });
 		},
 		onSettled: invalidate,
 		onSuccess: () => {
