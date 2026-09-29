@@ -43,7 +43,13 @@ interface BookingPickup {
 	time: string;
 }
 
-export type BookingStatus = "CONFIRMED";
+export type BookingStatus = "CONFIRMED" | "CANCELLED";
+
+interface BookingCancellation {
+	cancelledAt: string;
+	cancelledBy: string;
+	reason: string | null;
+}
 
 export interface Booking {
 	id: string;
@@ -58,6 +64,7 @@ export interface Booking {
 	partySize: number;
 	totalPrice: number;
 	status: BookingStatus;
+	cancellation: BookingCancellation | null;
 	lines: BookingLine[];
 }
 
