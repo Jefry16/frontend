@@ -656,6 +656,7 @@
 	"no_bookings_body": "Every departure a paid order books shows here, ready for the manifest.",
 	"back_to_orders": "Back to orders",
 	"booking_status_confirmed": "Confirmed",
+	"booking_status_cancelled": "Cancelled",
 	"payment_reference": "Payment",
 	"lines_total": "Lines total",
 	"booking_fee": "Booking fee",

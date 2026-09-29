@@ -1,6 +1,5 @@
 import {
 	AppAudiencePriceTable,
-	AppBadge,
 	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
@@ -15,9 +14,9 @@ import { getLocale } from "#/paraglide/runtime";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
 import { bookingLineColumns, pricedLines } from "../columns";
-import { bookingStatusLabel } from "../format";
 import { useBooking } from "../hooks/use-booking";
 import type { BookingManifestItem } from "../types";
+import { AppBookingStatusBadge } from "./AppBookingStatusBadge";
 
 export const AppBookingDetail = ({
 	tourOperatorId,
@@ -89,11 +88,7 @@ const BookingView = ({
 
 			<AppCard
 				title={m.departure()}
-				action={
-					<AppBadge variant="success">
-						{bookingStatusLabel(booking.status)}
-					</AppBadge>
-				}
+				action={<AppBookingStatusBadge status={booking.status} />}
 			>
 				<dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<AppDetailField label={m.experience()}>

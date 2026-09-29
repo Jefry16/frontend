@@ -42,4 +42,36 @@ describe("AppBookingsList", () => {
 		expect(row).toHaveTextContent("$338.00");
 		expect(row).not.toHaveTextContent("€");
 	});
+
+	it("shows each booking's status in its row, a cancelled one as cancelled", async () => {
+		server.use(
+			http.get(`${API}/tour-operators/${OP}/bookings`, () =>
+				HttpResponse.json({
+					data: [
+						bookingInUsd,
+						{
+							...bookingInUsd,
+							id: "bk-2",
+							reference: "#1001-2",
+							status: "CANCELLED",
+						},
+					],
+					nextCursor: null,
+				}),
+			),
+		);
+		renderWithProviders(<AppBookingsList tourOperatorId={OP} />, {
+			user: operatorInEur,
+		});
+
+		const cancelled = await screen.findByRole(
+			"row",
+			{ name: /#1001-2/ },
+			{ timeout: 5000 },
+		);
+		expect(cancelled).toHaveTextContent("Cancelled");
+		expect(screen.getByRole("row", { name: /#1001-1/ })).toHaveTextContent(
+			"Confirmed",
+		);
+	});
 });

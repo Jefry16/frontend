@@ -656,6 +656,7 @@
 	"no_bookings_body": "Cada salida que reserva un pedido pagado aparece aquí, lista para el manifiesto.",
 	"back_to_orders": "Volver a pedidos",
 	"booking_status_confirmed": "Confirmada",
+	"booking_status_cancelled": "Cancelada",
 	"payment_reference": "Pago",
 	"lines_total": "Total de líneas",
 	"booking_fee": "Comisión de reserva",

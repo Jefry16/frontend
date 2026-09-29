@@ -44,4 +44,20 @@ describe("AppBookingDetail", () => {
 		expect(row).toHaveTextContent("$338.00");
 		expect(screen.queryByText(/€/)).toBeNull();
 	});
+
+	it("shows a cancelled booking as cancelled", async () => {
+		server.use(
+			http.get(`${API}/tour-operators/${OP}/bookings/${ID}`, () =>
+				HttpResponse.json({ ...bookingInUsd, status: "CANCELLED" }),
+			),
+		);
+		renderWithProviders(
+			<AppBookingDetail tourOperatorId={OP} bookingId={ID} />,
+			{
+				user: operatorInEur,
+			},
+		);
+
+		expect(await screen.findByText("Cancelled")).toBeInTheDocument();
+	});
 });

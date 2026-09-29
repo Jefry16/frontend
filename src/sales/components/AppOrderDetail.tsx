@@ -1,6 +1,5 @@
 import {
 	AppAudiencePriceTable,
-	AppBadge,
 	AppCard,
 	AppDetailField,
 	AppDetailSkeleton,
@@ -16,9 +15,10 @@ import { useOperatorDateTime } from "#/session";
 import { AppBackLink, AppBreadcrumb, AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
 import { bookingLineColumns, pricedLines } from "../columns";
-import { bookingStatusLabel, feeBearerLabel } from "../format";
+import { feeBearerLabel } from "../format";
 import { useOrder } from "../hooks/use-order";
 import type { Booking, Order } from "../types";
+import { AppBookingStatusBadge } from "./AppBookingStatusBadge";
 
 export const AppOrderDetail = ({
 	tourOperatorId,
@@ -158,11 +158,7 @@ const BookingCard = ({
 }) => (
 	<AppCard
 		title={booking.experienceName}
-		action={
-			<AppBadge variant="success">
-				{bookingStatusLabel(booking.status)}
-			</AppBadge>
-		}
+		action={<AppBookingStatusBadge status={booking.status} />}
 		className="flex flex-col gap-4"
 	>
 		<dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">

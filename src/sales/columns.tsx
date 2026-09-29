@@ -1,6 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import {
-	AppBadge,
 	AppDataTableHeader,
 	type AppStaticTableColumn,
 	EmptyValue,
@@ -12,7 +11,8 @@ import * as m from "#/paraglide/messages";
 import { getLocale } from "#/paraglide/runtime";
 import { AppResourceLink } from "#/shared/links";
 import { formatSlotDateTime } from "#/slots";
-import { BOOKING_STATUS_OPTIONS, bookingStatusLabel } from "./format";
+import { AppBookingStatusBadge } from "./components/AppBookingStatusBadge";
+import { BOOKING_STATUS_OPTIONS } from "./format";
 import type { BookingLine, BookingManifestItem, OrderListItem } from "./types";
 
 const money = (amount: number, currency: string | null) => (
@@ -146,11 +146,7 @@ export const bookingColumns = (
 				items={BOOKING_STATUS_OPTIONS}
 			/>
 		),
-		cell: ({ row }) => (
-			<AppBadge variant="success">
-				{bookingStatusLabel(row.original.status)}
-			</AppBadge>
-		),
+		cell: ({ row }) => <AppBookingStatusBadge status={row.original.status} />,
 	},
 ];
 

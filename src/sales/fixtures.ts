@@ -23,6 +23,7 @@ export const bookingInUsd: BookingManifestItem = {
 	partySize: 2,
 	totalPrice: 338,
 	status: "CONFIRMED",
+	cancellation: null,
 	lines: [
 		{
 			id: "ln-1",

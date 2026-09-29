@@ -3,7 +3,17 @@ import type { BookingFeeBearer, BookingStatus } from "./types";
 
 const STATUS_LABELS: Record<BookingStatus, () => string> = {
 	CONFIRMED: m.booking_status_confirmed,
+	CANCELLED: m.booking_status_cancelled,
 };
+
+const STATUS_VARIANTS: Record<BookingStatus, "success" | "destructive"> = {
+	CONFIRMED: "success",
+	CANCELLED: "destructive",
+};
+
+export const bookingStatusVariant = (
+	status: BookingStatus,
+): "success" | "destructive" => STATUS_VARIANTS[status];
 
 export const bookingStatusLabel = (status: BookingStatus): string =>
 	STATUS_LABELS[status]();
